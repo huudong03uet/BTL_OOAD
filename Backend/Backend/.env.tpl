@@ -1,0 +1,6 @@
+[database]
+HOST=
+PORT=
+USERNAME=
+DATABSE_NAME=
+PASSWORD=
