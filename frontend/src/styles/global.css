@@ -1,1 +1,6 @@
 /* file này để các css dùng chúng nhé */
+
+/* CSS for footer */
+.btn-equal-size {
+    width: 100px; /* Đặt kích thước cố định cho tất cả các MDBBtn, bạn có thể điều chỉnh giá trị này tùy thích */
+  }
