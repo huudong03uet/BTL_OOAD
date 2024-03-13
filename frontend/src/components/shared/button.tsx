@@ -7,4 +7,3 @@ const Button: React.FC<{ label: string; onClick: () => void }> = ({ label, onCli
 };
 
 export default Button;
-

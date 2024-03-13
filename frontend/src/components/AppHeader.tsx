@@ -28,7 +28,7 @@ function Header() {
             <Form.Control
               type="text"
               placeholder="Search"
-              className=" mr-sm-2"
+              className="mr-sm-2"
             />
           </Col>
         </Row>
