@@ -85,7 +85,7 @@ celerybeat-schedule.*
 media/
 
 # venv
-.venv
+venv
 *.env
 .commands
 
