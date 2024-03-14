@@ -14,36 +14,78 @@ function Header() {
     left: '0px',
     marginLeft: '0px'
   };
-  return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container>
-        <Navbar.Brand href="#home">React-Bootstrap</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav">
 
-        </Navbar.Toggle>
-        <Navbar.Collapse id="basic-navbar-nav">
-        <Form >
-        <Row>
-          <Col xs="auto">
-            <Form.Control
-              type="text"
-              placeholder="Search"
-              className="mr-sm-2"
-            />
-          </Col>
-        </Row>
-      </Form>
-          <Nav className="me-auto">
+
+  const isLogin = false;
+
+
+
+
+  return (
+    <Navbar expand="lg" className="bg-body-tertiary ">
+      <Container className="row w-100" style={{ display: "contents" }}>
+        <div className="col-3 d-flex justify-content-center ">
+          <Navbar.Brand href="#home" >
+            <img src="https://image.invaluable.com/static/header/IN_Red32.svg"
+              alt="test" width={"200px"}></img>
+          </Navbar.Brand>
+        </div>
+        {/* <Navbar.Toggle aria-controls="basic-navbar-nav">
+
+        </Navbar.Toggle> */}
+        <div className="col-5">
+          <Form >
+            <Row>
+              <Col xs="auto" className='w-100'>
+                {/* <i className="fa fa-search"></i>
+                <Form.Control 
+                  type="text"
+                  placeholder="Search items & sellers"
+                  className="mr-sm-2"
+                /> */}
+            <div className="input-group">
+                {/* <input className="form-control border-end-0 border" type="search" value="search" id="example-search-input"></input> */}
+                <i className="fa fa-search position-absolute top-50 ps-5 translate-middle" style={{zIndex: "10", color: "#e4002b"}}></i>
+                
+                <Form.Control 
+                  type="text"
+                  placeholder="Search items & sellers"
+                  className="mr-sm-2 ps-5"
+                  
+                />
+           
+              </div>
+              </Col>
+            </Row>
+          </Form>
+        </div>
+        {/* <Navbar.Collapse id="basic-navbar-nav"> */}
+
+
+
+
+ 
+
+        <div className="col-4 justify-content-center">
+          <Nav className="me-auto justify-content-center">
             <Nav.Link href="#home">
-            <span className="fa fa-heart"></span>
+              <span className="fa fa-heart px-2" style={{ color: "#e4002b", fontSize: "1.6em" }}></span>
               Saved
-              </Nav.Link>
-            <Nav.Link href="#link">
-            <span className="fa fa-bell header-bell" ></span>
-            Link
             </Nav.Link>
-            <NavDropdown title="Nguyen" id="basic-nav-dropdown">
-      
+            <Nav.Link href="#link">
+              <span className="fa fa-bell header-bell px-2" style={{ fontSize: "1.6em", color: "black" }}></span>
+              Notifications
+            </Nav.Link>
+            {/* fa fa-user */}
+
+            {isLogin? (
+          <div className='d-flex'>
+            <div className="ps-3 d-flex align-items-center ml-3">
+              <span className="fa fa-user d-flex align-items-center" style={{ fontSize: "1.6em" }}></span>
+
+            </div>
+
+            <NavDropdown title="Name user" id="basic-nav-dropdown" className="d-flex align-items-center">
               <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action/3.2">
                 Another action
@@ -54,8 +96,20 @@ function Header() {
                 Separated link
               </NavDropdown.Item>
             </NavDropdown>
+          </div>
+        ):(
+          <div className='d-flex align-items-center'>
+            <button type="button" className="btn btn-light mx-1 px-3">Login</button>
+            <button type="button" className="btn btn-outline-dark">Sign up</button>
+          </div>
+        )}
+
+
+            
           </Nav>
-        </Navbar.Collapse>
+        </div>
+
+        {/* </Navbar.Collapse> */}
       </Container>
     </Navbar>
   );

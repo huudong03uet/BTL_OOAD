@@ -1,0 +1,13 @@
+.div_text {
+    cursor: pointer;
+    padding: 6px 0;
+}
+.div_text:hover {
+    text-decoration: underline;
+}
+
+.div_module {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #bac4c9;
+}
