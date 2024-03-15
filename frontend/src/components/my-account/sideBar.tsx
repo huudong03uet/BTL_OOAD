@@ -1,9 +1,11 @@
 import { Container } from 'react-bootstrap';
 import Breadcrumb from 'react-bootstrap/Breadcrumb';
 import style from './style.module.css';
+import Link from 'next/link';
 function SideBarMyAccount() {
     return (
-        <div className='ps-5 ms-3'>
+        // <div className='ps-5 ms-3'>
+            <div className='ps-0 ms-3'>
              <div className={style.div_module}>
                 <div className={style.div_text}>
                  My Invaluable
@@ -23,7 +25,8 @@ function SideBarMyAccount() {
             </div>
             <div className={style.div_module}>
                 <div className={style.div_text}>
-                    Saved Items
+                    <i className="fa fa-heart space-right-sm"></i>
+                    {' '}Saved Items
                 </div>
                 <div className={style.div_text}>
                     Following
@@ -51,18 +54,19 @@ function SideBarMyAccount() {
                 <div className={style.div_text}>
                     Messages
                 </div>
-                <div className={style.div_text}>
+                <Link className={style.div_text} href="/my-account/edit-profile">
                     Edit Profile
-                </div>
+                </Link>
                 <div className={style.div_text}>
                     Notification & Email Preferences
                 </div>
                 <div className={style.div_text}>
                     Subscriptions
                 </div>
-                <div className={style.div_text}>
-                    Payment Options
-                </div>
+                <Link className={style.div_text} href="/my-account/payment-options">
+                        Payment Options
+
+                </Link>
             </div>
             <div className={style.div_module}>
                 <div className={style.div_text} style={{color: '#797676'}}>

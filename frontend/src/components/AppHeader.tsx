@@ -8,6 +8,7 @@ import Row from 'react-bootstrap/Row';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
+import SideBar from './my-account/sideBar';
 
 function Header() {
   const spanStyle = {
@@ -16,7 +17,7 @@ function Header() {
   };
 
 
-  const isLogin = false;
+  const isLogin = true;
 
 
 
@@ -43,18 +44,18 @@ function Header() {
                   placeholder="Search items & sellers"
                   className="mr-sm-2"
                 /> */}
-            <div className="input-group">
-                {/* <input className="form-control border-end-0 border" type="search" value="search" id="example-search-input"></input> */}
-                <i className="fa fa-search position-absolute top-50 ps-5 translate-middle" style={{zIndex: "10", color: "#e4002b"}}></i>
-                
-                <Form.Control 
-                  type="text"
-                  placeholder="Search items & sellers"
-                  className="mr-sm-2 ps-5"
-                  
-                />
-           
-              </div>
+                <div className="input-group">
+                  {/* <input className="form-control border-end-0 border" type="search" value="search" id="example-search-input"></input> */}
+                  <i className="fa fa-search position-absolute top-50 ps-5 translate-middle" style={{ zIndex: "10", color: "#e4002b" }}></i>
+
+                  <Form.Control
+                    type="text"
+                    placeholder="Search items & sellers"
+                    className="mr-sm-2 ps-5"
+
+                  />
+
+                </div>
               </Col>
             </Row>
           </Form>
@@ -64,7 +65,7 @@ function Header() {
 
 
 
- 
+
 
         <div className="col-4 justify-content-center">
           <Nav className="me-auto justify-content-center">
@@ -78,34 +79,34 @@ function Header() {
             </Nav.Link>
             {/* fa fa-user */}
 
-            {isLogin? (
-          <div className='d-flex'>
-            <div className="ps-3 d-flex align-items-center ml-3">
-              <span className="fa fa-user d-flex align-items-center" style={{ fontSize: "1.6em" }}></span>
+            {isLogin ? (
+              <div className='d-flex'>
 
-            </div>
+                <div className="ps-3 d-flex align-items-center ml-3">
+                  <span className="fa fa-user d-flex align-items-center" style={{ fontSize: "1.6em" }}></span>
 
-            <NavDropdown title="Name user" id="basic-nav-dropdown" className="d-flex align-items-center">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
-          </div>
-        ):(
-          <div className='d-flex align-items-center'>
-            <button type="button" className="btn btn-light mx-1 px-3">Login</button>
-            <button type="button" className="btn btn-outline-dark">Sign up</button>
-          </div>
-        )}
+                </div>
+                {/* <div> */}
+                {/* </div> */}
+                <NavDropdown title="Name user" id="basic-nav-dropdown" className="d-flex align-items-center" >
+
+                  <SideBar></SideBar>
+
+                  {/* </div> */}
 
 
-            
+                </NavDropdown>
+
+              </div>
+            ) : (
+              <div className='d-flex align-items-center'>
+                <button type="button" className="btn btn-light mx-1 px-3">Login</button>
+                <button type="button" className="btn btn-outline-dark">Sign up</button>
+              </div>
+            )}
+
+
+
           </Nav>
         </div>
 

@@ -1,6 +1,8 @@
 .div_text {
     cursor: pointer;
     padding: 6px 0;
+    text-decoration: none;
+    color: #000000;
 }
 .div_text:hover {
     text-decoration: underline;
