@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import Column, Integer, NVARCHAR, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, TEXT, DateTime, ForeignKey
 from fastapi_utils.guid_type import GUID
 from datetime import datetime
 
@@ -11,7 +11,7 @@ class History(Base):
     __tablename__ = "history"
 
     id = Column(GUID, primary_key=True)
-    description = Column(NVARCHAR, nullable=True)
+    description = Column(TEXT, nullable=True)
     amount = Column(Integer, nullable=False, default=0)
     kind = Column(Integer, nullable=False, default=0)
     created_at = Column(DateTime, nullable=False, default=datetime.now)

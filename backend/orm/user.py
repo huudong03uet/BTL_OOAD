@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import Column, Integer, String, NVARCHAR, DateTime
+from sqlalchemy import Column, Integer, String, TEXT, DateTime
 from fastapi_utils.guid_type import GUID
 from datetime import datetime
 
@@ -15,7 +15,7 @@ class User(Base):
     avatar_path = Column(String, nullable=True)
     phone = Column(String, nullable=True)
     email = Column(String, nullable=True)
-    evaluate = Column(NVARCHAR, nullable=True)
+    evaluate = Column(TEXT, nullable=True)
     coin = Column(Integer, nullable=False, default=0)
     password = Column(String, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.now)

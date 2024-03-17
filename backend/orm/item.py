@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import Column, NVARCHAR, String, DateTime, ForeignKey
+from sqlalchemy import Column, TEXT, String, DateTime, ForeignKey
 from fastapi_utils.guid_type import GUID
 from datetime import datetime
 
@@ -11,9 +11,9 @@ class Item(Base):
     __tablename__ = "item"
 
     id = Column(GUID, primary_key=True)
-    name = Column(NVARCHAR, nullable=False)
+    name = Column(TEXT, nullable=False)
     image_path = Column(String, nullable=False)
-    description = Column(NVARCHAR, nullable=True)
+    description = Column(TEXT, nullable=True)
     created_at = Column(DateTime, nullable=False, default=datetime.now)
     update_at = Column(DateTime, nullable=False, default=datetime.now)
 

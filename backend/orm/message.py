@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import Column, NVARCHAR, DateTime, ForeignKey
+from sqlalchemy import Column, TEXT, DateTime, ForeignKey
 from fastapi_utils.guid_type import GUID
 from datetime import datetime
 
@@ -11,7 +11,7 @@ class Message(Base):
     __tablename__ = "message"
 
     id = Column(GUID, primary_key=True)
-    content = Column(NVARCHAR, nullable=False)
+    content = Column(TEXT, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.now)
     update_at = Column(DateTime, nullable=False, default=datetime.now)
 

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import declarative_base, relationship
-from sqlalchemy import Column, Integer, String, NVARCHAR, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, TEXT, DateTime, ForeignKey
 from fastapi_utils.guid_type import GUID
 from datetime import datetime
 
@@ -11,7 +11,7 @@ class Inspection(Base):
     __tablename__ = "inspection"
 
     id = Column(GUID, primary_key=True)
-    description_admin = Column(NVARCHAR, nullable=False)
+    description_admin = Column(TEXT, nullable=False)
     coin = Column(Integer, nullable=False, default=0)
     kind = Column(String, nullable=False)
     created_at = Column(DateTime, nullable=False, default=datetime.now)

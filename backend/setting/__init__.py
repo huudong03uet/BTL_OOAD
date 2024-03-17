@@ -1,3 +1,3 @@
-from .connect_database import SessionLocal
+from .connect_database import SessionLocal, engine
 
-__all__ = ["SessionLocal"]
+__all__ = ["SessionLocal", "engine"]
