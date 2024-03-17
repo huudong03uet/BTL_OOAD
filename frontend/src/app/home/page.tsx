@@ -5,7 +5,7 @@ import styles from './page.module.css'
 import PromotedAuctions from '@/components/shared/promotedAuctions';
 import ViewItem from '@/components/shared/viewItem';
 import UpcomingAuctions from '@/components/shared/upcomingAuctions';
-
+import ViewItemInterface from '@/components/shared/viewItem'
 
 
 const HomePage = () => {
@@ -19,7 +19,7 @@ const HomePage = () => {
       "time": "Jan 1, 8:00 AM GMT+7",
       "name": "CHINESE CRACKLE GLAZE WINE CUP WITH ORIGINAL RECEIPT ON STAND,",
       "cost": 1000,
-
+      "user_sell": "testtt"
 
     },
     {
@@ -27,7 +27,7 @@ const HomePage = () => {
       "time": "Jan 1, 8:00 AM GMT+7",
       "name": "John Nieto, Corn Dancers, ca. 1989",
       "cost": 1000,
-
+      "user_sell": "testtt"
 
     },
     {
@@ -35,7 +35,7 @@ const HomePage = () => {
       "time": "Jan 1, 8:00 AM GMT+7",
       "name": "Luis Jimenez, American Dream, 1972",
       "cost": 4000,
-
+      "user_sell": "testtt"
     }
   ];
 

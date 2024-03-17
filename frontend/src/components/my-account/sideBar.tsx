@@ -7,9 +7,9 @@ function SideBarMyAccount() {
         // <div className='ps-5 ms-3'>
             <div className='ps-0 ms-3'>
              <div className={style.div_module}>
-                <div className={style.div_text}>
+                <Link className={style.div_text} href="/my-account/home" >
                  My Invaluable
-                </div>
+                </Link>
                 
             </div>
             <div className={style.div_module}>
@@ -24,10 +24,10 @@ function SideBarMyAccount() {
                 </div>
             </div>
             <div className={style.div_module}>
-                <div className={style.div_text}>
+                <Link className={style.div_text}  href="/my-account/saved-items">
                     <i className="fa fa-heart space-right-sm"></i>
                     {' '}Saved Items
-                </div>
+                </Link>
                 <div className={style.div_text}>
                     Following
                 </div>

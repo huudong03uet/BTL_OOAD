@@ -5,6 +5,7 @@ interface ViewItemInterface {
     time: string;
     name: string;
     cost: number;
+    user_sell: string;
 }
 
 
@@ -22,6 +23,9 @@ function ViewItem({ obj }: { obj: ViewItemInterface }) {
                 <div style={{display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden"}}
                 className='my-1'>
                     {obj.name}
+                </div>
+                <div>
+                    by {obj.user_sell}
                 </div>
                 <div className="fw-bold">
                     ${obj.cost}
