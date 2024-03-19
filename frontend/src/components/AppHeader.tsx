@@ -26,7 +26,7 @@ function Header() {
     <Navbar expand="lg" className="bg-body-tertiary ">
       <Container className="row w-100" style={{ display: "contents" }}>
         <div className="col-3 d-flex justify-content-center ">
-          <Navbar.Brand href="#home" >
+          <Navbar.Brand href="/" >
             <img src="https://image.invaluable.com/static/header/IN_Red32.svg"
               alt="test" width={"200px"}></img>
           </Navbar.Brand>
