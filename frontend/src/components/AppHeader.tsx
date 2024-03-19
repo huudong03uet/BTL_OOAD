@@ -69,7 +69,7 @@ function Header() {
 
         <div className="col-4 justify-content-center">
           <Nav className="me-auto justify-content-center">
-            <Nav.Link href="#home">
+            <Nav.Link href="/my-account/saved-items">
               <span className="fa fa-heart px-2" style={{ color: "#e4002b", fontSize: "1.6em" }}></span>
               Saved
             </Nav.Link>

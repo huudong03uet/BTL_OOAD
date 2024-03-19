@@ -10,14 +10,26 @@ import { Rating, ThinStar } from '@smastrom/react-rating'
 
 // Declare it outside your component so it doesn't get re-created
 const myStyles = {
-  itemShapes: ThinStar,
-  activeFillColor: '#a36b0d',
-  inactiveFillColor: '#ffffff',
-  itemStrokeWidth: 1 ,
-  inactiveStrokeColor:  '#a36b0d',
-  activeStrokeColor: '#a36b0d',
+    itemShapes: ThinStar,
+    activeFillColor: '#a36b0d',
+    inactiveFillColor: '#ffffff',
+    itemStrokeWidth: 1,
+    inactiveStrokeColor: '#a36b0d',
+    activeStrokeColor: '#a36b0d',
 }
 
+enum StatusAuction {
+    EventOrganizing = 0,
+    UpcomingEvent = 1,
+    EventOrganized = 2,
+
+}
+
+
+enum TypeAuction {
+    TimedAuction = 0,
+    LivedAuction = 1
+}
 
 interface UpcomingAuctionsInterface {
     image: string,
@@ -29,6 +41,20 @@ interface UpcomingAuctionsInterface {
     comment_number: number,
     image_child: string[],
     status: number,
+    type: number
+}
+// <div>
+{/*  */ }
+
+
+function openLivedAuction() {
+    let width = window.screen.width - 100;
+    let height = window.screen.height - 200;
+    let left = 50;
+    let top = 50;
+
+    let windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
+    window.open('/lived-auction', '_blank', windowFeatures);
 }
 
 function UpcomingAuctions({ obj }: { obj: UpcomingAuctionsInterface }) {
@@ -53,7 +79,7 @@ function UpcomingAuctions({ obj }: { obj: UpcomingAuctionsInterface }) {
                                     by {obj.user_sell}
                                 </div>
                                 <div className='d-flex'>
-                                    <Rating style={{ maxWidth: 100 }} value={obj.voting} readOnly={true} itemStyles={myStyles}/>
+                                    <Rating style={{ maxWidth: 100 }} value={obj.voting} readOnly={true} itemStyles={myStyles} />
                                     {' '} {obj.voting} ({obj.comment_number} Reviews)
                                 </div>
                                 <div className="my-3">
@@ -66,17 +92,39 @@ function UpcomingAuctions({ obj }: { obj: UpcomingAuctionsInterface }) {
 
 
                             <div className="col-4">
-                                <p>
-                                    <i className='fa fa-feed'>
-                                    </i>
-                                    {' '}Live Auction
+                                {obj.type == TypeAuction.LivedAuction ? (
+                                    <p>
+                                        <i className='fa fa-feed'>
+                                        </i>
+                                        {' '}Live Auction
+                                    </p>
 
-                                </p>
-                                {obj.status == 1 ? (
-                                    <button type="button" className="btn btn-danger w-100">Enter Live Auction</button>
+                                ) : (
+                                    <p>
+                                        <i className='fa fa-clock'>
+                                        </i>
+                                        {' '}Timed Auction
+                                    </p>
+                                )}
+
+
+                                {obj.status == StatusAuction.EventOrganizing ? (
+                                    <button type="button" className="btn btn-danger w-100">
+                                        {obj.type == TypeAuction.LivedAuction ? (
+                                            <div onClick={openLivedAuction}>
+                                                Enter Lived Auction
+                                            </div>
+
+                                        ) : (
+                                            <div>
+                                                Happening Now
+                                            </div>
+                                        )}
+                                    </button>
 
                                 ) : (
                                     <button type="button" className="btn btn-dark w-100">View Items</button>
+
                                 )}
                                 <a className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#">
                                     Register to bid

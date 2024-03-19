@@ -1,43 +1,18 @@
 'use client'
-import { Container, Button, Form, Row, Col, InputGroup, Dropdown } from "react-bootstrap";
 import style from '../style.module.css';
 import React, { useState } from 'react';
 import SideBarMyAccount from "@/components/my-account/sideBar";
-import { CountryDropdown, RegionDropdown, CountryRegionData } from "react-country-region-selector";
 
 
 export default function PaymentOptions() {
-    const accountInfo = {
-        "firstName": "test",
-        "lastName": "test 2",
-        "email": "xxx@gmail.com",
-        "password": "********",
-        "selectedCountry": null,
-        "address": null,
-        "city": null,
-        "state": null,
-        "postalCode": null,
-        "phoneNumber": null
-    }
-    const [country, setCountry] = useState('Vietnam');
-    const [region, setRegion] = useState('');
 
-
-    const selectCountry = (val: string) => {
-        setCountry(val);
-        console.log(val)
-    };
-
-    const selectRegion = (val: string) => {
-        setRegion(val);
-    };
 
     return (
         <div className='row mx-0'>
-            <div className="col-2">
+            {/* <div className="col-2">
                 <SideBarMyAccount />
-            </div>
-            <div className="col-10 px-5">
+            </div> */}
+            {/* <div className="col-10 px-5"> */}
                 <div className={style.div_title}>
                     Payment Options
                 </div>
@@ -61,7 +36,7 @@ export default function PaymentOptions() {
                    
                 </div>
 
-            </div>
+            {/* </div> */}
         </div >
     );
 }
