@@ -132,10 +132,10 @@ export default function PaymentOptions() {
 
   return (
     <div className='row mx-0'>
-      <div className="col-2">
+      {/* <div className="col-2">
         <SideBarMyAccount />
-      </div>
-      <div className="col-10 px-5">
+      </div> */}
+      {/* <div className="col-10 px-5"> */}
         <div className={style.div_title}>
           Saved Items
         </div>
@@ -217,7 +217,7 @@ export default function PaymentOptions() {
 
 
 
-      </div>
+      {/* </div> */}
     </div >
   );
 }

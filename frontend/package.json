@@ -12,6 +12,7 @@
     "@fortawesome/fontawesome-free": "^6.5.1",
     "@nextui-org/react": "^2.2.10",
     "@smastrom/react-rating": "^1.5.0",
+    "antd": "^5.15.3",
     "bootstrap": "^5.3.3",
     "css-loader": "^6.10.0",
     "mdb-react-ui-kit": "^7.2.0",

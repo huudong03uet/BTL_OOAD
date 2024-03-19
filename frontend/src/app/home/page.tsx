@@ -143,7 +143,8 @@ const HomePage = () => {
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
       ]
-      , status: 1
+      , status: 1,
+      type: 0
 
     },
     {
@@ -162,8 +163,9 @@ const HomePage = () => {
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
       ]
-      , status: 1
-
+      , status: 0
+      ,
+      type: 1
     },
     {
 
@@ -181,7 +183,9 @@ const HomePage = () => {
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 1
+      ], status: 1,
+      
+      type: 1
     },
     {
 
@@ -193,7 +197,8 @@ const HomePage = () => {
       "voting": 4.5,
       "comment_number": 44,
       image_child: [
-      ], status: 1
+      ], status: 0,
+      type: 0
     },
     {
 
@@ -211,7 +216,8 @@ const HomePage = () => {
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 1
+      ], status: 0,
+      type: 0
     },
     {
 
@@ -228,7 +234,8 @@ const HomePage = () => {
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 1
+      ], status: 1,
+      type: 1
 
     },
     {
@@ -247,7 +254,8 @@ const HomePage = () => {
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 0
+      ], status: 1,
+      type: 0
     },
     {
 
@@ -264,7 +272,8 @@ const HomePage = () => {
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 0
+      ], status: 0,
+      type: 1
 
     },
     {
@@ -282,11 +291,12 @@ const HomePage = () => {
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 0
+      ], status: 0,
+      type: 0
 
     },
   ]
-
+ 
   return (
     <div>
       {/* <h1>My Next.js App</h1>

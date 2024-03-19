@@ -154,10 +154,10 @@ export default function MyInvaluable() {
 
     return (
         <div className='row mx-0'>
-            <div className="col-2">
+            {/* <div className="col-2">
                 <SideBarMyAccount />
-            </div>
-            <div className="col-10 px-5">
+            </div> */}
+            {/* <div className="col-10 px-5"> */}
                 <div className={style.div_title}>
                     Welcome, {user_name}
                 </div>
@@ -250,6 +250,6 @@ export default function MyInvaluable() {
 
 
             </div>
-        </div >
+        // </div >
     );
 }

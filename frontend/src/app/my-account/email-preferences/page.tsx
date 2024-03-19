@@ -94,9 +94,7 @@ export default function EmailPreferences() {
 
     return (
         <div className='row mx-0'>
-            <div className="col-2">
-                <SideBarMyAccount />
-            </div>
+
             <div className="col-10 px-5">
                 {objectPreferences.map((objects, i) => (
                     <div className={style.div_section}>

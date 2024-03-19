@@ -11,7 +11,10 @@ import AppBreadCrumb from '@/components/AppBreadCrumb';
 import Container from 'react-bootstrap/Container';
 
 const inter = Inter({ subsets: ["latin"] });
-
+// function openNewPage() {
+//   const windowFeatures = 'width=600,height=400,left=100,top=100';
+//   window.open('/new-page', '_blank', windowFeatures);
+// }
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -19,16 +22,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-
+      
       <body className={inter.className}>
+      {/*  */}
 
-        <AppHeader />
-        <AppNav />
-        <AppBreadCrumb />
+        {/* <AppHeader /> */}
+        {/* <AppNav /> */}
+        {/* <AppBreadCrumb /> */}
 
         {children}
 
-        <AppFooter />
+        {/* <AppFooter /> */}
       </body>
 
     </html>
