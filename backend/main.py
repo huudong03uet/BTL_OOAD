@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 
-from setting import SessionLocal
+from router.auth import router_auth
 
 app = FastAPI()
-
-
-db = SessionLocal()
 
 
 @app.get("/")
 async def root():
     return {"message": "Hello World"}
+
+
+app.include_router(router_auth, prefix="/auth")
