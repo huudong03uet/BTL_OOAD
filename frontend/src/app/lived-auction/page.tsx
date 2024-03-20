@@ -6,7 +6,7 @@ import type { ConfigProviderProps } from 'antd';
 import ItemLivedAuction from './itemLivedAuction';
 import ItemCurrentLived from './itemCurrentLived';
 import SessionAuction from './sessionAuction';
-
+import { LinearProgress } from '@mui/material';
 // type SizeType = ConfigProviderProps['componentSize'];
 export default function LivedAuction() {
 
@@ -145,19 +145,25 @@ export default function LivedAuction() {
                 <div className='row m-3' style={{ height: "calc(100% - 50px)" }}>
                     <div className='col-3 ps-0' >
                         <div style={{ backgroundColor: "white" }} >
-                            <div>
-                                <div>
+                            <div className='p-3'>
+                                <div style={{ marginBottom: "5px", fontWeight: "500", fontSize: "20px" }}>
                                     {infoAuction.name}
                                 </div>
-                                <div>
+                                <div style={{ marginBottom: "0px", fontWeight: "500", fontSize: "16px" }}>
                                     by {infoAuction.user_sell}
                                 </div>
                                 <div>
-                                    {infoAuction.voting}
+                                    <i className="fa fa-star" aria-hidden="true" style={{ color: "#ffc107" }}></i>
+                                    {' '}{infoAuction.voting}{' '}({infoAuction.number_voting})
                                 </div>
-                                <div>
-                                    ({infoAuction.number_voting})
+                                <div className='d-flex align-items-center'>
+                                    <LinearProgress color="warning" variant="determinate" value={23} style={{height: "2px", width:'100%'}} className="me-3"/> 
+                                    <div>
+                                        12/23
+                                    </div>
+                                
                                 </div>
+
                             </div>
                             <div>
                                 <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}>
@@ -176,25 +182,25 @@ export default function LivedAuction() {
                         </div>
 
                     </div>
-                    <div className='col-9' style={{ backgroundColor: "white" }}>
-                        <div className='row' style={{ height: "calc(100% - 200px)" }}>
-                            <div className='col-7 bg-info'>
+                    <div className='col-9 px-0' style={{ backgroundColor: "white" }}>
+                        <div className='row ps-2' style={{ height: "calc(100% - 200px)" }}>
+                            <div className='col-7' style={{padding: "24px 24px 16px;"}} >
                                 <ItemCurrentLived obj={currentAuction}></ItemCurrentLived>
                             </div>
                             <div className='col-5'>
                                 <SessionAuction></SessionAuction>
                             </div>
                         </div>
-                        <div style={{ height: "200px" }}>
-                            <div className='h-100'>
-                                <div className='h-50'>
-                                    <div className='w-100 h-100 d-flex justify-content-center align-items-center'>
-                                        
-                                        <button type="button" className="btn btn-light w-100 rounded-pill">{nextCostAuction(currentCost)}</button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <button type="button" className="btn btn-dark w-100 h-100 rounded-pill">Register to Bid</button>
+                        <div style={{ height: "200px", backgroundColor: "#F4F5F6" }}>
+                            <div className='h-100 px-5 pt-3 pb-5'>
+                                <div className='h-50 d-flex justify-content-center align-items-center'>
+                                    {/* <div className='w-100 h-100 d-flex justify-content-center align-items-center'> */}
+
+                                    <div className="border border-secondary h-75 btn btn-light w-100 rounded-pill d-flex justify-content-end align-items-center pe-4" style={{ fontWeight: "500", fontSize: "32px" }}>{nextCostAuction(currentCost)}$</div>
+                                    {/* </div> */}
+                                </div >
+                                <div className='h-50 d-flex justify-content-center align-items-center'>
+                                    <button type="button" className="btn btn-dark w-100 h-75 rounded-pill" style={{ fontWeight: "500", fontSize: "20px" }}>Register to Bid</button>
                                 </div>
                             </div>
                         </div>
