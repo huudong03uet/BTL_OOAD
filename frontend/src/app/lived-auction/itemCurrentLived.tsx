@@ -1,8 +1,7 @@
 'use client'
 import { info } from 'console';
 import React, { useState } from 'react';
-import { Button, Divider, Flex, Radio } from 'antd';
-import type { ConfigProviderProps } from 'antd';
+import Button from 'react-bootstrap/Button';
 import { Carousel } from 'react-bootstrap';
 import { image } from '@nextui-org/react';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
@@ -24,9 +23,9 @@ interface ItemCurrentLivedInterface {
 }
 // type SizeType = ConfigProviderProps['componentSize'];
 export default function ItemLivedAuction({ obj }: { obj: ItemCurrentLivedInterface }) {
-    
-    const nextIcon = <ArrowForwardIosOutlinedIcon style={{color: "black"}}/>;
-    const prevIcon = <ArrowBackIosOutlinedIcon style={{color: "black"}}/>
+
+    const nextIcon = <ArrowForwardIosOutlinedIcon style={{ color: "black" }} />;
+    const prevIcon = <ArrowBackIosOutlinedIcon style={{ color: "black" }} />
     const [index, setIndex] = useState(0);
     const handleSelect = (selectedIndex: number) => {
         setIndex(selectedIndex);
@@ -35,8 +34,8 @@ export default function ItemLivedAuction({ obj }: { obj: ItemCurrentLivedInterfa
     return (
         <>
             <div>
-                <div className='d-flex' style={{fontWeight: "500", marginBottom: "5px", fontSize: "14px"}}>
-                <p className='text-danger' style={{ marginRight: '5px' }}>Live Now</p>Lot {obj.id}
+                <div className='d-flex' style={{ fontWeight: "500", marginBottom: "5px", fontSize: "14px" }}>
+                    <p className='text-danger' style={{ marginRight: '5px' }}>Live Now</p>Lot {obj.id}
                 </div>
                 <div>
                     {obj.name}
@@ -55,8 +54,19 @@ export default function ItemLivedAuction({ obj }: { obj: ItemCurrentLivedInterfa
                         ))}
                     </Carousel>
                 </div>
-                <div>
+                <div style={{ fontWeight: "400", fontSize: "16px" }} className="mt-3">
                     Estimate: ${obj.estimate_begin} - ${obj.estimate_end}
+                </div>
+                <div className="d-flex justify-content-center m-2">
+                    <Button variant="outline-dark d-flex align-items-center">
+                        <i className="fa fa-angle-down" aria-hidden="true"></i>
+                        <div className='px-3'>
+                            View Lot Details
+                        </div>
+                        <i className="fa fa-angle-down" aria-hidden="true"></i></Button>
+                </div>
+                <div className="p-4">
+
                 </div>
             </div>
         </>

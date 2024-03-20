@@ -40,7 +40,7 @@ export default function Search(props: SearchItem) {
 
   return (
     <>
-    <AppFilter></AppFilter>
+        <AppFilter></AppFilter>
     </>
   );
 }
