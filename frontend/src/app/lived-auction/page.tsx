@@ -108,7 +108,7 @@ export default function LivedAuction() {
     const currentCost = 100;
     const currentAuction = {
         "status": 2,
-        "name": "da ban",
+        "name": "Two half sovereigns, one dated 1895, with veiled V",
         "id": 1234,
         "sold": 10,
         "love": 1,
