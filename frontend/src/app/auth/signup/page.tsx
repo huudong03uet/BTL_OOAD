@@ -1,7 +1,6 @@
 "use client"
 import { useState } from 'react';
-import Head from 'next/head';
-import { Container, Form, Button } from 'react-bootstrap';
+import { Button, Container, Form } from 'react-bootstrap';
 
 import sign_up_service from "@/services/auth/sign_up";
 import './global.css';

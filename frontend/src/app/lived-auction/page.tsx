@@ -6,7 +6,7 @@ import type { ConfigProviderProps } from 'antd';
 import ItemLivedAuction from './itemLivedAuction';
 import ItemCurrentLived from './itemCurrentLived';
 import SessionAuction from './sessionAuction';
-
+import { LinearProgress } from '@mui/material';
 // type SizeType = ConfigProviderProps['componentSize'];
 export default function LivedAuction() {
 
@@ -23,25 +23,25 @@ export default function LivedAuction() {
     const lotsAuction = [
         {
             "status": 0,
-            "name": "da ban",
+            "name": "Royal Mint 1980 gold proof set of 4 coins, compris",
             "id": 1234,
             "sold": 10,
             "love": 1,
             "start_sell": 10,
-            "image": "https://image.invaluable.com/housePhotos/Raffan_Kelaher_and_Thomas/75/765975/H3937-L364405684_mid.jpg",
+            "image": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366354002_mid.jpg",
         },
         {
             "status": 0,
-            "name": "da ban",
+            "name": "A collection of British pre-decimal coins as taken",
             "id": 1234,
             "sold": 10,
             "love": 1,
             "start_sell": 10,
-            "image": "https://image.invaluable.com/housePhotos/Raffan_Kelaher_and_Thomas/75/765975/H3937-L364405684_mid.jpg",
+            "image": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366354000_mid.jpg",
         },
         {
             "status": 1,
-            "name": "dang ban",
+            "name": "dang ban rat nhieu la nhieu la nhieu ng ban rat nhieu la nhieu la nhieu ng ban rat nhieu la nhieu la nhieu",
             "id": 1234,
             "sold": 10,
             "love": 1,
@@ -50,30 +50,30 @@ export default function LivedAuction() {
         },
         {
             "status": 2,
-            "name": "da ban",
+            "name": "Two half sovereigns, one dated 1895, with veiled V",
             "id": 1234,
             "sold": 10,
             "love": 1,
             "start_sell": 10,
-            "image": "https://image.invaluable.com/housePhotos/Raffan_Kelaher_and_Thomas/75/765975/H3937-L364405684_mid.jpg",
+            "image": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353894_mid.jpg",
         },
         {
             "status": 2,
-            "name": "da ban",
+            "name": "A collection of 14 circulated silver coins and an ",
             "id": 1234,
             "sold": 10,
             "love": 1,
             "start_sell": 10,
-            "image": "https://image.invaluable.com/housePhotos/Raffan_Kelaher_and_Thomas/75/765975/H3937-L364405684_mid.jpg",
+            "image": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353885_mid.jpg",
         },
         {
             "status": 2,
-            "name": "da ban",
+            "name": "A large official Royal Mint silver medal celebrati",
             "id": 1234,
             "sold": 10,
             "love": 1,
             "start_sell": 10,
-            "image": "https://image.invaluable.com/housePhotos/Raffan_Kelaher_and_Thomas/75/765975/H3937-L364405684_mid.jpg",
+            "image": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353897_mid.jpg",
         }
     ]
     function nextCostAuction(currentCost: number) {
@@ -108,7 +108,7 @@ export default function LivedAuction() {
     const currentCost = 100;
     const currentAuction = {
         "status": 2,
-        "name": "da ban",
+        "name": "Two half sovereigns, one dated 1895, with veiled V",
         "id": 1234,
         "sold": 10,
         "love": 1,
@@ -131,7 +131,7 @@ export default function LivedAuction() {
     const [size, setSize] = useState<String>('button_1');
     return (
         <>
-            <div style={{ height: "100vh", width: "100vw", overflow: "hidden", backgroundColor: "#D1D6DB" }}>
+            <div style={{ height: "100vh", width: "100vw", backgroundColor: "#D1D6DB" , overflow: "hidden"}}>
 
                 <div className='row' style={{ height: "50px; !important", backgroundColor: "white" }}>
 
@@ -142,31 +142,37 @@ export default function LivedAuction() {
                         Welcome
                     </div>
                 </div>
-                <div className='row m-3' style={{ height: "calc(100% - 50px)" }}>
+                <div className='row m-3' style={{ height: "calc(100vh - 150px)" }}>
                     <div className='col-3 ps-0' >
                         <div style={{ backgroundColor: "white" }} >
-                            <div>
-                                <div>
+                            <div className='p-3'>
+                                <div style={{ marginBottom: "5px", fontWeight: "500", fontSize: "20px" }}>
                                     {infoAuction.name}
                                 </div>
-                                <div>
+                                <div style={{ marginBottom: "0px", fontWeight: "500", fontSize: "16px" }}>
                                     by {infoAuction.user_sell}
                                 </div>
                                 <div>
-                                    {infoAuction.voting}
+                                    <i className="fa fa-star" aria-hidden="true" style={{ color: "#ffc107" }}></i>
+                                    {' '}{infoAuction.voting}{' '}({infoAuction.number_voting})
                                 </div>
-                                <div>
-                                    ({infoAuction.number_voting})
+                                <div className='d-flex align-items-center'>
+                                    <LinearProgress color="warning" variant="determinate" value={23} style={{height: "2px", width:'100%'}} className="me-3"/> 
+                                    <div>
+                                        12/23
+                                    </div>
+                                
                                 </div>
+
                             </div>
                             <div>
                                 <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}>
                                     <Radio.Button value="button_1">All Lots</Radio.Button>
                                     <Radio.Button value="button_2">My items</Radio.Button>
                                 </Radio.Group>
-                                <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                                <div style={{  overflowY: 'scroll' , height: "calc(100vh - 270px)" , position: "relative"}}>
                                     {lotsAuction.map((object, i) => (
-                                        <div>
+                                        <div className='p-3' style={{ backgroundColor: object.status === 1 ? '#FDF3F5' : 'white' }}>
                                             <ItemLivedAuction obj={object} />
                                         </div>
                                     ))}
@@ -176,25 +182,23 @@ export default function LivedAuction() {
                         </div>
 
                     </div>
-                    <div className='col-9' style={{ backgroundColor: "white" }}>
-                        <div className='row' style={{ height: "calc(100% - 200px)" }}>
-                            <div className='col-7 bg-info'>
+                    <div className='col-9 px-0' style={{ backgroundColor: "white" , height: "calc(100vh - 240px);"}}>
+                        <div className='row ps-2' style={{ height: "100%" }}>
+                            <div className='col-7 border' style={{padding: "24px 24px 16px", overflowY: "scroll", height: "100%"}} >
                                 <ItemCurrentLived obj={currentAuction}></ItemCurrentLived>
                             </div>
-                            <div className='col-5'>
+                            <div className='col-5 border p-0'>
                                 <SessionAuction></SessionAuction>
                             </div>
                         </div>
-                        <div style={{ height: "200px" }}>
-                            <div className='h-100'>
-                                <div className='h-50'>
-                                    <div className='w-100 h-100 d-flex justify-content-center align-items-center'>
-                                        
-                                        <button type="button" className="btn btn-light w-100 rounded-pill">{nextCostAuction(currentCost)}</button>
-                                    </div>
-                                </div>
-                                <div>
-                                    <button type="button" className="btn btn-dark w-100 h-100 rounded-pill">Register to Bid</button>
+                        <div style={{ height: "170px", backgroundColor: "#F4F5F6" }}>
+                            <div className='h-100 px-5 py-3'>
+                                <div className='h-50 d-flex justify-content-center align-items-center'>
+
+                                    <div className="border border-secondary h-75 btn btn-light w-100 rounded-pill d-flex justify-content-end align-items-center pe-4" style={{ fontWeight: "500", fontSize: "32px" }}>{nextCostAuction(currentCost)}$</div>
+                                </div >
+                                <div className='h-50 d-flex justify-content-center align-items-center'>
+                                    <button type="button" className="btn btn-dark w-100 h-75 rounded-pill" style={{ fontWeight: "500", fontSize: "20px" }}>Register to Bid</button>
                                 </div>
                             </div>
                         </div>
