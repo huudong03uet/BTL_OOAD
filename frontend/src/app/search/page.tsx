@@ -15,6 +15,7 @@ interface SearchItem {
     sellers: string;
     sellerLocation: string;
     priceRange: {
+        currency: string;
         min: number;
         max: number;
     };
@@ -33,6 +34,7 @@ export default function Search(props: SearchItem) {
         sellers: "Example Seller",
         sellerLocation: "Example Location",
         priceRange: {
+            currency: "USD",
             min: 100,
             max: 200
         }
