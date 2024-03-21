@@ -1,11 +1,9 @@
 'use client'
-import React from 'react';
-import { Container } from 'react-bootstrap';
-import styles from './page.module.css'
 import PromotedAuctions from '@/components/shared/promotedAuctions';
-import ViewItem from '@/components/shared/viewItem';
 import UpcomingAuctions from '@/components/shared/upcomingAuctions';
-import ViewItemInterface from '@/components/shared/viewItem'
+import ViewItem from '@/components/shared/viewItem';
+import { Container } from 'react-bootstrap';
+import styles from './page.module.css';
 
 
 const HomePage = () => {
