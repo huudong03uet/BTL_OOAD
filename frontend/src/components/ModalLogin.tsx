@@ -47,7 +47,7 @@ function ModalLogin(props: any) {
         </div>
         <p className="text-center mt-4">Don't have an account? <a href="#">Sign up</a></p>
         <p className="text-center">
-          <span class="dark-gray-text">By continuing with Google, you agree to Invaluable's <a href="/agreements/userTerms.cfm" target="_blank">terms of service</a> and <a href="/agreements/privacy.cfm" target="_blank">privacy policy</a>. Invaluable may send you communications; you can set your preferences in your account.</span>
+          <span className="dark-gray-text">By continuing with Google, you agree to Invaluable's <a href="/agreements/userTerms.cfm" target="_blank">terms of service</a> and <a href="/agreements/privacy.cfm" target="_blank">privacy policy</a>. Invaluable may send you communications; you can set your preferences in your account.</span>
         </p>
       </Modal.Body>
     </Modal>
