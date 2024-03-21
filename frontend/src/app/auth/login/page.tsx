@@ -3,17 +3,18 @@ import { useState } from 'react';
 import Head from 'next/head';
 import { Container, Form, Button } from 'react-bootstrap';
 
+import login_service from "@/services/auth/login";
 import './global.css';
 
 export default function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    // Xử lý đăng nhập ở đây
     console.log('Username:', username);
     console.log('Password:', password);
+    await login_service(password, username)
   };
 
   return (

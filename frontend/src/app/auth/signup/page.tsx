@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Head from 'next/head';
 import { Container, Form, Button } from 'react-bootstrap';
 
+import sign_up_service from "@/services/auth/sign_up";
 import './global.css';
 
 export default function SignUp() {
@@ -11,10 +12,16 @@ export default function SignUp() {
   const [confirm_password, setConfirmPassword] = useState('');
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     console.log('Username:', username);
     console.log('Password:', password);
+
+    if (confirm_password != password) {
+      console.log("Confirm password incorrect.")
+    } else {
+      await sign_up_service(password, username, email)
+    }
   };
 
   return (
