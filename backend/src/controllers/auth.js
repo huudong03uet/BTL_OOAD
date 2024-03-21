@@ -27,7 +27,7 @@ let login = async (req, res) => {
         });
 
         if (!user) {
-            res.status(statusCode.HTTP_404_NOT_FOUND).json({ message: "Không tìm thấy người dùng" });
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json({ message: "Không tìm thấy người dùng" });
         }
 
         bcrypt.compare(password, user.password, function(err, result) {
@@ -48,6 +48,7 @@ let login = async (req, res) => {
 let sign_up = async (req, res) => {
     try {
         const { firstName, lastName, username, email, password } = req.body;
+        console.log(req.body)
 
         const existingUserByEmail = await User.findOne({
             where: { email: email },
@@ -80,10 +81,9 @@ let sign_up = async (req, res) => {
                 });
                 newUser.password = undefined;
         
-                res.status(statusCode.HTTP_201_CREATED).json({ data: newUser });
+                return res.status(statusCode.HTTP_201_CREATED).json({ data: newUser });
             });
         });
-
         
     } catch (error) {
         console.error('Signup error:', error);

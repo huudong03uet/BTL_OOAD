@@ -9,6 +9,7 @@ const login_service = async (
     try {
         let url = `${HOST}/auth/login`;
         let body = {username: username, password: password}
+        console.log(body)
         const response = await axios.post(url, body);
         console.log(response.data)
         return response.data

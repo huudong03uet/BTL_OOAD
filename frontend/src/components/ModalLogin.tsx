@@ -1,7 +1,28 @@
-import React from 'react';
+"use client"
+
+import React, {useState} from 'react';
 import Modal from 'react-bootstrap/Modal';
 
+import login_service from "@/services/auth/login";
+
+
 function ModalLogin(props: any) {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
+  };
+  
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    console.log('Username:', username);
+    console.log('Password:', password);
+    await login_service(password, username)
+  };
   return (
     <Modal show={props.show} onHide={props.onHide} size="lg">
       <Modal.Header closeButton>
@@ -9,23 +30,39 @@ function ModalLogin(props: any) {
       <Modal.Body>
         <h5 className="text-center">Welcome Back</h5>
         <p className="text-center">Log in to view your account and personalized recommendations.</p>
-        <div className="mb-3">
-          <input type="email" className="form-control" id="email" placeholder="Email" />
-        </div>
-        <div className="mb-3">
-          <input type="password" className="form-control" id="password" placeholder="Password" />
-        </div>
-
-        <div className="mb-3 d-flex justify-content-between align-items-center">
-          <div className="form-check">
-            <input type="checkbox" className="form-check-input" id="keepLoggedIn" />
-            <label className="form-check-label" htmlFor="keepLoggedIn">Keep me logged in</label>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="email"
+              className="form-control"
+              id="email"
+              placeholder="Email"
+              value={username}
+              onChange={handleUsernameChange}
+            />
           </div>
-          <a href="#">Forgot Password?</a>
-        </div>
-        <div className='d-flex justify-content-center mb-4'>
-          <button type="button" className="btn px-4  w-100" style={{ backgroundColor: '#222', color: '#FFFFFF' }}>Login</button>
-        </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              className="form-control"
+              id="password"
+              placeholder="Password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+          </div>
+
+          <div className="mb-3 d-flex justify-content-between align-items-center">
+            <div className="form-check">
+              <input type="checkbox" className="form-check-input" id="keepLoggedIn" />
+              <label className="form-check-label" htmlFor="keepLoggedIn">Keep me logged in</label>
+            </div>
+            <a href="#">Forgot Password?</a>
+          </div>
+          <div className='d-flex justify-content-center mb-4'>
+            <button type="submit" className="btn px-4  w-100" style={{ backgroundColor: '#222', color: '#FFFFFF' }}>Login</button>
+          </div>
+        </form>
         <div className="social-separator" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <div className="social-line" style={{ flex: 1, height: '1px', backgroundColor: 'black', margin: '0 10px' }}></div>
           <span style={{ margin: '0 10px' }}>OR</span>
