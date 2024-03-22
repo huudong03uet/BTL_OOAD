@@ -82,10 +82,10 @@ function ModalLogin(props: any) {
             Sign in with Google
           </button>
         </div>
-        <p className="text-center mt-4">Don't have an account? <a href="#">Sign up</a></p>
-        <p className="text-center">
+        <p className="text-center mt-4">Don't have an account? <a onClick={props.switchToRegister} className="color-primary" style={{cursor: "pointer", textDecoration: "none"}}>Sign up</a></p>
+        {/* <p className="text-center">
           <span className="dark-gray-text">By continuing with Google, you agree to Invaluable's <a href="/agreements/userTerms.cfm" target="_blank">terms of service</a> and <a href="/agreements/privacy.cfm" target="_blank">privacy policy</a>. Invaluable may send you communications; you can set your preferences in your account.</span>
-        </p>
+        </p> */}
       </Modal.Body>
     </Modal>
   );

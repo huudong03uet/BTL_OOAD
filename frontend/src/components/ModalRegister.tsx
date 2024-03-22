@@ -145,8 +145,8 @@ function ModalRegister(props: any) {
                         Sign in with Google
                     </button>
                 </div>
-                <p className="text-center mt-3">Already have an account? <a href="#">Sign in</a></p>
-                <p className="text-center"><span className="dark-gray-text">By continuing with Google, you agree to Invaluable's <a href="/agreements/userTerms.cfm" target="_blank">terms of service</a> and <a href="/agreements/privacy.cfm" target="_blank">privacy policy</a>. Invaluable may send you communications; you can set your preferences in your account.</span></p>
+                <p className="text-center mt-3">Already have an account? <a onClick={props.switchToLogin} className="color-primary" style={{cursor: "pointer", textDecoration: "none"}}>Sign in</a></p>
+                {/* <p className="text-center"><span className="dark-gray-text">By continuing with Google, you agree to Invaluable's <a href="/agreements/userTerms.cfm" target="_blank">terms of service</a> and <a href="/agreements/privacy.cfm" target="_blank">privacy policy</a>. Invaluable may send you communications; you can set your preferences in your account.</span></p> */}
             </Modal.Body>
         </Modal>
     );
