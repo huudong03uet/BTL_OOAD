@@ -108,7 +108,7 @@ export default function LivedAuction() {
     const currentCost = 100;
     const currentAuction = {
         "status": 2,
-        "name": "da ban",
+        "name": "Two half sovereigns, one dated 1895, with veiled V",
         "id": 1234,
         "sold": 10,
         "love": 1,
@@ -184,10 +184,10 @@ export default function LivedAuction() {
                     </div>
                     <div className='col-9 px-0' style={{ backgroundColor: "white" , height: "calc(100vh - 240px);"}}>
                         <div className='row ps-2' style={{ height: "100%" }}>
-                            <div className='col-7' style={{padding: "24px 24px 16px", overflowY: "scroll", height: "100%"}} >
+                            <div className='col-7 border' style={{padding: "24px 24px 16px", overflowY: "scroll", height: "100%"}} >
                                 <ItemCurrentLived obj={currentAuction}></ItemCurrentLived>
                             </div>
-                            <div className='col-5'>
+                            <div className='col-5 border p-0'>
                                 <SessionAuction></SessionAuction>
                             </div>
                         </div>

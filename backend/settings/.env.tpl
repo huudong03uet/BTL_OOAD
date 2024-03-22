@@ -1,6 +1,0 @@
-[database]
-HOST=
-PORT=
-USER=
-DATABASE=
-PASSWORD=

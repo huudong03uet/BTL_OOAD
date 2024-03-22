@@ -1,5 +1,6 @@
 'use client'
 
+import React, { useState } from 'react';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -9,6 +10,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import SideBar from './my-account/sideBar';
+import ModalLogin from './ModalLogin';
+import ModalRegister from './ModalRegister';
 
 function Header() {
   const spanStyle = {
@@ -17,9 +20,23 @@ function Header() {
   };
 
 
-  const isLogin = true;
+  const isLogin = false;
 
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showRegisterModal, setShowRegisterModal] = useState(false);
 
+  const handleLoginModalClose = () => setShowLoginModal(false);
+  const handleRegisterModalClose = () => setShowRegisterModal(false);
+
+  const handleSwitchToRegister = () => {
+    setShowLoginModal(false); // Ẩn modal đăng nhập
+    setShowRegisterModal(true); // Hiển thị modal đăng ký
+  };
+
+  const handleSwitchToLogin = () => {
+    setShowRegisterModal(false); // Ẩn modal đăng ký
+    setShowLoginModal(true); // Hiển thị modal đăng nhập
+  };
 
 
   return (
@@ -100,8 +117,8 @@ function Header() {
               </div>
             ) : (
               <div className='d-flex align-items-center'>
-                <button type="button" className="btn btn-light mx-1 px-3">Login</button>
-                <button type="button" className="btn btn-outline-dark">Sign up</button>
+                <button type="button" className="btn btn-light mx-1 px-3" onClick={() => setShowLoginModal(true)}>Login</button>
+                <button type="button" className="btn btn-outline-dark" onClick={() => setShowRegisterModal(true)}>Sign up</button>
               </div>
             )}
 
@@ -109,6 +126,12 @@ function Header() {
 
           </Nav>
         </div>
+
+        {/* Hiển thị modal khi showLoginModal hoặc showRegisterModal được set thành true */}
+        {/* <ModalLogin show={showLoginModal} onHide={handleLoginModalClose} />
+        <ModalRegister show={showRegisterModal} onHide={handleRegisterModalClose} /> */}
+        <ModalLogin show={showLoginModal} onHide={handleLoginModalClose} switchToRegister={handleSwitchToRegister} />
+        <ModalRegister show={showRegisterModal} onHide={handleRegisterModalClose} switchToLogin={handleSwitchToLogin} />
 
         {/* </Navbar.Collapse> */}
       </Container>

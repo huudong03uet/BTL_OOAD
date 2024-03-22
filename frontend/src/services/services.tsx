@@ -1,1 +1,0 @@
-//file này để các services chung như gọi api gì gì đó
