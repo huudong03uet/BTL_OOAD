@@ -28,7 +28,7 @@ const Auction = sequelize.define('auction', {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
     },
-    codition_coin: {
+    condition_coin: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
