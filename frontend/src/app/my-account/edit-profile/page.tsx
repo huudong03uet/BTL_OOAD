@@ -27,7 +27,6 @@ export default function EditProfile() {
 
     useEffect(() => {
         const userData = UserDataService.getUserData();
-        console.log(userData?.firstName)
         if (userData) {
             setUser(prevUser => ({
                 ...prevUser,
