@@ -7,8 +7,14 @@ import MagnifyingGlassImage from "@/components/item/MagnifyingGlassImage";
 import AppFooter from "@/components/AppFooter";
 
 interface ItemProps {
+  id: number;
   images: string[]; // Danh sách các ảnh
   title: string; // Tiêu đề
+  status: string;
+  countBid?: number;
+  max_bid?: number;
+  est_min?: number;
+  est_max?: number;
   description: string; // Mô tả
   dimensions: string; // Kích thước
   artist: string; // Tên nghệ sĩ
@@ -30,11 +36,17 @@ export default function Item(props: ItemProps) {
 
   //fake data
   const itemData: ItemProps = {
+    id: 1,
     images: [
       'https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg',
       'https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg',
       'https://via.placeholder.com/300',
     ],
+    status: 'sold',
+    countBid: 10,
+    max_bid: 100,
+    est_min: 2000,
+    est_max: 3000,
     title: 'John Nieto, Corn Dancers, ca. 1989',
     description: 'This is an example description of the item.',
     dimensions: '10cm x 20cm',
@@ -50,8 +62,7 @@ export default function Item(props: ItemProps) {
         {/* Selection 1: Banner */}
         <div className={style.banner}>
           <Container>
-            <MagnifyingGlassImage imageUrl={"https://image.invaluable.com/static/home/PDP_Desktop_bp_parity_banner.png"}></MagnifyingGlassImage>
-            {/* <img alt="BP Parity Banner" src="https://image.invaluable.com/static/home/PDP_Desktop_bp_parity_banner.png"></img> */}
+            <img alt="BP Parity Banner" src="https://image.invaluable.com/static/home/PDP_Desktop_bp_parity_banner.png"></img>
           </Container>
         </div>
 
@@ -63,7 +74,7 @@ export default function Item(props: ItemProps) {
                 <div className={style['artist-title']}>
                   <a href="/" target="_blank" rel="noreferrer" className={style['black-link']}><div>{itemData.artist}</div></a>
                 </div>
-                <h1 className={`${style['title']} ${style['mb-4']}`}>Lot 85:<span className="font-italic">&nbsp;{itemData.title}</span></h1>
+                <h1 className={`${style['title']} ${style['mb-4']}`}>Lot {itemData.id}:<span className="font-italic">&nbsp;{itemData.title}</span></h1>
               </div>
             </div>
           </Container>
@@ -79,8 +90,7 @@ export default function Item(props: ItemProps) {
                     {/* <img src={itemData.images[0]} alt="" /> */}
                   </div>
                   <div className={style['main-slide-img']}>
-                    {/* <img src={itemData.images[0]} alt="" /> */}
-                    {/* <MagnifyingGlassImage imageUrl={itemData.images[0]}></MagnifyingGlassImage> */}
+                    <MagnifyingGlassImage imageUrl={itemData.images[0]}></MagnifyingGlassImage>
                   </div>
                 </div>
                 <div className={style['sharing-btn']}>
@@ -101,23 +111,20 @@ export default function Item(props: ItemProps) {
                             <div>
                               <h4>Description</h4>
                               <div>
-                                <b>John Nieto</b> <br />
-                                (1936 - 2018) <br />
-                                <b>Corn Dancers, ca. 1989</b> <br />
-                                serigraph, edition 92 of 100 <br />
-                                signed lower left: Nieto <br />
-                                editioned lower center: 92/100
+                                <b>{itemData.artist}</b> <br />
+
+                                <p>{itemData.description}</p>
                               </div>
                             </div>
                             <div>
                               <h4>Dimensions</h4>
-                              <div>27 1/2 x 34 3/4 in. (69.9 x 88.3 cm.), frame 37 x 44 1/4 x .625 in. (94 x 112.4 x 1.6 cm.)</div>
+                              <div>{itemData.dimensions}</div>
                             </div>
                             <div>
                               <h4>Artist or Maker</h4>
                               <div className="artist-info">
                                 <a href="/artist/nieto-john-w-d664fsop1m" target="_blank" rel="noreferrer">
-                                  <div>John W Nieto</div>
+                                  <div>{itemData.artist}</div>
                                 </a>
                               </div>
                             </div>
@@ -128,7 +135,7 @@ export default function Item(props: ItemProps) {
                             <div>
                               <h4>Condition Report</h4>
                               <div>
-                                <i>The condition reports for the lots offered by Santa Fe Art Auction (SFAA) are provided as a courtesy and convenience for potential buyers. The reports are not intended to nor do they substitute for physical examination by a buyer or the buyer's advisors. The condition reports are prepared by SFAA staff members who are not art conservators or restorers, nor do they possess the qualifications needed for comprehensive evaluation. Each condition report is an opinion of the staff member and should not be treated as a statement of fact. The absence of a condition report does not imply anything as to the condition of a particular lot. Buyers are reminded that the limited warranties are set forth in the Terms and Conditions of Sale and do not extend to condition. Each lot is sold as-is.</i>
+                                <i>{itemData.conditionReport}</i>
                               </div>
                             </div>
                             <div>
@@ -176,35 +183,36 @@ export default function Item(props: ItemProps) {
               <div className={style.aside}>
                 <div className={style['bid-room-inner']}>
                   <div className={style['bid-status']}>
-                    <p className={style.est}>Est: $2,000 USD - $3,000 USD</p>
-                    <p className={style.usd}><b>$1000 USD</b><span className={style['bid-count']}>o bids</span></p>
+                    <p className={style.est}>Est: ${itemData.est_min} USD - ${itemData.est_max} USD</p>
+                    <p className={style.usd}><b>${itemData.max_bid} USD</b><span className={style['bid-count']}>{itemData.countBid} bids</span></p>
                   </div>
                   <form action="" className={style['form-group-bid']}>
                     <label htmlFor=""><span>Set Max Bid:</span></label>
-                    <div className={style['custom-select-menu']}>
-                      <div className={style['select-dropdown']}>
-                        <button className={style['form-control']} data-toogle="dropdow">
-                          <span>$1000 USD</span>
-                          <span className={`${style['select-dropdown-caret']} fa fa-angle-down`}></span>
-                        </button>
-                        <button type="button" className={`btn btn-primary btn-lg btn-block ${style['btn-place-bid']}`}>Place Bid</button>
-                      </div>
-                      <div className={style.secure}>
-                        <span className={style['secure-bidding']}><i className="fa fa-lock"></i>Secure Bidding</span>
-                      </div>
+                    <div className={style['select-dropdown']}>
+                      <select className={`${style['form-control']} ${style['select-single']}`} >
+                        {/* Kiểm tra xem max_bid có tồn tại và không phải là undefined không trước khi tạo các option */}
+                        {itemData.max_bid !== undefined && [...Array(10)].map((_, index) => (
+                          <option key={index}>${itemData.max_bid! + index * 5} USD</option>
+                        ))}
+                      </select>
+                      <button type="button" className={`btn btn-primary btn-lg btn-block ${style['btn-place-bid']} ${style['button-style']}`}>Place Bid</button>
                     </div>
+                    <div className={style.secure}>
+                      <span className={style['secure-bidding']}><i className="fa fa-lock"></i>Secure Bidding</span>
+                    </div>
+
                   </form>
                 </div>
               </div>
             </div>
-          </Container>
-        </div>
+          </Container >
+        </div >
 
         {/* Seletion 4: Image Footer */}
-        <div className={style.imagefooter}>
+        <div className={style.imagefooter} >
           <img src="/footer.png" alt="" className={style.footerImage} />
-        </div>
-      </div>
+        </div >
+      </div >
       <AppFooter />
     </>
 
