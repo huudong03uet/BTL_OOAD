@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
+const Admin = require('./admin');
+const Item = require('./item');
 
 
 const Inspection = sequelize.define('inspection', {
@@ -30,5 +32,11 @@ const Inspection = sequelize.define('inspection', {
         tableName: 'inspection',
     }
 )
+
+Inspection.belongsTo(Admin, {foreignKey: 'admin_id'})
+Admin.hasMany(Inspection);
+
+Inspection.belongsTo(Item, {foreignKey: 'item_id'})
+Item.hasMany(Inspection, {foreignKey: 'item_id'});
 
 module.exports = Inspection;

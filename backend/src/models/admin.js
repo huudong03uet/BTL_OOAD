@@ -1,8 +1,6 @@
 const { DataTypes} = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
-const Image = require('./image');
-const Inspection = require('./inspection');
 
 
 const Admin = sequelize.define('admin', {
@@ -40,8 +38,5 @@ const Admin = sequelize.define('admin', {
         tableName: 'admin',
     }
 );
-
-Admin.hasOne(Image);
-Admin.hasMany(Inspection)
 
 module.exports = Admin;

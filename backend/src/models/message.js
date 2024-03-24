@@ -1,6 +1,8 @@
 const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
+const AuctionUser = require('./auction_user');
+const User = require('./user');
 
 
 const Message = sequelize.define('message', {
@@ -17,6 +19,12 @@ const Message = sequelize.define('message', {
     {
         tableName: 'message',
     }
-)
+);
+
+Message.belongsTo(AuctionUser, { foreignKey: "auction_user_id"});
+AuctionUser.hasMany(Message, { foreignKey: "auction_user_id"})
+
+Message.belongsTo(User, { foreignKey: 'user_id' })
+User.hasMany(Message, { foreignKey: 'user_id' });
 
 module.exports = Message;

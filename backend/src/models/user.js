@@ -1,12 +1,6 @@
 const { DataTypes} = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
-const Image = require('./image')
-const Item = require('./item');
-const AuctionUser = require('./auction_user');
-const History = require('../models/history');
-const LoveItem = require('./love_item');
-const Message = require('./message');
 
 const User = sequelize.define('user', {
     id: {
@@ -71,12 +65,5 @@ const User = sequelize.define('user', {
         tableName: 'user',
     }
 )
-
-User.hasOne(Image);
-User.hasMany(Item);
-User.hasMany(AuctionUser);
-User.hasOne(History);
-User.hasMany(LoveItem);
-User.hasMany(Message);
 
 module.exports = User;

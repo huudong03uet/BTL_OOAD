@@ -132,7 +132,6 @@ function ModalLogin(props: any) {
     } else {
       setError(null);
       props.onHide();
-      // props.show();
     }
   };
 
@@ -172,7 +171,7 @@ function ModalLogin(props: any) {
               <input type="checkbox" className="form-check-input" id="keepLoggedIn" />
               <label className="form-check-label" htmlFor="keepLoggedIn">Keep me logged in</label>
             </div>
-            <a href="#">Forgot Password?</a>
+            <a href="/forgot-password">Forgot Password?</a>
           </div>
           <div className='d-flex justify-content-center mb-4'>
             <button type="submit" className="btn px-4  w-100" style={{ backgroundColor: '#222', color: '#FFFFFF' }}>Login</button>

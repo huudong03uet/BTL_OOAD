@@ -62,27 +62,31 @@ h1 span.font-italic {
 }
 
 .contend {
-  flex: 1;
+  flex: 2;
   display: flex;
   flex-direction: column;
 }
 
 .carousel-image {
   display: flex;
+  flex: 3;
 }
 
-.slides-thumbnail,
+.slides-thumbnail {
+  flex: 1
+}
+
 .main-slide-img {
-  flex: 1;
+  flex: 6;
 }
 
 .sharing-btn {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .sharing-btn i {
-  font-size: 24px;
+  font-size: 18px;
   border-radius: 50%;
   padding: 10px;
   background-color: lightgray;
@@ -96,32 +100,115 @@ h1 span.font-italic {
 
 
 .aside {
+  margin-left: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
   width: 250px;
-  /* Đặt kích thước cố định cho phần bên cạnh */
+  height: 400px;
   display: flex;
-  /* Sử dụng flexbox cho phần bên cạnh */
+  flex: 1;
   flex-direction: column;
-  /* Xếp các phần tử theo chiều dọc */
   justify-content: space-between;
-  /* Canh giữa các phần tử */
+  background-color: rgb(222, 222, 222);
 }
 
 .bid-room-inner {
-  /* Quy tắc CSS cho phần phòng đấu giá */
   display: flex;
-  /* Sử dụng flexbox cho phần phòng đấu giá */
   flex-direction: column;
-  /* Xếp các phần tử theo chiều dọc */
+  margin-top: 30px;
 }
+
 
 .bid-status {
   /* Quy tắc CSS cho trạng thái đấu giá */
 }
 
+/* Kiểu dáng chung của form group bid */
 .form-group-bid {
-  /* Quy tắc CSS cho nhóm biểu mẫu đấu giá */
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
+/* Kiểu dáng của nhãn label */
+.form-group-bid label {
+  font-weight: bold;
+}
+
+/* Kiểu dáng của dropdown container */
+.select-dropdown {
+  position: relative;
+}
+
+/* Kiểu dáng của control trong form */
+.form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Kiểu dáng của dropdown khi chỉ cho phép chọn một option */
+.select-single {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* Kiểu dáng của nút Place Bid */
+.btn-place-bid {
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  --font-family-sans-serif: "Gotham SSm A", "Gotham SSm B", Arial, sans-serif;
+}
+.btn-place-bid:hover {
+  background-color: #fff !important;
+  border: 1px solid #000 !important;
+  color: #000 !important;
+}
+
+/* Kiểu dáng chung của các button */
+.button-style {
+  margin-top: 10px;
+}
+
+/* Kiểu dáng của phần secure */
+.secure {
+  margin-top: 10px;
+}
+
+/* Kiểu dáng của secure bidding */
+.secure-bidding {
+  font-size: 14px;
+  color: #555;
+}
+
+
+.est {
+  --font-family-sans-serif: "Gotham SSm A", "Gotham SSm B", Arial, sans-serif;
+}
+
+.usd {
+  --font-family-sans-serif: "Gotham SSm A", "Gotham SSm B", Arial, sans-serif;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: left;
+  font-size: 18px;
+  box-sizing: border-box;
+}
+
+.bid-count {
+  color: rgb(99, 99, 99);
+  font-weight: 400;
+}
 .custom-select-menu {
   /* Quy tắc CSS cho menu chọn tùy chỉnh */
 }
@@ -134,13 +221,31 @@ h1 span.font-italic {
   width: 100%;
 }
 
-.secure {
-  /* Quy tắc CSS cho phần đảm bảo an toàn */
+.slides-container {
+  display: flex;
 }
 
-.secure-bidding {
-  /* Quy tắc CSS cho thông báo đấu giá an toàn */
+.slides-thumbnail {
+  flex: 1;
+  overflow-y: auto; /* Nếu nội dung quá nhiều sẽ có scroll */
 }
+
+.slides-thumbnail img {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px; /* Khoảng cách giữa các thumbnail */
+  cursor: pointer;
+}
+
+.main-slide-img {
+  flex: 6;
+}
+
+.main-slide-img img {
+  display: block;
+  width: 100%;
+}
+
 
 /* Image footer */
 .imagefooter {
@@ -155,4 +260,3 @@ h1 span.font-italic {
   border-radius: 5px;
   /* Các quy tắc khác tùy thuộc vào yêu cầu thiết kế cụ thể */
 }
-
