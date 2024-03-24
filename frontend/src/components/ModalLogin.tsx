@@ -9,6 +9,7 @@ import login_service from "@/services/auth/login";
 function ModalLogin(props: any) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -24,7 +25,7 @@ function ModalLogin(props: any) {
     await login_service(password, username)
   };
   return (
-    <Modal show={props.show} onHide={props.onHide} size="lg">
+    <Modal show={props.show} size="lg">
       <Modal.Header closeButton>
       </Modal.Header>
       <Modal.Body>
