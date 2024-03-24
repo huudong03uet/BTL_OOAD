@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import Container from 'react-bootstrap/Container';
 import Button from 'react-bootstrap/Button';
 import Col from 'react-bootstrap/Col';
@@ -38,6 +38,46 @@ function Header() {
     setShowLoginModal(true); // Hiển thị modal đăng nhập
   };
 
+  //Xử lý search
+  const [searchText, setSearchText] = useState('');
+
+  const handleChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleKeyPress = (e: { key?: any; preventDefault: any; }) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/yourEndpoint', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ searchText })
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        console.log(data); // Handle response data as needed
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+
+    fetchData();
+  };
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary ">
@@ -55,29 +95,24 @@ function Header() {
           <Form >
             <Row>
               <Col xs="auto" className='w-100'>
-                {/* <i className="fa fa-search"></i>
-                <Form.Control 
-                  type="text"
-                  placeholder="Search items & sellers"
-                  className="mr-sm-2"
-                /> */}
+                
                 <div className="input-group">
-                  {/* <input className="form-control border-end-0 border" type="search" value="search" id="example-search-input"></input> */}
                   <i className="fa fa-search position-absolute top-50 ps-5 translate-middle" style={{ zIndex: "10", color: "#e4002b" }}></i>
 
-                  <Form.Control
-                    type="text"
-                    placeholder="Search items & sellers"
-                    className="mr-sm-2 ps-5"
-
-                  />
+                    <input
+                      type="text"
+                      placeholder="Search items & sellers"
+                      className="mr-sm-2 ps-5"
+                      value={searchText}
+                      onChange={handleChange}
+                      onKeyPress={handleKeyPress}
+                    />
 
                 </div>
               </Col>
             </Row>
           </Form>
         </div>
-        {/* <Navbar.Collapse id="basic-navbar-nav"> */}
 
 
 

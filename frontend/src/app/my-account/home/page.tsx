@@ -6,10 +6,11 @@ import SideBarMyAccount from "@/components/my-account/sideBar";
 import { CountryDropdown, RegionDropdown, CountryRegionData } from "react-country-region-selector";
 import UpcomingAuctions from "@/components/shared/upcomingAuctions";
 import ViewItem from "@/components/shared/viewItem";
+import UserDataService from "@/services/model/user";
 
 
 export default function MyInvaluable() {
-    const user_name = "UserName";
+    const user_name = UserDataService.getUserData()?.username;
     const recentlyViewedItems: any[] = [
         {
             "image": "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",

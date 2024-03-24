@@ -2,8 +2,12 @@
 
 import { Container, Button, Form, Row, Col, InputGroup, Dropdown } from "react-bootstrap";
 import React, { useState } from 'react';
-import AppFilter from '@/components/AppFilter'
+import AppFilter from '@/components/search/AppFilter'
 import internal from "stream";
+import AppHeader from "@/components/AppHeader";
+import AppNav from "@/components/AppNav";
+import AppBreadCrumb from "@/components/AppBreadCrumb";
+import AppFooter from "@/components/AppFooter";
 
 interface SearchItem {
     key: string,
@@ -15,15 +19,14 @@ interface SearchItem {
     sellers: string;
     sellerLocation: string;
     priceRange: {
-        currency: string;
         min: number;
         max: number;
     };
 
 }
 
-export default function Search(props: SearchItem) { 
-    
+export default function Search(props: SearchItem) {
+
     const exampleItem: SearchItem = {
         key: "exampleKey",
         itemsCount: 100,
@@ -33,16 +36,22 @@ export default function Search(props: SearchItem) {
         auctionDate: "Next 7 days",
         sellers: "Example Seller",
         sellerLocation: "Example Location",
-        priceRange: {
-            currency: "USD",
+        priceRange: {           
             min: 100,
             max: 200
         }
     };
 
-  return (
-    <>
-        <AppFilter></AppFilter>
-    </>
-  );
+    return (
+        <>
+            <AppHeader />
+            <AppNav />
+            <AppBreadCrumb />
+
+            <AppFilter></AppFilter>
+
+            <AppFooter />
+
+        </>
+    );
 }

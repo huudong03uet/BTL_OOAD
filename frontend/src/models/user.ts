@@ -1,1 +1,0 @@
-//file này định nghĩa model của user nhé.

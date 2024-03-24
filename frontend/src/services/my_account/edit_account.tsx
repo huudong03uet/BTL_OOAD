@@ -5,19 +5,17 @@ import User from '@/models/user';
 import UserDataService from '../model/user';
 import { HOST } from '@/services/host';
 
-const login_service = async (
-    password: string,
-    username: string,
-) => {
+const edit_account_service = async (user: User) => {
     try {
-        let url = `${HOST}/auth/login`;
-        let body = {username: username, password: password}
+        let url = `${HOST}/my-account/edit-profile`;
+        let body = user
+        console.log(body)
         const response = await axios.post(url, body);
 
-        let user: User = {
+        let user_edit: User = {
             user_id: response.data.id,
             email: response.data.email,
-            firstName: response.data.firstName,
+            firstName: response.data.firstname,
             lastName: response.data.lastName,
             username: response.data.username,
             evaluate: response.data.evaluate,
@@ -29,7 +27,9 @@ const login_service = async (
             state: response.data.state,
             postal_code: response.data.postal_code,
         }
-        UserDataService.setUserData(user);
+        UserDataService.setUserData(user_edit);
+
+        console.log(user_edit)
 
         return response.data
     } catch (error) {
@@ -37,4 +37,4 @@ const login_service = async (
     }
 };
 
-export default login_service;
+export default edit_account_service;

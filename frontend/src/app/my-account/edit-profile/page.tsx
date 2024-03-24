@@ -1,36 +1,76 @@
 'use client'
-import { Container, Button, Form, Row, Col, InputGroup, Dropdown } from "react-bootstrap";
+import {  Form,  } from "react-bootstrap";
 import style from '../style.module.css';
-import React, { useState } from 'react';
-import SideBarMyAccount from "@/components/my-account/sideBar";
-import { CountryDropdown, RegionDropdown, CountryRegionData } from "react-country-region-selector";
+import React, { useState, useEffect, ChangeEvent  } from 'react';
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
+import User from "@/models/user";
+import UserDataService from "@/services/model/user";
+import edit_account_service from "@/services/my_account/edit_account";
 
 
 export default function EditProfile() {
-    const accountInfo = {
-        "firstName": "test",
-        "lastName": "test 2",
-        "email": "xxx@gmail.com",
-        "password": "********",
-        "selectedCountry": null,
-        "address": null,
-        "city": null,
-        "state": null,
-        "postalCode": null,
-        "phoneNumber": null
-    }
-    const [country, setCountry] = useState('Vietnam');
-    const [region, setRegion] = useState('');
+    const [user, setUser] = useState<User>({
+        user_id: 0,
+        username: '',
+        evaluate: '',
+        coin: 0,
+        firstName: '',
+        lastName: '',
+        email: '',
+        country: 'Vietnam',
+        address: '',
+        city: '',
+        state: '',
+        postal_code: '',
+        phone: ''
+    });
 
+    useEffect(() => {
+        const userData = UserDataService.getUserData();
+        if (userData) {
+            setUser(prevUser => ({
+                ...prevUser,
+                user_id: userData.user_id,
+                username: userData.username,
+                firstName: userData.firstName,
+                lastName: userData.lastName,
+                email: userData.email,
+                evaluate: userData.evaluate,
+                country: userData.country,
+                address: userData.address,
+                city: userData.city,
+                state: userData.state,
+                postal_code: userData.postal_code,
+                phone: userData.phone
+            }));
+        }
+    }, []);
+
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setUser(prevUser => ({
+            ...prevUser,
+            [name]: value
+        }));
+    };
 
     const selectCountry = (val: string) => {
-        setCountry(val);
-        console.log(val)
+        setUser(prevUser => ({
+            ...prevUser,
+            country: val
+        }));
     };
 
-    const selectRegion = (val: string) => {
-        setRegion(val);
+    const selectCity = (val: string) => {
+        setUser(prevUser => ({
+            ...prevUser,
+            city: val
+        }));
     };
+
+    const handleClick = async () => {
+        await edit_account_service(user);
+    }
 
     return (
         <div className='row mx-0'>
@@ -47,19 +87,23 @@ export default function EditProfile() {
                 </div>
                 <div className="row">
                     <div className="col-3">
-                        <Form.Control
-                            type="text"
-                            placeholder="First name"
-                            className={style.custom_form_control}
-                            defaultValue={accountInfo.firstName}
-                        />
+                    <Form.Control
+                        type="text"
+                        placeholder="First name"
+                        className={style.custom_form_control}
+                        name="firstName"
+                        value={user.firstName}
+                        onChange={handleChange}
+                    />
                     </div>
                     <div className="col-3">
                         <Form.Control
                             type="text"
                             placeholder="Last name"
                             className={style.custom_form_control}
-                            defaultValue={accountInfo.lastName}
+                            name="firstName"
+                            value={user.lastName}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
@@ -67,7 +111,7 @@ export default function EditProfile() {
                     <div className="col-6">
                         <Form.Control
                             type="text"
-                            defaultValue={accountInfo.email}
+                            defaultValue={user.email}
                             className={style.custom_form_control}
                             disabled
                         />
@@ -78,7 +122,7 @@ export default function EditProfile() {
 
                     <div className="col-6">
                         <Form.Control type="text"
-                            defaultValue={accountInfo.password}
+                            defaultValue={'********'}
                             className={style.custom_form_control}
                             disabled
                         />
@@ -98,10 +142,10 @@ export default function EditProfile() {
                                 type="text"
                                 placeholder="Selected Country"
                                 className={style.custom_form_control}
-                                defaultValue={accountInfo.selectedCountry ? accountInfo.selectedCountry: ""}
+                                defaultValue={accountInfo.country ? accountInfo.country: ""}
                             /> */}
                         <CountryDropdown
-                            value={country}
+                            value={user.country}
                             onChange={(val) => selectCountry(val)}
                             classes={style.custom_form_control_selected}
                         />
@@ -112,9 +156,9 @@ export default function EditProfile() {
                 <div className="row">
                     <div className="col-6">
                         <RegionDropdown
-                            country={country}
-                            value={region}
-                            onChange={(val) => selectRegion(val)}
+                            country={user.country}
+                            value={user.city}
+                            onChange={(val) => selectCity(val)}
 
 
                             classes={style.custom_form_control_selected}
@@ -135,7 +179,9 @@ export default function EditProfile() {
                             type="text"
                             placeholder="Address"
                             className={style.custom_form_control}
-                            defaultValue={accountInfo.address ? accountInfo.address : ""}
+                            name="address"
+                            value={user.address}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
@@ -144,33 +190,41 @@ export default function EditProfile() {
                 <div className="row">
 
                     <div className="col-3">
-                        <Form.Control type="text"
+                        <Form.Control
+                            type="text"
                             placeholder="State"
                             className={style.custom_form_control}
-                            defaultValue={accountInfo.state ? accountInfo.state : ""}
-
+                            name="state"
+                            value={user.state}
+                            onChange={handleChange}
                         />
                     </div>
                     <div className="col-3">
-                        <Form.Control type="text"
+                        <Form.Control
+                            type="text"
                             placeholder="Postal code"
                             className={style.custom_form_control}
-                            defaultValue={accountInfo.postalCode ? accountInfo.postalCode : ""}
+                            name="postal_code"
+                            value={user.postal_code}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
                 <div className="row">
 
                     <div className="col-6">
-                        <Form.Control type="text"
-                            placeholder="Phone number"
+                        <Form.Control
+                            type="text"
+                            placeholder="Phone Number"
                             className={style.custom_form_control}
-                            defaultValue={accountInfo.phoneNumber ? accountInfo.phoneNumber : ""}
+                            name="phone"
+                            value={user.phone}
+                            onChange={handleChange}
                         />
                     </div>
                 </div>
             </div>
-            <button type="button" className="btn btn-dark mb-4">Save Changes</button>
+            <button type="button" className="btn btn-dark mb-4" onClick={handleClick}>Save Changes</button>
 
         </div>
         // </div >

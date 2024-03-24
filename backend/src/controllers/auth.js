@@ -1,12 +1,8 @@
-const express = require('express');
 const bcrypt = require('bcrypt');
 const { Op } = require('sequelize');
 
 const User = require('../models/user');
 const statusCode = require('../../constants/status')
-
-
-const router = express.Router();
 
 
 let login = async (req, res) => {
@@ -33,12 +29,10 @@ let login = async (req, res) => {
         bcrypt.compare(password, user.password, function(err, result) {
             user.password = null
             if (result) {
-                return res.status(statusCode.HTTP_200_OK).json({ data: user });
+                return res.status(statusCode.HTTP_200_OK).json(user);
             }
             return res.status(statusCode.HTTP_401_UNAUTHORIZED).json({ message: "Sai mật khẩu" });
         });
-
-        
     } catch (error) {
         console.error('Login error:', error);
     }
@@ -48,7 +42,6 @@ let login = async (req, res) => {
 let sign_up = async (req, res) => {
     try {
         const { firstName, lastName, username, email, password } = req.body;
-        console.log(req.body)
 
         const existingUserByEmail = await User.findOne({
             where: { email: email },
@@ -81,10 +74,9 @@ let sign_up = async (req, res) => {
                 });
                 newUser.password = undefined;
         
-                return res.status(statusCode.HTTP_201_CREATED).json({ data: newUser });
+                return res.status(statusCode.HTTP_201_CREATED).json(newUser);
             });
         });
-        
     } catch (error) {
         console.error('Signup error:', error);
     }
