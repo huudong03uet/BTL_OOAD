@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 
-import sign_up_service from "@/services/auth/sign_up";
 
 
 function ModalRegister(props: any) {
@@ -11,6 +10,8 @@ function ModalRegister(props: any) {
     const [password, setPassword] = useState('');
     const [confirm_password, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
+    const [error, setError] = useState('');
+
 
     const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUsername(e.target.value);
@@ -38,14 +39,48 @@ function ModalRegister(props: any) {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        console.log('Username:', username);
-        console.log('Password:', password);
+        // console.log('Username:', username);
+        // console.log('Password:', password);
 
-        if (confirm_password != password) {
-            console.log("Confirm password incorrect.")
-        } else {
-            await sign_up_service(firstName, lastName, password, username, email)
-        }
+        // if (confirm_password != password) {
+        //     console.log("Confirm password incorrect.")
+        // } else {
+        //     await sign_up_service(firstName, lastName, password, username, email)
+        // }
+
+        if (!firstName.trim()) {
+            setError('Please enter your email.');
+            return;
+          }
+      
+          if (!lastName.trim()) {
+            setError('Please enter your password.');
+            return;
+          }
+
+          if (!email.trim()) {
+            setError('Please enter your email.')
+          }
+
+          if (!username.trim()) {
+            setError('Please enter your user name.');
+            return;
+          }
+      
+          if (!password.trim()) {
+            setError('Please enter your password.');
+            return;
+          }
+
+          if (!confirm_password.trim()) {
+            setError('Please enter confirm password.')
+          }
+
+          if (password != confirm_password) {
+            setError('Passwords do not match.')
+          }
+          
+
     };
 
     return (
@@ -113,6 +148,7 @@ function ModalRegister(props: any) {
                             onChange={handleConfirmPassword}
                         />
                     </div>
+                    {error && <div className="alert alert-danger">{error}</div>} {/* Display error message */}
                     <div className="mb-3 form-check">
                         <input type="checkbox" className="form-check-input" id="newArrivals" />
                         <label className="form-check-label" htmlFor="newArrivals">Email me new arrivals and personalized recommendations from premier auction houses.</label>
@@ -153,3 +189,6 @@ function ModalRegister(props: any) {
 }
 
 export default ModalRegister;
+
+
+
