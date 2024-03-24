@@ -4,40 +4,32 @@ import React, { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { global } from 'styled-jsx/css';
 import styles from '@/styles/customer/filter.module.css';
-
+import SearchItem from '../shared/searchItem'
+import ViewItem from '../shared/viewItem';
 export default function Filters() {
 
 
   interface Category {
-    id: string;
     name: string;
   }
 
   interface Artist {
-    id: string;
     name: string;
   }
 
   interface Seller {
-    id: string;
     name: string;
   }
 
   interface SellerLocation {
-    id: string;
     name: string;
   }
 
   interface PriceFilter {
-    currency: string;
     minPrice: number;
     maxPrice: number;
   }
 
-  interface Currency {
-    id: string;
-    name: string;
-  }
 
   const [displayValue, setDisplayValue] = useState<string>('');
   const [selectedAuctionDate, setSelectedAuctionDate] = useState<string>('');
@@ -62,29 +54,71 @@ export default function Filters() {
 
   //fake data
   const categories: Category[] = [
-    { id: '1', name: 'Category 1' },
-    { id: '2', name: 'Category 2' },
+    { name: 'Category 1' },
+    { name: 'Category 2' },
   ];
   const artists: Artist[] = [
-    { id: '1', name: 'artists 1' },
-    { id: '2', name: 'artists 2' },
+    { name: 'artists 1' },
+    { name: 'artists 2' },
   ];
   const sellers: Seller[] = [
-    { id: '1', name: 'sellers 1' },
-    { id: '2', name: 'sellers 2' },
-    { id: '3', name: 'sellers 3' },
+    { name: 'sellers 1' },
+    { name: 'sellers 2' },
+    { name: 'sellers 3' },
   ];
   const locations: SellerLocation[] = [
-    { id: '1', name: 'sellers location 1' },
-    { id: '2', name: 'sellers location 2' },
-    { id: '3', name: 'sellers location 3' },
+    { name: 'sellers location 1' },
+    { name: 'sellers location 2' },
+    { name: 'sellers location 3' },
   ];
-  const currencies: Currency[] = [
-    { id: '1', name: 'USD' },
-    { id: '2', name: 'VND' },
-    { id: '3', name: 'linhiuday' },
-  ];
+
   const error = false;
+  const res: any[] = [
+    {
+      "image": "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+      "item_name": "Pablo Picasso's Figure Compose",
+      "artist": "Example Artist",
+      "est": {
+        "min": 100,
+        "max": 200
+      },
+      "status": "sold",
+      "time": "Jan 1, 8:00 AM GMT+7",
+      "name": "CHINESE CRACKLE GLAZE WINE CUP WITH ORIGINAL RECEIPT ON STAND,",
+      "cost": 1000,
+      "user_sell": "testtt"
+
+    },
+    {
+      "image": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L366072565.JPG",
+      "item_name": "Pablo Picasso's Figure Compose",
+      "artist": "Example Artist",
+      "est": {
+        "min": 100,
+        "max": 200
+      },
+      "status": "sold",
+      "time": "Jan 1, 8:00 AM GMT+7",
+      "name": "John Nieto, Corn Dancers, ca. 1989",
+      "cost": 1000,
+      "user_sell": "testtt"
+
+    },
+    {
+      "image": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365897550.JPG",
+      "item_name": "Pablo Picasso's Figure Compose",
+      "artist": "Example Artist",
+      "est": {
+        "min": 100,
+        "max": 200
+      },
+      "status": "live now",
+      "time": "Jan 1, 8:00 AM GMT+7",
+      "name": "Luis Jimenez, American Dream, 1972",
+      "cost": 4000,
+      "user_sell": "testtt"
+    }
+  ];
 
 
   // Category
@@ -157,9 +191,6 @@ export default function Filters() {
   };
 
   //Price
-  const handleCurrencyChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedCurrency(event.target.value);
-  };
 
   const handleMinPriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMinPrice(event.target.value ? parseFloat(event.target.value) : '');
@@ -227,18 +258,18 @@ export default function Filters() {
                     <p>None</p>
                   ) : (
                     categories.map((category) => (
-                      <div className="form-check mb-3" key={category.id}>
+                      <div className="form-check mb-3" key={category.name}>
                         <input
                           className="form-check-input"
                           type="checkbox"
-                          value={category.id}
-                          id={`category-checkbox-${category.id}`}
+                          value={category.name}
+                          id={`category-checkbox-${category.name}`}
                           onChange={handleCategoryChange}
-                          checked={selectedCategories.has(category.id)}
+                          checked={selectedCategories.has(category.name)}
                         />
                         <label
                           className="form-check-label text-uppercase small text-muted"
-                          htmlFor={`category-checkbox-${category.id}`}
+                          htmlFor={`category-checkbox-${category.name}`}
                         >
                           {category.name}
                         </label>
@@ -255,17 +286,17 @@ export default function Filters() {
                     <p>None</p>
                   ) : (
                     artists.map(artist => (
-                      <div key={artist.id} className="form-check mb-3">
+                      <div key={artist.name} className="form-check mb-3">
                         <input
                           type="checkbox"
-                          value={artist.id}
-                          id={`artist-checkbox-${artist.id}`}
-                          checked={selectedArtists.has(artist.id)}
+                          value={artist.name}
+                          name={`artist-checkbox-${artist.name}`}
+                          checked={selectedArtists.has(artist.name)}
                           onChange={handleArtistChange}
                           className="form-check-input"
                         />
                         <label
-                          htmlFor={`artist-checkbox-${artist.id}`}
+                          htmlFor={`artist-checkbox-${artist.name}`}
                           className="form-check-label text-uppercase small text-muted"
                         >
                           {artist.name}
@@ -361,17 +392,17 @@ export default function Filters() {
                     <p>None</p>
                   ) : (
                     sellers.map(seller => (
-                      <div key={seller.id} className="form-check mb-3">
+                      <div key={seller.name} className="form-check mb-3">
                         <input
                           type="checkbox"
-                          value={seller.id}
-                          id={`seller-checkbox-${seller.id}`}
-                          checked={selectedSellers.has(seller.id)}
+                          value={seller.name}
+                          id={`seller-checkbox-${seller.name}`}
+                          checked={selectedSellers.has(seller.name)}
                           onChange={handleSellerChange}
                           className="form-check-input"
                         />
                         <label
-                          htmlFor={`seller-checkbox-${seller.id}`}
+                          htmlFor={`seller-checkbox-${seller.name}`}
                           className="form-check-label text-uppercase small text-muted"
                         >
                           {seller.name}
@@ -388,17 +419,17 @@ export default function Filters() {
                     <p>None</p>
                   ) : (
                     locations.map(location => (
-                      <div key={location.id} className="form-check mb-3">
+                      <div key={location.name} className="form-check mb-3">
                         <input
                           type="checkbox"
-                          value={location.id}
-                          id={`location-checkbox-${location.id}`}
-                          checked={selectedLocations.has(location.id)}
+                          value={location.name}
+                          id={`location-checkbox-${location.name}`}
+                          checked={selectedLocations.has(location.name)}
                           onChange={handleLocationChange}
                           className="form-check-input"
                         />
                         <label
-                          htmlFor={`location-checkbox-${location.id}`}
+                          htmlFor={`location-checkbox-${location.name}`}
                           className="form-check-label text-uppercase small text-muted"
                         >
                           {location.name}
@@ -412,7 +443,7 @@ export default function Filters() {
                 <section className="mb-4" data-filter="price">
                   <h6 className="font-weight-bold mb-3">Price</h6>
 
-                  {/* Select currency */}
+                  {/* Select currency
                   <div className={`${styles.selectContainer} mb-3`}>
                     <label htmlFor="currency-select" className="form-label">Currency</label>
                     <select
@@ -423,10 +454,10 @@ export default function Filters() {
                     >
                       <option value="">Select currency</option>
                       {currencies.map(currency => (
-                        <option key={currency.id} value={currency.id}>{currency.name}</option>
+                        <option key={currency.name} value={currency.name}>{currency.name}</option>
                       ))}
                     </select>
-                  </div>
+                  </div> */}
 
                   {/* Input group for min and max price */}
                   <div className={`${styles.inputGroup} mb-3`}>
@@ -504,9 +535,46 @@ export default function Filters() {
                   className="spinner-border text-primary mx-auto my-5"
                   id="spinner"
                   role="status"
-                  style={{ display: "none" }}
+                  style={{ display: "block" }}
                 >
-                  <span className="sr-only">Loading...</span>
+                  {/* <div className="search-holder">
+                    <div className="hit-wrapper">
+                      <div className="hit-holder">
+                        <div className="image-holder"></div>
+                        <div className="contend-holder">
+                          <div className="text-holder">
+                            <span className="text-live"></span>
+                          </div>
+                          <div className="text-holder">
+                            <span className="title"></span>
+                          </div>
+                          <div className="text-holder">
+                            <span className="author"></span>
+                          </div>
+                          <div className="text-holder">
+                            <span className="est"></span>
+                          </div>
+                          <div className="text-holder">
+                            <span className="cost"></span>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div> */}
+                  {/* <div className="container"> */}
+                  <div className="row">
+                    {/* {res.map((object, i) => (
+                      <div className="col-sm-3" key={i}>
+                        <ViewItem obj={object} />
+                       
+                      </div>
+                    ))} */}
+                    {/* <SearchItem searchResults={res} /> */}
+
+                    {/* </div> */}
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
               </div>
             </div>
