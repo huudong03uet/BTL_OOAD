@@ -176,7 +176,6 @@ export default function Item(props: Item) {
               </div>
               {itemData.status === 'sold' ? (
                 <p className={style.est}>Est: ${itemData.estimate_min} USD - ${itemData.estimate_max} USD</p>
-
               ) : (<div className={style.aside}>
                 <div className={style['bid-room-inner']}>
                   <div className={style['bid-status']}>

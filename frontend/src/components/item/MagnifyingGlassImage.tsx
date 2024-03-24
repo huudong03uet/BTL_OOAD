@@ -58,6 +58,7 @@ const ImageEffect: React.FC<ImageEffectProps> = ({ imageUrl }) => {
                     src={imageUrl}
                     width={imageSize.width}
                     height={imageSize.height}
+                    unoptimized={true}
                     layout="responsive"
                 />
                 <div
