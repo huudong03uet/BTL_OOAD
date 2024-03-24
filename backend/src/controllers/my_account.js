@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 
 const User = require('../models/user');
 const statusCode = require('../../constants/status')
+const logger = require("../../conf/logger")
 
 
 const edit_profile = async (req, res) => {
@@ -12,6 +13,7 @@ const edit_profile = async (req, res) => {
         const user = await User.findByPk(user_id);
 
         if (!user) {
+            logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Không tìm thấy người dùng`);
             return res.status(statusCode.HTTP_404_NOT_FOUND).json({ message: "Không tìm thấy người dùng" })
         }
 
@@ -28,11 +30,10 @@ const edit_profile = async (req, res) => {
 
         await user.save()
 
-        console.log(user)
-
-        return res.status(statusCode.HTTP_202_ACCEPTED).json({data: user})
+        logger.info(`${statusCode.HTTP_202_ACCEPTED} [user:${user.id}]`)
+        return res.status(statusCode.HTTP_202_ACCEPTED).json( user )
     } catch (error) {
-        console.error('Edit profile error:', error);
+        logger.error(`Edit profile error: ${error}`)
     }
 }
 
@@ -44,6 +45,7 @@ const change_password = async(req, res) => {
         const user = await User.findByPk(user_id);
 
         if (!user) {
+            logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Không tìm thấy người dùng`);
             return res.status(statusCode.HTTP_404_NOT_FOUND).json({ message: "Không tìm thấy người dùng" })
         }
 
@@ -54,14 +56,17 @@ const change_password = async(req, res) => {
                         user.password = hashedPassword;
                         user.save()
                         user.password = null;
+
+                        logger.info(`${statusCode.HTTP_202_ACCEPTED} [user:${user.id}]`)
                         return res.status(statusCode.HTTP_202_ACCEPTED).json(user)
                     });
                 });
             }
+            logger.warn(`${statusCode.HTTP_401_UNAUTHORIZED} Sai mật khẩu`);
             return res.status(statusCode.HTTP_401_UNAUTHORIZED).json({ message: "Sai mật khẩu" });
         });
     } catch (error) {
-        console.error('Change password error:', error);
+        logger.error(`Change password error: ${error}`)
     }
 }
 

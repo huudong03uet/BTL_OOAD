@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-const sequelize = require('../../conf/index');
+const sequelize = require('../../conf/sequelize');
 const ImageType = require("../../constants/image_type")
 const User = require('./user');
 const Item = require('./item');

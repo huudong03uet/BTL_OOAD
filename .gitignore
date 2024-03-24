@@ -58,3 +58,4 @@ frontend/package-lock.json
 .DS_Store
 
 */media/
+*/logs

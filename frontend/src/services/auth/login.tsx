@@ -30,10 +30,10 @@ const login_service = async (
             postal_code: response.data.postal_code,
         }
         UserDataService.setUserData(user);
-
-        return response.data
+        return;
     } catch (error) {
         console.error('Error fetching data:', error);
+        return error;
     }
 };
 

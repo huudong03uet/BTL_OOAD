@@ -95,17 +95,10 @@ function Header() {
           <Form >
             <Row>
               <Col xs="auto" className='w-100'>
-                {/* <i className="fa fa-search"></i>
-                <Form.Control 
-                  type="text"
-                  placeholder="Search items & sellers"
-                  className="mr-sm-2"
-                /> */}
+                
                 <div className="input-group">
-                  {/* <input className="form-control border-end-0 border" type="search" value="search" id="example-search-input"></input> */}
                   <i className="fa fa-search position-absolute top-50 ps-5 translate-middle" style={{ zIndex: "10", color: "#e4002b" }}></i>
 
-                  <form>
                     <input
                       type="text"
                       placeholder="Search items & sellers"
@@ -114,14 +107,12 @@ function Header() {
                       onChange={handleChange}
                       onKeyPress={handleKeyPress}
                     />
-                  </form>
 
                 </div>
               </Col>
             </Row>
           </Form>
         </div>
-        {/* <Navbar.Collapse id="basic-navbar-nav"> */}
 
 
 
