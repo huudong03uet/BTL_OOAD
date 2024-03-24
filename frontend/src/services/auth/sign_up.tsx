@@ -14,8 +14,9 @@ const sign_up_service = async (
         let body = {password: password, username: username, email: email, firstName: firstName, lastName: lastName}
         const response = await axios.post(url, body);
         return response.data
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error fetching data:', error);
+        return error.response.data.message;
     }
 };
 

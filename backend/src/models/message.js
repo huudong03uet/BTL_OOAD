@@ -1,8 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-const sequelize = require('../../conf/index');
-const AuctionUser = require('./auction_user');
-const User = require('./user')
+const sequelize = require('../../conf/sequelize');
 
 
 const Message = sequelize.define('message', {
@@ -20,8 +18,5 @@ const Message = sequelize.define('message', {
         tableName: 'message',
     }
 )
-
-Message.belongsTo(AuctionUser, { foreignKey: 'auction_user_id' });
-Message.belongsTo(User, { foreignKey: 'user_id' });
 
 module.exports = Message;

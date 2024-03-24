@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
-const User = require('./user');
+const AuctionUser = require('./auction_user');
 const Item = require('./item');
 
 
@@ -45,5 +45,8 @@ const Auction = sequelize.define('auction', {
         tableName: 'auction',
     }
 )
+
+Auction.hasMany(AuctionUser)
+Auction.hasMany(Item)
 
 module.exports = Auction;

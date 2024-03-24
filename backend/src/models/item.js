@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
-const User = require('./user');
-const Auction = require('./auction')
+const Image = require('./image');
+const Inspection = require('./inspection');
+const LoveItem = require('./love_item');
 
 
 const Item = sequelize.define('item', {
@@ -11,10 +12,11 @@ const Item = sequelize.define('item', {
         autoIncrement: true,
         primaryKey: true,
     },
-    name: {
+    title: {
         type: DataTypes.STRING,
         allowNull: false,
     },
+
     description: {
         type: DataTypes.TEXT,
         allowNull: false,
@@ -25,7 +27,8 @@ const Item = sequelize.define('item', {
     }
 )
 
-Item.belongsTo(User, { foreignKey: 'user_id' });
-Item.belongsTo(Auction, { foreignKey: 'auction_id' });
+Item.hasMany(Image);
+Item.hasMany(Inspection);
+Item.hasMany(LoveItem);
 
 module.exports = Item;

@@ -1,8 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-const sequelize = require('../../conf/index');
-const Item = require('./item');
-const User = require('./user')
+const sequelize = require('../../conf/sequelize');
 
 
 const LoveItem = sequelize.define('love_item', {
@@ -16,8 +14,5 @@ const LoveItem = sequelize.define('love_item', {
         tableName: 'love_item',
     }
 )
-
-LoveItem.belongsTo(Item, { foreignKey: 'item_id' });
-LoveItem.belongsTo(User, { foreignKey: 'user_id' });
 
 module.exports = LoveItem;
