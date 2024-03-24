@@ -44,7 +44,7 @@ export default function ItemLivedAuction({ obj }: { obj: ItemCurrentLivedInterfa
                     <Carousel activeIndex={index} onSelect={handleSelect} nextIcon={nextIcon} prevIcon={prevIcon}>
 
                         {obj.image_child.map((image_child_obj, index) => (
-                            <Carousel.Item >
+                            <Carousel.Item key={index}>
                                 <div className='bg-white w-100 h-100 d-flex justify-content-center align-items-center'>
                                     <img src={image_child_obj} style={{ maxHeight: "300px", width: "auto" }}></img>
 

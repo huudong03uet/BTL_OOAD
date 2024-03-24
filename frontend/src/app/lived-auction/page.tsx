@@ -10,6 +10,7 @@ import axios, { Axios } from 'axios';
 import Dropdown from 'react-dropdown';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { Radio } from 'antd';
+import { useRouter } from 'next/navigation'
 // type SizeType = ConfigProviderProps['componentSize'];
 export default function LivedAuction() {
 
@@ -27,7 +28,7 @@ export default function LivedAuction() {
         {
             "status": 0,
             "name": "Royal Mint 1980 gold proof set of 4 coins, compris",
-            "id": 1234,
+            "id": 1,
             "sold": 10,
             "love": 1,
             "start_sell": 10,
@@ -36,7 +37,7 @@ export default function LivedAuction() {
         {
             "status": 0,
             "name": "A collection of British pre-decimal coins as taken",
-            "id": 1234,
+            "id": 2,
             "sold": 10,
             "love": 1,
             "start_sell": 10,
@@ -45,7 +46,7 @@ export default function LivedAuction() {
         {
             "status": 1,
             "name": "dang ban rat nhieu la nhieu la nhieu ng ban rat nhieu la nhieu la nhieu ng ban rat nhieu la nhieu la nhieu",
-            "id": 1234,
+            "id": 3,
             "sold": 10,
             "love": 1,
             "start_sell": 10,
@@ -54,7 +55,7 @@ export default function LivedAuction() {
         {
             "status": 2,
             "name": "Two half sovereigns, one dated 1895, with veiled V",
-            "id": 1234,
+            "id": 4,
             "sold": 10,
             "love": 1,
             "start_sell": 10,
@@ -63,7 +64,7 @@ export default function LivedAuction() {
         {
             "status": 2,
             "name": "A collection of 14 circulated silver coins and an ",
-            "id": 1234,
+            "id": 5,
             "sold": 10,
             "love": 1,
             "start_sell": 10,
@@ -72,7 +73,7 @@ export default function LivedAuction() {
         {
             "status": 2,
             "name": "A large official Royal Mint silver medal celebrati",
-            "id": 1234,
+            "id": 6,
             "sold": 10,
             "love": 1,
             "start_sell": 10,
@@ -133,7 +134,11 @@ export default function LivedAuction() {
 
     const [size, setSize] = useState<String>('button_1');
 
+    const router = useRouter();
 
+    const clickLogo = () => {
+        router.push('/');
+    }
 
 
     return (
@@ -143,12 +148,12 @@ export default function LivedAuction() {
                 <div className='row' style={{ height: "50px; !important", backgroundColor: "white" }}>
 
                     <div className='col-9 px-5 d-flex align-items-center'>
-                        <img src="/img/logo.svg" alt="Logo"></img>
+                        <img src="/img/logo.svg" alt="Logo" onClick={clickLogo}></img>
                     </div>
                     <div className='col-3 d-flex align-items-center'>
                         Welcome
 
-            
+
                     </div>
                 </div>
                 <div className='row m-3' style={{ height: "calc(100vh - 150px)" }}>
@@ -175,7 +180,7 @@ export default function LivedAuction() {
 
                             </div>
                             <div>
- 
+
 
                                 <div className='border'>
                                     <Radio.Group value={size} onChange={(e) => setSize(e.target.value)} className='row px-3'>
@@ -185,8 +190,8 @@ export default function LivedAuction() {
                                 </div>
 
                                 <div style={{ overflowY: 'scroll', height: "calc(100vh - 270px)", position: "relative" }}>
-                                    {lotsAuction.map((object, i) => (
-                                        <div className='p-3' style={{ backgroundColor: object.status === 1 ? '#FDF3F5' : 'white' }}>
+                                    {lotsAuction.map((object, index) => (
+                                        <div key={index} className='p-3' style={{ backgroundColor: object.status === 1 ? '#FDF3F5' : 'white' }}>
                                             <ItemLivedAuction obj={object} />
                                         </div>
                                     ))}
@@ -196,7 +201,7 @@ export default function LivedAuction() {
                         </div>
 
                     </div>
-                    <div className='col-9 px-0' style={{ backgroundColor: "white", height: "calc(100vh - 240px);" }}>
+                    <div className='col-9 px-0' style={{ backgroundColor: "white", height: "calc(100vh - 240px)" }}>
                         <div className='row ps-2' style={{ height: "100%" }}>
                             <div className='col-7 border' style={{ padding: "24px 24px 16px", overflowY: "scroll", height: "100%" }} >
                                 <ItemCurrentLived obj={currentAuction}></ItemCurrentLived>

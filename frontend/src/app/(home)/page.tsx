@@ -372,7 +372,7 @@ const HomePage = () => {
         <Container>
           <div className={styles.header_section}>Upcoming Online Auctions</div>
           {upcomingOnlineAuctions.map((object, i) => (
-            <div className="row">
+            <div className="row" key={i}>
               <UpcomingAuctions obj={object}/>
             </div>
           ))}

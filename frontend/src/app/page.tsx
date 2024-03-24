@@ -1,7 +1,7 @@
 'use client'
 
 import AppHeader from "@/components/AppHeader";
-import HomePage from "./home/page";
+import HomePage from "./(home)/page";
 import styles from "./page.module.css";
 import Link from 'next/link';
 import AppFooter from "@/components/AppFooter";

@@ -133,7 +133,7 @@ function UpcomingAuctions({ obj }: { obj: UpcomingAuctionsInterface }) {
                         </div>
                         <div className="row">
                             {obj.image_child && obj.image_child.length > 0 && obj.image_child.map((object, i) => (
-                                <div className="col-2 mx-2 px-0 " >
+                                <div className="col-2 mx-2 px-0 " key={i}>
                                     <img src={object} style={{ width: "100%", height: "auto", maxWidth: "100%" }} className='position-relative top-50 start-50 translate-middle' />
                                 </div>
                             ))}

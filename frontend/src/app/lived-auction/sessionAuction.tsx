@@ -49,7 +49,7 @@ export default function SessionAuction() {
                 <div>
                     <div style={{ height: "300px", overflow: "auto" }}>
                         {message.map((lot_auction, index) => (
-                            <div className='ms-4 me-3'>
+                            <div className='ms-4 me-3' key={Math.random()}>
                                 <div className='d-flex justify-content-center' style={{ fontSize: "13px", fontWeight: "500" }}>
                                     {/* <i className="fa fa-info" aria-hidden="true"></i> */}
                                     <img src='/img/info-circle.svg' className='px-2'></img>
@@ -57,7 +57,12 @@ export default function SessionAuction() {
                                 </div>
                                 {lot_auction.cost_auction.map((cost, index) => (
 
-                                    <div className='d-flex justify-content-between' style={{ fontWeight: "500" }} >
+                                    <div 
+                                    // set key= random number
+                                    key={Math.random()}
+
+                                    
+                                    className='d-flex justify-content-between' style={{ fontWeight: "500" }} >
 
                                         {index == 0 ? (
                                             <div className='d-flex justify-content-between w-100 p-3 border-start position-relative'>
