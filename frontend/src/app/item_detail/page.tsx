@@ -5,12 +5,15 @@ import React, { useState } from 'react';
 import { title } from "process";
 import MagnifyingGlassImage from "@/components/item/MagnifyingGlassImage";
 import AppFooter from "@/components/AppFooter";
+import AppHeader from "@/components/AppHeader";
+import VerticalSlide from "@/components/item/VerticalSlide";
 
 interface ItemProps {
   id: number;
   images: string[]; // Danh sách các ảnh
   title: string; // Tiêu đề
   status: string;
+  price?: number;
   countBid?: number;
   max_bid?: number;
   est_min?: number;
@@ -42,7 +45,7 @@ export default function Item(props: ItemProps) {
       'https://cdn.britannica.com/34/235834-050-C5843610/two-different-breeds-of-cats-side-by-side-outdoors-in-the-garden.jpg',
       'https://via.placeholder.com/300',
     ],
-    status: 'sold',
+    status: 'live now',
     countBid: 10,
     max_bid: 100,
     est_min: 2000,
@@ -58,6 +61,7 @@ export default function Item(props: ItemProps) {
 
   return (
     <>
+      <AppHeader></AppHeader>
       <div>
         {/* Selection 1: Banner */}
         <div className={style.banner}>
@@ -85,14 +89,7 @@ export default function Item(props: ItemProps) {
           <Container>
             <div className={style['contend-aside-holder']}>
               <div className={style.contend}>
-                <div className={style['carousel-image']}>
-                  <div className={style['slides-thumbnail']}>
-                    {/* <img src={itemData.images[0]} alt="" /> */}
-                  </div>
-                  <div className={style['main-slide-img']}>
-                    <MagnifyingGlassImage imageUrl={itemData.images[0]}></MagnifyingGlassImage>
-                  </div>
-                </div>
+                <VerticalSlide images={itemData.images}></VerticalSlide>
                 <div className={style['sharing-btn']}>
                   <i className="fa fa-envelope"></i>
                   <i className="fa fa-share"></i>
@@ -180,11 +177,22 @@ export default function Item(props: ItemProps) {
                   </div>
                 </div>
               </div>
-              <div className={style.aside}>
+              {itemData.status === 'sold' ? (
+                <div className={style.aside}>
+                  <div className={style['bid-room-inner']}>
+                    <div className={style['bid-status']}>
+                      <p className={style.usd}><b>Sold</b></p> <br />
+                      <p className={style.est}>Est: ${itemData.est_min} USD - ${itemData.est_max} USD</p>
+                      <p className={style.usd}><b>${itemData.price} USD</b></p>
+                    </div>      
+                  </div>
+                </div>
+
+              ) : (<div className={style.aside}>
                 <div className={style['bid-room-inner']}>
                   <div className={style['bid-status']}>
                     <p className={style.est}>Est: ${itemData.est_min} USD - ${itemData.est_max} USD</p>
-                    <p className={style.usd}><b>${itemData.max_bid} USD</b><span className={style['bid-count']}>{itemData.countBid} bids</span></p>
+                    <p className={style.usd}><b>${itemData.max_bid} USD</b><span className={style['bid-count']}>     {itemData.countBid} bids</span></p>
                   </div>
                   <form action="" className={style['form-group-bid']}>
                     <label htmlFor=""><span>Set Max Bid:</span></label>
@@ -195,15 +203,16 @@ export default function Item(props: ItemProps) {
                           <option key={index}>${itemData.max_bid! + index * 5} USD</option>
                         ))}
                       </select>
-                      <button type="button" className={`btn btn-primary btn-lg btn-block ${style['btn-place-bid']} ${style['button-style']}`}>Place Bid</button>
                     </div>
+                    <button type="button" className={`btn btn-primary btn-lg btn-block ${style['btn-place-bid']} ${style['button-style']}`}>Place Bid</button>
                     <div className={style.secure}>
                       <span className={style['secure-bidding']}><i className="fa fa-lock"></i>Secure Bidding</span>
                     </div>
 
                   </form>
                 </div>
-              </div>
+              </div>)}
+
             </div>
           </Container >
         </div >
