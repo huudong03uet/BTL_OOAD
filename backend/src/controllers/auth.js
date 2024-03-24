@@ -3,6 +3,7 @@ const { Op } = require('sequelize');
 
 const User = require('../models/user');
 const statusCode = require('../../constants/status')
+const logger = require("../../conf/logger")
 
 
 let login = async (req, res) => {
@@ -23,18 +24,22 @@ let login = async (req, res) => {
         });
 
         if (!user) {
+            logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Không tìm thấy người dùng`);
             return res.status(statusCode.HTTP_404_NOT_FOUND).json({ message: "Không tìm thấy người dùng" });
         }
 
         bcrypt.compare(password, user.password, function(err, result) {
             user.password = null
             if (result) {
+                logger.info(`${statusCode.HTTP_200_OK} [user:${user.id}]`)
                 return res.status(statusCode.HTTP_200_OK).json(user);
             }
+
+            logger.warn(`${statusCode.HTTP_401_UNAUTHORIZED} Sai mật khẩu`);
             return res.status(statusCode.HTTP_401_UNAUTHORIZED).json({ message: "Sai mật khẩu" });
         });
     } catch (error) {
-        console.error('Login error:', error);
+        logger.error(`Login: ${error}`)
     }
 };
 
@@ -52,12 +57,14 @@ let sign_up = async (req, res) => {
         });
 
         if (existingUserByEmail) {
+            logger.warn(`${statusCode.HTTP_406_NOT_ACCEPTABLE} Email already exists in the system.`);
             return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json({
                 error: 'Email already exists in the system.',
             });
         }
 
         if (existingUserByUsername) {
+            logger.warn(`${statusCode.HTTP_406_NOT_ACCEPTABLE} Username already exists in the system.`);
             return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json({
                 error: 'Username already exists in the system.',
             });
@@ -74,11 +81,12 @@ let sign_up = async (req, res) => {
                 });
                 newUser.password = undefined;
         
+                logger.info(`${statusCode.HTTP_201_CREATED} [user:${newUser.id}]`)
                 return res.status(statusCode.HTTP_201_CREATED).json(newUser);
             });
         });
     } catch (error) {
-        console.error('Signup error:', error);
+        logger.error(`Sign up: ${error}`)
     }
 };
 

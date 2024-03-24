@@ -1,6 +1,7 @@
-const sequelize = require('../../../conf/index')
+const sequelize = require('../../../conf/sequelize')
 const ImageType = require('../../../constants/image_type')
 const statusCode = require('../../../constants/status')
+const logger = require('../../../conf/logger')
 const Item = require('../../models/item');
 const Image = require('../../models/image')
 
@@ -29,9 +30,11 @@ let add_item = async (req, res) => {
 
         await t.commit();
 
+        logger.info(`${statusCode.HTTP_201_CREATED} [item:${item.id}]`)
+
         res.status(statusCode.HTTP_201_CREATED).json(item)
     } catch (error) {
-        console.error('Error handling request:', error);
+        logger.error(`Add item: ${error}`)
     }
 }
 
