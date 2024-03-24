@@ -1,4 +1,4 @@
-// "use client"
+"use client"
 
 // import React, {useState} from 'react';
 // import Modal from 'react-bootstrap/Modal';
@@ -94,14 +94,16 @@
 // export default ModalLogin;
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
+import { useRouter } from 'next/router';
 
 import login_service from "@/services/auth/login";
 
 function ModalLogin(props: any) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  // const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState('');
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUsername(e.target.value);
@@ -112,9 +114,7 @@ function ModalLogin(props: any) {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent default form submission
-    
-    // Check if username or password is empty
+    e.preventDefault(); 
     if (!username.trim()) {
       setError('Please enter your email.');
       return;
@@ -124,14 +124,18 @@ function ModalLogin(props: any) {
       setError('Please enter your password.');
       return;
     }
-
-    // Clear any previous errors
-    setError('');
-
-    // Proceed with login
+    
     console.log('Username:', username);
     console.log('Password:', password);
-    await login_service(password, username);
+    let err = await login_service(password, username)
+
+    if (typeof err === 'string') {
+      setError(err);
+    } else {
+      setError(null);
+      router.push('/home');
+    }
+    
   };
 
   return (
