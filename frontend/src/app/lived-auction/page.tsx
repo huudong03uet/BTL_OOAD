@@ -1,12 +1,15 @@
 'use client'
 import { info } from 'console';
-import React, { useState } from 'react';
-import { Button, Divider, Flex, Radio } from 'antd';
-import type { ConfigProviderProps } from 'antd';
+import React, { useEffect, useState } from 'react';
 import ItemLivedAuction from './itemLivedAuction';
 import ItemCurrentLived from './itemCurrentLived';
 import SessionAuction from './sessionAuction';
 import { LinearProgress } from '@mui/material';
+import './style.css';
+import axios, { Axios } from 'axios';
+import Dropdown from 'react-dropdown';
+import { HiSwitchHorizontal } from 'react-icons/hi';
+import { Radio } from 'antd';
 // type SizeType = ConfigProviderProps['componentSize'];
 export default function LivedAuction() {
 
@@ -129,17 +132,23 @@ export default function LivedAuction() {
     }
 
     const [size, setSize] = useState<String>('button_1');
+
+
+
+
     return (
         <>
-            <div style={{ height: "100vh", width: "100vw", backgroundColor: "#D1D6DB" , overflow: "hidden"}}>
+            <div style={{ height: "100vh", width: "100vw", backgroundColor: "#D1D6DB", overflow: "hidden" }}>
 
                 <div className='row' style={{ height: "50px; !important", backgroundColor: "white" }}>
 
-                    <div className='col-9 px-5'>
+                    <div className='col-9 px-5 d-flex align-items-center'>
                         <img src="/img/logo.svg" alt="Logo"></img>
                     </div>
-                    <div className='col-3'>
+                    <div className='col-3 d-flex align-items-center'>
                         Welcome
+
+            
                     </div>
                 </div>
                 <div className='row m-3' style={{ height: "calc(100vh - 150px)" }}>
@@ -157,20 +166,25 @@ export default function LivedAuction() {
                                     {' '}{infoAuction.voting}{' '}({infoAuction.number_voting})
                                 </div>
                                 <div className='d-flex align-items-center'>
-                                    <LinearProgress color="warning" variant="determinate" value={23} style={{height: "2px", width:'100%'}} className="me-3"/> 
+                                    <LinearProgress color="warning" variant="determinate" value={23} style={{ height: "2px", width: '100%' }} className="me-3" />
                                     <div>
                                         12/23
                                     </div>
-                                
+
                                 </div>
 
                             </div>
                             <div>
-                                <Radio.Group value={size} onChange={(e) => setSize(e.target.value)}>
-                                    <Radio.Button value="button_1">All Lots</Radio.Button>
-                                    <Radio.Button value="button_2">My items</Radio.Button>
-                                </Radio.Group>
-                                <div style={{  overflowY: 'scroll' , height: "calc(100vh - 270px)" , position: "relative"}}>
+ 
+
+                                <div className='border'>
+                                    <Radio.Group value={size} onChange={(e) => setSize(e.target.value)} className='row px-3'>
+                                        <Radio.Button value="button_1" className={`col-6 d-flex justify-content-center ${size === "button_1" ? "active-radio" : "radio-not-active"}`}>All Lots</Radio.Button>
+                                        <Radio.Button value="button_2" className={`col-6 d-flex justify-content-center ${size === "button_2" ? "active-radio" : "radio-not-active"}`}>My items</Radio.Button>
+                                    </Radio.Group>
+                                </div>
+
+                                <div style={{ overflowY: 'scroll', height: "calc(100vh - 270px)", position: "relative" }}>
                                     {lotsAuction.map((object, i) => (
                                         <div className='p-3' style={{ backgroundColor: object.status === 1 ? '#FDF3F5' : 'white' }}>
                                             <ItemLivedAuction obj={object} />
@@ -182,9 +196,9 @@ export default function LivedAuction() {
                         </div>
 
                     </div>
-                    <div className='col-9 px-0' style={{ backgroundColor: "white" , height: "calc(100vh - 240px);"}}>
+                    <div className='col-9 px-0' style={{ backgroundColor: "white", height: "calc(100vh - 240px);" }}>
                         <div className='row ps-2' style={{ height: "100%" }}>
-                            <div className='col-7 border' style={{padding: "24px 24px 16px", overflowY: "scroll", height: "100%"}} >
+                            <div className='col-7 border' style={{ padding: "24px 24px 16px", overflowY: "scroll", height: "100%" }} >
                                 <ItemCurrentLived obj={currentAuction}></ItemCurrentLived>
                             </div>
                             <div className='col-5 border p-0'>

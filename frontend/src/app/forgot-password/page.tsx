@@ -16,7 +16,11 @@ export default function Item() {
                         Password Assistance
                     </div>
                     <div>
-                        Please enter your email and we will send you a password reset link.
+                        Please enter your email and we will send you
+                    </div>
+                    <div>
+                     a password reset link.
+
                     </div>
                     <div style={{ fontWeight: "500", }} className='my-3'>
                         Enter Your Email
