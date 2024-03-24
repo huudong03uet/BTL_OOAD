@@ -1,7 +1,15 @@
 export default interface Item {
-    item_id: number;
-    name: string;
+    id: number;
+    images: string[];
+    title: string;
+    status: string;
+    count_bid?: number;
+    max_bid?: number;
+    estimate_min?: number;
+    estimate_max?: number;
     description: string;
-    user_id: number,
-    auction_id: number,
+    dimensions: string;
+    artist: string;
+    condition_report?: string;
+    provenance?: string;
 }

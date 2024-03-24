@@ -29,8 +29,9 @@ const edit_account_service = async (user: User) => {
         UserDataService.setUserData(user_edit);
 
         return response.data
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error fetching data:', error);
+        return error.response.data.message;
     }
 };
 
