@@ -62,27 +62,31 @@ h1 span.font-italic {
 }
 
 .contend {
-  flex: 1;
+  flex: 2;
   display: flex;
   flex-direction: column;
 }
 
 .carousel-image {
   display: flex;
+  flex: 3;
 }
 
-.slides-thumbnail,
+.slides-thumbnail {
+  flex: 1
+}
+
 .main-slide-img {
-  flex: 1;
+  flex: 6;
 }
 
 .sharing-btn {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .sharing-btn i {
-  font-size: 24px;
+  font-size: 18px;
   border-radius: 50%;
   padding: 10px;
   background-color: lightgray;
@@ -96,14 +100,15 @@ h1 span.font-italic {
 
 
 .aside {
+  margin-left: 20px;
+  padding-left: 20px;
   width: 250px;
-  /* Đặt kích thước cố định cho phần bên cạnh */
+  height: 400px;
   display: flex;
-  /* Sử dụng flexbox cho phần bên cạnh */
+  flex: 1;
   flex-direction: column;
-  /* Xếp các phần tử theo chiều dọc */
   justify-content: space-between;
-  /* Canh giữa các phần tử */
+  background-color: rgb(222, 222, 222);
 }
 
 .bid-room-inner {
@@ -114,12 +119,26 @@ h1 span.font-italic {
   /* Xếp các phần tử theo chiều dọc */
 }
 
+
 .bid-status {
   /* Quy tắc CSS cho trạng thái đấu giá */
 }
 
 .form-group-bid {
   /* Quy tắc CSS cho nhóm biểu mẫu đấu giá */
+}
+
+.est {
+  --font-family-sans-serif: "Gotham SSm A", "Gotham SSm B", Arial, sans-serif;
+}
+
+.usd {
+  --font-family-sans-serif: "Gotham SSm A", "Gotham SSm B", Arial, sans-serif;
+  font-weight: 700;
+  line-height: 1.5;
+  text-align: left;
+  font-size: 18px;
+  box-sizing: border-box;
 }
 
 .custom-select-menu {
@@ -155,4 +174,3 @@ h1 span.font-italic {
   border-radius: 5px;
   /* Các quy tắc khác tùy thuộc vào yêu cầu thiết kế cụ thể */
 }
-

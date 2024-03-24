@@ -532,49 +532,22 @@ export default function Filters() {
             <div className="row">
               <div className="col-md-12 mt-3 text-center">
                 <div
-                  className="spinner-border text-primary mx-auto my-5"
+                  className=" text-primary mx-auto my-5"
                   id="spinner"
                   role="status"
                   style={{ display: "block" }}
                 >
-                  {/* <div className="search-holder">
-                    <div className="hit-wrapper">
-                      <div className="hit-holder">
-                        <div className="image-holder"></div>
-                        <div className="contend-holder">
-                          <div className="text-holder">
-                            <span className="text-live"></span>
-                          </div>
-                          <div className="text-holder">
-                            <span className="title"></span>
-                          </div>
-                          <div className="text-holder">
-                            <span className="author"></span>
-                          </div>
-                          <div className="text-holder">
-                            <span className="est"></span>
-                          </div>
-                          <div className="text-holder">
-                            <span className="cost"></span>
-                          </div>
-                        </div>
+                  <Container>
+                    <div className="row">
+                      {
+                        res ? (<SearchItem searchResults={res} />
+                        ) : (
+                          <span className="sr-only">Loading...</span>
+                        )
+                      }
 
-                      </div>
                     </div>
-                  </div> */}
-                  {/* <div className="container"> */}
-                  <div className="row">
-                    {/* {res.map((object, i) => (
-                      <div className="col-sm-3" key={i}>
-                        <ViewItem obj={object} />
-                       
-                      </div>
-                    ))} */}
-                    {/* <SearchItem searchResults={res} /> */}
-
-                    {/* </div> */}
-                    <span className="sr-only">Loading...</span>
-                  </div>
+                  </Container>
                 </div>
               </div>
             </div>
