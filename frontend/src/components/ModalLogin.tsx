@@ -102,7 +102,7 @@ function ModalLogin(props: any) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   // const [error, setError] = useState('');
-  const router = useRouter();
+  // const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,7 +133,7 @@ function ModalLogin(props: any) {
       setError(err);
     } else {
       setError(null);
-      router.push('/home');
+      // router.push('/home');
     }
     
   };
@@ -174,7 +174,7 @@ function ModalLogin(props: any) {
               <input type="checkbox" className="form-check-input" id="keepLoggedIn" />
               <label className="form-check-label" htmlFor="keepLoggedIn">Keep me logged in</label>
             </div>
-            <a href="#">Forgot Password?</a>
+            <a href="/forgot-password">Forgot Password?</a>
           </div>
           <div className='d-flex justify-content-center mb-4'>
             <button type="submit" className="btn px-4  w-100" style={{ backgroundColor: '#222', color: '#FFFFFF' }}>Login</button>
