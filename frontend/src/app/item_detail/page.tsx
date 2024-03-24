@@ -13,6 +13,7 @@ interface ItemProps {
   images: string[]; // Danh sách các ảnh
   title: string; // Tiêu đề
   status: string;
+  price?: number;
   countBid?: number;
   max_bid?: number;
   est_min?: number;
@@ -177,7 +178,15 @@ export default function Item(props: ItemProps) {
                 </div>
               </div>
               {itemData.status === 'sold' ? (
-                <p className={style.est}>Est: ${itemData.est_min} USD - ${itemData.est_max} USD</p>
+                <div className={style.aside}>
+                  <div className={style['bid-room-inner']}>
+                    <div className={style['bid-status']}>
+                      <p className={style.usd}><b>Sold</b></p> <br />
+                      <p className={style.est}>Est: ${itemData.est_min} USD - ${itemData.est_max} USD</p>
+                      <p className={style.usd}><b>${itemData.price} USD</b></p>
+                    </div>      
+                  </div>
+                </div>
 
               ) : (<div className={style.aside}>
                 <div className={style['bid-room-inner']}>
