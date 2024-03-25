@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 
-const sequelize = require('../../conf/index');
+const sequelize = require('../../conf/sequelize');
 const User = require('./user');
 
 
@@ -22,6 +22,9 @@ const Report = sequelize.define('report', {
 )
 
 Report.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(Report, { foreignKey: 'user_id' })
+
 Report.belongsTo(User, { foreignKey: 'user_evaluate' });
+User.hasMany(Report, { foreignKey: 'user_evaluate' })
 
 module.exports = Report;

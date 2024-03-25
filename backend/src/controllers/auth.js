@@ -1,9 +1,10 @@
-const bcrypt = require('bcrypt');
 const { Op } = require('sequelize');
 
 const User = require('../models/user');
 const statusCode = require('../../constants/status')
 const logger = require("../../conf/logger")
+
+const { hash_password, compare_password } = require('./util/password')
 
 
 let login = async (req, res) => {
@@ -27,19 +28,19 @@ let login = async (req, res) => {
             logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Không tìm thấy người dùng`);
             return res.status(statusCode.HTTP_404_NOT_FOUND).json({ message: "Không tìm thấy người dùng" });
         }
+        
+        let result = await compare_password(password, user.password)
 
-        bcrypt.compare(password, user.password, function(err, result) {
-            user.password = null
-            if (result) {
-                logger.info(`${statusCode.HTTP_200_OK} [user:${user.id}]`)
-                return res.status(statusCode.HTTP_200_OK).json(user);
-            }
+        if (result) {
+            logger.info(`${statusCode.HTTP_200_OK} [user:${user.id}]`)
+            return res.status(statusCode.HTTP_200_OK).json(user);
+        }
 
-            logger.warn(`${statusCode.HTTP_401_UNAUTHORIZED} Sai mật khẩu`);
-            return res.status(statusCode.HTTP_401_UNAUTHORIZED).json({ message: "Sai mật khẩu" });
-        });
+        logger.warn(`${statusCode.HTTP_401_UNAUTHORIZED} Sai mật khẩu`);
+        return res.status(statusCode.HTTP_401_UNAUTHORIZED).json({ message: "Sai mật khẩu" });
     } catch (error) {
         logger.error(`Login: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 };
 
@@ -70,23 +71,27 @@ let sign_up = async (req, res) => {
             });
         }
 
-        bcrypt.genSalt(10, function(err, salt) {
-            bcrypt.hash(password, salt, async function(err, hashedPassword) {
-                const newUser = await User.create({
-                    username: username,
-                    firstName: firstName,
-                    lastName: lastName,
-                    email: email,
-                    password: hashedPassword,
-                });
-                newUser.password = undefined;
-        
-                logger.info(`${statusCode.HTTP_201_CREATED} [user:${newUser.id}]`)
-                return res.status(statusCode.HTTP_201_CREATED).json(newUser);
+        let { success, hashedPassword } = await hash_password(password);
+
+        if (success) {
+            const newUser = await User.create({
+                username: username,
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: hashedPassword,
             });
-        });
+            newUser.password = undefined;
+    
+            logger.info(`${statusCode.HTTP_201_CREATED} [user:${newUser.id}]`)
+            return res.status(statusCode.HTTP_201_CREATED).json(newUser);
+        }
+
+        logger.error(`${statusCode.HTTP_406_NOT_ACCEPTABLE} [user]`)
+        return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json("Lỗi tạo user.");
     } catch (error) {
         logger.error(`Sign up: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 };
 

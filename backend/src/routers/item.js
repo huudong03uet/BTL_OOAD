@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 
 const router = express.Router();
-const itemController = require("../controllers/admin/add_item")
+const itemController = require("../controllers/item")
 
 const MEDIA = "media/"
 
@@ -25,5 +25,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/add-item', upload.array('images', 5), itemController.add_item)
+router.get('/detail-item/item_id=:item_id', itemController.get_item_detail)
 
 module.exports = router;

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 
+import sign_up_service from '@/services/auth/sign_up';
+
 
 
 function ModalRegister(props: any) {
@@ -39,14 +41,6 @@ function ModalRegister(props: any) {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
-        // console.log('Username:', username);
-        // console.log('Password:', password);
-
-        // if (confirm_password != password) {
-        //     console.log("Confirm password incorrect.")
-        // } else {
-        //     await sign_up_service(firstName, lastName, password, username, email)
-        // }
 
         if (!firstName.trim()) {
             setError('Please enter your email.');
@@ -80,7 +74,14 @@ function ModalRegister(props: any) {
             setError('Passwords do not match.')
           }
           
+          let err = await sign_up_service(firstName, lastName, password, username, email);
 
+          if (typeof err === 'string') {
+            setError(err);
+          } else {
+            setError('');
+            props.onHide();
+          }
     };
 
     return (

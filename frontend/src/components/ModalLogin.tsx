@@ -94,7 +94,6 @@
 // export default ModalLogin;
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-import { useRouter } from 'next/router';
 
 import login_service from "@/services/auth/login";
 
@@ -102,7 +101,6 @@ function ModalLogin(props: any) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   // const [error, setError] = useState('');
-  // const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -133,9 +131,8 @@ function ModalLogin(props: any) {
       setError(err);
     } else {
       setError(null);
-      // router.push('/home');
+      props.onHide();
     }
-    
   };
 
   return (

@@ -5,6 +5,7 @@ import UserDataService from '@/services/model/user';
 
 const AddProduct: React.FC = () => {
   const [productName, setProductName] = useState<string>('');
+  const [productProvenance, setProductProvenance] = useState<string>('');
   const [productDescription, setProductDescription] = useState<string>('');
   const [productImages, setProductImages] = useState<File[]>([]);
   const [user_id, setUserID] = useState<string | null>(UserDataService.getUserData()?.user_id?.toString() || null);
@@ -12,7 +13,8 @@ const AddProduct: React.FC = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let formData = new FormData();
-    formData.append("name", productName);
+    formData.append("title", productName);
+    formData.append("provenance", productProvenance);
     formData.append("description", productDescription);
 
     if (productImages.length > 0 && user_id !== null) {
@@ -20,8 +22,6 @@ const AddProduct: React.FC = () => {
       productImages.forEach((image) => {
         formData.append('images', image);
       });
-
-      console.log(formData)
 
       await add_item(formData);
     } else {
@@ -60,7 +60,17 @@ const AddProduct: React.FC = () => {
           />
         </div>
         <div>
-          <label htmlFor="productDescription">Loại Sản Phẩm:</label>
+          <label htmlFor="productProvenance">productProvenance:</label>
+          <input
+            type="text"
+            id="productProvenance"
+            value={productProvenance}
+            onChange={(e) => setProductProvenance(e.target.value)}
+          />
+        </div>
+        <div></div>
+        <div>
+          <label htmlFor="productDescription">productDescription:</label>
           <input
             type="text"
             id="productDescription"
@@ -73,7 +83,7 @@ const AddProduct: React.FC = () => {
           <input
             type="file"
             id="productImages"
-            multiple // Cho phép chọn nhiều tập tin
+            multiple
             onChange={handleImageChange}
           />
         </div>
