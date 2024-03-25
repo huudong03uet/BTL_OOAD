@@ -1,8 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
-const User = require('./user');
-const Item = require('./item');
+const AuctionType = require('../../constants/auction_type')
 
 
 const Auction = sequelize.define('auction', {
@@ -19,10 +18,10 @@ const Auction = sequelize.define('auction', {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    status: {
+    type: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: "public"
+        defaultValue: AuctionType.PUBLIC,
     },
     time_action: {
         type: DataTypes.DATE,

@@ -31,9 +31,9 @@ const login_service = async (
         }
         UserDataService.setUserData(user);
         return;
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error fetching data:', error);
-        return error;
+        return error.response.data.message;
     }
 };
 

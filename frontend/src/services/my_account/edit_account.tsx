@@ -9,7 +9,6 @@ const edit_account_service = async (user: User) => {
     try {
         let url = `${HOST}/my-account/edit-profile`;
         let body = user
-        console.log(body)
         const response = await axios.post(url, body);
 
         let user_edit: User = {
@@ -29,11 +28,10 @@ const edit_account_service = async (user: User) => {
         }
         UserDataService.setUserData(user_edit);
 
-        console.log(user_edit)
-
         return response.data
-    } catch (error) {
+    } catch (error: any) {
         console.error('Error fetching data:', error);
+        return error.response.data.message;
     }
 };
 

@@ -1,8 +1,19 @@
 'use client'
+import React, { useState } from "react";
+import forgot_password_service from "@/services/my_account/forgot_password";
 
 
 export default function Item() {
+    const [email, setEmail] = useState('');
 
+    const handleRequestInfo = async () => {
+        if (email.trim() === '') {
+            alert('Please enter your email.');
+            return;
+        }
+
+        await forgot_password_service(email);
+    }
 
     return (
         <>
@@ -26,14 +37,12 @@ export default function Item() {
                         Enter Your Email
                     </div>
                     <div >
-                        <input className='w-100'>
-
-                        </input>
+                    <input className='w-100' value={email} onChange={(e) => setEmail(e.target.value)}></input>
                     </div>
 
                     <div className='d-flex align-items-center my-4'>
-                        <button type="button" className="btn btn-dark px-5">Request Info</button>
-                        <a href="/" className="px-5" style={{textDecoration: "none"}}>Cancel</a>
+                        <button type="button" className="btn btn-dark px-5" onClick={handleRequestInfo}>Request Info</button>
+                        <a href="/" className="px-5" style={{ textDecoration: "none" }}>Cancel</a>
                     </div>
 
                 </div>
