@@ -194,7 +194,7 @@ export default function Item(props: ItemProps) {
                     <p className={style.est}>Est: ${itemData.est_min} USD - ${itemData.est_max} USD</p>
                     <p className={style.usd}><b>${itemData.max_bid} USD</b><span className={style['bid-count']}>     {itemData.countBid} bids</span></p>
                   </div>
-                  <form action="" className={style['form-group-bid']}>
+                  <Form action="" className={style['form-group-bid']}>
                     <label htmlFor=""><span>Set Max Bid:</span></label>
                     <div className={style['select-dropdown']}>
                       <select className={`${style['form-control']} ${style['select-single']}`} >
@@ -209,7 +209,7 @@ export default function Item(props: ItemProps) {
                       <span className={style['secure-bidding']}><i className="fa fa-lock"></i>Secure Bidding</span>
                     </div>
 
-                  </form>
+                  </Form>
                 </div>
               </div>)}
 
