@@ -1,0 +1,105 @@
+/* customIcons.module.css */
+
+.yellowIcon {
+    color: rgb(151, 107, 24);
+
+}
+
+.mainContainer {
+    margin: 20px;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+}
+
+.ahInformation {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.ahBioContainer {
+    flex: 2;
+    margin: 20px;
+}
+.ahContactContainer {
+    flex: 1;
+    margin: 20px;
+}
+
+.ahName {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.ahTime {
+    font-size: 14px;
+    color: #555;
+}
+
+.voteContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.yotpoStars {
+    display: flex;
+    align-items: center;
+    color: #ffbf00;
+    /* Yellow color for stars */
+}
+
+.yellowIcon {
+    font-size: 20px;
+    margin-right: 5px;
+}
+
+.spanReview {
+    margin-left: 10px;
+   
+}
+
+/* Kiểu dáng của nút Follow, Contact */
+
+.btn-follow {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    --font-family-sans-serif: "Gotham SSm A", "Gotham SSm B", Arial, sans-serif;
+}
+
+.btn-contact {
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    color: #333;
+    border: 1px solid #000 !important;
+    border-radius: 5px;
+    cursor: pointer;
+    --font-family-sans-serif: "Gotham SSm A", "Gotham SSm B", Arial, sans-serif;
+}
+
+.btn-follow:hover {
+    background-color: #fff !important;
+    border: 1px solid #000 !important;
+    color: #000 !important;
+}
+
+.btn-contact:hover {
+    background-color: #333 !important;
+    border: 1px solid #fff !important;
+    color: #fff !important;
+}
+
+/* Kiểu dáng chung của các button */
+.button-style {
+    margin-top: 10px;
+}

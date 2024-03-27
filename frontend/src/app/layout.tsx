@@ -22,17 +22,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      
+  
       <body className={inter.className}>
-      {/*  */}
-
-        {/* <AppHeader /> */}
-        {/* <AppNav /> */}
-        {/* <AppBreadCrumb /> */}
 
         {children}
 
-        {/* <AppFooter /> */}
       </body>
 
     </html>

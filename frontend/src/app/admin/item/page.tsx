@@ -2,6 +2,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import add_item from '@/services/item/item';
 import UserDataService from '@/services/model/user';
+import axios from 'axios';
 
 const AddProduct: React.FC = () => {
   const [productName, setProductName] = useState<string>('');
@@ -17,13 +18,31 @@ const AddProduct: React.FC = () => {
     formData.append("provenance", productProvenance);
     formData.append("description", productDescription);
 
-    if (productImages.length > 0 && user_id !== null) {
+    if (productImages.length > 0 && user_id) {
       formData.append("user_id", user_id);
       productImages.forEach((image) => {
         formData.append('images', image);
       });
+      console.log(productImages);
+      const CLOUD_NAME = "domjzehgf"
+      const PRESET_NAME = "btl_oop"
+      const urls = [];
+      const folder_name = "products"
+      const api = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+      const data = new FormData();
+      data.append("upload_preset", PRESET_NAME);
+      data.append("folder", folder_name);
 
-      await add_item(formData);
+      for(const file of productImages) {
+        data.append("file", file)
+        axios.post(api, data, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        }).then(response => console.log(response))
+      }
+
+      // await add_item(formData);
     } else {
       console.error('Hình ảnh không được để trống');
     }
