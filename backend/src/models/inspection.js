@@ -1,8 +1,9 @@
 const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
+const InspectionType = require("../../constants/inspection")
 const Admin = require('./admin');
-const Item = require('./item');
+const Product = require('./product');
 
 
 const Inspection = sequelize.define('inspection', {
@@ -26,6 +27,7 @@ const Inspection = sequelize.define('inspection', {
     type: {
         type: DataTypes.STRING,
         allowNull: false,
+        defaultValue: InspectionType.NOT_INSPECT,
     }
 },
     {
@@ -34,9 +36,9 @@ const Inspection = sequelize.define('inspection', {
 )
 
 Inspection.belongsTo(Admin, {foreignKey: 'admin_id'})
-Admin.hasMany(Inspection);
+Admin.hasMany(Inspection, {foreignKey: 'admin_id'});
 
-Inspection.belongsTo(Item, {foreignKey: 'item_id'})
-Item.hasMany(Inspection, {foreignKey: 'item_id'});
+Inspection.belongsTo(Product, {foreignKey: 'product_id'})
+Product.hasMany(Inspection, {foreignKey: 'product_id'});
 
 module.exports = Inspection;
