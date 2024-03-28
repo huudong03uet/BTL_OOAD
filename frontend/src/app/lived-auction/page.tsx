@@ -140,6 +140,24 @@ export default function LivedAuction() {
         router.push('/');
     }
 
+    const containerRef = React.useRef(null);
+
+    // const handleViewLotDetailsClick = () => {
+    //     if (containerRef.current) {
+    //       (containerRef.current as HTMLElement).scrollTop = (containerRef.current as HTMLElement).scrollHeight;
+    //     }
+    // };
+
+    const handleViewLotDetailsClick = () => {
+        if (containerRef.current) {
+            const container = containerRef.current as HTMLElement;
+            const scrollHeight = container.scrollHeight;
+            container.scrollTo({
+                top: scrollHeight,
+                behavior: 'smooth'
+            });
+        }
+    };
 
     return (
         <>
@@ -148,7 +166,7 @@ export default function LivedAuction() {
                 <div className='row' style={{ height: "50px; !important", backgroundColor: "white" }}>
 
                     <div className='col-9 px-5 d-flex align-items-center'>
-                        <img src="/img/logo.svg" alt="Logo" onClick={clickLogo}></img>
+                        <img src="/img/logo.svg" alt="Logo" onClick={clickLogo} style={{cursor: "pointer"}}></img>
                     </div>
                     <div className='col-3 d-flex align-items-center'>
                         Welcome
@@ -203,8 +221,8 @@ export default function LivedAuction() {
                     </div>
                     <div className='col-9 px-0' style={{ backgroundColor: "white", height: "calc(100vh - 240px)" }}>
                         <div className='row ps-2' style={{ height: "100%" }}>
-                            <div className='col-7 border' style={{ padding: "24px 24px 16px", overflowY: "scroll", height: "100%" }} >
-                                <ItemCurrentLived obj={currentAuction}></ItemCurrentLived>
+                            <div ref={containerRef} className='col-7 border' style={{ padding: "24px 24px 16px", overflowY: "scroll", height: "100%" }}>
+                                <ItemCurrentLived obj={currentAuction} handleButtonClick={handleViewLotDetailsClick}></ItemCurrentLived>
                             </div>
                             <div className='col-5 border p-0'>
                                 <SessionAuction></SessionAuction>
