@@ -1,11 +1,10 @@
 const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
-const AuctionUser = require('./auction_user');
+const CoinHistoryType = require("../../constants/coin_history")
 const User = require('./user');
 
-
-const History = sequelize.define('history', {
+const CoinHistory = sequelize.define('coin_history', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -22,17 +21,15 @@ const History = sequelize.define('history', {
     type: {
         type: DataTypes.STRING,
         allowNull: false,
-    }
+        defaultValue: CoinHistoryType.BUY
+    },
 },
     {
-        tableName: 'history',
+        tableName: 'coin_history',
     }
 );
 
-History.belongsTo(AuctionUser, {foreignKey: "auction_user_id"});
-AuctionUser.hasOne(History, {foreignKey: "auction_user_id"})
+CoinHistory.belongsTo(User, {foreignKey: "user_id"})
+User.hasMany(CoinHistory, {foreignKey: "user_id"})
 
-History.belongsTo(User, { foreignKey: 'user_id' })
-User.hasOne(History, { foreignKey: 'user_id' });
-
-module.exports = History;
+module.exports = CoinHistory;

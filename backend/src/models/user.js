@@ -1,6 +1,7 @@
 const { DataTypes} = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
+const Location = require('./location');
 
 const User = sequelize.define('user', {
     id: {
@@ -8,15 +9,15 @@ const User = sequelize.define('user', {
         autoIncrement: true,
         primaryKey: true,
     },
-    firstName: {
+    first_name: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    lastName: {
+    last_name: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    username: {
+    user_name: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -26,44 +27,29 @@ const User = sequelize.define('user', {
     },
     email: {
         type: DataTypes.STRING,
+        allowNull: false,
         defaultValue: "abc@gmail.com",
-    },
-    evaluate: {
-        type: DataTypes.STRING,
-        allowNull: true,
     },
     coin: {
         type: DataTypes.DOUBLE,
+        allowNull: false,
         defaultValue: 0.0,
     },
     phone: {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    country: {
+    avatar_path: {
         type: DataTypes.STRING,
         allowNull: true,
-    },
-    address: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    city: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    state: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
-    postal_code: {
-        type: DataTypes.STRING,
-        allowNull: true,
-    },
+    }
 },
     {
         tableName: 'user',
     }
-)
+);
+
+User.belongsTo(Location, {foreignKey: "location_id"});
+Location.hasMany(User, {foreignKey: "location_id"});
 
 module.exports = User;

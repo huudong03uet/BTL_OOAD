@@ -1,6 +1,5 @@
 const statusCode = require('../../constants/status')
 const logger = require("../../conf/logger")
-const transporter = require('../../conf/email')
 
 const User = require('../models/user');
 

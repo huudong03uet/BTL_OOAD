@@ -47,7 +47,10 @@ let get_item_detail = async (req, res) => {
         const item_id = req.params.item_id;
 
         const item = await Item.findByPk(item_id, {
-            include: Image,
+            include: {
+                model: Image,
+                attributes: ['id', 'path']
+            }
         });
 
         if (!item) {

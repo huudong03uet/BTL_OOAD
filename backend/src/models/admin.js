@@ -1,6 +1,7 @@
 const { DataTypes} = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
+const Location = require('./location');
 
 
 const Admin = sequelize.define('admin', {
@@ -9,15 +10,15 @@ const Admin = sequelize.define('admin', {
         autoIncrement: true,
         primaryKey: true,
     },
-    firstName: {
+    first_name: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    lastName: {
+    last_name: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    username: {
+    user_name: {
         type: DataTypes.STRING,
         allowNull: false
     },
@@ -27,16 +28,24 @@ const Admin = sequelize.define('admin', {
     },
     email: {
         type: DataTypes.STRING,
-        defaultValue: "admin@gmail.com",
+        allowNull: false,
+        defaultValue: "abc@gmail.com",
     },
     phone: {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    avatar_path: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    }
 },
     {
         tableName: 'admin',
     }
 );
+
+Admin.belongsTo(Location, {foreignKey: "location_id"});
+Location.hasMany(Admin, {foreignKey: "location_id"});
 
 module.exports = Admin;
