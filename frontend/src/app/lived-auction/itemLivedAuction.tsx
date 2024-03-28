@@ -3,21 +3,23 @@ import { info } from 'console';
 import React, { useState } from 'react';
 import { Button, Divider, Flex, Radio } from 'antd';
 import type { ConfigProviderProps } from 'antd';
-interface ItemLivedAuctionInterface {
-    "status": number,
-    "name": string,
-    "id": number,
-    "sold": number,
-    "love": number,
-    "image": string,
-    "start_sell": number,
-}
+import ItemDetail from '@/models/item_detail';
+import ItemSummary from '@/models/item_summary';
+// interface ItemLivedAuctionInterface {
+//     "status": number,
+//     "name": string,
+//     "id": number,
+//     "sold": number,
+//     "love": number,
+//     "image": string,
+//     "start_sell": number,
+// }
 
 enum StatusItemAuction {
-    SOLD = 0, CURRENT = 1, UP_COMING = 2,
+    SOLD = "0", CURRENT = "1", UP_COMING = "2",
 }
 // type SizeType = ConfigProviderProps['componentSize'];
-export default function ItemLivedAuction({ obj }: { obj: ItemLivedAuctionInterface }) {
+export default function ItemLivedAuction({ obj }: { obj: ItemSummary }) {
 
     return (
         <>
@@ -40,7 +42,7 @@ export default function ItemLivedAuction({ obj }: { obj: ItemLivedAuctionInterfa
                 </div>
 
                         <div className='w-100 h-100 d-flex align-items-center justify-content-center'>
-                            <img src={obj.image} alt={obj.name} style={{ width: "auto", height: "100px", maxWidth: "100%" }}></img>
+                            <img src={obj.image_path} alt={obj.title} style={{ width: "auto", height: "100px", maxWidth: "100%" }}></img>
 
                         </div>
 
@@ -54,11 +56,11 @@ export default function ItemLivedAuction({ obj }: { obj: ItemLivedAuctionInterfa
                     </div> */}
                 <div className='my-1 text-uppercase'
                     style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
-                >                 {obj.name}</div>
+                >                 {obj.title}</div>
                 <div style={{ fontWeight: 500, fontSize: "14px" }}>
                     {obj.status == StatusItemAuction.SOLD ? (
                         <div>
-                            Sold: ${obj.sold}
+                            Sold: ${obj.max_bid}
                         </div>
                     ) : obj.status == StatusItemAuction.CURRENT ? (
                         <div>
@@ -66,7 +68,7 @@ export default function ItemLivedAuction({ obj }: { obj: ItemLivedAuctionInterfa
                         </div>
                     ) : (
                         <div>
-                            Current: ${obj.sold}
+                            Current: ${obj.max_bid}
                         </div>
                     )}
                 </div>

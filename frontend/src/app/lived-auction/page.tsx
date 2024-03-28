@@ -1,83 +1,80 @@
 'use client'
-import { info } from 'console';
 import React, { useEffect, useState } from 'react';
 import ItemLivedAuction from './itemLivedAuction';
 import ItemCurrentLived from './itemCurrentLived';
 import SessionAuction from './sessionAuction';
 import { LinearProgress } from '@mui/material';
 import './style.css';
-import axios, { Axios } from 'axios';
-import Dropdown from 'react-dropdown';
-import { HiSwitchHorizontal } from 'react-icons/hi';
 import { Radio } from 'antd';
 import { useRouter } from 'next/navigation'
+import ItemDetail from '@/models/item_detail';
+import ItemSummary from '@/models/item_summary';
+import AuctionInformation from '@/models/auction_information';
 // type SizeType = ConfigProviderProps['componentSize'];
 export default function LivedAuction() {
 
-    const infoAuction = {
-        "name": "Key Date Coins Spectacular AM Live Auction 11 pt 1 Day 3",
-        "user_sell": "Key Date Coins",
+    const infoAuction: AuctionInformation = {
+        "auction_room_name": "Key Date Coins Spectacular AM Live Auction 11 pt 1 Day 3",
+        "seller_name": "Key Date Coins",
         "number_watching": 84,
-        "voting": 4.6,
-        "number_voting": 24,
-
-
+        "voting_avg_review": 4.6,
+        "number_review": 24,
     }
 
-    const lotsAuction = [
+    const lotsAuction: ItemSummary[] = [
         {
-            "status": 0,
-            "name": "Royal Mint 1980 gold proof set of 4 coins, compris",
+            "status": "0",
+            "title": "Royal Mint 1980 gold proof set of 4 coins, compris",
             "id": 1,
-            "sold": 10,
+            "max_bid": 10,
             "love": 1,
-            "start_sell": 10,
-            "image": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366354002_mid.jpg",
+            "estimate_min": 10,
+            "image_path": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366354002_mid.jpg",
         },
         {
-            "status": 0,
-            "name": "A collection of British pre-decimal coins as taken",
+            "status": "0",
+            "title": "A collection of British pre-decimal coins as taken",
             "id": 2,
-            "sold": 10,
+            "max_bid": 10,
             "love": 1,
-            "start_sell": 10,
-            "image": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366354000_mid.jpg",
+            "estimate_min": 10,
+            "image_path": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366354000_mid.jpg",
         },
         {
-            "status": 1,
-            "name": "dang ban rat nhieu la nhieu la nhieu ng ban rat nhieu la nhieu la nhieu ng ban rat nhieu la nhieu la nhieu",
+            "status": "1",
+            "title": "dang ban rat nhieu la nhieu la nhieu ng ban rat nhieu la nhieu la nhieu ng ban rat nhieu la nhieu la nhieu",
             "id": 3,
-            "sold": 10,
+            "max_bid": 10,
             "love": 1,
-            "start_sell": 10,
-            "image": "https://image.invaluable.com/housePhotos/Raffan_Kelaher_and_Thomas/75/765975/H3937-L364405684_mid.jpg",
+            "estimate_min": 10,
+            "image_path": "https://image.invaluable.com/housePhotos/Raffan_Kelaher_and_Thomas/75/765975/H3937-L364405684_mid.jpg",
         },
         {
-            "status": 2,
-            "name": "Two half sovereigns, one dated 1895, with veiled V",
+            "status": "2",
+            "title": "Two half sovereigns, one dated 1895, with veiled V",
             "id": 4,
-            "sold": 10,
+            "max_bid": 10,
             "love": 1,
-            "start_sell": 10,
-            "image": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353894_mid.jpg",
+            "estimate_min": 10,
+            "image_path": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353894_mid.jpg",
         },
         {
-            "status": 2,
-            "name": "A collection of 14 circulated silver coins and an ",
+            "status": "2",
+            "title": "A collection of 14 circulated silver coins and an ",
             "id": 5,
-            "sold": 10,
+            "max_bid": 10,
             "love": 1,
-            "start_sell": 10,
-            "image": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353885_mid.jpg",
+            "estimate_min": 10,
+            "image_path": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353885_mid.jpg",
         },
         {
-            "status": 2,
-            "name": "A large official Royal Mint silver medal celebrati",
+            "status": "2",
+            "title": "A large official Royal Mint silver medal celebrati",
             "id": 6,
-            "sold": 10,
+            "max_bid": 10,
             "love": 1,
-            "start_sell": 10,
-            "image": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353897_mid.jpg",
+            "estimate_min": 10,
+            "image_path": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353897_mid.jpg",
         }
     ]
     function nextCostAuction(currentCost: number) {
@@ -110,17 +107,9 @@ export default function LivedAuction() {
 
 
     const currentCost = 100;
-    const currentAuction = {
-        "status": 2,
-        "name": "Two half sovereigns, one dated 1895, with veiled V",
+    const currentAuction: ItemDetail = {
         "id": 1234,
-        "sold": 10,
-        "love": 1,
-        "start_sell": 10,
-        "image": "https://image.invaluable.com/housePhotos/Raffan_Kelaher_and_Thomas/75/765975/H3937-L364405684_mid.jpg",
-        "estimate_begin": 123,
-        "estimate_end": 125,
-        "image_child": [
+        "images": [
             "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731521.jpg",
             "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731519.jpg",
             "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731520.jpg",
@@ -128,8 +117,20 @@ export default function LivedAuction() {
             "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731523.jpg",
             "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731529.jpg"
         ],
-        "over_view": "A rare pair of Empire porcelain vases 'karyatids', by Dagoty à Paris (*)",
+        "title": "Two half sovereigns, one dated 1895, with veiled V",
+        "status": "2",
+        "count_bid": 10,
+        "max_bid": 100,
+        "estimate_min": 123,
+        "estimate_max": 125,
+        "description": "Two half sovereigns, one dated 1895, with veiled V",
+
+        "dimensions": "3x3x4",
+        "artist": "Dagoty à Paris (*)",
+        "love": 1,
         "condition_report": "chip to foot, chip to lion",
+
+        "provenance": "A rare pair of Empire porcelain vases 'karyatids', by Dagoty à Paris (*)",
     }
 
     const [size, setSize] = useState<String>('button_1');
@@ -166,7 +167,7 @@ export default function LivedAuction() {
                 <div className='row' style={{ height: "50px; !important", backgroundColor: "white" }}>
 
                     <div className='col-9 px-5 d-flex align-items-center'>
-                        <img src="/img/logo.svg" alt="Logo" onClick={clickLogo} style={{cursor: "pointer"}}></img>
+                        <img src="/img/logo.svg" alt="Logo" onClick={clickLogo} style={{ cursor: "pointer" }}></img>
                     </div>
                     <div className='col-3 d-flex align-items-center'>
                         Welcome
@@ -179,14 +180,14 @@ export default function LivedAuction() {
                         <div style={{ backgroundColor: "white" }} >
                             <div className='p-3'>
                                 <div style={{ marginBottom: "5px", fontWeight: "500", fontSize: "20px" }}>
-                                    {infoAuction.name}
+                                    {infoAuction.auction_room_name}
                                 </div>
                                 <div style={{ marginBottom: "0px", fontWeight: "500", fontSize: "16px" }}>
-                                    by {infoAuction.user_sell}
+                                    by {infoAuction.seller_name}
                                 </div>
                                 <div>
                                     <i className="fa fa-star" aria-hidden="true" style={{ color: "#ffc107" }}></i>
-                                    {' '}{infoAuction.voting}{' '}({infoAuction.number_voting})
+                                    {' '}{infoAuction.voting_avg_review}{' '}({infoAuction.number_review})
                                 </div>
                                 <div className='d-flex align-items-center'>
                                     <LinearProgress color="warning" variant="determinate" value={23} style={{ height: "2px", width: '100%' }} className="me-3" />
@@ -209,7 +210,7 @@ export default function LivedAuction() {
 
                                 <div style={{ overflowY: 'scroll', height: "calc(100vh - 270px)", position: "relative" }}>
                                     {lotsAuction.map((object, index) => (
-                                        <div key={index} className='p-3' style={{ backgroundColor: object.status === 1 ? '#FDF3F5' : 'white' }}>
+                                        <div key={index} className='p-3' style={{ backgroundColor: object.status === "1" ? '#FDF3F5' : 'white' }}>
                                             <ItemLivedAuction obj={object} />
                                         </div>
                                     ))}

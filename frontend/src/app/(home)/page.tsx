@@ -4,6 +4,10 @@ import UpcomingAuctions from '@/components/shared/upcomingAuctions';
 import ViewItem from '@/components/shared/viewItem';
 import { Container } from 'react-bootstrap';
 import styles from './page.module.css';
+import ItemSummary from '@/models/item_summary';
+import Category from '@/models/category';
+import AuctionSummary from '@/models/auction_summary';
+import AuctionInformation from '@/models/auction_information';
 
 
 const HomePage = () => {
@@ -11,290 +15,284 @@ const HomePage = () => {
     alert('Click')
   };
 
-  const recentlyViewedItems: any[] = [
+  const recentlyViewedItems: ItemSummary[] = [
     {
-      "image": "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
       "time": "Jan 1, 8:00 AM GMT+7",
-      "name": "CHINESE CRACKLE GLAZE WINE CUP WITH ORIGINAL RECEIPT ON STAND,",
-      "cost": 1000,
-      "user_sell": "testtt"
+      "title": "CHINESE CRACKLE GLAZE WINE CUP WITH ORIGINAL RECEIPT ON STAND,",
+      "max_bid": 1000,
+      "user_sell": "testtt",
+      id: 1000,
 
     },
     {
-      "image": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L366072565.JPG",
+      "image_path": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L366072565.JPG",
       "time": "Jan 1, 8:00 AM GMT+7",
-      "name": "John Nieto, Corn Dancers, ca. 1989",
-      "cost": 1000,
-      "user_sell": "testtt"
+      "title": "John Nieto, Corn Dancers, ca. 1989",
+      "max_bid": 1000,
+      "user_sell": "testtt",
+      id: 1100,
 
     },
     {
-      "image": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365897550.JPG",
+      "image_path": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365897550.JPG",
       "time": "Jan 1, 8:00 AM GMT+7",
-      "name": "Luis Jimenez, American Dream, 1972",
-      "cost": 4000,
-      "user_sell": "testtt"
+      "title": "Luis Jimenez, American Dream, 1972",
+      "max_bid": 4000,
+      "user_sell": "testtt",
+      id: 1200,
     }
   ];
 
 
-  const curatedCollections: any[] = [
+  const curatedCollections: Category[] = [
     {
-      "image": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Hygge.jpg",
+      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Hygge.jpg",
       "title": "The Hygge Edit",
     },
     {
-      "image": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Flawsome.jpg",
+      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Flawsome.jpg",
       "title": "Totally Flawsome",
     },
     {
-      "image": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/06/Collections-Category-Garden_Party.jpg",
+      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/06/Collections-Category-Garden_Party.jpg",
       "title": "Midsummer Garden Party",
     },
     {
-      "image": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Bazaar.jpg",
+      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Bazaar.jpg",
       "title": "Heritage Bazaar",
     },
     {
-      "image": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/09/Collections-Category-Time_Honored_Crafts.jpg",
+      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/09/Collections-Category-Time_Honored_Crafts.jpg",
       "title": "Time-Honored Crafts",
     },
     {
-      "image": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/09/Collections-Category-Grand_Tour.jpg",
+      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/09/Collections-Category-Grand_Tour.jpg",
       "title": "The Grand Tour",
     },
 
   ]
 
-  const promotedAuctions: any[] = [
+  const promotedAuctions: AuctionSummary[] = [
     {
 
-      "image": "https://image.invaluable.com/housePhotos/ShowplaceAntiques/29/764929/H20259-L362812913.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/ShowplaceAntiques/29/764929/H20259-L362812913.jpg",
       "time": "Mar 17, 11:00 PM GMT+7",
-      "name": "Prints, Multiples & Works on Paper",
-      "user_sell": "Auctions at",
+      "title": "Prints, Multiples & Works on Paper",
+      "seller_name": "Auctions at",
 
 
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365289746_mid.JPG",
+      "image_path": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365289746_mid.JPG",
       "time": "Mar 17, 11:00 PM GMT+7",
-      "name": "South Florida Fine Jewelry & Fashion Auction",
-      "user_sell": "Propstore Los",
+      "title": "South Florida Fine Jewelry & Fashion Auction",
+      "seller_name": "Propstore Los",
 
 
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/houseofwhitley/59/766359/H20767-L364795035_mid.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/houseofwhitley/59/766359/H20767-L364795035_mid.jpg",
       "time": "Mar 17, 11:00 PM GMT+7",
-      "name": "Long Island Home Decor & Estate Collections",
-      "user_sell": "Propstore Los",
+      "title": "Long Island Home Decor & Estate Collections",
+      "seller_name": "Propstore Los",
 
 
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/ActivityAuctions/35/766735/H22175-L365595994_mid.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/ActivityAuctions/35/766735/H22175-L365595994_mid.jpg",
       "time": "Mar 20, 1:00 AM GMT+7",
-      "name": "Propstore Los Angeles March Auction",
-      "user_sell": "Propstore Los",
+      "title": "Propstore Los Angeles March Auction",
+      "seller_name": "Propstore Los",
 
 
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/houseofwhitley/48/766248/H20767-L364655923_mid.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/houseofwhitley/48/766248/H20767-L364655923_mid.jpg",
       "time": "Mar 14, 11:00 PM GMT+7",
-      "name": "Auctions at",
-      "user_sell": "Propstore Los",
+      "title": "Auctions at",
+      "seller_name": "Propstore Los",
 
 
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
       "time": "Mar 17, 11:00 PM GMT+7",
-      "name": "Worldly Wonders",
-      "user_sell": "Propstore Los",
+      "title": "Worldly Wonders",
+      "seller_name": "Propstore Los",
 
 
     }
   ]
 
 
-  const upcomingOnlineAuctions: any[] = [
+  const upcomingOnlineAuctions: AuctionInformation[] = [
     {
 
-      "image": "https://image.invaluable.com/housePhotos/ShowplaceAntiques/29/764929/H20259-L362812913.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/ShowplaceAntiques/29/764929/H20259-L362812913.jpg",
       "time": "Mar 17, 11:00 PM GMT+7",
-      "name": "Prints, Multiples & Works on Paper",
-      "user_sell": "Auctions at",
-      "location": "Zurich, Switzerland",
-      "voting": 4.5,
-      "comment_number": 44,
-      image_child: [
+      "auction_room_name": "Prints, Multiples & Works on Paper",
+      "seller_name": "Auctions at",
+      "address": "Zurich, Switzerland",
+      "voting_avg_review": 4.5,
+      "number_review": 44,
+      images: [
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
       ]
-      , status: 1,
-      type: 0
+      , status: "1",
 
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365289746_mid.JPG",
+      "image_path": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365289746_mid.JPG",
       "time": "Mar 17, 11:00 PM GMT+7",
-      "name": "South Florida Fine Jewelry & Fashion Auction",
-      "user_sell": "Propstore Los",
-      "location": "Zurich, Switzerland",
-      "voting": 4.5,
-      "comment_number": 44,
-      image_child: [
+      "auction_room_name": "South Florida Fine Jewelry & Fashion Auction",
+      "seller_name": "Propstore Los",
+      "address": "Zurich, Switzerland",
+      "voting_avg_review": 4.5,
+      "number_review": 44,
+      images: [
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
       ]
-      , status: 0
-      ,
-      type: 1
+      , status: "1"
+
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/houseofwhitley/59/766359/H20767-L364795035_mid.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/houseofwhitley/59/766359/H20767-L364795035_mid.jpg",
       "time": "Mar 17, 11:00 PM GMT+7",
-      "name": "Long Island Home Decor & Estate Collections",
-      "user_sell": "Propstore Los",
+      "auction_room_name": "Long Island Home Decor & Estate Collections",
+      "seller_name": "Propstore Los",
 
-      "location": "Zurich, Switzerland",
-      "voting": 4.5,
-      "comment_number": 44,
-      image_child: [
+      "address": "Zurich, Switzerland",
+      "voting_avg_review": 4.5,
+      "number_review": 44,
+      images: [
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 1,
-      
-      type: 1
+      ], status: "0",
+
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/ActivityAuctions/35/766735/H22175-L365595994_mid.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/ActivityAuctions/35/766735/H22175-L365595994_mid.jpg",
       "time": "Mar 20, 1:00 AM GMT+7",
-      "name": "Propstore Los Angeles March Auction",
-      "user_sell": "Propstore Los",
-      "location": "Zurich, Switzerland",
-      "voting": 4.5,
-      "comment_number": 44,
-      image_child: [
-      ], status: 0,
-      type: 0
+      "auction_room_name": "Propstore Los Angeles March Auction",
+      "seller_name": "Propstore Los",
+      "address": "Zurich, Switzerland",
+      "voting_avg_review": 4.5,
+      "number_review": 44,
+      images: [
+      ], status: "1",
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/houseofwhitley/48/766248/H20767-L364655923_mid.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/houseofwhitley/48/766248/H20767-L364655923_mid.jpg",
       "time": "Mar 14, 11:00 PM GMT+7",
-      "name": "Auctions at",
-      "user_sell": "Propstore Los",
+      "auction_room_name": "Auctions at",
+      "seller_name": "Propstore Los",
 
-      "location": "Zurich, Switzerland",
-      "voting": 4.5,
-      "comment_number": 44,
-      image_child: [
+      "address": "Zurich, Switzerland",
+      "voting_avg_review": 4.5,
+      "number_review": 44,
+      images: [
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 0,
-      type: 0
+      ], status: "1",
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
       "time": "Mar 17, 11:00 PM GMT+7",
-      "name": "Worldly Wonders",
-      "user_sell": "Propstore Los",
-      "location": "Zurich, Switzerland",
-      "voting": 4.5,
-      "comment_number": 44,
-      image_child: [
+      "auction_room_name": "Worldly Wonders",
+      "seller_name": "Propstore Los",
+      "address": "Zurich, Switzerland",
+      "voting_avg_review": 4.5,
+      "number_review": 44,
+      images: [
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 1,
-      type: 1
+      ], status: "1",
 
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/houseofwhitley/48/766248/H20767-L364655923_mid.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/houseofwhitley/48/766248/H20767-L364655923_mid.jpg",
       "time": "Mar 14, 11:00 PM GMT+7",
-      "name": "Auctions at",
-      "user_sell": "Propstore Los",
+      "auction_room_name": "Auctions at",
+      "seller_name": "Propstore Los",
 
-      "location": "Zurich, Switzerland",
-      "voting": 4.5,
-      "comment_number": 44,
-      image_child: [
+      "address": "Zurich, Switzerland",
+      "voting_avg_review": 4.5,
+      "number_review": 44,
+      images: [
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 1,
-      type: 0
+      ], status: "0",
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
       "time": "Mar 17, 11:00 PM GMT+7",
-      "name": "Worldly Wonders",
-      "user_sell": "Propstore Los",
-      "location": "Zurich, Switzerland",
-      "voting": 4.5,
-      "comment_number": 44,
-      image_child: [
+      "auction_room_name": "Worldly Wonders",
+      "seller_name": "Propstore Los",
+      "address": "Zurich, Switzerland",
+      "voting_avg_review": 4.5,
+      "number_review": 44,
+      images: [
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 0,
-      type: 1
+      ], status: "0",
 
     },
     {
 
-      "image": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
+      "image_path": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
       "time": "Mar 17, 11:00 PM GMT+7",
-      "name": "Worldly Wonders",
-      "user_sell": "Propstore Los",
-      "location": "Zurich, Switzerland",
-      "voting": 4.5,
-      "comment_number": 44,
-      image_child: [
+      "auction_room_name": "Worldly Wonders",
+      "seller_name": "Propstore Los",
+      "address": "Zurich, Switzerland",
+      "voting_avg_review": 4.5,
+      "number_review": 44,
+      images: [
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
         "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-      ], status: 0,
-      type: 0
+      ], status: "0",
 
     },
   ]
- 
+
   return (
     <div>
       {/* <h1>My Next.js App</h1>
@@ -325,7 +323,7 @@ const HomePage = () => {
             {curatedCollections.map((object, i) => (
               <div className="col-sm-2" key={i}>
                 <div>
-                  <img src={object.image} alt={object.title} className="img-fluid" ></img>
+                  <img src={object.image_path} alt={object.title} className="img-fluid" ></img>
                 </div>
 
 
@@ -373,7 +371,7 @@ const HomePage = () => {
           <div className={styles.header_section}>Upcoming Online Auctions</div>
           {upcomingOnlineAuctions.map((object, i) => (
             <div className="row" key={i}>
-              <UpcomingAuctions obj={object}/>
+              <UpcomingAuctions obj={object} />
             </div>
           ))}
         </Container>

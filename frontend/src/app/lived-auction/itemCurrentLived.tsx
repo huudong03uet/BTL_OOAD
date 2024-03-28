@@ -10,23 +10,11 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
-interface ItemCurrentLivedInterface {
-    "status": number,
-    "name": string,
-    "id": number,
-    "sold": number,
-    "love": number,
-    "image": string,
-    "start_sell": number,
-    "estimate_begin": number,
-    "estimate_end": number,
-    "image_child": string[],
-    "over_view": string,
-    "condition_report": string,
+import ItemDetail from '@/models/item_detail';
 
-}
+
 // type SizeType = ConfigProviderProps['componentSize'];
-export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: ItemCurrentLivedInterface , handleButtonClick: any}) {
+export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: ItemDetail , handleButtonClick: any}) {
 
     const nextIcon = <ArrowForwardIosOutlinedIcon style={{ color: "black" }} />;
     const prevIcon = <ArrowBackIosOutlinedIcon style={{ color: "black" }} />
@@ -49,12 +37,12 @@ export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: Item
                     <p className='text-danger' style={{ marginRight: '5px' }}>Live Now</p>Lot {obj.id}
                 </div>
                 <div>
-                    {obj.name}
+                    {obj.title}
                 </div>
                 <div>
                     <Carousel activeIndex={index} onSelect={handleSelect} nextIcon={nextIcon} prevIcon={prevIcon}>
 
-                        {obj.image_child.map((image_child_obj, index) => (
+                        {obj.images.map((image_child_obj, index) => (
                             <Carousel.Item key={index}>
                                 <div className='bg-white w-100 h-100 d-flex justify-content-center align-items-center'>
                                     <img src={image_child_obj} style={{ maxHeight: "300px", width: "auto" }}></img>
@@ -66,7 +54,7 @@ export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: Item
                     </Carousel>
                 </div>
                 <div style={{ fontWeight: "400", fontSize: "16px" }} className="mt-3">
-                    Estimate: ${obj.estimate_begin} - ${obj.estimate_end}
+                    Estimate: ${obj.estimate_min} - ${obj.estimate_max}
                 </div>
                 <div className="d-flex justify-content-center m-2">
                     <Button variant="outline-dark d-flex align-items-center rounded-pill" onClick={handleButtonClick}>
@@ -98,7 +86,7 @@ export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: Item
                         </AccordionSummary>
                         <AccordionDetails>
                             <Typography>
-                                {obj.over_view}
+                                {obj.description}
                             </Typography>
                         </AccordionDetails>
                     </Accordion>

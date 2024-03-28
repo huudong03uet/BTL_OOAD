@@ -1,4 +1,4 @@
-export default interface Item {
+export default interface ItemDetail {
     id: number;
     images: string[];
     title: string;
@@ -10,6 +10,7 @@ export default interface Item {
     description: string;
     dimensions: string;
     artist: string;
+    love?: number;
     condition_report?: string;
     provenance?: string;
 }

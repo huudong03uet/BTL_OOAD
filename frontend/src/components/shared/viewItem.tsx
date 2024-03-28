@@ -1,16 +1,11 @@
 'use client'
+import ItemSummary from '@/models/item_summary';
 import React, { useState } from 'react'
 
-interface ViewItemInterface {
-    image: string;
-    time: string;
-    name: string;
-    cost: number;
-    user_sell: string;
-}
 
 
-function ViewItem({ obj }: { obj: ViewItemInterface }) {
+
+function ViewItem({ obj }: { obj: ItemSummary }) {
     const [status, setStatus] = useState<number>(0);
 
     function onClickHeart() {
@@ -37,7 +32,7 @@ function ViewItem({ obj }: { obj: ViewItemInterface }) {
                     </button>
 
                 )}
-                <img src={obj.image} alt={obj.name} className="img-thumbnail border-0"></img>
+                <img src={obj.image_path} alt={obj.title} className="img-thumbnail border-0"></img>
 
             </div>
             <div >
@@ -46,13 +41,13 @@ function ViewItem({ obj }: { obj: ViewItemInterface }) {
                 </div>
                 <div style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
                     className='my-1'>
-                    {obj.name}
+                    {obj.title}
                 </div>
                 <div>
                     by {obj.user_sell}
                 </div>
                 <div className="fw-bold">
-                    ${obj.cost}
+                    ${obj.max_bid}
                 </div>
             </div>
 

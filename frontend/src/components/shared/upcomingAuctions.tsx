@@ -7,6 +7,7 @@ import '@smastrom/react-rating/style.css'
 // "name": "Auctions at",
 // "user_sell": "Auctions at",
 import { Rating, ThinStar } from '@smastrom/react-rating'
+import AuctionInformation from '@/models/auction_information';
 
 // Declare it outside your component so it doesn't get re-created
 const myStyles = {
@@ -19,32 +20,12 @@ const myStyles = {
 }
 
 enum StatusAuction {
-    EventOrganizing = 0,
-    UpcomingEvent = 1,
-    EventOrganized = 2,
+    EventOrganizing = "0",
+    UpcomingEvent = "1",
+    EventOrganized = "2",
 
 }
 
-
-enum TypeAuction {
-    TimedAuction = 0,
-    LivedAuction = 1
-}
-
-interface UpcomingAuctionsInterface {
-    image: string,
-    time: string,
-    name: string,
-    user_sell: string,
-    location: string,
-    voting: number,
-    comment_number: number,
-    image_child: string[],
-    status: number,
-    type: number
-}
-// <div>
-{/*  */ }
 
 
 function openLivedAuction() {
@@ -57,13 +38,13 @@ function openLivedAuction() {
     window.open('/lived-auction', '_blank', windowFeatures);
 }
 
-function UpcomingAuctions({ obj }: { obj: UpcomingAuctionsInterface }) {
+function UpcomingAuctions({ obj }: { obj: AuctionInformation }) {
     return (
         <div style={{ borderTop: "2px solid #440a77" }}>
             <div className="container">
                 <div className="row py-4">
                     <div className="col-3 d-flex justify-content-center align-items-center" style={{ border: "1px solid #bac4c9" }}>
-                        <img src={obj.image} style={{ width: "auto", height: "300px", maxWidth: "100%" }} />
+                        <img src={obj.image_path} style={{ width: "auto", height: "300px", maxWidth: "100%" }} />
                     </div>
 
 
@@ -73,53 +54,41 @@ function UpcomingAuctions({ obj }: { obj: UpcomingAuctionsInterface }) {
 
                                 <div className='my-1 fw-bold'
                                     style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
-                                >                 {obj.name}
+                                >                 {obj.auction_room_name}
                                 </div>
                                 <div className="text-truncate">
-                                    by {obj.user_sell}
+                                    by {obj.seller_name}
                                 </div>
                                 <div className='d-flex'>
-                                    <Rating style={{ maxWidth: 100 }} value={obj.voting} readOnly={true} itemStyles={myStyles} />
-                                    {' '} {obj.voting} ({obj.comment_number} Reviews)
+                                    <Rating style={{ maxWidth: 100 }} value={obj.voting_avg_review} readOnly={true} itemStyles={myStyles} />
+                                    {' '} {obj.voting_avg_review} ({obj.number_review} Reviews)
                                 </div>
                                 <div className="my-3">
                                     {obj.time}
                                 </div>
                                 <div>
-                                    {obj.location}
+                                    {obj.address}
                                 </div>
                             </div>
 
 
                             <div className="col-4">
-                                {obj.type == TypeAuction.LivedAuction ? (
-                                    <p>
-                                        <i className='fa fa-feed'>
-                                        </i>
-                                        {' '}Live Auction
-                                    </p>
+                                <p>
+                                    <i className='fa fa-feed'>
+                                    </i>
+                                    {' '}Live Auction
+                                </p>
 
-                                ) : (
-                                    <p>
-                                        <i className='fa fa-clock'>
-                                        </i>
-                                        {' '}Timed Auction
-                                    </p>
-                                )}
+
 
 
                                 {obj.status == StatusAuction.EventOrganizing ? (
                                     <button type="button" className="btn btn-danger w-100">
-                                        {obj.type == TypeAuction.LivedAuction ? (
-                                            <div onClick={openLivedAuction}>
-                                                Enter Lived Auction
-                                            </div>
+                                        <div onClick={openLivedAuction}>
+                                            Enter Lived Auction
+                                        </div>
 
-                                        ) : (
-                                            <div>
-                                                Happening Now
-                                            </div>
-                                        )}
+
                                     </button>
 
                                 ) : (
@@ -132,7 +101,7 @@ function UpcomingAuctions({ obj }: { obj: UpcomingAuctionsInterface }) {
                             </div>
                         </div>
                         <div className="row">
-                            {obj.image_child && obj.image_child.length > 0 && obj.image_child.map((object, i) => (
+                            {obj.images && obj.images.length > 0 && obj.images.map((object, i) => (
                                 <div className="col-2 mx-2 px-0 " key={i}>
                                     <img src={object} style={{ width: "100%", height: "auto", maxWidth: "100%" }} className='position-relative top-50 start-50 translate-middle' />
                                 </div>

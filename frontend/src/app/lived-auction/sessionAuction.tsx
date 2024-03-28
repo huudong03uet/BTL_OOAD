@@ -5,10 +5,11 @@ import { Button, Divider, Flex, Radio } from 'antd';
 import type { ConfigProviderProps } from 'antd';
 import { Carousel } from 'react-bootstrap';
 import { image } from '@nextui-org/react';
+import SessionAuctionCost from '@/models/session_auction_cost';
 
 // type SizeType = ConfigProviderProps['componentSize'];
 export default function SessionAuction() {
-    const message = [
+    const message: SessionAuctionCost[] = [
         {
             "id": 1,
             "cost_auction": [

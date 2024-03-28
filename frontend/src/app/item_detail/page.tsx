@@ -5,7 +5,7 @@ import React, { useEffect, useState } from 'react';
 import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
 import VerticalSlide from "@/components/item/VerticalSlide";
-import Item from "@/models/item";
+import Item from "@/models/item_detail";
 import { get_detail_item } from "@/services/item/item";
 
 import { Modal } from 'react-bootstrap';
