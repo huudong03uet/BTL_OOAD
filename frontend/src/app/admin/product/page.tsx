@@ -1,48 +1,29 @@
 "use client"
 import React, { useState, ChangeEvent, FormEvent } from 'react';
-import add_item from '@/services/item/item';
+import add_product from '@/services/product/product';
 import UserDataService from '@/services/model/user';
-import axios from 'axios';
 
 const AddProduct: React.FC = () => {
-  const [productName, setProductName] = useState<string>('');
-  const [productProvenance, setProductProvenance] = useState<string>('');
+  const [producttitle, setProducttitle] = useState<string>('');
   const [productDescription, setProductDescription] = useState<string>('');
+  const [productArtist, setProductArtist] = useState<string>('');
   const [productImages, setProductImages] = useState<File[]>([]);
   const [user_id, setUserID] = useState<string | null>(UserDataService.getUserData()?.user_id?.toString() || null);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     let formData = new FormData();
-    formData.append("title", productName);
-    formData.append("provenance", productProvenance);
+    formData.append("title", producttitle);
     formData.append("description", productDescription);
+    formData.append("artist", productArtist);
 
-    if (productImages.length > 0 && user_id) {
+    if (productImages.length > 0 && user_id !== null) {
       formData.append("user_id", user_id);
       productImages.forEach((image) => {
         formData.append('images', image);
       });
-      console.log(productImages);
-      const CLOUD_NAME = "domjzehgf"
-      const PRESET_NAME = "btl_oop"
-      const urls = [];
-      const folder_name = "products"
-      const api = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
-      const data = new FormData();
-      data.append("upload_preset", PRESET_NAME);
-      data.append("folder", folder_name);
 
-      for(const file of productImages) {
-        data.append("file", file)
-        axios.post(api, data, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        }).then(response => console.log(response))
-      }
-
-      // await add_item(formData);
+      await add_product(formData);
     } else {
       console.error('Hình ảnh không được để trống');
     }
@@ -55,7 +36,7 @@ const AddProduct: React.FC = () => {
       for (let i = 0; i < files.length; i++) {
         newImages.push(files[i]);
       }
-      setProductImages([...productImages, ...newImages]); // Thêm các tập tin mới vào mảng
+      setProductImages([...productImages, ...newImages]);
     }
   };
 
@@ -70,26 +51,16 @@ const AddProduct: React.FC = () => {
       <h1>Thêm Sản Phẩm</h1>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="productName">Tên Sản Phẩm:</label>
+          <label htmlFor="producttitle">Tên Sản Phẩm:</label>
           <input
             type="text"
-            id="productName"
-            value={productName}
-            onChange={(e) => setProductName(e.target.value)}
+            id="producttitle"
+            value={producttitle}
+            onChange={(e) => setProducttitle(e.target.value)}
           />
         </div>
         <div>
-          <label htmlFor="productProvenance">productProvenance:</label>
-          <input
-            type="text"
-            id="productProvenance"
-            value={productProvenance}
-            onChange={(e) => setProductProvenance(e.target.value)}
-          />
-        </div>
-        <div></div>
-        <div>
-          <label htmlFor="productDescription">productDescription:</label>
+          <label htmlFor="productDescription">Loại Sản Phẩm:</label>
           <input
             type="text"
             id="productDescription"
@@ -98,11 +69,20 @@ const AddProduct: React.FC = () => {
           />
         </div>
         <div>
+          <label htmlFor="productDescription">productArtist:</label>
+          <input
+            type="text"
+            id="productArtist"
+            value={productArtist}
+            onChange={(e) => setProductArtist(e.target.value)}
+          />
+        </div>
+        <div>
           <label htmlFor="productImages">Hình Ảnh:</label>
           <input
             type="file"
             id="productImages"
-            multiple
+            multiple // Cho phép chọn nhiều tập tin
             onChange={handleImageChange}
           />
         </div>
@@ -126,4 +106,3 @@ const AddProduct: React.FC = () => {
 };
 
 export default AddProduct;
-

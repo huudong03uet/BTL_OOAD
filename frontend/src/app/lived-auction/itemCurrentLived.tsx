@@ -10,11 +10,11 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
-import ItemDetail from '@/models/item_detail';
+import ProductDetail from '@/models/product_detail';
 
 
 // type SizeType = ConfigProviderProps['componentSize'];
-export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: ItemDetail , handleButtonClick: any}) {
+export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: ProductDetail , handleButtonClick: any}) {
 
     const nextIcon = <ArrowForwardIosOutlinedIcon style={{ color: "black" }} />;
     const prevIcon = <ArrowBackIosOutlinedIcon style={{ color: "black" }} />
@@ -45,7 +45,7 @@ export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: Item
                         {obj.images.map((image_child_obj, index) => (
                             <Carousel.Item key={index}>
                                 <div className='bg-white w-100 h-100 d-flex justify-content-center align-items-center'>
-                                    <img src={image_child_obj} style={{ maxHeight: "300px", width: "auto" }}></img>
+                                    <img src={image_child_obj.path} style={{ maxHeight: "300px", width: "auto" }}></img>
 
                                 </div>
 

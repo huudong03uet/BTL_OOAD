@@ -8,6 +8,7 @@ interface Props {
 
 const VerticalSlide = ({ images }: Props) => {
   const [currentImage, setCurrentImage] = useState(images[0]); // Ảnh hiện tại được hiển thị trong main-slide-img
+  console.log(images[0])
 
   const handleClickThumbnail = (imageUrl: string) => {
     setCurrentImage(imageUrl); // Cập nhật ảnh hiện tại khi click vào thumbnail
