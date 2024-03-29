@@ -9,19 +9,4 @@ cloudinary.config({
     api_secret: process.env.API_SECRET,
 });
 
-
-function upload_image(image_path, folder_name) {
-    return new Promise((resolve, reject) => {
-        cloudinary.uploader.upload(image_path, { folder: folder_name }, (error, result) => {
-            if (error) {
-                logger.error(`Upload image: ${error}`)
-                reject(error);
-            } else {
-                logger.info(`Upload image: ${result}`)
-                resolve(result);
-            }
-        });
-    })
-}
-
-module.exports = upload_image;
+module.exports = cloudinary;
