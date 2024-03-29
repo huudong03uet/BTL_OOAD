@@ -122,9 +122,6 @@ function ModalLogin(props: any) {
       setError('Please enter your password.');
       return;
     }
-    
-    console.log('Username:', username);
-    console.log('Password:', password);
     let err = await login_service(password, username)
 
     if (typeof err === 'string') {

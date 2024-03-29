@@ -1,11 +1,6 @@
 import React from 'react'
 
 import '@smastrom/react-rating/style.css'
-// 
-//         "image": "https://image.invaluable.com/housePhotos/ShowplaceAntiques/29/764929/H20259-L362812913.jpg",
-// "time": "Mar 17, 11:00 PM GMT+7",
-// "name": "Auctions at",
-// "user_sell": "Auctions at",
 import { Rating, ThinStar } from '@smastrom/react-rating'
 import AuctionInformation from '@/models/auction_information';
 

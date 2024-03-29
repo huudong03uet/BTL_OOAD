@@ -3,16 +3,6 @@
 import ItemSummary from '@/models/item_summary';
 import React, { useState } from 'react';
 
-// interface ResSearchItemInterface {
-//     image: string;
-//     item_name: string;
-//     artist: string;
-//     status: string;
-//     time: string;
-//     cost: number;
-//     user_id: string;
-// }
-
 function ResSearchItem({ searchResults }: { searchResults: ItemSummary[] }) {
     const [status, setStatus] = useState<number>(0);
 

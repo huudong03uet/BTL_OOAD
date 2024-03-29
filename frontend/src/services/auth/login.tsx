@@ -7,33 +7,28 @@ import { HOST } from '@/services/host';
 
 const login_service = async (
     password: string,
-    username: string,
+    user_name: string,
 ) => {
     try {
         let url = `${HOST}/auth/login`;
-        let body = {username: username, password: password}
+        let body = {user_name: user_name, password: password}
         const response = await axios.post(url, body);
 
         let user: User = {
             user_id: response.data.id,
             email: response.data.email,
-            firstName: response.data.firstName,
-            lastName: response.data.lastName,
-            username: response.data.username,
-            evaluate: response.data.evaluate,
+            first_name: response.data.first_name,
+            last_name: response.data.last_name,
+            user_name: response.data.user_name,
             coin: response.data.coin,
             phone: response.data.phone,
-            country: response.data.country,
-            address: response.data.address,
-            city: response.data.city,
-            state: response.data.state,
-            postal_code: response.data.postal_code,
+            location_id: response.data.location_id,
         }
         UserDataService.setUserData(user);
         return;
     } catch (error: any) {
         console.error('Error fetching data:', error);
-        return error.response.data.message;
+        return error.response.data;
     }
 };
 

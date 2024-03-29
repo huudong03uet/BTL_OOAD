@@ -1,15 +1,10 @@
 export default interface User {
     user_id: number;
     email: string;
-    firstName: string;
-    lastName: string;
-    username: string;
-    evaluate: string;
+    first_name: string;
+    last_name: string;
+    user_name: string;
     coin: number,
     phone: string,
-    country: string,
-    address: string,
-    city: string,
-    state: string,
-    postal_code: string,
+    location_id: number,
 }
