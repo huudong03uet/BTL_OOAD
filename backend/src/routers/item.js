@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 
 const router = express.Router();
-const itemController = require("../controllers/item")
+const itemController = require("../controllers/product")
 
 const MEDIA = "media/"
 

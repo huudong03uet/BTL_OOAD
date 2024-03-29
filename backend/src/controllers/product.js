@@ -2,9 +2,8 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../../conf/sequelize')
 const logger = require('../../conf/logger')
-const ImageType = require('../../constants/image_type')
 const statusCode = require('../../constants/status')
-const Item = require('../models/item');
+const Item = require('../models/product');
 const Image = require('../models/image')
 
 let add_item = async (req, res) => {
@@ -13,7 +12,6 @@ let add_item = async (req, res) => {
         const { user_id, title, description, provenance } = req.body;
         const images = req.files.map(file => ({
             path: file.path.replace(/\\/g, '/'),
-            type: ImageType.IMAGE_ITEM
         }));
 
         const item = await Item.create(

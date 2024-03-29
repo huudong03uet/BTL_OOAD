@@ -1,35 +1,42 @@
+const sequelize = require('../../conf/sequelize')
 const statusCode = require('../../constants/status')
 const logger = require("../../conf/logger")
 
 const User = require('../models/user');
 
-const { hash_password, compare_password } = require('./util/password')
-const send_email = require('./util/send_email')
+const { hash_password, compare_password, random_password } = require('./util/password')
+const send_email = require('../../conf/email');
+const { find_or_create_location } = require('./location');
 
 
 const edit_profile = async (req, res) => {
+    const t = await sequelize.transaction();
     try {
-        const { user_id, firstName, lastName, country, address, city, state, postal_code, phone } = req.body;
+        const { user_id, first_name, last_name, phone } = req.body.user;
+        const { country, address, city, state, postal_code } = req.body.location;
 
         const user = await User.findByPk(user_id);
 
         if (!user) {
             logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Không tìm thấy người dùng`);
-            return res.status(statusCode.HTTP_404_NOT_FOUND).json({ message: "Không tìm thấy người dùng" })
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json("Không tìm thấy người dùng")
         }
 
-        user.set({
-            firstName: firstName,
-            lastName: lastName,
-            country: country,
-            address: address,
-            city: city,
-            state: state,
-            postal_code: postal_code,
-            phone: phone,
-        });
+        let location = await find_or_create_location(country, address, city, state, postal_code, t)
 
-        await user.save()
+        user.set(
+            {
+                first_name: first_name,
+                last_name: last_name,
+                phone: phone,
+                location_id: location.id
+            },
+            { transaction: t }
+        );
+
+        await user.save({ transaction: t })
+
+        await t.commit();
 
         logger.info(`${statusCode.HTTP_202_ACCEPTED} [user:${user.id}]`)
         return res.status(statusCode.HTTP_202_ACCEPTED).json( user )
@@ -48,14 +55,14 @@ const change_password = async(req, res) => {
 
         if (!user) {
             logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Không tìm thấy người dùng`);
-            return res.status(statusCode.HTTP_404_NOT_FOUND).json({ message: "Không tìm thấy người dùng" })
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json("Không tìm thấy người dùng")
         }
 
         let res_cmp_pass = await compare_password(old_password, user.password)
 
         if (!res_cmp_pass) {
             logger.warn(`${statusCode.HTTP_401_UNAUTHORIZED} Sai mật khẩu`);
-            return res.status(statusCode.HTTP_401_UNAUTHORIZED).json({ message: "Sai mật khẩu" });
+            return res.status(statusCode.HTTP_401_UNAUTHORIZED).json("Sai mật khẩu");
         }
 
         let { success, hashedPassword } = await hash_password(new_password);
@@ -85,12 +92,13 @@ let forgot_password = async (req, res) => {
 
         if (!user) {
             logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Không tìm thấy người dùng`);
-            return res.status(statusCode.HTTP_404_NOT_FOUND).json({ message: "Không tìm thấy người dùng" })
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json("Không tìm thấy người dùng")
         }
 
-        let { success, hashedPassword } = await hash_password("Abcd1234@");
+        const new_password = random_password();
+        let { success, hashedPassword } = await hash_password(new_password);
         if (!success) {
-            return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json({message: "Lỗi"})
+            return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json("Lỗi")
         }
         user.password = hashedPassword;
         await user.save();
@@ -99,7 +107,7 @@ let forgot_password = async (req, res) => {
         await send_email(
             'ntdat12a03@gmail.com',
             user.email,
-            `password = Abc123456@`,
+            `password = ${new_password}`,
             "QUEN MAT KHAU",
         )
 
