@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from "react";
 import { createViewerToken } from "./actions";
 import { LiveKitRoom } from "@livekit/components-react";
 import StreamPlayer from "./stream-player";
-import ChannelInfo from "./channel-info";
 
 export default function WatchChannel({ slug }: { slug: string }) {
   const [viewerToken, setViewerToken] = useState("");
@@ -62,19 +61,19 @@ export default function WatchChannel({ slug }: { slug: string }) {
     <LiveKitRoom
       token={viewerToken}
       serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_WS_URL}
-      className="flex flex-1 flex-col"
+      className="flex flex-1 flex-col h-100"
     >
       {/* <WatchingAsBar viewerName={viewerName} /> */}
-      <div className="flex h-full flex-1">
-        <div className="flex-1 flex-col container">
+      <div className="flex h-100 flex-1">
+        <div className="flex-1 flex-col container h-100">
           <StreamPlayer streamerIdentity={slug} />
           {/* <ChannelInfo streamerIdentity={slug} viewerIdentity={viewerName} /> */}
         </div>
-        <div className="sticky hidden w-80 border-l md:block">
+        {/* <div className="sticky hidden w-80 border-l md:block">
           <div className="absolute top-0 bottom-0 right-0 flex h-full w-full flex-col gap-2 p-2">
-            {/* <Chat participantName={viewerName} /> */}
+            <Chat participantName={viewerName} />
           </div>
-        </div>
+        </div> */}
       </div>
       
     </LiveKitRoom>

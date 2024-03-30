@@ -59,3 +59,5 @@ frontend/package-lock.json
 
 **/media/
 */logs
+
+frontend/.env
