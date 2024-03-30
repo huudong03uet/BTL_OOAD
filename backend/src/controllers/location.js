@@ -13,6 +13,7 @@ let get_location = async (req, res) => {
 
         const location = await Location.findByPk(location_id);
 
+        logger.info(`${statusCode.HTTP_202_ACCEPTED} [location:${location_id}]`)
         return res.status(statusCode.HTTP_200_OK).json(location)
     } catch (error) {
         logger.error(`Get Location: ${error}`)
@@ -46,7 +47,7 @@ let find_or_create_location = async (country, address, city, state, postal_code,
             transaction: transaction
         });
 
-        logger.info(`Find or Create: Create: ${created}, location: location`)
+        logger.info(`Find or Create: Create: ${created}, [location: ${location.id}]`)
         return location
     } catch (error) {
         logger.error(`Set Location: ${error}`)

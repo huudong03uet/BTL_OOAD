@@ -76,6 +76,24 @@ let get_product_detail = async (req, res) => {
     }
 }
 
+let get_product_by_status = async (req, res) => {
+    try {
+        const status = req.params.status;
+
+        const products = await Product.findAll({
+            where: {
+                status: status
+            }
+        });
+
+        logger.info(`${statusCode.HTTP_200_OK} [product status:${status}]`)
+        return res.status(statusCode.HTTP_200_OK).json(products);
+    } catch (error) {
+        logger.error(`Get product status: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
 module.exports = {
     add_product,
     get_product_detail
