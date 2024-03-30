@@ -4,45 +4,21 @@ import UpcomingAuctions from '@/components/shared/upcomingAuctions';
 import ViewItem from '@/components/shared/viewItem';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import '@smastrom/react-rating/style.css'
+import styles1 from '@/app/(home)/page.module.css';
 import { Container, Button, Form, Row, Col, InputGroup, Dropdown } from "react-bootstrap";
 import Head from 'next/head';
+import React, { useState, useRef } from 'react';
 import styles from '@/styles/customer/auctionHouse.module.css';
 import AppHeader from '@/components/AppHeader';
 import AppFooter from '@/components/AppFooter';
 import Map from '@/components/auction-house/Map';
+import Tab from '@/components/auction-house/Tab';
+import TabContent from '@/components/auction-house/TabContent';
+import AuctionInformation from '@/models/auction_information';
+import ItemDetail from '@/models/item_detail';
+import SoldItem from '@/components/shared/soldItem';
 
-interface UpcomingAuction {
-    id: number;
-    image: string;
-    time: string;
-    name: string;
-    max_est: number;
-    min_est: number;
-    user_sell: string;
-    location: string;
-    voting: number;
-    comment_number: number;
-    image_child: string[];
-    status: number;
-    type: number;
-}
-
-interface SoldAuction {
-    id: number;
-    image: string;
-    time: string;
-    name: string;
-    max_est: number;
-    min_est: number;
-    price: number;
-    user_sell: string;
-    location: string;
-    voting: number;
-    comment_number: number;
-    image_child: string[];
-    status: number;
-    type: number;
-}
 
 interface PastAuction {
     date: Date;
@@ -60,13 +36,33 @@ interface AuctionHouseProps {
     auctionHouse_location: Location;
     auctionHouse_vote?: number;
     auctionHouse_review?: string[];
-    auctionHouse_upcomingAuctions?: UpcomingAuction[];
-    auctionHouse_soldAuctions?: SoldAuction[];
+    auctionHouse_upcomingAuctions?: AuctionInformation[];
+    auctionHouse_soldAuctions?: ItemDetail[];
     auctionHouse_pastAuctions?: PastAuction[];
 }
 const AuctionHouse = (auctionHouse: AuctionHouseProps) => {
     const createdTime = new Date(auctionHouse.auctionHouse_createdTime);
     const ahCreateTime = createdTime.getFullYear();
+
+    const [activeTab, setActiveTab] = useState<'upcoming' | 'review' | 'sold' | 'past_ac'>('upcoming');
+    const tabContentRefs = {
+        upcoming: useRef<HTMLDivElement>(null),
+        review: useRef<HTMLDivElement>(null),
+        sold: useRef<HTMLDivElement>(null),
+        past_ac: useRef<HTMLDivElement>(null),
+    };
+
+    const handleTabClick = (tabId: 'upcoming' | 'review' | 'sold' | 'past_ac') => {
+        setActiveTab(tabId);
+        scrollToTabContent(tabId);
+    };
+
+    const scrollToTabContent = (tabId: 'upcoming' | 'review' | 'sold' | 'past_ac') => {
+        const tabContentRef = tabContentRefs[tabId].current;
+        if (tabContentRef) {
+            tabContentRef.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
 
     //fake data
     const auctionHouseFake = {
@@ -78,40 +74,62 @@ const AuctionHouse = (auctionHouse: AuctionHouseProps) => {
         auctionHouse_review: ["Review 1", "Review 2", "Review 3"],
         auctionHouse_upcomingAuctions: [
             {
-                id: 1,
-                image: "url_to_image",
-                time: "2022-04-01 10:00:00",
-                name: "Upcoming Auction 1",
-                max_est: 1000,
-                min_est: 500,
-                user_sell: "Seller 1",
-                location: "Location 1",
-                voting: 4.8,
-                comment_number: 10,
-                image_child: ["url_to_image_1", "url_to_image_2"],
-                status: 1,
-                type: 1
-            },
+
+                "image_path": "https://image.invaluable.com/housePhotos/ShowplaceAntiques/29/764929/H20259-L362812913.jpg",
+                "time": "Mar 17, 11:00 PM GMT+7",
+                "auction_room_name": "Prints, Multiples & Works on Paper",
+                "seller_name": "Auctions at",
+                "address": "Zurich, Switzerland",
+                "voting_avg_review": 4.5,
+                "number_review": 44,
+                images: [
+                    "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
+                    "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
+                    "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
+                    "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
+                    "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
+                ]
+                , status: "1",
+
+            }
             // Add more upcoming auctions if needed
         ],
         auctionHouse_soldAuctions: [
+
             {
                 id: 1,
-                image: "url_to_image",
-                time: "2022-03-01 10:00:00",
-                name: "Sold Auction 1",
-                max_est: 800,
-                min_est: 400,
-                price: 900,
-                user_sell: "Seller 2",
-                location: "Location 2",
-                voting: 4.7,
-                comment_number: 8,
-                image_child: ["url_to_image_1", "url_to_image_2"],
-                status: 2,
-                type: 2
+                images: ['image1.jpg', 'image2.jpg', 'image3.jpg'],
+                title: 'Example Item 1',
+                status: 'Available',
+                count_bid: 10,
+                max_bid: 1000,
+                estimate_min: 500,
+                estimate_max: 1000,
+                price: 1500,
+                description: 'This is an example item description.',
+                dimensions: '10cm x 20cm',
+                artist: 'Example Artist 1',
+                love: 50,
+                condition_report: 'Excellent condition',
+                provenance: 'Example provenance information',
             },
-            // Add more sold auctions if needed
+            {
+                id: 2,
+                images: ['image4.jpg', 'image5.jpg', 'image6.jpg'],
+                title: 'Example Item 2',
+                status: 'Sold',
+                count_bid: 5,
+                max_bid: 2000,
+                estimate_min: 1000,
+                estimate_max: 2000,
+                price: 1800,
+                description: 'This is another example item description.',
+                dimensions: '15cm x 25cm',
+                artist: 'Example Artist 2',
+                love: 70,
+                condition_report: 'Good condition',
+                provenance: 'Another example provenance information',
+            },
         ],
         auctionHouse_pastAuctions: [
             {
@@ -161,6 +179,72 @@ const AuctionHouse = (auctionHouse: AuctionHouseProps) => {
                     </div>
                 </div>
 
+                <div>
+                    <div className="tabs">
+                        <Tab
+                            id="upcoming"
+                            title="Upcoming Auctions"
+                            active={activeTab === 'upcoming'}
+                            onClick={() => handleTabClick('upcoming')}
+                        />
+                        <Tab
+                            id="review"
+                            title="Buyer Reviews"
+                            active={activeTab === 'review'}
+                            onClick={() => handleTabClick('review')}
+                        />
+                        <Tab
+                            id="past_ac"
+                            title="Past Auctions"
+                            active={activeTab === 'past_ac'}
+                            onClick={() => handleTabClick('past_ac')}
+                        />
+                    </div>
+
+                    <div>
+                        <TabContent id="upcoming" active={activeTab === 'upcoming'} ref={tabContentRefs.upcoming}>
+                            {/* Nội dung của tab upcoming */}
+                            <h1>Upcoming Auctions from {auctionHouse.auctionHouse_name} ({auctionHouse.auctionHouse_upcomingAuctions?.length})</h1>
+                            {auctionHouse.auctionHouse_upcomingAuctions && auctionHouse.auctionHouse_upcomingAuctions.map((obj, index) => (
+                                <UpcomingAuctions key={index} obj={obj} />
+                            ))}
+                        </TabContent>
+
+                        <TabContent id="review" active={activeTab === 'review'} ref={tabContentRefs.review}>
+                            {/* Nội dung của tab review */}
+                            <h1>Nội dung của tab review</h1>
+                            <div>Upcoming Auctions from TS Collectibles (0)</div>
+                            <div>This house has no upcoming auctions. Follow this seller to get notified when new sales are added.</div>
+                            <div>View all upcoming auctions on Invaluable</div>
+                        </TabContent>
+
+                        <TabContent id="sold" active={activeTab === 'sold'} ref={tabContentRefs.sold}>
+                            {/* Nội dung của tab sold */}
+                            <h1>Notable Past Lots Sold at Auction</h1>
+                            {auctionHouse.auctionHouse_soldAuctions && auctionHouse.auctionHouse_soldAuctions.map((obj, index) => (
+                                <SoldItem key={index} obj={obj}></SoldItem>
+                            ))}
+                        </TabContent>
+
+                        <TabContent id="past_ac" active={activeTab === 'past_ac'} ref={tabContentRefs.past_ac}>
+                            {/* Nội dung của tab past_ac */}
+                            <h1>Past Auctions from {auctionHouse.auctionHouse_name}</h1>
+                            Nội dung của tab past_ac
+                        </TabContent>
+                    </div>
+
+                    <style jsx>{`
+                        .tabs {
+                        margin-bottom: 20px;
+                        }
+                        .tabcontent {
+                        display: none;
+                        }
+                        .active {
+                        display: block;
+                        }
+                    `}</style>
+                </div>
             </div>
             <AppFooter />
         </>

@@ -7,6 +7,7 @@ export default interface ItemDetail {
     max_bid?: number;
     estimate_min?: number;
     estimate_max?: number;
+    price?:number;
     description: string;
     dimensions: string;
     artist: string;
