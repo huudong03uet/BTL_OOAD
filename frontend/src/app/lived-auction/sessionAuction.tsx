@@ -6,6 +6,7 @@ import type { ConfigProviderProps } from 'antd';
 import { Carousel } from 'react-bootstrap';
 import { image } from '@nextui-org/react';
 import SessionAuctionCost from '@/models/session_auction_cost';
+import WatchChannel from '@/components/live-stream/watch-channel';
 
 // type SizeType = ConfigProviderProps['componentSize'];
 export default function SessionAuction() {
@@ -41,14 +42,20 @@ export default function SessionAuction() {
         }
     ]
 
+    function getSlugChannel() {
+        return "exampleSlug"
+    }
+
     return (
         <>
             <div>
                 <div>
-                    <div style={{ height: "200px", backgroundColor: "black" }}></div>
+                    <div style={{ height: "230px" }}>
+                        <WatchChannel slug={getSlugChannel()} />
+                    </div>
                 </div>
                 <div>
-                    <div style={{ height: "300px", overflow: "auto" }}>
+                    <div style={{ height: "265px", overflow: "auto" }} className='me-3'>
                         {message.map((lot_auction, index) => (
                             <div className='ms-4 me-3' key={Math.random()}>
                                 <div className='d-flex justify-content-center' style={{ fontSize: "13px", fontWeight: "500" }}>
@@ -66,7 +73,7 @@ export default function SessionAuction() {
                                     className='d-flex justify-content-between' style={{ fontWeight: "500" }} >
 
                                         {index == 0 ? (
-                                            <div className='d-flex justify-content-between w-100 p-3 border-start position-relative'>
+                                            <div className='d-flex justify-content-between w-100 px-3 py-2 border-start position-relative'>
                                                 <i className="fa fa-circle position-absolute top-50 start-0 translate-middle" style={{ fontSize: "50%" }} aria-hidden="true"></i>
 
 
@@ -82,7 +89,7 @@ export default function SessionAuction() {
                                         ) : index == lot_auction.cost_auction.length - 1 ? (
                                             
 
-                                            <div className='d-flex justify-content-between w-100 p-3 border-start position-relative' style={{zIndex:"1", backgroundColor: "#f4f5f6"}}>
+                                            <div className='d-flex justify-content-between w-100 px-3 pt-3 pb-2  border-start position-relative' style={{zIndex:"1", backgroundColor: "#f4f5f6"}}>
                                                 {/* <div style={{backgroundColor: "#f4f5f6", zIndex:"0", left: "50%", top: "50%", transform: "translate(-50%, -50%)", width:"200%", position: "absolute"}} className='position-absolute h-100'></div> */}
 
                                                 <i className="fa fa-circle position-absolute top-50 start-0 translate-middle" style={{ fontSize: "50%", zIndex:"1" }} aria-hidden="true"></i>
@@ -102,7 +109,7 @@ export default function SessionAuction() {
                                             <>
                                                 {cost > (lot_auction?.cost_auction?.at(index - 1) ?? 0) ? (
 
-                                                    <div className='d-flex justify-content-between w-100 p-3 border-start position-relative'>
+                                                    <div className='d-flex justify-content-between w-100 px-3 pt-3 pb-2 border-start position-relative'>
                                                         <i className="fa fa-circle position-absolute top-50 start-0 translate-middle" style={{ fontSize: "50%" }} aria-hidden="true"></i>
                                                         <div>
                                                             ${cost}
@@ -114,7 +121,7 @@ export default function SessionAuction() {
                                                     </div>
                                                 ) : (
 
-                                                    <div style={{ color: "#e4002b" }} className='d-flex justify-content-between w-100 p-3 border-start position-relative'>
+                                                    <div style={{ color: "#e4002b" }} className='d-flex justify-content-between w-100 px-3 pt-3 pb-2  border-start position-relative'>
                                                         <i className="fa fa-circle position-absolute top-50 start-0 translate-middle" style={{ fontSize: "50%" }} aria-hidden="true"></i>
                                                         <div>
                                                             ${cost}

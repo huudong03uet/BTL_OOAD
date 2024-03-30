@@ -11,23 +11,25 @@ const slugSchema = z
   .min(3);
 
 function generateSlug() {
-    return "example";
+  return "exampleSlug";
 }
 
 
 export default function StreamingVideoPage() {
-const router = useRouter();
+  const router = useRouter();
 
   return (
     <div>
-    <Button variant="secondary"  onClick={() => router.push(`/admin/streaming-video/${generateSlug()}/host`)}>
+      <Button variant="secondary" onClick={() => router.push(`/admin/streaming-video/${generateSlug()}/host`)}>
         Join as host
-    </Button>
-    <Button variant="secondary"  onClick={() => router.push(`/admin/streaming-video/${generateSlug()}/client`)}>
-        Join as client
-    </Button>
-    </div>
+      </Button>
 
+    </div>
+    // <div>
+    // <Button variant="secondary"  onClick={() => router.push(`/admin/streaming-video/${generateSlug()}/client`)}>
+    //     Join as client
+    // </Button>
+    // </div>
 
   );
 }
