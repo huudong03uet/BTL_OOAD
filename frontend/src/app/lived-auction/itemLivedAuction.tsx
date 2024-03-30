@@ -3,7 +3,7 @@ import { info } from 'console';
 import React, { useState } from 'react';
 import { Button, Divider, Flex, Radio } from 'antd';
 import type { ConfigProviderProps } from 'antd';
-import ItemDetail from '@/models/item_detail';
+import ProductDetail from '@/models/product_detail';
 import ItemSummary from '@/models/item_summary';
 // interface ItemLivedAuctionInterface {
 //     "status": number,

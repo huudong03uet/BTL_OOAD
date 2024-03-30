@@ -4,9 +4,9 @@ import axios from 'axios';
 import { HOST } from '@/services/host';
 
 
-let add_item = async (formData: FormData) => {
+let add_product = async (formData: FormData) => {
     try {
-        let url = `${HOST}/item/add-item`;
+        let url = `${HOST}/product/add`;
         const response = await axios.post(url, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
@@ -15,19 +15,19 @@ let add_item = async (formData: FormData) => {
         return;
     } catch (error: any) {
         console.error('Error fetching data:', error);
-        return error.response.message;
+        return error.response.data;
     }
 }
 
-export async function get_detail_item(item_id: number) {
+export async function get_detail_product(product_id: number) {
     try {
-        let url = `${HOST}/item/detail-item/item_id=${item_id}`;
+        let url = `${HOST}/product/detail/id=${product_id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {
         console.error('Error fetching data:', error);
-        return error.response.message;
+        return error.response.data;
     }
 }
 
-export default add_item;
+export default add_product;

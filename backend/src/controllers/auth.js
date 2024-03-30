@@ -4,21 +4,22 @@ const User = require('../models/user');
 const statusCode = require('../../constants/status')
 const logger = require("../../conf/logger")
 
-const { hash_password, compare_password } = require('./util/password')
+const { hash_password, compare_password } = require('./util/password');
+const Location = require('../models/location');
 
 
 let login = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { user_name, password } = req.body;
 
         const user = await User.findOne({
             where: {
                 [Op.or]: [
                     {
-                        [Op.and]: [{ email: username }],
+                        [Op.and]: [{ email: user_name }],
                     },
                     {
-                        [Op.and]: [{ username: username }],
+                        [Op.and]: [{ user_name: user_name }],
                     },
                 ],
             },
@@ -26,7 +27,7 @@ let login = async (req, res) => {
 
         if (!user) {
             logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Không tìm thấy người dùng`);
-            return res.status(statusCode.HTTP_404_NOT_FOUND).json({ message: "Không tìm thấy người dùng" });
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json("Không tìm thấy người dùng");
         }
         
         let result = await compare_password(password, user.password)
@@ -37,7 +38,7 @@ let login = async (req, res) => {
         }
 
         logger.warn(`${statusCode.HTTP_401_UNAUTHORIZED} Sai mật khẩu`);
-        return res.status(statusCode.HTTP_401_UNAUTHORIZED).json({ message: "Sai mật khẩu" });
+        return res.status(statusCode.HTTP_401_UNAUTHORIZED).json("Sai mật khẩu");
     } catch (error) {
         logger.error(`Login: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
@@ -47,37 +48,33 @@ let login = async (req, res) => {
 
 let sign_up = async (req, res) => {
     try {
-        const { firstName, lastName, username, email, password } = req.body;
+        const { first_name, last_name, user_name, email, password } = req.body;
 
         const existingUserByEmail = await User.findOne({
             where: { email: email },
         });
 
         const existingUserByUsername = await User.findOne({
-            where: { username: username },
+            where: { user_name: user_name },
         });
 
         if (existingUserByEmail) {
             logger.warn(`${statusCode.HTTP_406_NOT_ACCEPTABLE} Email already exists in the system.`);
-            return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json({
-                error: 'Email already exists in the system.',
-            });
+            return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json('Email already exists in the system.');
         }
 
         if (existingUserByUsername) {
             logger.warn(`${statusCode.HTTP_406_NOT_ACCEPTABLE} Username already exists in the system.`);
-            return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json({
-                error: 'Username already exists in the system.',
-            });
+            return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json('Username already exists in the system.');
         }
 
         let { success, hashedPassword } = await hash_password(password);
 
         if (success) {
             const newUser = await User.create({
-                username: username,
-                firstName: firstName,
-                lastName: lastName,
+                user_name: user_name,
+                first_name: first_name,
+                lastName: last_name,
                 email: email,
                 password: hashedPassword,
             });

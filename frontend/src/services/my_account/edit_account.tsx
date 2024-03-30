@@ -4,27 +4,26 @@ import axios from 'axios';
 import User from '@/models/user';
 import UserDataService from '../model/user';
 import { HOST } from '@/services/host';
+import Location from '@/models/location';
 
-const edit_account_service = async (user: User) => {
+const edit_account_service = async (user: User, location: Location) => {
     try {
         let url = `${HOST}/my-account/edit-profile`;
-        let body = user
+        let body = {
+            user: user,
+            location: location,
+        }
         const response = await axios.post(url, body);
 
         let user_edit: User = {
             user_id: response.data.id,
             email: response.data.email,
-            firstName: response.data.firstname,
-            lastName: response.data.lastName,
-            username: response.data.username,
-            evaluate: response.data.evaluate,
+            first_name: response.data.firstname,
+            last_name: response.data.lastName,
+            user_name: response.data.username,
             coin: response.data.coin,
             phone: response.data.phone,
-            country: response.data.country,
-            address: response.data.address,
-            city: response.data.city,
-            state: response.data.state,
-            postal_code: response.data.postal_code,
+            location_id: response.data.location_id,
         }
         UserDataService.setUserData(user_edit);
 

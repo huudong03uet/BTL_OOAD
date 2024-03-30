@@ -1,6 +1,12 @@
-export default interface ItemDetail {
+interface Image {
+    id: number,
+    path: string,
+}
+
+
+export default interface ProductDetail {
     id: number;
-    images: string[];
+    images: Image[];
     title: string;
     status: string;
     count_bid?: number;
