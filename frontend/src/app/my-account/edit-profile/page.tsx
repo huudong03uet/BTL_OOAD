@@ -1,52 +1,59 @@
 'use client'
-import {  Form,  } from "react-bootstrap";
+import { Form, } from "react-bootstrap";
 import style from '../style.module.css';
-import React, { useState, useEffect, ChangeEvent  } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import User from "@/models/user";
 import UserDataService from "@/services/model/user";
 import edit_account_service from "@/services/my_account/edit_account";
+import Location from "@/models/location";
+import get_location_service from "@/services/my_account/get_location";
 
 
 export default function EditProfile() {
-    const [user, setUser] = useState<User>({
-        user_id: 0,
-        username: '',
-        evaluate: '',
-        coin: 0,
-        firstName: '',
-        lastName: '',
-        email: '',
-        country: 'Vietnam',
-        address: '',
-        city: '',
-        state: '',
-        postal_code: '',
-        phone: ''
-    });
+    const initialUserData = UserDataService.getUserData() || {} as User;
+    const [user, setUser] = useState<User>(initialUserData);
+    const initialLocation = {} as Location;
+    const [location, setLocation] = useState<Location>(initialLocation)
 
     useEffect(() => {
         const userData = UserDataService.getUserData();
         if (userData) {
             setUser(prevUser => ({
                 ...prevUser,
-                user_id: userData.user_id,
-                username: userData.username,
-                firstName: userData.firstName,
-                lastName: userData.lastName,
                 email: userData.email,
-                evaluate: userData.evaluate,
-                country: userData.country,
-                address: userData.address,
-                city: userData.city,
-                state: userData.state,
-                postal_code: userData.postal_code,
-                phone: userData.phone
+                phone: userData.phone,
+                first_name: userData.first_name,
+                last_name: userData.last_name,
+                location_id: userData.location_id,
             }));
         }
     }, []);
 
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
+        const fetchData = async () => {
+            const userData = UserDataService.getUserData();
+            if (userData && userData.location_id) {
+                const locationData = await get_location_service(userData.location_id);
+                if (locationData) {
+                    setLocation(prevLocation => ({
+                        ...prevLocation,
+                        country: locationData.country,
+                        address: locationData.address,
+                        city: locationData.city,
+                        state: locationData.state,
+                        postal_code: locationData.postal_code,
+                        x: locationData.x,
+                        y: locationData.y,
+                    }));
+                }
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    const handleChangeUser = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUser(prevUser => ({
             ...prevUser,
@@ -54,22 +61,30 @@ export default function EditProfile() {
         }));
     };
 
+    const handleChangeLocation = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setLocation(prevLocation => ({
+            ...prevLocation,
+            [name]: value
+        }));
+    };
+
     const selectCountry = (val: string) => {
-        setUser(prevUser => ({
-            ...prevUser,
+        setLocation(prevLocation => ({
+            ...prevLocation,
             country: val
         }));
     };
 
     const selectCity = (val: string) => {
-        setUser(prevUser => ({
-            ...prevUser,
+        setLocation(prevLocation => ({
+            ...prevLocation,
             city: val
         }));
     };
 
     const handleClick = async () => {
-        await edit_account_service(user);
+        await edit_account_service(user, location);
     }
 
     return (
@@ -87,14 +102,14 @@ export default function EditProfile() {
                 </div>
                 <div className="row">
                     <div className="col-3">
-                    <Form.Control
-                        type="text"
-                        placeholder="First name"
-                        className={style.custom_form_control}
-                        name="firstName"
-                        value={user.firstName}
-                        onChange={handleChange}
-                    />
+                        <Form.Control
+                            type="text"
+                            placeholder="First name"
+                            className={style.custom_form_control}
+                            name="firstName"
+                            value={user.first_name}
+                            onChange={handleChangeUser}
+                        />
                     </div>
                     <div className="col-3">
                         <Form.Control
@@ -102,8 +117,8 @@ export default function EditProfile() {
                             placeholder="Last name"
                             className={style.custom_form_control}
                             name="firstName"
-                            value={user.lastName}
-                            onChange={handleChange}
+                            value={user.last_name}
+                            onChange={handleChangeUser}
                         />
                     </div>
                 </div>
@@ -145,7 +160,7 @@ export default function EditProfile() {
                                 defaultValue={accountInfo.country ? accountInfo.country: ""}
                             /> */}
                         <CountryDropdown
-                            value={user.country}
+                            value={location.country}
                             onChange={(val) => selectCountry(val)}
                             classes={style.custom_form_control_selected}
                         />
@@ -156,8 +171,8 @@ export default function EditProfile() {
                 <div className="row">
                     <div className="col-6">
                         <RegionDropdown
-                            country={user.country}
-                            value={user.city}
+                            country={location.country}
+                            value={location.city}
                             onChange={(val) => selectCity(val)}
 
 
@@ -180,8 +195,8 @@ export default function EditProfile() {
                             placeholder="Address"
                             className={style.custom_form_control}
                             name="address"
-                            value={user.address}
-                            onChange={handleChange}
+                            value={location.address}
+                            onChange={handleChangeLocation}
                         />
                     </div>
                 </div>
@@ -195,8 +210,8 @@ export default function EditProfile() {
                             placeholder="State"
                             className={style.custom_form_control}
                             name="state"
-                            value={user.state}
-                            onChange={handleChange}
+                            value={location.state}
+                            onChange={handleChangeLocation}
                         />
                     </div>
                     <div className="col-3">
@@ -205,8 +220,8 @@ export default function EditProfile() {
                             placeholder="Postal code"
                             className={style.custom_form_control}
                             name="postal_code"
-                            value={user.postal_code}
-                            onChange={handleChange}
+                            value={location.postal_code}
+                            onChange={handleChangeLocation}
                         />
                     </div>
                 </div>
@@ -219,7 +234,7 @@ export default function EditProfile() {
                             className={style.custom_form_control}
                             name="phone"
                             value={user.phone}
-                            onChange={handleChange}
+                            onChange={handleChangeUser}
                         />
                     </div>
                 </div>

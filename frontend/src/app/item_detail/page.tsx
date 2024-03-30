@@ -5,38 +5,18 @@ import React, { useEffect, useState } from 'react';
 import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
 import VerticalSlide from "@/components/item/VerticalSlide";
-import Item from "@/models/item_detail";
-import { get_detail_item } from "@/services/item/item";
+import Item from "@/models/product_detail";
+import { get_detail_product } from "@/services/product/product";
 
 import { Modal } from 'react-bootstrap';
+import ProductDetail from "@/models/product_detail";
 
 export default function Item(props: Item) {
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-  const [itemData, setItemData] = useState({
-      "id": 2,
-      "title": "name",
-      "description": "des",
-      "status": "not_sold",
-      "max_bid": 0,
-      "count_bid": 0,
-      "estimate_min": 0,
-      "estimate_max": 0,
-      "dimensions": null,
-      "artist": "UNK",
-      "condition_report": "No damages observed.",
-      "provenance": "proven",
-      "createdAt": "2024-03-24T19:08:44.000Z",
-      "updatedAt": "2024-03-24T19:08:44.000Z",
-      "userId": 3,
-      "images": [
-          {
-              "path": String,
-          },
-      ]
-  });
+  const [itemData, setItemData] = useState({} as ProductDetail);
   const [isItemOverviewOpen, setIsItemOverviewOpen] = useState(false);
   const [isPaymentShippingOpen, setIsPaymentShippingOpen] = useState(false);
 
@@ -51,7 +31,7 @@ export default function Item(props: Item) {
   useEffect(() => {
     const fetchItemData = async () => {
       try {
-        const data = await get_detail_item(4);
+        const data = await get_detail_product(1);
         setItemData(data);
       } catch (error) {
         console.error("Error fetching item data:", error);
@@ -91,7 +71,7 @@ export default function Item(props: Item) {
           <Container>
             <div className={style['contend-aside-holder']}>
               <div className={style.contend}>
-                {/* <VerticalSlide  images={itemData.images.map(image => image.path)}></VerticalSlide> */}
+              <VerticalSlide images={itemData.images ? itemData.images.map(image => image.path) : []}></VerticalSlide>
                 <div className={style['sharing-btn']}>
                   <i className="fa fa-envelope"></i>
                   <i className="fa fa-share"></i>

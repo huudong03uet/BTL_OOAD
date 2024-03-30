@@ -1,4 +1,5 @@
 const cloudinary = require('cloudinary').v2;
+const logger = require('./logger')
 require('dotenv').config({ path: './conf/.env' })
 
 
@@ -8,17 +9,4 @@ cloudinary.config({
     api_secret: process.env.API_SECRET,
 });
 
-
-function upload_image(image_path) {
-    return new Promise((resolve, reject) => {
-        cloudinary.uploader.upload(image_path, (error, result) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(result);
-            }
-        });
-    })
-}
-
-module.exports = upload_image;
+module.exports = cloudinary;

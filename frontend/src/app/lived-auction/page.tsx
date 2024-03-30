@@ -7,7 +7,7 @@ import { LinearProgress } from '@mui/material';
 import './style.css';
 import { Radio } from 'antd';
 import { useRouter } from 'next/navigation'
-import ItemDetail from '@/models/item_detail';
+import ProductDetail from '@/models/product_detail';
 import ItemSummary from '@/models/item_summary';
 import AuctionInformation from '@/models/auction_information';
 // type SizeType = ConfigProviderProps['componentSize'];
@@ -107,15 +107,33 @@ export default function LivedAuction() {
 
 
     const currentCost = 100;
-    const currentAuction: ItemDetail = {
+    const currentAuction: ProductDetail = {
         "id": 1234,
         "images": [
-            "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731521.jpg",
-            "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731519.jpg",
-            "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731520.jpg",
-            "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731527.jpg",
-            "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731523.jpg",
-            "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731529.jpg"
+            {
+                "id": 1,
+                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731521.jpg",
+            },
+            {
+                "id": 1,
+                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731519.jpg",
+            },
+            {
+                "id": 1,
+                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731520.jpg",
+            },
+            {
+                "id": 1,
+                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731527.jpg",
+            },
+            {
+                "id": 1,
+                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731523.jpg",
+            },
+            {
+                "id": 1,
+                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731529.jpg"
+            },
         ],
         "title": "Two half sovereigns, one dated 1895, with veiled V",
         "status": "2",
