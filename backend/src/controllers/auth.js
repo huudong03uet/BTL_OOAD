@@ -5,7 +5,6 @@ const statusCode = require('../../constants/status')
 const logger = require("../../conf/logger")
 
 const { hash_password, compare_password } = require('./util/password');
-const Location = require('../models/location');
 
 
 let login = async (req, res) => {

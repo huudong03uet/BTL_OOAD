@@ -54,7 +54,6 @@ let add_product = async (req, res) => {
 
 let get_product_detail = async (req, res) => {
     try {
-        console.log("abc")
         const product_id = req.params.product_id;
 
         const product = await Product.findByPk(product_id, {
