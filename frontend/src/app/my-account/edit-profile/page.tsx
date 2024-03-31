@@ -16,6 +16,11 @@ export default function EditProfile() {
     const initialLocation = {} as Location;
     const [location, setLocation] = useState<Location>(initialLocation)
 
+
+    const [updateEmail, setUpdateEmail] = useState(false);
+    const [changePassword, setChangePassword] = useState(false);
+
+
     useEffect(() => {
         const userData = UserDataService.getUserData();
         if (userData) {
@@ -87,6 +92,8 @@ export default function EditProfile() {
         await edit_account_service(user, location);
     }
 
+
+
     return (
         <div className='row mx-0'>
             {/* <div className="col-2">
@@ -123,25 +130,87 @@ export default function EditProfile() {
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-6">
-                        <Form.Control
-                            type="text"
-                            defaultValue={user.email}
-                            className={style.custom_form_control}
-                            disabled
-                        />
-                    </div>
+                    {
+                        updateEmail ? (
+                            <div className='col-6'>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="New Email Address"
+                                    className={style.custom_form_control}
+                                />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Password"
+                                    className={style.custom_form_control}
+                                />
+                                <div className='d-flex align-items-center'>
+                                    <button type="button" className="btn btn-danger">Update</button>
+                                    <a onClick={() => setUpdateEmail(false)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
+                                        Cancel
+                                    </a>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="col-6">
+                                <Form.Control
+                                    type="text"
+                                    defaultValue={user.email}
+                                    className={style.custom_form_control}
+                                    disabled
+                                />
+
+                                <a onClick={() => setUpdateEmail(true)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 " style={{ cursor: "pointer" }}>
+                                    Update Email Address
+                                </a>
+                            </div>
+                        )
+                    }
+
                 </div>
 
                 <div className="row">
+                    {
+                        changePassword ? (
+                            <div className='col-6'>
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Current Password"
+                                    value=""
+                                    className={style.custom_form_control}
+                                />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="New Password"
+                                    className={style.custom_form_control}
+                                />
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Confirm New Password"
+                                    className={style.custom_form_control}
+                                />
+                                <div className='d-flex align-items-center'>
+                                    <button type="button" className="btn btn-danger">Update</button>
+                                    <a onClick={() => setChangePassword(false)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
+                                        Cancel
+                                    </a>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="col-6">
+                                <Form.Control type="text"
+                                    value={'********'}
+                                    className={style.custom_form_control}
+                                    disabled
+                                />
+                                <a onClick={() => setChangePassword(true)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
+                                    Change Password
+                                </a>
+                            </div>
+                        )
 
-                    <div className="col-6">
-                        <Form.Control type="text"
-                            defaultValue={'********'}
-                            className={style.custom_form_control}
-                            disabled
-                        />
-                    </div>
+                    }
+
+
                 </div>
             </div>
 
@@ -239,7 +308,14 @@ export default function EditProfile() {
                     </div>
                 </div>
             </div>
-            <button type="button" className="btn btn-dark mb-4" onClick={handleClick}>Save Changes</button>
+            {
+                !changePassword && !updateEmail ? (
+                    <button type="button" className="btn btn-dark mb-4 col-2" onClick={handleClick}>Save Changes</button>
+                ) : (
+                    <button type="button" className="btn btn-dark mb-4 col-2" disabled >Save Changes</button>
+
+                )
+            }
 
         </div>
         // </div >

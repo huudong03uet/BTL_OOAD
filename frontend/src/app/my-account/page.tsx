@@ -9,9 +9,9 @@ export default function MyAccount() {
 
     return (
         <div className='row'>
-            <div className="col-2">
+            {/* <div className="col-2">
                 <SideBarMyAccount />
-            </div>
+            </div> */}
             <div className="col-10">
 
             </div>
