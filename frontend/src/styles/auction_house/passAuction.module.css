@@ -1,0 +1,18 @@
+.main {
+    display: flex;
+    flex-direction: row;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.time {
+    flex: 1;
+    margin-right: 10px;
+}
+.title {
+    flex: 4;
+    margin-right: 10px;
+}
+.location {
+    flex: 2;
+    text-align: right;
+}

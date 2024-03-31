@@ -2,16 +2,17 @@
 
 .yellowIcon {
     color: rgb(151, 107, 24);
-
 }
-
-.mainContainer {
-    margin: 20px;
+.grayIcon {
+    color: rgb(98, 98, 98);
+    font-size: 20px;
+    margin-right: 5px;
 }
 
 .row {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .ahInformation {
@@ -22,11 +23,11 @@
 
 .ahBioContainer {
     flex: 2;
-    margin: 20px;
+
 }
 .ahContactContainer {
     flex: 1;
-    margin: 20px;
+  
 }
 
 .ahName {
@@ -64,16 +65,21 @@
 }
 
 /* Kiểu dáng của nút Follow, Contact */
-
+.button {
+    display: flex;
+    flex-direction: row;
+}
 .btn-follow {
     width: 100%;
     padding: 10px;
+    margin-right: 10px;
     background-color: #333;
     color: #fff;
     border: none;
-    border-radius: 5px;
+    border-radius: 0px;
     cursor: pointer;
     --font-family-sans-serif: "Gotham SSm A", "Gotham SSm B", Arial, sans-serif;
+    flex: 2;
 }
 
 .btn-contact {
@@ -82,9 +88,10 @@
     background-color: #fff;
     color: #333;
     border: 1px solid #000 !important;
-    border-radius: 5px;
+    border-radius: 0px;
     cursor: pointer;
     --font-family-sans-serif: "Gotham SSm A", "Gotham SSm B", Arial, sans-serif;
+    flex: 1;
 }
 
 .btn-follow:hover {
@@ -102,4 +109,27 @@
 /* Kiểu dáng chung của các button */
 .button-style {
     margin-top: 10px;
+}
+
+/* Tab sold Item */
+.containerSold {
+    display: flex;
+    flex-direction: row;
+}
+/* tab */
+.tabs {
+    font-family: Gotham SSm A,Gotham SSm B,Arial,sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: left;
+    color: #222;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: -10px;
+    margin-right: -10px;
+    align-items: flex-end; /* Thay `end` bằng `flex-end` */
+    margin-top: 20px;
+    padding-bottom: 0;
 }

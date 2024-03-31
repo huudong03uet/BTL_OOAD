@@ -1,0 +1,58 @@
+/* Comment.module.css */
+.review {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #cccccc ;
+}
+/* Header */
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.user {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.time {
+    flex: 8;
+    text-align: right;
+}
+.avatar img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.title {
+    margin-left: 10px;
+}
+
+.name {
+    color: #004BD6;
+}
+
+.vote {
+    display: flex;
+    align-items: center;
+}
+
+.star {
+    display: flex;
+}
+
+/* Main */
+.main {
+    margin-top: 10px;
+    
+}
+
+.comment {
+    padding: 10px; 
+    border-bottom: 1px solid #ccc;
+    
+}

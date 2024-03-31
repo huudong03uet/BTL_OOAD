@@ -5,6 +5,7 @@ export default interface ItemSummary {
     love?: number,
     estimate_min?: number,
     max_bid?: number,
+    price?: number,
     artist?: string,
     time?: string,
     image_path: string,

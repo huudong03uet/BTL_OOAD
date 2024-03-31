@@ -1,5 +1,6 @@
 'use client'
 import React from 'react';
+import styles from '@/styles/auction_house/tab.module.css'
 
 interface TabProps {
   id: string;
@@ -13,7 +14,7 @@ const Tab: React.FC<TabProps> = ({ id, title, active, onClick }) => {
     <a
       href="#"
       id={id}
-      className={`tablink ${active ? 'active' : ''}`}
+      className={`${styles.tablink} ${active ? styles.active : ''}`}
       onClick={onClick}
     >
       {title}
