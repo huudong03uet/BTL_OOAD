@@ -4,6 +4,7 @@ const sequelize = require('../../conf/sequelize');
 const UserInvitationStatus = require("../../constants/user_invitation")
 const User = require('./user');
 const AuctionRoom = require('./auction_room');
+const Seller = require('./seller');
 
 
 const InvitationUser = sequelize.define('invitation_user', {
@@ -17,14 +18,19 @@ const InvitationUser = sequelize.define('invitation_user', {
         allowNull: false,
         defaultValue: UserInvitationStatus.NOT_YET
     },
+    view: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    }
 },
     {
         tableName: 'invitation_user',
     }
 );
 
-InvitationUser.belongsTo(User, {foreignKey: "inviter_id"})
-User.hasMany(InvitationUser, {foreignKey: "inviter_id"})
+InvitationUser.belongsTo(Seller, {foreignKey: "inviter_id"})
+Seller.hasMany(InvitationUser, {foreignKey: "inviter_id"})
 
 InvitationUser.belongsTo(User, {foreignKey: "user_id"})
 User.hasMany(InvitationUser, {foreignKey: "user_id"})

@@ -9,13 +9,18 @@ const Seller = sequelize.define('seller', {
         autoIncrement: true,
         primaryKey: true,
     },
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "Seller"
+    }
 },
     {
         tableName: 'seller',
     }
 );
 
-Seller.hasOne(User, {foreignKey: "user_id"})
+Seller.hasOne(User, {foreignKey: "seller_id"})
 User.hasOne(Seller, {foreignKey: "user_id"})
 
 module.exports = Seller;

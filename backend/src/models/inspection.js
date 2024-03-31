@@ -18,7 +18,7 @@ const Inspection = sequelize.define('inspection', {
     },
     description: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
     },
     coin: {
         type: DataTypes.DOUBLE,
