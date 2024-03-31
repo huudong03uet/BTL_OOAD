@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
 const AuctionRoomProduct = require('./auction_room_product');
-const BidHistory = require('./bid_history');
+const BidHistory = require('./history_bid');
 
 const Winner = sequelize.define('winner', {
     id: {

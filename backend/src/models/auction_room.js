@@ -21,8 +21,9 @@ const AuctionRoom = sequelize.define('auction_room', {
         allowNull: false,
         defaultValue: AuctionRoomStatus.PUBLIC,
     },
-    time_action: {
+    time_auction: {
         type: DataTypes.DATE,
+        allowNull: false,
         defaultValue: DataTypes.NOW,
     },
     condition_coin: {
@@ -35,6 +36,7 @@ const AuctionRoom = sequelize.define('auction_room', {
     },
     time_register: {
         type: DataTypes.DATE,
+        allowNull: false,
         defaultValue: DataTypes.NOW,
     },
 },
@@ -46,7 +48,7 @@ const AuctionRoom = sequelize.define('auction_room', {
 AuctionRoom.belongsTo(Location, { foreignKey: "location_id" });
 Location.hasMany(AuctionRoom, { foreignKey: "location_id" });
 
-AuctionRoom.belongsToMany(User, { through: "AuctionRoom_User", foreignKey: "auction_room_id", tableName: "auction_room_user", })
-User.belongsToMany(AuctionRoom, { through: "AuctionRoom_User", foreignKey: "user_id", tableName: "auction_room_user", })
+AuctionRoom.belongsToMany(User, { through: "Auction_Room_User", foreignKey: "auction_room_id" })
+User.belongsToMany(AuctionRoom, { through: "Auction_Room_User", foreignKey: "user_id" })
 
 module.exports = AuctionRoom;

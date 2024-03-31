@@ -5,7 +5,6 @@ const statusCode = require('../../constants/status')
 const logger = require("../../conf/logger")
 
 const { hash_password, compare_password } = require('./util/password');
-const Location = require('../models/location');
 
 
 let login = async (req, res) => {
@@ -49,7 +48,6 @@ let login = async (req, res) => {
 let sign_up = async (req, res) => {
     try {
         const { first_name, last_name, user_name, email, password } = req.body;
-
         const existingUserByEmail = await User.findOne({
             where: { email: email },
         });
@@ -74,7 +72,7 @@ let sign_up = async (req, res) => {
             const newUser = await User.create({
                 user_name: user_name,
                 first_name: first_name,
-                lastName: last_name,
+                last_name: last_name,
                 email: email,
                 password: hashedPassword,
             });
