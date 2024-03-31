@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import get_notification from '@/services/notification';
+import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 
 interface Notification {
@@ -17,6 +18,20 @@ interface ModalNotificationProps {
 const ModalNotification: React.FC<ModalNotificationProps> = ({ show, onHide, onMarkAllAsRead, onDeleteAll, onNotificationSettings }) => {
     const [notifications, setNotifications] = useState<Notification[]>([]);
     const [showSettingsButtons, setShowSettingsButtons] = useState(false);
+
+    useEffect(() => {
+        const fetchNotifications = async () => {
+            try {
+                const res = await get_notification();
+                setNotifications(res);
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
+
+        fetchNotifications();
+    }, [notifications]);
+
 
     const toggleSettingsButtons = () => {
         setShowSettingsButtons(prevState => !prevState);
@@ -44,10 +59,6 @@ const ModalNotification: React.FC<ModalNotificationProps> = ({ show, onHide, onM
                         </div>
                     </div>
                 </Modal.Title>
-
-
-
-
             </Modal.Header>
             <Modal.Body>
                 {notifications.length > 0 ? (
