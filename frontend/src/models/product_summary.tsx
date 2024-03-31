@@ -1,4 +1,4 @@
-export default interface ItemSummary {
+export default interface ProductSummary {
     id: number,
     status?: string,
     title: string,

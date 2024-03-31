@@ -1,14 +1,14 @@
 'use client'
 
-import ItemSummary from '@/models/item_summary';
+import ProductSummary from '@/models/product_summary';
 import React, { useState } from 'react';
 
-function ResSearchItem({ searchResults }: { searchResults: ItemSummary[] }) {
+function ResSearchItem({ searchResults }: { searchResults: ProductSummary[] }) {
     const [status, setStatus] = useState<number>(0);
 
     return (
         <div>
-            {searchResults.map((item: ItemSummary) => (
+            {searchResults.map((item: ProductSummary) => (
                 <div key={item.id}>
                     {item.status === 'sold' ? (
                         <div className="sold-card">

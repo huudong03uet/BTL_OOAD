@@ -1,11 +1,11 @@
 'use client'
-import ItemSummary from '@/models/item_summary';
+import ProductSummary from '@/models/product_summary';
 import React, { useState } from 'react'
 
 
 
 
-function ViewItem({ obj }: { obj: ItemSummary }) {
+function ViewItem({ obj }: { obj: ProductSummary }) {
     const [status, setStatus] = useState<number>(0);
 
     function onClickHeart() {

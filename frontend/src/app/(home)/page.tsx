@@ -4,10 +4,10 @@ import UpcomingAuctions from '@/components/shared/upcomingAuctions';
 import ViewItem from '@/components/shared/viewItem';
 import { Container } from 'react-bootstrap';
 import styles from './page.module.css';
-import ItemSummary from '@/models/item_summary';
+import ProductSummary from '@/models/product_summary';
 import Category from '@/models/category';
 import AuctionSummary from '@/models/auction_summary';
-import AuctionInformation from '@/models/auction_information';
+import AuctionDetail from '@/models/auction_detail';
 
 
 const HomePage = () => {
@@ -15,7 +15,7 @@ const HomePage = () => {
     alert('Click')
   };
 
-  const recentlyViewedItems: ItemSummary[] = [
+  const recentlyViewedItems: ProductSummary[] = [
     {
       "image_path": "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
       "time": "Jan 1, 8:00 AM GMT+7",
@@ -131,7 +131,7 @@ const HomePage = () => {
   ]
 
 
-  const upcomingOnlineAuctions: AuctionInformation[] = [
+  const upcomingOnlineAuctions: AuctionDetail[] = [
     {
 
       "image_path": "https://image.invaluable.com/housePhotos/ShowplaceAntiques/29/764929/H20259-L362812913.jpg",

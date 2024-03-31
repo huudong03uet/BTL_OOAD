@@ -14,8 +14,8 @@ import AppFooter from '@/components/AppFooter';
 import Map from '@/components/auction-house/Map';
 import Tab from '@/components/auction-house/Tab';
 import TabContent from '@/components/auction-house/TabContent';
-import AuctionInformation from '@/models/auction_information';
-import ItemSummary from '@/models/item_summary';
+import AuctionDetail from '@/models/auction_detail';
+import ProductSummary from '@/models/product_summary';
 import SoldItem from '@/components/shared/soldItem';
 import User from '@/models/user';
 import Comment from '@/components/auction-house/Comment';
@@ -47,8 +47,8 @@ interface AuctionHouseProps {
     auctionHouse_location: Location;
     auctionHouse_vote?: number;
     auctionHouse_review?: CommentProps[];
-    auctionHouse_upcomingAuctions?: AuctionInformation[];
-    auctionHouse_soldAuctions?: ItemSummary[];
+    auctionHouse_upcomingAuctions?: AuctionDetail[];
+    auctionHouse_soldAuctions?: ProductSummary[];
     auctionHouse_pastAuctions?: PastAuction[];
 }
 const AuctionHouse = (auctionHouse: AuctionHouseProps) => {

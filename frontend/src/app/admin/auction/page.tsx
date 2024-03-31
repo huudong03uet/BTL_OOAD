@@ -1,6 +1,6 @@
 'use client'
 import { FormEvent, useEffect, useState } from 'react';
-import Auction from '@/models/auciton';
+import Auction from '@/models/auction';
 import UserDataService from '@/services/model/user';
 import auction_create_service from '@/services/auction/create';
 

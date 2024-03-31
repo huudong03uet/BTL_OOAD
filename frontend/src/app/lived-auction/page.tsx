@@ -8,12 +8,12 @@ import './style.css';
 import { Radio } from 'antd';
 import { useRouter } from 'next/navigation'
 import ProductDetail from '@/models/product_detail';
-import ItemSummary from '@/models/item_summary';
-import AuctionInformation from '@/models/auction_information';
+import ProductSummary from '@/models/product_summary';
+import AuctionDetail from '@/models/auction_detail';
 // type SizeType = ConfigProviderProps['componentSize'];
 export default function LivedAuction() {
 
-    const infoAuction: AuctionInformation = {
+    const infoAuction: AuctionDetail = {
         "auction_room_name": "Key Date Coins Spectacular AM Live Auction 11 pt 1 Day 3",
         "seller_name": "Key Date Coins",
         "number_watching": 84,
@@ -21,7 +21,7 @@ export default function LivedAuction() {
         "number_review": 24,
     }
 
-    const lotsAuction: ItemSummary[] = [
+    const lotsAuction: ProductSummary[] = [
         {
             "status": "0",
             "title": "Royal Mint 1980 gold proof set of 4 coins, compris",

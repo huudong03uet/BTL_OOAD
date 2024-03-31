@@ -1,10 +1,10 @@
 'use client'
-import ItemSummary from '@/models/item_summary';
+import ProductSummary from '@/models/product_summary';
 import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import styles from '@/styles/auction_house/soldItem.module.css'
 
-function SoldItem({ obj }: { obj: ItemSummary }) {
+function SoldItem({ obj }: { obj: ProductSummary }) {
     const [status, setStatus] = useState<number>(0);
 
     function onClickHeart() {

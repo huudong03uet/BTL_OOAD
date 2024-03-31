@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 import { HOST } from '@/services/host';
-import Auction from '@/models/auciton';
+import Auction from '@/models/auction';
 
 const auction_create_service = async (auctionData: Auction) => {
     try {

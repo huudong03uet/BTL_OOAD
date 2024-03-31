@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button, Divider, Flex, Radio } from 'antd';
 import type { ConfigProviderProps } from 'antd';
 import ProductDetail from '@/models/product_detail';
-import ItemSummary from '@/models/item_summary';
+import ProductSummary from '@/models/product_summary';
 // interface ItemLivedAuctionInterface {
 //     "status": number,
 //     "name": string,
@@ -19,7 +19,7 @@ enum StatusItemAuction {
     SOLD = "0", CURRENT = "1", UP_COMING = "2",
 }
 // type SizeType = ConfigProviderProps['componentSize'];
-export default function ItemLivedAuction({ obj }: { obj: ItemSummary }) {
+export default function ItemLivedAuction({ obj }: { obj: ProductSummary }) {
 
     return (
         <>
