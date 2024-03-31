@@ -54,7 +54,6 @@ let add_product = async (req, res) => {
 
 let get_product_detail = async (req, res) => {
     try {
-        console.log("abc")
         const product_id = req.params.product_id;
 
         const product = await Product.findByPk(product_id, {
@@ -73,6 +72,24 @@ let get_product_detail = async (req, res) => {
         return res.status(statusCode.HTTP_200_OK).json(product);
     } catch (error) {
         logger.error(`Get product detail: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+let get_product_by_status = async (req, res) => {
+    try {
+        const status = req.params.status;
+
+        const products = await Product.findAll({
+            where: {
+                status: status
+            }
+        });
+
+        logger.info(`${statusCode.HTTP_200_OK} [product status:${status}]`)
+        return res.status(statusCode.HTTP_200_OK).json(products);
+    } catch (error) {
+        logger.error(`Get product status: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 }

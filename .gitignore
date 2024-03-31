@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-*/node_modules
+**/node_modules
 /.pnp
 .pnp.js
 .yarn/install-state.gz
@@ -12,7 +12,7 @@ frontend/coverage
 # next.js
 frontend/.next/
 frontend/out/
-frontend/package-lock.json/
+**/package-lock.json/
 
 # production
 frontend/build
@@ -35,8 +35,8 @@ frontend/next-env.d.ts
 # local env files
 .env*.local
 # venv
-venv
-*/*/.env
+**/.env
+frontend/.env
 .commands
 
 # C extensions
@@ -57,7 +57,7 @@ frontend/package-lock.json
 */.DS_Store
 .DS_Store
 
-*/media/
+**/media/
 */logs
 
 frontend/.env

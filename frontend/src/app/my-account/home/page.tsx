@@ -10,7 +10,7 @@ import UserDataService from "@/services/model/user";
 
 
 export default function MyInvaluable() {
-    const user_name = UserDataService.getUserData()?.username;
+    const user_name = UserDataService.getUserData()?.user_name;
     const recentlyViewedItems: any[] = [
         {
             "image": "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
@@ -241,15 +241,6 @@ export default function MyInvaluable() {
 
                     </Container>
                 </div>
-
-
-
-
-
-
-
-
-
             </div>
         // </div >
     );
