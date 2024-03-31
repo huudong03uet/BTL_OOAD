@@ -37,6 +37,7 @@ let get_notification = async (req, res) => {
                 notifies.push({
                     id: request.id,
                     message: `New auction room request: ${request.description}`,
+                    type: "new_aution",
                     createdAt: request.createdAt,
                 });
             });
@@ -51,6 +52,7 @@ let get_notification = async (req, res) => {
                 notifies.push({
                     id: inspect.id,
                     message: `New inspection request: ${inspect.name}, coin: ${inspect.coin} description: ${inspect.description}`,
+                    type: "inspection",
                     createdAt: inspect.createdAt,
                 });
             });
@@ -76,7 +78,9 @@ let get_notification = async (req, res) => {
             invite_user.forEach(invite => {
                 notifies.push({
                     id: invite.id,
-                    message: `New auction invitation from seller: ${invite.Seller.name}`
+                    message: `New auction invitation from seller: ${invite.Seller.name}`,
+                    type: "invite_user",
+                    createdAt: request.createdAt,
                 });
             });
 
@@ -94,7 +98,9 @@ let get_notification = async (req, res) => {
             invate_products.forEach(invite => {
                 notifies.push({
                     id: invite.id,
-                    message: `New product invitation: ${invite.Product.title} ${invite.Product.artist} ${invite.Product.description}`
+                    message: `New product invitation: ${invite.Product.title} ${invite.Product.artist} ${invite.Product.description}`,
+                    type: "invite_product",
+                    createdAt: request.createdAt,
                 });
             });
 
@@ -113,7 +119,9 @@ let get_notification = async (req, res) => {
             bid_histories.forEach(history => {
                 notifies.push({
                     id: history.id,
-                    message: `New bid: ${history.description} ${history.amount}`
+                    message: `New bid: ${history.description} ${history.amount}`,
+                    type: "history_bid",
+                    createdAt: request.createdAt,
                 });
             });
 
@@ -127,7 +135,9 @@ let get_notification = async (req, res) => {
             coin_histories.forEach(history => {
                 notifies.push({
                     id: history.id,
-                    message: `New coin transaction: ${history.description} ${history.amount} ${history.type}`
+                    message: `New coin transaction: ${history.description} ${history.amount} ${history.type}`,
+                    type: "history_coin",
+                    createdAt: request.createdAt,
                 });
             });
         }
