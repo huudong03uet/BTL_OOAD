@@ -1,17 +1,17 @@
 'use client'
 
-import React, { useState, ChangeEvent, FormEvent } from 'react';
-import Container from 'react-bootstrap/Container';
-import Button from 'react-bootstrap/Button';
+import React, { useState } from 'react';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
 import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import SideBar from './my-account/sideBar';
+import Navbar from 'react-bootstrap/Navbar';
+import Row from 'react-bootstrap/Row';
 import ModalLogin from './ModalLogin';
+import ModalNotification from './ModalNotification';
 import ModalRegister from './ModalRegister';
+import SideBar from './my-account/sideBar';
 
 function Header() {
   const spanStyle = {
@@ -79,6 +79,20 @@ function Header() {
     fetchData();
   };
 
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
+
+  const handleNotificationMouseEnter = () => setShowNotificationModal(true);
+  const handleNotificationMouseLeave = () => setShowNotificationModal(false);
+
+  const handleMarkAllAsRead = () => {
+  };
+
+  const handleDeleteAll = () => {
+  };
+
+  const handleNotificationSettings = () => {
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary ">
       <Container className="row w-100" style={{ display: "contents" }}>
@@ -95,18 +109,18 @@ function Header() {
           <Form >
             <Row>
               <Col xs="auto" className='w-100'>
-                
+
                 <div className="input-group">
                   <i className="fa fa-search position-absolute top-50 ps-5 translate-middle" style={{ zIndex: "10", color: "#e4002b" }}></i>
 
-                    <input
-                      type="text"
-                      placeholder="Search items & sellers"
-                      className="mr-sm-2 ps-5"
-                      value={searchText}
-                      onChange={handleChange}
-                      onKeyPress={handleKeyPress}
-                    />
+                  <input
+                    type="text"
+                    placeholder="Search items & sellers"
+                    className="mr-sm-2 ps-5"
+                    value={searchText}
+                    onChange={handleChange}
+                    onKeyPress={handleKeyPress}
+                  />
 
                 </div>
               </Col>
@@ -114,20 +128,25 @@ function Header() {
           </Form>
         </div>
 
-
-
-
-
-
         <div className="col-4 justify-content-center">
           <Nav className="me-auto justify-content-center">
             <Nav.Link href="/my-account/saved-items">
               <span className="fa fa-heart px-2" style={{ color: "#e4002b", fontSize: "1.6em" }}></span>
               Saved
             </Nav.Link>
-            <Nav.Link href="#link">
+            <Nav.Link href="#link"
+              onMouseEnter={handleNotificationMouseEnter}
+              onMouseLeave={handleNotificationMouseLeave}
+            >
               <span className="fa fa-bell header-bell px-2" style={{ fontSize: "1.6em", color: "black" }}></span>
               Notifications
+              <ModalNotification
+                show={showNotificationModal}
+                onHide={() => setShowNotificationModal(false)}
+                onMarkAllAsRead={handleMarkAllAsRead}
+                onDeleteAll={handleDeleteAll}
+                onNotificationSettings={handleNotificationSettings}
+              />
             </Nav.Link>
             {/* fa fa-user */}
 
