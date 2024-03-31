@@ -63,6 +63,8 @@ export default function StreamPlayerWrapper({ streamerIdentity }: Props) {
   }
 
   return <StreamPlayer participant={participant} />;
+
+
 }
 
 export const StreamPlayer = ({ participant }: { participant: Participant }) => {
