@@ -8,7 +8,7 @@ import './style.css';
 import { Radio } from 'antd';
 import { useRouter } from 'next/navigation'
 import ProductDetail from '@/models/product_detail';
-import ItemSummary from '@/models/item_summary';
+import ItemSummary from '@/models/product_summary';
 import AuctionInformation from '@/models/auction_information';
 // type SizeType = ConfigProviderProps['componentSize'];
 export default function LivedAuction() {

@@ -4,7 +4,7 @@ import UpcomingAuctions from '@/components/shared/upcomingAuctions';
 import ViewItem from '@/components/shared/viewItem';
 import { Container } from 'react-bootstrap';
 import styles from './page.module.css';
-import ItemSummary from '@/models/item_summary';
+import ItemSummary from '@/models/product_summary';
 import Category from '@/models/category';
 import AuctionSummary from '@/models/auction_summary';
 import AuctionInformation from '@/models/auction_information';

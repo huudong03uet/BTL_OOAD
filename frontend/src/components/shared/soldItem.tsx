@@ -1,5 +1,5 @@
 'use client'
-import ItemSummary from '@/models/item_summary';
+import ItemSummary from '@/models/product_summary';
 import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import styles from '@/styles/auction_house/soldItem.module.css'

@@ -13,7 +13,7 @@ function SideBarShop() {
                 </Link>
 
             </div>
-        
+
             <div className={style.div_module}>
                 <div className={style.div_text}>
                     Shipment
@@ -39,9 +39,10 @@ function SideBarShop() {
                     <div className={style.div_text}>
                         My products
                     </div>
-                    <div className={style.div_text}>
+
+                    <Link className={style.div_text} href="/seller/add-product" >
                         Add New Product
-                    </div>
+                    </Link>
                     <div className={style.div_text}>
                         Product history
                     </div>
@@ -67,10 +68,12 @@ function SideBarShop() {
                 <div className={style.div_text}>
                     Seller information
                 </div>
+
                 <div className='ps-4'>
-                <div className={style.div_text}>
-                        Edit profile
-                    </div>
+
+                    <Link className={style.div_text} href="/seller/edit-profile">
+                        Edit Profile
+                    </Link>
                     <div className={style.div_text}>
                         Payment-options
                     </div>
@@ -79,17 +82,17 @@ function SideBarShop() {
                     </div>
                 </div>
             </div>
-      
+
             <div className={style.div_module}>
-              
+
                 <Link className={style.div_text} href="/my-account" >
-                Change to User
+                    Change to User
                 </Link>
-                
+
             </div>
             <div className={style.div_module}>
                 <div className={style.div_text} style={{ color: '#797676' }}>
-                    Signout
+                    Sign out
                 </div>
             </div>
 

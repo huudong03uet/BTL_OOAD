@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button, Divider, Flex, Radio } from 'antd';
 import type { ConfigProviderProps } from 'antd';
 import ProductDetail from '@/models/product_detail';
-import ItemSummary from '@/models/item_summary';
+import ItemSummary from '@/models/product_summary';
 // interface ItemLivedAuctionInterface {
 //     "status": number,
 //     "name": string,

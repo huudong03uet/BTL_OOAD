@@ -7,8 +7,6 @@ import AppHeader from '@/components/AppHeader'
 import AppFooter from '@/components/AppFooter';
 import AppNav from '@/components/AppNav';
 import AppBreadCrumb from '@/components/AppBreadCrumb';
-import Container from 'react-bootstrap/Container';
-import SideBarUser from "@/components/my-account/sideBarUser";
 import SideBarShop from "@/components/my-account/sideBarShop";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -22,11 +20,6 @@ export default function RootLayout({
         <html lang="en">
 
             <body className={inter.className}>
-                {/* <div>
-        <button onClick={openNewPage}>
-          Detail page
-        </button>
-      </div> */}
 
                 <AppHeader />
                 <AppNav />

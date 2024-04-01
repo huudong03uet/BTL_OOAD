@@ -1,5 +1,5 @@
 'use client'
-import ItemSummary from '@/models/item_summary';
+import ItemSummary from '@/models/product_summary';
 import React, { useState } from 'react'
 
 

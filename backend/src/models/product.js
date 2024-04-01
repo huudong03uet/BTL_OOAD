@@ -1,45 +1,52 @@
-const { DataTypes } = require('sequelize');
+const { DataTypes } = require("sequelize");
 
-const sequelize = require('../../conf/sequelize');
-const ProductStatus = require("../../constants/product_status")
-const User = require('./user');
-const Category = require('./category');
+const sequelize = require("../../conf/sequelize");
+const ProductStatus = require("../../constants/product_status");
+const User = require("./user");
+const Category = require("./category");
 
-
-const Product = sequelize.define('product', {
+const Product = sequelize.define(
+  "product",
+  {
     id: {
-        type: DataTypes.INTEGER,
-        autoIncrement: true,
-        primaryKey: true,
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
     title: {
-        type: DataTypes.STRING,
-        allowNull: false,
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     description: {
-        type: DataTypes.TEXT,
-        allowNull: false,
+      type: DataTypes.TEXT,
+      allowNull: false,
     },
     status: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: ProductStatus.NOT_INSPECT,
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: ProductStatus.NOT_INSPECT,
     },
     artist: {
-        type: DataTypes.STRING,
-        allowNull: false,
-        defaultValue: "UNK",
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: "UNK",
     },
-},
-    {
-        tableName: 'product',
-    }
+  },
+  {
+    tableName: "product",
+  }
 );
 
-Product.belongsTo(User, {foreignKey: "owner_id"})
-User.hasMany(Product, {foreignKey: "owner_id"})
+Product.belongsTo(User, { foreignKey: "owner_id" });
+User.hasMany(Product, { foreignKey: "owner_id" });
 
-Product.belongsToMany(Category, { through: "Category_Product", foreignKey: "product_id"})
-Category.belongsToMany(Product, { through: "Category_Product", foreignKey: "category_id"})
+Product.belongsToMany(Category, {
+  through: "Category_Product",
+  foreignKey: "product_id",
+});
+Category.belongsToMany(Product, {
+  through: "Category_Product",
+  foreignKey: "category_id",
+});
 
 module.exports = Product;

@@ -15,7 +15,7 @@ import Map from '@/components/auction-house/Map';
 import Tab from '@/components/auction-house/Tab';
 import TabContent from '@/components/auction-house/TabContent';
 import AuctionInformation from '@/models/auction_information';
-import ItemSummary from '@/models/item_summary';
+import ItemSummary from '@/models/product_summary';
 import SoldItem from '@/components/shared/soldItem';
 import User from '@/models/user';
 import Comment from '@/components/auction-house/Comment';

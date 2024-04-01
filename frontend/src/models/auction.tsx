@@ -1,4 +1,3 @@
-import Location from "./location";
 
 export default interface Auction {
     auction_id: number,
