@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -12,6 +12,7 @@ import ModalLogin from './ModalLogin';
 import ModalNotification from './ModalNotification';
 import ModalRegister from './ModalRegister';
 import SideBar from './my-account/sideBarUser';
+import UserDataService from '@/services/model/user';
 
 function Header() {
   const spanStyle = {
@@ -25,6 +26,14 @@ function Header() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
+
+  useEffect(() => {
+    if (UserDataService.getUserData()?.user_id == null) {
+      setIsLogin(false)
+    } else {
+      setIsLogin(true)
+    }
+  })
 
 
 
