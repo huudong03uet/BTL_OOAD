@@ -20,10 +20,13 @@ function Header() {
   };
 
 
-  const isLogin = false;
+  // const isLogin = false;
 
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+
+
 
   const handleLoginModalClose = () => setShowLoginModal(false);
   const handleRegisterModalClose = () => setShowRegisterModal(false);
@@ -184,7 +187,7 @@ function Header() {
         {/* Hiển thị modal khi showLoginModal hoặc showRegisterModal được set thành true */}
         {/* <ModalLogin show={showLoginModal} onHide={handleLoginModalClose} />
         <ModalRegister show={showRegisterModal} onHide={handleRegisterModalClose} /> */}
-        <ModalLogin show={showLoginModal} onHide={handleLoginModalClose} switchToRegister={handleSwitchToRegister} />
+        <ModalLogin show={showLoginModal} onHide={handleLoginModalClose} switchToRegister={handleSwitchToRegister} setIsLogin={setIsLogin}/>
         <ModalRegister show={showRegisterModal} onHide={handleRegisterModalClose} switchToLogin={handleSwitchToLogin} />
 
         {/* </Navbar.Collapse> */}

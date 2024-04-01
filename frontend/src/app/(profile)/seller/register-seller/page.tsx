@@ -1,8 +1,10 @@
-'use client'
-import { useState } from 'react';
-import { Modal } from 'react-bootstrap';
-import style from '../style.module.css';
 
+
+
+'use client'
+import { Modal } from 'react-bootstrap';
+import style from '../../style.module.css';
+import { useState } from 'react';
 
 export default function PaymentOptions() {
     const [showModal, setShowModal] = useState(false);
@@ -10,62 +12,52 @@ export default function PaymentOptions() {
     const handleShowModal = () => setShowModal(true);
 
     return (
-        // <div className='row mx-0'>
-        //         <div className={style.div_title}>
-        //             Payment Options
-        //         </div>
-        //         <div className={style.div_section}>
-        //             <div className={style.div_header}>
-        //                 Credit Cards
-        //             </div>
-        //             <p>
-        //             Add a credit card to make bidding fast and easy.
-        //             </p>
-        //             <button type="button" className="btn btn-dark px-5">Add A New Card</button>
-        //         </div>
-
-
-
-        //         <div className={style.div_section}>
-        //             <div className={style.div_header}>
-        //                 Bank Accounts
-        //             </div>
-        //             <button type="button" className="btn btn-dark px-5">Add A Bank Account</button>
-                   
-        //         </div>
-
-        //     {/* </div> */}
-        // </div >
-
         <div className='row mx-0'>
-                <div className={style.div_title}>
-                    Payment Options
-                </div>
-                <div className={style.div_section}>
-                    <div className={style.div_header}>
-                        Credit Cards
-                    </div>
-                    <p>
-                    Add a credit card to make bidding fast and easy.
-                    </p>
-                <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Add A New Card</button>
+            <div className={style.div_title}>
+                Seller register
             </div>
+
             <div className={style.div_section}>
                 <div className={style.div_header}>
-                    Bank Accounts
+                    Request for Seller Account
                 </div>
-                <button type="button" className="btn btn-dark px-5">Add A Bank Account</button>
+                <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Register as Seller</button>
             </div>
-
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>
-                    <Modal.Title>Add A New Card</Modal.Title>
+                    <Modal.Title>
+                        Register to become a seller
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                    <div  className="mb-3">
+                        Seller information
+                    </div>
+                    <div className="mb-3">
+                        <input type="text" className="form-control" id="cardNumber" placeholder="Seller name" />
+                    </div>
+                    <div className="mb-3 d-flex">
+                        <input type="text" className="form-control me-2" placeholder="Email contact" />
+                        <input type="text" className="form-control" placeholder="Phone number" />
+                    </div>
+                    
+                    <div className="mb-3">
+                        <input type="text" className="form-control" id="cardNumber" placeholder="Description about you" />
+                    </div>
+                    <div  className="mb-3">
+                        <input type="text" className="form-control" id="nameOnCard" placeholder="Topic product sell (optional)" />
+
+                    </div>
+                    <div className="mb-3">
+                        <input type="text" className="form-control" id="cardNumber" placeholder="Text send to admin (optional)" />
+                    </div>
+
+                    <div className="mb-3">
+                        Card information
+                    </div>
                     <div className="mb-3">
                         <input type="text" className="form-control" id="cardNumber" placeholder="Card Number" />
                     </div>
-                    <p><i className="fa fa-lock" aria-hidden="true"></i><span className='mx-1'>Security server <a rel="noopener noreferrer" target="_blank" style={{color: "#004bd6"}}>Certified by VikingCloud</a></span></p>
                     <div className="mb-3 d-flex">
                         <input type="text" className="form-control me-2" placeholder="MM/YY" />
                         <input type="text" className="form-control" placeholder="CVN" />
@@ -73,9 +65,9 @@ export default function PaymentOptions() {
                     <div className="mb-3">
                         <input type="text" className="form-control" id="nameOnCard" placeholder="Name on Card" />
                     </div>
-                    <div className="mb-3 form-check">
-                        <input type="checkbox" className="form-check-input" id="billingAddress" />
-                        <label className="form-check-label" htmlFor="billingAddress">Billing address is same as shipping address</label>
+
+                    <div className="mb-3">
+                        Address information
                     </div>
                     <div className="mb-3">
                         <select className="form-select" id="country">
@@ -99,11 +91,13 @@ export default function PaymentOptions() {
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="justify-content-start">
-                    <button type="button" className="btn btn-dark">Save Card</button>
-                    <p className="mx-3" onClick={handleCloseModal}>Cancel</p>
+                    <button type="button" className="btn btn-dark">Save Request</button>
+                    <p style={{cursor: "pointer"}} className="mx-3" onClick={handleCloseModal}>Cancel</p>
                 </Modal.Footer>
 
             </Modal>
-        </div>
+
+
+        </div >
     );
 }

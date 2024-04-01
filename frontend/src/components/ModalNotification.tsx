@@ -20,16 +20,16 @@ const ModalNotification: React.FC<ModalNotificationProps> = ({ show, onHide, onM
     const [showSettingsButtons, setShowSettingsButtons] = useState(false);
 
     useEffect(() => {
-        const fetchNotifications = async () => {
-            try {
-                const res = await get_notification();
-                setNotifications(res);
-            } catch (error) {
-                console.error('Error fetching notifications:', error);
-            }
-        };
+        // const fetchNotifications = async () => {
+        //     try {
+        //         const res = await get_notification();
+        //         setNotifications(res);
+        //     } catch (error) {
+        //         console.error('Error fetching notifications:', error);
+        //     }
+        // };
 
-        fetchNotifications();
+        // fetchNotifications();
     }, [notifications]);
 
 
@@ -61,7 +61,7 @@ const ModalNotification: React.FC<ModalNotificationProps> = ({ show, onHide, onM
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                {notifications.length > 0 ? (
+                {notifications && notifications.length > 0 ? (
                     notifications.map(notification => (
                         <div key={notification.id}>{notification.message}</div>
                     ))
