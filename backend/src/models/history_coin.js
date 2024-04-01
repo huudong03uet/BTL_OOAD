@@ -23,6 +23,11 @@ const CoinHistory = sequelize.define('coin_history', {
         allowNull: false,
         defaultValue: CoinHistoryType.BUY
     },
+    view: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    }
 },
     {
         tableName: 'coin_history',

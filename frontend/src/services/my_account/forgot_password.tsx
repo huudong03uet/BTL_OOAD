@@ -10,7 +10,7 @@ const forgot_password_service = async (email: string) => {
         return;
     } catch (error: any) {
         console.error('Error fetching data:', error);
-        return error.response.data.message;
+        return error.response.data;
     }
 };
 
