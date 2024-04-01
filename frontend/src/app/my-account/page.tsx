@@ -2,7 +2,7 @@
 import { Container, Button, Form, Row, Col, InputGroup, Dropdown } from "react-bootstrap";
 import style from '@/styles/customer/homePage.module.css';
 import React, { useState } from 'react';
-import SideBarMyAccount from "@/components/my-account/sideBar";
+import SideBarUser from "@/components/my-account/sideBarUser";
 
 
 export default function MyAccount() {

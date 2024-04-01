@@ -1,5 +1,5 @@
 import style from '../style.module.css';
-import SideBarMyAccount from "@/components/my-account/sideBar";
+import SideBarUser from "@/components/my-account/sideBarUser";
 
 
 export default function EmailPreferences() {

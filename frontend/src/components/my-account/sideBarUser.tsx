@@ -1,8 +1,7 @@
 import style from './style.module.css';
 import Link from 'next/link';
-function SideBarMyAccount() {
-    const registeredSeller: boolean = false;
-
+function SideBarUser() {
+    const acceptRegister: boolean = true;
 
     return (
         // <div className='ps-5 ms-3'>
@@ -48,15 +47,16 @@ function SideBarMyAccount() {
                 </div>
 
             </div>
-            <div className={style.div_module}>
-                <div className={style.div_text}>
-                    Seller
-                </div>
-                {
+
+
+            {/* {
                     !registeredSeller ? (
-                        <div className='ps-4'>
-                            <Link className={style.div_text} href="/seller/register-seller">
-                                Register seller
+
+
+
+                        <div className={style.div_text}>
+                            <Link className={style.div_text} href="/my-account/register-seller">
+                                Seller Register
                             </Link>
                         </div>
                     ) : (
@@ -81,7 +81,50 @@ function SideBarMyAccount() {
                             </div>
                         </div>
                     )
+                } */}
+
+            <div className={style.div_module}>
+                {
+                    !acceptRegister ? (
+                        // <div className={style.div_module}>
+                            <Link className={style.div_text} href="/my-account/register-seller">
+                                Register seller
+                            </Link>
+                        // </div>
+                    ) : (
+                        // <div className='ps-4'>
+                        //     <div className={style.div_text}>
+                        //         Edit seller profile
+                        //     </div>
+                        //     <div className={style.div_text}>
+                        //         Add product
+                        //     </div>
+                        //     <div className={style.div_text}>
+                        //         Add auction
+                        //     </div>
+                        //     <div className={style.div_text}>
+                        //         Product manage
+                        //     </div>
+                        //     <div className={style.div_text}>
+                        //         Auction manage
+                        //     </div>
+                        //     <div className={style.div_text}>
+                        //         Unregister seller
+                        //     </div>
+                        // </div>
+                        // <div className={style.div_module}>
+
+
+
+
+
+                            <Link className={style.div_text} href="/seller">
+                                Seller center
+                            </Link>
+                        // </div>
+                    )
                 }
+
             </div>
             <div className={style.div_module}>
                 <div className={style.div_text}>
@@ -115,4 +158,4 @@ function SideBarMyAccount() {
     );
 }
 
-export default SideBarMyAccount;
+export default SideBarUser;

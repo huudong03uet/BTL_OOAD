@@ -11,7 +11,7 @@ import Row from 'react-bootstrap/Row';
 import ModalLogin from './ModalLogin';
 import ModalNotification from './ModalNotification';
 import ModalRegister from './ModalRegister';
-import SideBar from './my-account/sideBar';
+import SideBar from './my-account/sideBarUser';
 
 function Header() {
   const spanStyle = {

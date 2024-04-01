@@ -8,7 +8,7 @@ import AppFooter from '@/components/AppFooter';
 import AppNav from '@/components/AppNav';
 import AppBreadCrumb from '@/components/AppBreadCrumb';
 import Container from 'react-bootstrap/Container';
-import SideBarMyAccount from "@/components/my-account/sideBar";
+import SideBarUser from "@/components/my-account/sideBarUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,7 +32,7 @@ export default function RootLayout({
                 <AppBreadCrumb />
                 <div className='row  mx-0'>
                     <div className="col-2">
-                        <SideBarMyAccount />
+                        <SideBarUser />
                     </div>
                     <div className="col-10">
                         {children}

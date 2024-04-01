@@ -3,7 +3,7 @@
 
 'use client'
 import style from '../style.module.css';
-import SideBarMyAccount from "@/components/my-account/sideBar";
+import SideBarUser from "@/components/my-account/sideBarUser";
 import ViewItem from '@/components/shared/viewItem';
 import { Key } from 'react';
 import Form from 'react-bootstrap/Form';

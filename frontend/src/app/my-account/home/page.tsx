@@ -2,7 +2,7 @@
 import { Container, Button, Form, Row, Col, InputGroup, Dropdown } from "react-bootstrap";
 import style from '../style.module.css';
 import React, { useState } from 'react';
-import SideBarMyAccount from "@/components/my-account/sideBar";
+import SideBarUser from "@/components/my-account/sideBarUser";
 import { CountryDropdown, RegionDropdown, CountryRegionData } from "react-country-region-selector";
 import UpcomingAuctions from "@/components/shared/upcomingAuctions";
 import ViewItem from "@/components/shared/viewItem";

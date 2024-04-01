@@ -3,13 +3,16 @@
 
 'use client'
 import { Modal } from 'react-bootstrap';
-import style from '../../style.module.css';
+import style from '../style.module.css';
 import { useState } from 'react';
 
 export default function PaymentOptions() {
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
+
+
+    const registeredSeller: boolean = true;
 
     return (
         <div className='row mx-0'>
@@ -21,8 +24,27 @@ export default function PaymentOptions() {
                 <div className={style.div_header}>
                     Request for Seller Account
                 </div>
-                <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Register as Seller</button>
-            </div>
+                {
+                    registeredSeller ? (
+                        <div>
+                            <button type="button" className="btn btn-dark px-5"  disabled>Request Processing</button>
+                        </div>
+                    ) : (
+                            <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Register as Seller</button>
+
+
+                    )
+                }
+            </div >
+
+
+
+
+
+
+
+
+
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -30,7 +52,7 @@ export default function PaymentOptions() {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div  className="mb-3">
+                    <div className="mb-3">
                         Seller information
                     </div>
                     <div className="mb-3">
@@ -40,11 +62,11 @@ export default function PaymentOptions() {
                         <input type="text" className="form-control me-2" placeholder="Email contact" />
                         <input type="text" className="form-control" placeholder="Phone number" />
                     </div>
-                    
+
                     <div className="mb-3">
                         <input type="text" className="form-control" id="cardNumber" placeholder="Description about you" />
                     </div>
-                    <div  className="mb-3">
+                    <div className="mb-3">
                         <input type="text" className="form-control" id="nameOnCard" placeholder="Topic product sell (optional)" />
 
                     </div>
@@ -92,7 +114,7 @@ export default function PaymentOptions() {
                 </Modal.Body>
                 <Modal.Footer className="justify-content-start">
                     <button type="button" className="btn btn-dark">Save Request</button>
-                    <p style={{cursor: "pointer"}} className="mx-3" onClick={handleCloseModal}>Cancel</p>
+                    <p style={{ cursor: "pointer" }} className="mx-3" onClick={handleCloseModal}>Cancel</p>
                 </Modal.Footer>
 
             </Modal>
