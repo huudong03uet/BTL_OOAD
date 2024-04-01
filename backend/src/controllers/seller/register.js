@@ -3,6 +3,7 @@ const sequelize = require('../../../conf/sequelize');
 const statusCode = require('../../../constants/status');
 const Card = require('../../models/card');
 const Seller = require('../../models/seller');
+const User = require('../../models/user');
 const { find_or_create_location } = require('../conponent/location');
 
 
@@ -35,6 +36,8 @@ let register = async (req, res) => {
             user_id: user_id,
             location_id: location.id
         }, {transaction: t});
+
+        await User.update({ seller_id: seller.id }, { where: { id: user_id }, transaction: t });
 
         let card = await Card.create({
             id: id,

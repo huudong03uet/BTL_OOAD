@@ -3,16 +3,58 @@
 
 'use client'
 import { Modal } from 'react-bootstrap';
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import style from '../style.module.css';
 import { useState } from 'react';
+import seller_register from '@/services/seller/register';
 
 export default function PaymentOptions() {
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
 
+    const [sellerName, setSellerName] = useState('');
+    const [email, setEmail] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [description, setDescription] = useState('');
+    const [cardNumber, setCardNumber] = useState('');
+    const [expiry, setExpiry] = useState('');
+    const [cvn, setCvn] = useState('');
+    const [nameOnCard, setNameOnCard] = useState('');
+    const [country, setCountry] = useState('');
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [postalCode, setPostalCode] = useState('');
 
-    const registeredSeller: boolean = true;
+    const handleSaveRequest = async () => {
+        const seller_info = {
+            name: sellerName,
+            email: email,
+            phone: phoneNumber,
+            description: description
+        }
+
+        const card_info = {
+            id: cardNumber,
+            expiry: expiry,
+            cvn: cvn,
+            name_card: nameOnCard,
+        }
+
+        const location_info = {
+            country: country, 
+            address: address, 
+            city: city, 
+            state: state, 
+            postal: postalCode
+        }
+
+        await seller_register(seller_info, card_info, location_info)
+    };
+
+
+    const registeredSeller: boolean = false;
 
     return (
         <div className='row mx-0'>
@@ -27,10 +69,10 @@ export default function PaymentOptions() {
                 {
                     registeredSeller ? (
                         <div>
-                            <button type="button" className="btn btn-dark px-5"  disabled>Request Processing</button>
+                            <button type="button" className="btn btn-dark px-5" disabled>Request Processing</button>
                         </div>
                     ) : (
-                            <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Register as Seller</button>
+                        <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Register as Seller</button>
 
 
                     )
@@ -56,64 +98,62 @@ export default function PaymentOptions() {
                         Seller information
                     </div>
                     <div className="mb-3">
-                        <input type="text" className="form-control" id="cardNumber" placeholder="Seller name" />
+                        <input type="text" className="form-control" placeholder="Seller name" value={sellerName} onChange={e => setSellerName(e.target.value)} />
                     </div>
                     <div className="mb-3 d-flex">
-                        <input type="text" className="form-control me-2" placeholder="Email contact" />
-                        <input type="text" className="form-control" placeholder="Phone number" />
-                    </div>
-
-                    <div className="mb-3">
-                        <input type="text" className="form-control" id="cardNumber" placeholder="Description about you" />
+                        <input type="text" className="form-control me-2" placeholder="Email contact" value={email} onChange={e => setEmail(e.target.value)} />
+                        <input type="text" className="form-control" placeholder="Phone number" value={phoneNumber} onChange={e => setPhoneNumber(e.target.value)} />
                     </div>
                     <div className="mb-3">
-                        <input type="text" className="form-control" id="nameOnCard" placeholder="Topic product sell (optional)" />
-
-                    </div>
-                    <div className="mb-3">
-                        <input type="text" className="form-control" id="cardNumber" placeholder="Text send to admin (optional)" />
+                        <input type="text" className="form-control" placeholder="Description about you" value={description} onChange={e => setDescription(e.target.value)} />
                     </div>
 
                     <div className="mb-3">
                         Card information
                     </div>
                     <div className="mb-3">
-                        <input type="text" className="form-control" id="cardNumber" placeholder="Card Number" />
+                        <input type="text" className="form-control" id="cardNumber" placeholder="Card Number" value={cardNumber} onChange={e => setCardNumber(e.target.value)} />
                     </div>
                     <div className="mb-3 d-flex">
-                        <input type="text" className="form-control me-2" placeholder="MM/YY" />
-                        <input type="text" className="form-control" placeholder="CVN" />
+                        <input type="text" className="form-control me-2" placeholder="MM/YY" value={expiry} onChange={e => setExpiry(e.target.value)} />
+                        <input type="text" className="form-control" placeholder="CVN" value={cvn} onChange={e => setCvn(e.target.value)} />
                     </div>
                     <div className="mb-3">
-                        <input type="text" className="form-control" id="nameOnCard" placeholder="Name on Card" />
+                        <input type="text" className="form-control" id="nameOnCard" placeholder="Name on Card" value={nameOnCard} onChange={e => setNameOnCard(e.target.value)} />
                     </div>
 
                     <div className="mb-3">
                         Address information
                     </div>
                     <div className="mb-3">
-                        <select className="form-select" id="country">
-                            <option>Select Country</option>
-                            {/* Thêm các option cho select country */}
-                        </select>
+                        <CountryDropdown
+                            classes="form-control"
+                            value={country}
+                            onChange={val => setCountry(val)}
+                        />
                     </div>
                     <div className="mb-3">
-                        <input type="text" className="form-control" id="address" placeholder="Enter Address" />
+                        <input type="text" className="form-control" id="address" placeholder="Enter Address" value={address} onChange={e => setAddress(e.target.value)} />
                     </div>
                     <div className="row mb-3">
                         <div className="col">
-                            <input type="text" className="form-control" id="city" placeholder="Enter City" />
+                            <RegionDropdown
+                                classes="form-control"
+                                country={country}
+                                value={city}
+                                onChange={val => setCity(val)}
+                            />
                         </div>
                         <div className="col">
-                            <input type="text" className="form-control" id="state" placeholder="Enter State" />
+                            <input type="text" className="form-control" id="state" placeholder="Enter State" value={state} onChange={e => setState(e.target.value)} />
                         </div>
                     </div>
                     <div className="mb-3">
-                        <input type="text" className="form-control" id="postalCode" placeholder="Enter Postal Code" />
+                        <input type="text" className="form-control" id="postalCode" placeholder="Enter Postal Code" value={postalCode} onChange={e => setPostalCode(e.target.value)} />
                     </div>
                 </Modal.Body>
                 <Modal.Footer className="justify-content-start">
-                    <button type="button" className="btn btn-dark">Save Request</button>
+                    <button type="button" className="btn btn-dark" onClick={handleSaveRequest}>Save Request</button>
                     <p style={{ cursor: "pointer" }} className="mx-3" onClick={handleCloseModal}>Cancel</p>
                 </Modal.Footer>
 

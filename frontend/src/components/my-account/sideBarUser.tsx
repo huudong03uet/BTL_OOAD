@@ -39,7 +39,9 @@ function SideBarUser() {
                         Artists
                     </div>
                     <div className={style.div_text}>
-                        Sellers
+                    <Link className={style.div_text} href="/my-account/register-seller">
+                        {' '}Sellers
+                    </Link>
                     </div>
                     <div className={style.div_text}>
                         Categories
