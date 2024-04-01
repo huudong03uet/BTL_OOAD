@@ -3,6 +3,7 @@ const myAccountRouter = require('./my_account')
 const productRouter = require("./product")
 const locationRouter = require('./location')
 const auctionRouter = require('./auction')
+const notificationRouter = require('./notification')
 
 
 function route(app) {
@@ -12,6 +13,8 @@ function route(app) {
 
     app.use("/product", productRouter);
     app.use("/auction", auctionRouter);
+
+    app.use("/notification", notificationRouter);
 }
 
 module.exports = route;

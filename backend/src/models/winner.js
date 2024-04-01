@@ -19,7 +19,7 @@ const Winner = sequelize.define('winner', {
 Winner.belongsTo(AuctionRoomProduct, {foreignKey: "auction_product_id"})
 AuctionRoomProduct.hasMany(Winner, {foreignKey: "auction_product_id"})
 
-Winner.hasOne(BidHistory, {foreignKey: "bid_history_id"})
+Winner.hasOne(BidHistory, {foreignKey: "winner_id"})
 BidHistory.hasOne(Winner, {foreignKey: "bid_history_id"})
 
 module.exports = Winner;

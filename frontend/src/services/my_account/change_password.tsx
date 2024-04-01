@@ -16,7 +16,7 @@ const change_password_service = async (old_password: number, new_password: numbe
         return;
     } catch (error: any) {
         console.error('Error fetching data:', error);
-        return error.response.data.message;
+        return error.response.data;
     }
 };
 

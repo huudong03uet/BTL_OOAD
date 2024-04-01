@@ -13,7 +13,7 @@ const edit_account_service = async (user: User, location: Location) => {
             user: user,
             location: location,
         }
-        const response = await axios.post(url, body);
+        const response = await axios.put(url, body);
 
         let user_edit: User = {
             user_id: response.data.id,

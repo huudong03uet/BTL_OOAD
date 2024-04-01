@@ -33,7 +33,6 @@ const AuctionRoomProduct = sequelize.define('auction_room_product', {
     auto_extend_time: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP + INTERVAL 5 MINUTE')
     },
     status: {
         type: DataTypes.STRING,

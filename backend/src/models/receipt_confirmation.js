@@ -5,7 +5,7 @@ const ReceiptConfirmStatus = require("../../constants/receipt_confirm")
 const Winner = require('./winner');
 
 
-const ReceiptConfirmation = sequelize.define('message', {
+const ReceiptConfirmation = sequelize.define('receipt_confirm', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -22,11 +22,11 @@ const ReceiptConfirmation = sequelize.define('message', {
     },
 },
     {
-        tableName: 'message',
+        tableName: 'receipt_confirm',
     }
 );
 
-ReceiptConfirmation.hasOne(Winner, {foreignKey: "winner_id"})
+ReceiptConfirmation.hasOne(Winner, {foreignKey: "receipt_confirm_id"})
 Winner.hasOne(ReceiptConfirmation, {foreignKey: "winner_id"})
 
 module.exports = ReceiptConfirmation;

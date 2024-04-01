@@ -5,6 +5,7 @@ const AuctionRoomRequestStatus = require('../../constants/auction_room_request_s
 const Seller = require('./seller');
 const AuctionRoom = require('./auction_room');
 const Admin = require('./admin');
+const User = require('./user');
 
 
 const AuctionRoomRequest = sequelize.define('auction_room_request', {
@@ -24,16 +25,21 @@ const AuctionRoomRequest = sequelize.define('auction_room_request', {
     },
     admin_report: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
     },
+    view: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    }
 },
     {
         tableName: 'auction_room_request',
     }
 )
 
-AuctionRoomRequest.belongsTo(Seller, {foreignKey: "seller_id"})
-Seller.hasMany(AuctionRoomRequest, {foreignKey: "seller_id"})
+AuctionRoomRequest.belongsTo(User, {foreignKey: "user_id"})
+User.hasMany(AuctionRoomRequest, {foreignKey: "user_id"})
 
 AuctionRoomRequest.belongsTo(AuctionRoom, {foreignKey: "auction_room_id"})
 AuctionRoom.hasMany(AuctionRoomRequest, {foreignKey: "auction_room_id"})

@@ -1,16 +1,18 @@
 const logger = require('../../conf/logger');
 const sequelize = require('../../conf/sequelize');
+const AuctionRoomRequestStatus = require('../../constants/auction_room_request_status');
 const statusCode = require('../../constants/status');
 const AuctionRoom = require('../models/auction_room');
+const AuctionRoomRequest = require('../models/auction_room_request');
 const Image = require('../models/image');
 const Product = require('../models/product');
+const Seller = require('../models/seller');
 const User = require('../models/user');
 
 
 let create_auction = async (req, res) => {
     const t = await sequelize.transaction();
     try {
-        console.log(req.body)
         const { user_id, name, condition_coin, location_id, description, status, time_auction } = req.body;
 
         const auctionData = {
@@ -27,6 +29,13 @@ let create_auction = async (req, res) => {
         const newAuction = await AuctionRoom.create(auctionData, { transaction: t });
 
         await newAuction.addUser(user_id, { transaction: t });
+
+        await AuctionRoomRequest.create({
+            status: AuctionRoomRequestStatus.NOT_YET,
+            description: description,
+            user_id: user_id,
+            auction_room_id: newAuction.id,
+        }, { transaction: t })
 
         await t.commit();
 
