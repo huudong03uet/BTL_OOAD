@@ -1,22 +1,22 @@
-const sequelize = require('../../conf/sequelize');
-const statusCode = require('../../constants/status')
-const logger = require("../../conf/logger")
+const sequelize = require('../../../conf/sequelize');
+const statusCode = require('../../../constants/status')
+const logger = require("../../../conf/logger")
 
-const InspectionType = require("../../constants/inspection")
-const UserInvitationStatus = require("../../constants/user_invitation")
-const ProductInvitationStatus = require("../../constants/product_invitation")
-const AuctionRoomRequestStatus = require("../../constants/auction_room_request_status")
+const InspectionType = require("../../../constants/inspection")
+const UserInvitationStatus = require("../../../constants/user_invitation")
+const ProductInvitationStatus = require("../../../constants/product_invitation")
+const AuctionRoomRequestStatus = require("../../../constants/auction_room_request_status")
 
-const AuctionRoomRequest = require('../models/auction_room_request');
-const InvitationUser = require('../models/invitation_user');
-const InvitationProduct = require('../models/invitation_product');
-const Product = require('../models/product');
-const Seller = require('../models/seller');
-const BidHistory = require('../models/history_bid');
-const AuctionRoomProduct = require('../models/auction_room_product');
-const CoinHistory = require('../models/history_coin');
-const Inspection = require('../models/inspection');
-const AuctionRoom = require('../models/auction_room');
+const AuctionRoomRequest = require('../../models/auction_room_request');
+const InvitationUser = require('../../models/invitation_user');
+const InvitationProduct = require('../../models/invitation_product');
+const Product = require('../../models/product');
+const Seller = require('../../models/seller');
+const BidHistory = require('../../models/history_bid');
+const AuctionRoomProduct = require('../../models/auction_room_product');
+const CoinHistory = require('../../models/history_coin');
+const Inspection = require('../../models/inspection');
+const AuctionRoom = require('../../models/auction_room');
 
 
 let get_notification = async (req, res) => {

@@ -1,7 +1,7 @@
 const express = require("express");
 
 const router = express.Router();
-const myAccountController = require("../controllers/my_account");
+const myAccountController = require("../../controllers/user_seller/my_account");
 
 router.put("/edit-profile", myAccountController.edit_profile);
 router.post("/change-password", myAccountController.change_password);

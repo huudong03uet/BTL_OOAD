@@ -1,11 +1,11 @@
 const Sequelize = require('sequelize');
 
-const sequelize = require('../../conf/sequelize')
-const logger = require('../../conf/logger')
-const statusCode = require('../../constants/status')
-const Product = require('../models/product');
-const Image = require('../models/image')
-const { upload_image, delete_image } = require('./util/image')
+const sequelize = require('../../../conf/sequelize')
+const logger = require('../../../conf/logger')
+const statusCode = require('../../../constants/status')
+const Product = require('../../models/product');
+const Image = require('../../models/image')
+const { upload_image, delete_image } = require('../util/image')
 
 let add_product = async (req, res) => {
     const t = await sequelize.transaction();

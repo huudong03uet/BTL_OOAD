@@ -1,10 +1,10 @@
 const { Op } = require('sequelize');
 
-const User = require('../models/user');
-const statusCode = require('../../constants/status')
-const logger = require("../../conf/logger")
+const User = require('../../models/user');
+const statusCode = require('../../../constants/status')
+const logger = require("../../../conf/logger")
 
-const { hash_password, compare_password } = require('./util/password');
+const { hash_password, compare_password } = require('../util/password');
 
 
 let login = async (req, res) => {

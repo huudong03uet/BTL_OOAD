@@ -1,12 +1,12 @@
-const sequelize = require('../../conf/sequelize')
-const statusCode = require('../../constants/status')
-const logger = require("../../conf/logger")
+const sequelize = require('../../../conf/sequelize')
+const statusCode = require('../../../constants/status')
+const logger = require("../../../conf/logger")
 
-const User = require('../models/user');
+const User = require('../../models/user');
 
-const { hash_password, compare_password, random_password } = require('./util/password')
-const send_email = require('../../conf/email');
-const { find_or_create_location } = require('./location');
+const { hash_password, compare_password, random_password } = require('../util/password')
+const send_email = require('../../../conf/email');
+const { find_or_create_location } = require('../conponent/location');
 
 
 const edit_profile = async (req, res) => {
@@ -41,6 +41,7 @@ const edit_profile = async (req, res) => {
         logger.info(`${statusCode.HTTP_202_ACCEPTED} [user:${user.id}]`)
         return res.status(statusCode.HTTP_202_ACCEPTED).json( user )
     } catch (error) {
+        await t.rollback();
         logger.error(`Edit profile error: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }

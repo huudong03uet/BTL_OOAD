@@ -2,8 +2,9 @@ const { DataTypes } = require("sequelize");
 
 const sequelize = require("../../conf/sequelize");
 const ProductStatus = require("../../constants/product_status");
-const User = require("./user");
+
 const Category = require("./category");
+const Seller = require("./seller");
 
 const Product = sequelize.define(
   "product",
@@ -37,8 +38,8 @@ const Product = sequelize.define(
   }
 );
 
-Product.belongsTo(User, { foreignKey: "owner_id" });
-User.hasMany(Product, { foreignKey: "owner_id" });
+Product.belongsTo(Seller, { foreignKey: "seller_id" });
+Seller.hasMany(Product, { foreignKey: "seller_id" });
 
 Product.belongsToMany(Category, {
   through: "Category_Product",

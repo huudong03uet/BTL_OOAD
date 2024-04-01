@@ -45,9 +45,6 @@ const AuctionRoomProduct = sequelize.define('auction_room_product', {
     }
 )
 
-AuctionRoomProduct.belongsTo(Seller, {foreignKey: "seller_id"})
-Seller.hasMany(AuctionRoomProduct, {foreignKey: "seller_id"})
-
 AuctionRoom.belongsToMany(Product, { through: AuctionRoomProduct, foreignKey: "auction_room_id"})
 Product.belongsToMany(AuctionRoom, { through: AuctionRoomProduct, foreignKey: "product_id"})
 

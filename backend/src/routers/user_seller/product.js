@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 
 const router = express.Router();
-const productController = require("../controllers/product")
+const productController = require("../../controllers/user_seller/product")
 
 const MEDIA = "media/";
 const PRODUCT_FOLDER = MEDIA + 'products/';

@@ -4,6 +4,7 @@ const sequelize = require('../../conf/sequelize');
 const AuctionRoomStatus = require("../../constants/auction_room_status")
 const Location = require('./location');
 const User = require('./user');
+const Seller = require('./seller');
 
 
 const AuctionRoom = sequelize.define('auction_room', {
@@ -48,7 +49,7 @@ const AuctionRoom = sequelize.define('auction_room', {
 AuctionRoom.belongsTo(Location, { foreignKey: "location_id" });
 Location.hasMany(AuctionRoom, { foreignKey: "location_id" });
 
-AuctionRoom.belongsToMany(User, { through: "Auction_Room_User", foreignKey: "auction_room_id" })
-User.belongsToMany(AuctionRoom, { through: "Auction_Room_User", foreignKey: "user_id" })
+AuctionRoom.belongsToMany(Seller, { through: "Auction_Room_Seller", foreignKey: "auction_room_id" })
+Seller.belongsToMany(AuctionRoom, { through: "Auction_Room_Seller", foreignKey: "seller_id" })
 
 module.exports = AuctionRoom;
