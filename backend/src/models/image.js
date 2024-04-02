@@ -13,6 +13,10 @@ const Image = sequelize.define('image', {
     path: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    url: {
+        type: DataTypes.STRING,
+        allowNull: false,
     }
 },
     {
