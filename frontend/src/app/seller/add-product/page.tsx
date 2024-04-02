@@ -1,95 +1,56 @@
 'use client'
 import { Form, } from "react-bootstrap";
 import style from '../../my-account/style.module.css'
-import React, { useState, useEffect, ChangeEvent } from 'react';
-import User from "@/models/user";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import UserDataService from "@/services/model/user";
-import edit_account_service from "@/services/my_account/edit_account";
-import Location from "@/models/location";
-import get_location_service from "@/services/my_account/get_location";
+import add_product from "@/services/product/product";
 
 
 export default function AddProduct() {
-    const initialUserData = UserDataService.getUserData() || {} as User;
-    const [user, setUser] = useState<User>(initialUserData);
-    const initialLocation = {} as Location;
-    const [location, setLocation] = useState<Location>(initialLocation)
+    const [producttitle, setProducttitle] = useState<string>('');
+    const [productDescription, setProductDescription] = useState<string>('');
+    const [productArtist, setProductArtist] = useState<string>('');
+    const [productCategory, setProductCategory] = useState<string>('');
+    const [productImages, setProductImages] = useState<File[]>([]);
+    const [user_id, setUserID] = useState<string | null>(UserDataService.getUserData()?.user_id?.toString() || null);
 
 
-    const [updateEmail, setUpdateEmail] = useState(false);
-    const [changePassword, setChangePassword] = useState(false);
-
-
-    useEffect(() => {
-        const userData = UserDataService.getUserData();
-        if (userData) {
-            setUser(prevUser => ({
-                ...prevUser,
-                email: userData.email,
-                phone: userData.phone,
-                first_name: userData.first_name,
-                last_name: userData.last_name,
-                location_id: userData.location_id,
-            }));
-        }
-    }, []);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const userData = UserDataService.getUserData();
-            if (userData && userData.location_id) {
-                const locationData = await get_location_service(userData.location_id);
-                if (locationData) {
-                    setLocation(prevLocation => ({
-                        ...prevLocation,
-                        country: locationData.country,
-                        address: locationData.address,
-                        city: locationData.city,
-                        state: locationData.state,
-                        postal_code: locationData.postal_code,
-                        x: locationData.x,
-                        y: locationData.y,
-                    }));
-                }
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            const files: FileList = e.target.files;
+            const newImages: File[] = [];
+            for (let i = 0; i < files.length; i++) {
+                newImages.push(files[i]);
             }
-        };
-
-        fetchData();
-    }, []);
-
-    const handleChangeUser = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setUser(prevUser => ({
-            ...prevUser,
-            [name]: value
-        }));
+            setProductImages([...productImages, ...newImages]);
+        }
     };
 
-    const handleChangeLocation = (e: ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setLocation(prevLocation => ({
-            ...prevLocation,
-            [name]: value
-        }));
+    const handleRemoveImage = (index: number) => {
+        const updatedImages = [...productImages];
+        updatedImages.splice(index, 1);
+        setProductImages(updatedImages);
     };
 
-    const selectCountry = (val: string) => {
-        setLocation(prevLocation => ({
-            ...prevLocation,
-            country: val
-        }));
-    };
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append("title", producttitle);
+        formData.append("description", productDescription);
+        formData.append("category_name", productCategory);
+        formData.append("artist", productArtist);
 
-    const selectCity = (val: string) => {
-        setLocation(prevLocation => ({
-            ...prevLocation,
-            city: val
-        }));
-    };
+        if (productImages.length > 0 && user_id !== null) {
+            formData.append("user_id", user_id);
+            productImages.forEach((image) => {
+                formData.append('images', image);
+            });
 
-    const handleClick = async () => {
-        await edit_account_service(user, location);
-    }
+            await add_product(formData);
+        } else {
+            console.error('Hình ảnh không được để trống');
+        }
+    };
 
 
 
@@ -99,78 +60,94 @@ export default function AddProduct() {
             <div className={style.div_title}>
                 Add product
             </div>
-            <div className={style.div_section}>
-                {/* <div className={style.div_header}>
-                    Shop infor
-                </div> */}
-                <div className="row">
-                    <div className="col-6">
-                    <Form.Label>Product name</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Product name"
-                            className={style.custom_form_control}
-                            name="firstName"
-                        />
+            <form onSubmit={handleSubmit}>
+                <div className={style.div_section}>
+                    <div className="row">
+                        <div className="col-6">
+                            <Form.Label>Product name</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Product name"
+                                className={style.custom_form_control}
+                                value={producttitle}
+                                onChange={(e) => setProducttitle(e.target.value)}
+                            />
+                        </div>
+                        <div className="col-6">
+                            <Form.Label>Artist</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Artist"
+                                className={style.custom_form_control}
+                                value={productArtist}
+                                onChange={(e) => setProductArtist(e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div className="col-6">
-                    <Form.Label>Artist</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Artist"
-                            className={style.custom_form_control}
-                            name="firstName"
-                        />
+
+                    <div className="row">
+
+                        <div className="col-12">
+                            <Form.Label>Category</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Category"
+                                className={style.custom_form_control}
+                                value={productCategory}
+                                onChange={(e) => setProductCategory(e.target.value)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col-12">
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Description"
+                                className={style.custom_form_control}
+                                value={productDescription}
+                                onChange={(e) => setProductDescription(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12">
+                            <Form.Label>Image of products (1 -&gt; 5 images)</Form.Label>
+                            <Form.Control
+                                type="file"
+                                placeholder="Image"
+                                className={style.custom_form_control}
+                                name="firstName"
+                                multiple
+                                onChange={handleImageChange}
+                            />
+                        </div>
+
+
+                    </div>
+                    <div>
+                        {
+                            <button type="submit" className="btn btn-dark mb-4 col-2" >Add Product</button>
+
+                        }
                     </div>
                 </div>
-                <div className="row">
-
-                    <div className="col-12">
-                    <Form.Label>Category</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Category"
-                            className={style.custom_form_control}
-                            name="firstName"
-                        />
-                    </div>
-                </div>
-                <div className="row">
-
-                    <div className="col-12">
-                        <Form.Label>Description</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Description"
-                            className={style.custom_form_control}
-                            name="firstName"
-                        />
-                    </div>
-                </div>
-                {/* input multi image */}
-                <div className="row">
-                    <div className="col-12">
-                        <Form.Label>Image of products (1 -&gt; 5 images)</Form.Label>
-                        <Form.Control
-                            type="file"
-                            placeholder="Image"
-                            className={style.custom_form_control}
-                            name="firstName"
-                            multiple
-                        />
-                    </div>
-            </div>
-
+            </form>
 
             <div>
-                {
-                    <button type="button" className="btn btn-dark mb-4 col-2" onClick={handleClick}>Add Product</button>
-
-                }
+                <h3>Danh sách hình ảnh:</h3>
+                {productImages.length > 0 && (
+                    <ul>
+                        {productImages.map((image, index) => (
+                            <li key={index}>
+                                {image.name}
+                                <button type="button" onClick={() => handleRemoveImage(index)}>Xóa</button>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
-
-
-        </div>
-         </div >
+        </div >
     );
 }

@@ -6,7 +6,7 @@ import { HOST } from '@/services/host';
 
 let add_product = async (formData: FormData) => {
     try {
-        let url = `${HOST}/product/add`;
+        let url = `${HOST}/seller/product/create`;
         const response = await axios.post(url, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'

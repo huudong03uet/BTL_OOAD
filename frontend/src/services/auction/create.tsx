@@ -8,7 +8,6 @@ const auction_create_service = async (auctionData: Auction) => {
     try {
         let url = `${HOST}/auction/create`;
         let response = await axios.post(url, auctionData);
-        console.log(response.data)
         return;
     } catch (error: any) {
         console.error('Error fetching data:', error);
