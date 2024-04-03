@@ -1,0 +1,18 @@
+export type FormRegisterSeller = {
+    user_id: string,
+    name: string,
+    phoneNumber?: number,
+    email?: string,
+    description?: string,
+    card_number?: number,
+    expiry?: string,
+    cvn?: string,
+    nameOnCard?: string,
+    country?: string,
+    address?: string,
+    city?: string,
+    state?: string,
+    postalCode?: string,
+    time_create: string,
+    status?: string,
+};
