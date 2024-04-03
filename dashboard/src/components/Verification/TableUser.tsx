@@ -1,7 +1,7 @@
 'use client'
 import { Package } from "@/types/package";
 import { FormRegisterSeller } from "@/types/form_register_seller";
-import CreateModal from "../Modal/Modal";
+import CreateModal from "../Modal/ModalSeller";
 import { useState } from "react";
 
 interface IProps {

@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import FormElements from "@/components/FormElements";
 import { Metadata } from "next";
