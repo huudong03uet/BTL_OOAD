@@ -32,7 +32,7 @@ const AuctionRoomProduct = sequelize.define('auction_room_product', {
     },
     auto_extend_time: {
         type: DataTypes.DATE,
-        allowNull: false,
+        allowNull: true,
     },
     status: {
         type: DataTypes.STRING,

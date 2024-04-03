@@ -20,6 +20,10 @@ const Seller = sequelize.define('seller', {
         allowNull: false,
         defaultValue: "abc@gmail.com",
     },
+    desciption: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+    },
     phone: {
         type: DataTypes.STRING,
         allowNull: true,

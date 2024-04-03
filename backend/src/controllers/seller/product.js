@@ -19,7 +19,7 @@ let add_product = async (req, res) => {
             imagesToDelete.push(result.url);
             return {
                 url: result.url,
-                path: file.path
+                path: file.path.replace(/\\/g, '/')
             }
         }));
 
