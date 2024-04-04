@@ -2,7 +2,6 @@ const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
 const AuctionRoomProductStatus = require('../../constants/auction_product_status')
-const Seller = require('./seller');
 const AuctionRoom = require('./auction_room');
 const Product = require('./product');
 

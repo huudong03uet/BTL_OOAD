@@ -5,15 +5,22 @@ const logger = require('../../../conf/logger')
 const statusCode = require('../../../constants/status')
 const Product = require('../../models/product');
 const Image = require('../../models/image')
-const { upload_image, delete_image } = require('../util/image');
 const Category = require('../../models/category');
 const Seller = require('../../models/seller');
+
+const { upload_image, delete_image, check_required_field } = require('../util');
 
 let add_product = async (req, res) => {
     const t = await sequelize.transaction();
     let imagesToDelete = [];
     try {
         const { user_id, title, description, artist, category_name } = req.body;
+
+        if (!check_required_field(req.body, ["user_id", "title", "description", "artist", "category_name"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+        
         const images = await Promise.all(req.files.map(async file => {
             const result = await upload_image(file.path.replace(/\\/g, '/'), "product");
             imagesToDelete.push(result.url);

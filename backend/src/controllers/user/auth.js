@@ -4,12 +4,17 @@ const User = require('../../models/user');
 const statusCode = require('../../../constants/status')
 const logger = require("../../../conf/logger")
 
-const { hash_password, compare_password } = require('../util/password');
+const { hash_password, compare_password, check_required_field } = require('../util');
 
 
 let login = async (req, res) => {
     try {
         const { user_name, password } = req.body;
+
+        if (!check_required_field(req.body, ["user_name", "password"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
 
         const user = await User.findOne({
             where: {
@@ -48,6 +53,17 @@ let login = async (req, res) => {
 let sign_up = async (req, res) => {
     try {
         const { first_name, last_name, user_name, email, password } = req.body;
+
+        if (!check_required_field(req.body, ["first_name", "last_name", "user_name", "email", "password"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        if (!email || !first_name || !last_name || !password || !user_name) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
         const existingUserByEmail = await User.findOne({
             where: { email: email },
         });

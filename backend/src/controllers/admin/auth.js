@@ -1,15 +1,21 @@
 const { Op } = require('sequelize');
 
-const Admin = require('../../models/admin');
 const statusCode = require('../../../constants/status')
 const logger = require("../../../conf/logger")
 
-const { hash_password, compare_password } = require('../util/password');
+const Admin = require('../../models/admin');
+
+const { hash_password, compare_password, check_required_field } = require('../util');
 
 
 let login = async (req, res) => {
     try {
         const { admin_name, password } = req.body;
+
+        if (!check_required_field(req.body, ["admin_name", "password"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
 
         const admin = await Admin.findOne({ 
             where: {
@@ -48,6 +54,12 @@ let login = async (req, res) => {
 let sign_up = async (req, res) => {
     try {
         const { first_name, last_name, admin_name, email, password } = req.body;
+
+        if (!check_required_field(req.body, ["first_name", "last_name", "admin_name", "email", "password"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
         const existingAdminByEmail = await Admin.findOne({
             where: { email: email },
         });

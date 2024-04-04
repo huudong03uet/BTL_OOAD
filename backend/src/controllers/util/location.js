@@ -1,25 +1,7 @@
-const { Op } = require('sequelize');
-
-const statusCode = require('../../../constants/status')
 const logger = require("../../../conf/logger")
 const get_coordinate = require("../util/coordinate")
 
 const Location = require('../../models/location');
-
-
-let get_location = async (req, res) => {
-    try {
-        const location_id = req.params.location_id;
-
-        const location = await Location.findByPk(location_id);
-
-        logger.info(`${statusCode.HTTP_202_ACCEPTED} [location:${location_id}]`)
-        return res.status(statusCode.HTTP_200_OK).json(location)
-    } catch (error) {
-        logger.error(`Get Location: ${error}`)
-        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
-    }
-}
 
 function _remove_diacritics(str) {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -28,7 +10,13 @@ function _remove_diacritics(str) {
 
 let find_or_create_location = async (country, address, city, state, postal_code, transaction) => {
     try {
-        const {x, y} = await get_coordinate(`${_remove_diacritics(city)}, ${_remove_diacritics(country)}`)
+        let x = 0;
+        let y = 0;
+        if (!city && !country) {
+            const coordinates = await get_coordinate(`${_remove_diacritics(city)}, ${_remove_diacritics(country)}`);
+            x = coordinates.x;
+            y = coordinates.y;
+        }
 
         const locationData = {
             country: country,
@@ -56,7 +44,4 @@ let find_or_create_location = async (country, address, city, state, postal_code,
 }
 
 
-module.exports = {
-    get_location,
-    find_or_create_location,
-};
+module.exports = find_or_create_location

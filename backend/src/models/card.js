@@ -9,7 +9,6 @@ const Seller = require('./seller');
 const Card = sequelize.define('card', {
     id: {
         type: DataTypes.INTEGER,
-        autoIncrement: false,
         primaryKey: true,
     },
     name: {

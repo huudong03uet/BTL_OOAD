@@ -4,7 +4,8 @@ const statusCode = require('../../../constants/status');
 const Card = require('../../models/card');
 const Seller = require('../../models/seller');
 const User = require('../../models/user');
-const { find_or_create_location } = require('../conponent/location');
+
+const { find_or_create_location, check_required_field } = require('../util');
 
 
 let register = async (req, res) => {
@@ -14,6 +15,21 @@ let register = async (req, res) => {
         const {name, email, phone, desciption} = req.body.seller_info;
         const {id, expiry, cvn, name_card } = req.body.card_info;
         const {country, address, city, state, postal} = req.body.location_info;
+
+        if (!check_required_field(req.body, ["user_id", "seller_info", "card_info", "location_info"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        if (!check_required_field(req.body.seller_info, ["name", "email", "phone", "desciption"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        if (!check_required_field(req.body.card_info, ["id", "name_card"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
 
         let seller = await Seller.findOne({
             where: {

@@ -1,23 +1,18 @@
-const authRouter = require('./user_seller/auth')
-// const myAccountRouter = require('./user_seller/my_account')
-// const productRouter = require("./user_seller/product")
-// const locationRouter = require('./user_seller/location')
-// const auctionRouter = require('./user_seller/auction')
+const authRouter = require('./user/auth')
+const myAccountRouter = require('./user/my_account')
+const locationRouter = require('./component/location')
 const adminRouter = require('./admin')
 const sellerRouter = require('./seller')
-// const notificationRouter = require('./user_seller/notification')
+const userProductRouter = require('./user/product')
 
 
 function route(app) {
     app.use("/admin", adminRouter)
     app.use("/auth", authRouter);
     app.use("/seller", sellerRouter);
-    // app.use("/my-account", myAccountRouter);
-    // app.use("/location", locationRouter);
-    // app.use("/product", productRouter);
-    // app.use("/auction", auctionRouter);
-
-    // app.use("/notification", notificationRouter);
+    app.use("/my-account", myAccountRouter);
+    app.use("/location", locationRouter);
+    app.use("/user", userProductRouter);
 }
 
 module.exports = route;

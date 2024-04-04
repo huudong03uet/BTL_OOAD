@@ -1,12 +1,11 @@
 const sequelize = require('../../../conf/sequelize')
 const statusCode = require('../../../constants/status')
 const logger = require("../../../conf/logger")
+const send_email = require('../../../conf/email');
 
 const User = require('../../models/user');
 
-const { hash_password, compare_password, random_password } = require('../util/password')
-const send_email = require('../../../conf/email');
-const { find_or_create_location } = require('../conponent/location');
+const { hash_password, compare_password, random_password, find_or_create_location, check_required_field } = require('../util')
 
 
 const edit_profile = async (req, res) => {
@@ -14,6 +13,16 @@ const edit_profile = async (req, res) => {
     try {
         const { user_id, first_name, last_name, phone } = req.body.user;
         const { country, address, city, state, postal_code } = req.body.location;
+
+        if (!check_required_field(req.body, ["user", "location"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        if (!check_required_field(req.body.user, ["user_id", "first_name", "last_name"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
 
         const user = await User.findByPk(user_id);
 
@@ -51,6 +60,11 @@ const edit_profile = async (req, res) => {
 const change_password = async(req, res) => {
     try {
         const { user_id, old_password, new_password } = req.body;
+
+        if (!check_required_field(req.body, ["user_id", "old_password", "new_password"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
 
         const user = await User.findByPk(user_id);
 
