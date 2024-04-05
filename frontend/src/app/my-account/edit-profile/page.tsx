@@ -113,7 +113,7 @@ export default function EditProfile() {
                             type="text"
                             placeholder="First name"
                             className={style.custom_form_control}
-                            name="firstName"
+                            name="first_name"
                             value={user.first_name}
                             onChange={handleChangeUser}
                         />
@@ -123,7 +123,7 @@ export default function EditProfile() {
                             type="text"
                             placeholder="Last name"
                             className={style.custom_form_control}
-                            name="firstName"
+                            name="last_name"
                             value={user.last_name}
                             onChange={handleChangeUser}
                         />
