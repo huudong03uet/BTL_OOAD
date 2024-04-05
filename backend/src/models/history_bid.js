@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
-const AuctionRoomProduct = require('./auction_room_product');
+const Product = require('./product');
 
 const BidHistory = sequelize.define('bid_history', {
     id: {
@@ -28,7 +28,7 @@ const BidHistory = sequelize.define('bid_history', {
     }
 );
 
-BidHistory.belongsTo(AuctionRoomProduct, {foreignKey: "auction_product_id"})
-AuctionRoomProduct.hasMany(BidHistory, {foreignKey: "auction_product_id"})
+BidHistory.belongsTo(Product, {foreignKey: "product_id"})
+Product.hasMany(BidHistory, {foreignKey: "product_id"})
 
 module.exports = BidHistory;

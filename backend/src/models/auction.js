@@ -1,13 +1,13 @@
 const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
-const AuctionRoomStatus = require("../../constants/auction_room_status")
+const AuctionStatus = require("../../constants/auction_status")
 const Location = require('./location');
 const User = require('./user');
 const Seller = require('./seller');
 
 
-const AuctionRoom = sequelize.define('auction_room', {
+const Auction = sequelize.define('auction', {
     id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
@@ -20,7 +20,7 @@ const AuctionRoom = sequelize.define('auction_room', {
     status: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: AuctionRoomStatus.PUBLIC,
+        defaultValue: AuctionStatus.PUBLIC,
     },
     time_auction: {
         type: DataTypes.DATE,
@@ -42,17 +42,17 @@ const AuctionRoom = sequelize.define('auction_room', {
     },
 },
     {
-        tableName: 'auction_room',
+        tableName: 'auction',
     }
 )
 
-AuctionRoom.belongsTo(Location, { foreignKey: "location_id" });
-Location.hasMany(AuctionRoom, { foreignKey: "location_id" });
+Auction.belongsTo(Location, { foreignKey: "location_id" });
+Location.hasMany(Auction, { foreignKey: "location_id" });
 
-AuctionRoom.belongsTo(Seller, { foreignKey: "seller_id" })
-Seller.hasMany(AuctionRoom, { foreignKey: "seller_id" })
+Auction.belongsTo(Seller, { foreignKey: "seller_id" })
+Seller.hasMany(Auction, { foreignKey: "seller_id" })
 
-AuctionRoom.belongsToMany(User, {through: "Auction_Participant", foreignKey: "auction_room_id"})
-User.belongsToMany(AuctionRoom, {through: "Auction_Participant", foreignKey: "user_id"})
+Auction.belongsToMany(User, {through: "Auction_Participant", foreignKey: "auction_id"})
+User.belongsToMany(Auction, {through: "Auction_Participant", foreignKey: "user_id"})
 
-module.exports = AuctionRoom;
+module.exports = Auction;

@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
 const ProductInvitationStatus = require("../../constants/product_invitation")
-const AuctionRoom = require('./auction_room');
+const Auction = require('./auction');
 const Product = require('./product');
 const Seller = require('./seller');
 
@@ -35,7 +35,7 @@ Seller.hasMany(InvitationProduct, {foreignKey: "inviter_id"})
 InvitationProduct.belongsTo(Product, {foreignKey: "product_id"})
 Product.hasMany(InvitationProduct, {foreignKey: "product_id"})
 
-InvitationProduct.belongsTo(AuctionRoom, {foreignKey: "auction_room_id"})
-AuctionRoom.hasMany(InvitationProduct, {foreignKey: "auction_room_id"})
+InvitationProduct.belongsTo(Auction, {foreignKey: "auction_id"})
+Auction.hasMany(InvitationProduct, {foreignKey: "auction_id"})
 
 module.exports = InvitationProduct;

@@ -58,7 +58,7 @@ try:
         last_name = fake.last_name()
         user_name = f'test{i}'
         email = f'test{i}@gmail.com'
-        password = ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+        password = '$2b$10$ZsdANjcf3F1KuD65rPU.F.xkZIlJbWsU6P7hqlwWeIM6Dykv4APMO' #abc123
         coin = random.uniform(0, 1000)
         phone = fake.phone_number()
         avatar_path = f'avatar_{i}.jpg'
@@ -96,40 +96,34 @@ try:
         time_register = fake.date_time_this_decade()
         location_id = random.randint(1, 10)
 
-        sql = "INSERT INTO auction_room (name, status, time_auction, condition_coin, description, time_register, createdAt, updatedAt, location_id, seller_id) VALUES (%s, %s, %s, %s, %s, %s, NOW(), NOW(), %s, %s)"
+        sql = "INSERT INTO auction (name, status, time_auction, condition_coin, description, time_register, createdAt, updatedAt, location_id, seller_id) VALUES (%s, %s, %s, %s, %s, %s, NOW(), NOW(), %s, %s)"
         values = (name, status, time_auction, condition_coin, description, time_register, location_id, random.randint(1, num_seller))
 
         cursor.execute(sql, values)
 
-    print('Inserted 10 records into "auction_room" table.')
+    print('Inserted 10 records into "auction" table.')
 
     connection.commit()
 
+    # num_seller = 6
+
     for item in data:
         title = item['pageTitle']
-        description = item.get('description', fake.text())  
-        status = 'available'
+        description = item.get('description', fake.text())
         artist = item.get('artist', fake.text())
         createdAt = datetime.now()
         updatedAt = createdAt
         seller_id = random.randint(1, num_seller)
-
-        product_sql = "INSERT INTO product (title, description, status, artist, createdAt, updatedAt, seller_id) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        product_values = (title, description, status, artist, createdAt, updatedAt, seller_id)
-        cursor.execute(product_sql, product_values)
-
-        product_id = cursor.lastrowid
-
         max_estimate = float(re.sub(r'[^\d.]', '', item['max_estimate']))
         min_estimate = float(re.sub(r'[^\d.]', '', item['min_estimate']))
         numerical_order = random.randint(1, 4) + 1
         status = 'not_yet_sold'
-        createdAt = datetime.now()
-        updatedAt = createdAt
 
-        auction_sql = "INSERT INTO auction_room_product (name, max_estimate, min_estimate, numerical_order, status, createdAt, updatedAt, product_id, auction_room_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)"
-        auction_values = (title, max_estimate, min_estimate, numerical_order, status, createdAt, updatedAt, product_id, random.randint(1, 10))
-        cursor.execute(auction_sql, auction_values)
+        product_sql = "INSERT INTO product (title, description, artist, createdAt, updatedAt, seller_id, max_estimate, min_estimate, numerical_order, status, auction_id) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)"
+        product_values = (title, description, artist, createdAt, updatedAt, seller_id, max_estimate, min_estimate, numerical_order, status, random.randint(1, 10))
+        cursor.execute(product_sql, product_values)
+
+        product_id = cursor.lastrowid
 
         for path, url in zip(item['path'], item['images']):
             createdAt = datetime.now()
@@ -138,6 +132,24 @@ try:
             image_sql = "INSERT INTO image (path, url, createdAt, updatedAt, product_id) VALUES (%s, %s, %s, %s, %s)"
             image_values = (path, url, createdAt, updatedAt, product_id)
             cursor.execute(image_sql, image_values)
+
+        category_name = item.get('category')
+
+        category_check_sql = "SELECT id FROM category WHERE name = %s"
+        cursor.execute(category_check_sql, (category_name,))
+        existing_category = cursor.fetchone()
+
+        if existing_category:
+            category_id = existing_category[0]
+        else:
+            category_sql = "INSERT INTO category (name, description, createdAt, updatedAt) VALUES (%s, %s, %s, %s)"
+            category_values = (category_name, "", createdAt, updatedAt)
+            cursor.execute(category_sql, category_values)
+            category_id = cursor.lastrowid
+
+        category_product_sql = "INSERT INTO category_product (createdAt, updatedAt, product_id, category_id) VALUES (%s, %s, %s, %s)"
+        category_product_values = (createdAt, updatedAt, product_id, category_id)
+        cursor.execute(category_product_sql, category_product_values)
 
     connection.commit()
     cursor.close()

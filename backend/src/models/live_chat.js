@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
 const User = require('./user');
-const AuctionRoom = require('./auction_room');
+const Auction = require('./auction');
 
 
 const LiveChat = sequelize.define('live_chat', {
@@ -21,8 +21,8 @@ const LiveChat = sequelize.define('live_chat', {
     }
 );
 
-LiveChat.belongsTo(AuctionRoom, { foreignKey: "auction_room_id"});
-AuctionRoom.hasMany(LiveChat, { foreignKey: "auction_room_id"})
+LiveChat.belongsTo(Auction, { foreignKey: "auction_id"});
+Auction.hasMany(LiveChat, { foreignKey: "auction_id"})
 
 LiveChat.belongsTo(User, { foreignKey: 'user_id' })
 User.hasMany(LiveChat, { foreignKey: 'user_id' });

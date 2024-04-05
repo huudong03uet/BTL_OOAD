@@ -1,9 +1,9 @@
 const logger = require('../../../conf/logger');
 const sequelize = require('../../../conf/sequelize');
-const AuctionRoomRequestStatus = require('../../../constants/auction_room_request_status');
+const AuctionRequestStatus = require('../../../constants/auction_request_status');
 const statusCode = require('../../../constants/status');
-const AuctionRoom = require('../../models/auction_room');
-const AuctionRoomRequest = require('../../models/auction_room_request');
+const Auction = require('../../models/auction');
+const AuctionRequest = require('../../models/auction_request');
 const Product = require('../../models/product');
 const User = require('../../models/user');
 const { check_required_field } = require('../util');
@@ -30,15 +30,15 @@ let create_auction = async (req, res) => {
 
         Object.keys(auctionData).forEach(key => auctionData[key] === undefined && delete auctionData[key]);
 
-        const newAuction = await AuctionRoom.create(auctionData, { transaction: t });
+        const newAuction = await Auction.create(auctionData, { transaction: t });
 
         await newAuction.addUser(user_id, { transaction: t });
 
-        await AuctionRoomRequest.create({
-            status: AuctionRoomRequestStatus.NOT_YET,
+        await AuctionRequest.create({
+            status: AuctionRequestStatus.NOT_YET,
             description: description,
             user_id: user_id,
-            auction_room_id: newAuction.id,
+            auction_id: newAuction.id,
         }, { transaction: t })
 
         await t.commit();
@@ -62,7 +62,7 @@ let add_user = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        const auction = AuctionRoom.findByPk(auction_id);
+        const auction = Auction.findByPk(auction_id);
         const user = User.findByPk(user_id);
 
         if (!auction || !user) {
@@ -93,7 +93,7 @@ let add_product = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        const auction = AuctionRoom.findByPk(auction_id);
+        const auction = Auction.findByPk(auction_id);
         const product = Product.findByPk(product_id);
 
         if (!auction || !product) {
