@@ -4,6 +4,7 @@ const locationRouter = require('./component/location')
 const adminRouter = require('./admin')
 const sellerRouter = require('./seller')
 const userProductRouter = require('./user/product')
+const productRouter = require('./component/product')
 
 
 function route(app) {
@@ -13,6 +14,7 @@ function route(app) {
     app.use("/my-account", myAccountRouter);
     app.use("/location", locationRouter);
     app.use("/user", userProductRouter);
+    app.use("/product", productRouter);
 }
 
 module.exports = route;
