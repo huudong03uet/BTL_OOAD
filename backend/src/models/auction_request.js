@@ -14,8 +14,9 @@ const AuctionRequest = sequelize.define('auction_request', {
         primaryKey: true,
     },
     status: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
         allowNull: false,
+        values: [AuctionRequestStatus.ACCEPTED, AuctionRequestStatus.DENIED, AuctionRequestStatus.NOT_YET],
         defaultValue: AuctionRequestStatus.NOT_YET
     },
     description: {

@@ -14,8 +14,9 @@ const InvitationUser = sequelize.define('invitation_user', {
         primaryKey: true,
     },
     status: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
         allowNull: false,
+        values: [UserInvitationStatus.ACCEPTED, UserInvitationStatus.DENIED, UserInvitationStatus.NOT_YET],
         defaultValue: UserInvitationStatus.NOT_YET
     },
     view: {

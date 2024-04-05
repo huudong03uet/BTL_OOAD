@@ -14,8 +14,9 @@ const InvitationProduct = sequelize.define('invitation_product', {
         primaryKey: true,
     },
     status: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
         allowNull: false,
+        values: [ProductInvitationStatus.ACCEPTED, ProductInvitationStatus.DENIED, ProductInvitationStatus.NOT_YET],
         defaultValue: ProductInvitationStatus.NOT_YET,
     },
     view: {

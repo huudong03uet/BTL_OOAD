@@ -25,8 +25,9 @@ const Inspection = sequelize.define('inspection', {
         defaultValue: 0.0,
     },
     type: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
         allowNull: false,
+        values: [InspectionType.DENIED, InspectionType.INSPECTED, InspectionType.INSPECTTING, InspectionType.NOT_INSPECT],
         defaultValue: InspectionType.NOT_INSPECT,
     }
 },

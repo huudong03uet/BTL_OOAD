@@ -29,7 +29,6 @@ const Admin = sequelize.define('admin', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: "abc@gmail.com",
     },
     phone: {
         type: DataTypes.STRING,

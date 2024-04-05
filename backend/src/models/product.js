@@ -49,8 +49,9 @@ const Product = sequelize.define("product", {
     allowNull: true,
   },
   status: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM,
     allowNull: false,
+    values: [AuctionProductStatus.NOT_YET_SOLD, AuctionProductStatus.ON_SALE, AuctionProductStatus.SOLD],
     defaultValue: AuctionProductStatus.NOT_YET_SOLD,
   },
 },

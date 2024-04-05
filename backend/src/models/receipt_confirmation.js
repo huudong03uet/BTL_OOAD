@@ -16,8 +16,9 @@ const ReceiptConfirmation = sequelize.define('receipt_confirm', {
         allowNull: false,
     },
     status: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
         allowNull: false,
+        values: [ReceiptConfirmStatus.NOT_RECEIVE, ReceiptConfirmStatus.OUT_DATE, ReceiptConfirmStatus.PAID, ReceiptConfirmStatus.RECEIVED, ReceiptConfirmStatus.UNPAID],
         defaultValue: ReceiptConfirmStatus.NOT_RECEIVE,
     },
 },

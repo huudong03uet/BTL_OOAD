@@ -18,7 +18,6 @@ const Seller = sequelize.define('seller', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        defaultValue: "abc@gmail.com",
     },
     desciption: {
         type: DataTypes.TEXT,

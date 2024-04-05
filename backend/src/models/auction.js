@@ -18,8 +18,9 @@ const Auction = sequelize.define('auction', {
         allowNull: false,
     },
     status: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
         allowNull: false,
+        values: [AuctionStatus.PRIVATE, AuctionStatus.PUBLIC],
         defaultValue: AuctionStatus.PUBLIC,
     },
     time_auction: {
