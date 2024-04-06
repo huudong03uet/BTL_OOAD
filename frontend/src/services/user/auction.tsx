@@ -16,5 +16,19 @@ let get_auction_upcoming = async () => {
 }
 
 
+let get_category_service = async () => {
+    try {
+        let url = `${HOST}/user/all-category`
+
+        const response = await axios.get(url);
+
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
+
+export { get_category_service };
 export default get_auction_upcoming;
 

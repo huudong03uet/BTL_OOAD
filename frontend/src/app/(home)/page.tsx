@@ -9,7 +9,7 @@ import Category from '@/models/category';
 import AuctionSummary from '@/models/auction_summary';
 import AuctionInformation from '@/models/auction_information';
 import { useEffect, useState } from 'react';
-import get_auction_upcoming from '@/services/user/auction';
+import get_auction_upcoming, { get_category_service } from '@/services/user/auction';
 
 
 const HomePage = () => {
@@ -43,34 +43,49 @@ const HomePage = () => {
     }
   ];
 
+  const [curatedCollections, setCuratedCollections] = useState<Category[]>([]);
 
-  const curatedCollections: Category[] = [
-    {
-      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Hygge.jpg",
-      "title": "The Hygge Edit",
-    },
-    {
-      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Flawsome.jpg",
-      "title": "Totally Flawsome",
-    },
-    {
-      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/06/Collections-Category-Garden_Party.jpg",
-      "title": "Midsummer Garden Party",
-    },
-    {
-      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Bazaar.jpg",
-      "title": "Heritage Bazaar",
-    },
-    {
-      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/09/Collections-Category-Time_Honored_Crafts.jpg",
-      "title": "Time-Honored Crafts",
-    },
-    {
-      "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/09/Collections-Category-Grand_Tour.jpg",
-      "title": "The Grand Tour",
-    },
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await get_category_service();
+        setCuratedCollections(data);
+      } catch (error) {
+        console.error('Error fetching upcoming online auctions:', error);
+      }
+    };
 
-  ]
+    fetchData()
+}, [])
+
+
+  // const curatedCollections: Category[] = [
+  //   {
+  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Hygge.jpg",
+  //     "title": "The Hygge Edit",
+  //   },
+  //   {
+  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Flawsome.jpg",
+  //     "title": "Totally Flawsome",
+  //   },
+  //   {
+  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/06/Collections-Category-Garden_Party.jpg",
+  //     "title": "Midsummer Garden Party",
+  //   },
+  //   {
+  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Bazaar.jpg",
+  //     "title": "Heritage Bazaar",
+  //   },
+  //   {
+  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/09/Collections-Category-Time_Honored_Crafts.jpg",
+  //     "title": "Time-Honored Crafts",
+  //   },
+  //   {
+  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/09/Collections-Category-Grand_Tour.jpg",
+  //     "title": "The Grand Tour",
+  //   },
+
+  // ]
 
   const promotedAuctions: AuctionSummary[] = [
     {
@@ -144,169 +159,6 @@ const HomePage = () => {
 
     fetchData()
 }, [])
-
-
-  // let upcomingOnlineAuctions: AuctionInformation[] = [
-  //   {
-
-  //     "image_path": "https://image.invaluable.com/housePhotos/ShowplaceAntiques/29/764929/H20259-L362812913.jpg",
-  //     "time": "Mar 17, 11:00 PM GMT+7",
-  //     "auction_room_name": "Prints, Multiples & Works on Paper",
-  //     "seller_name": "Auctions at",
-  //     "address": "Zurich, Switzerland",
-  //     "voting_avg_review": 4.5,
-  //     "number_review": 44,
-  //     images: [
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-  //     ]
-  //     , status: "1",
-
-  //   },
-  //   {
-
-  //     "image_path": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365289746_mid.JPG",
-  //     "time": "Mar 17, 11:00 PM GMT+7",
-  //     "auction_room_name": "South Florida Fine Jewelry & Fashion Auction",
-  //     "seller_name": "Propstore Los",
-  //     "address": "Zurich, Switzerland",
-  //     "voting_avg_review": 4.5,
-  //     "number_review": 44,
-  //     images: [
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-  //     ]
-  //     , status: "1"
-
-  //   },
-  //   {
-
-  //     "image_path": "https://image.invaluable.com/housePhotos/houseofwhitley/59/766359/H20767-L364795035_mid.jpg",
-  //     "time": "Mar 17, 11:00 PM GMT+7",
-  //     "auction_room_name": "Long Island Home Decor & Estate Collections",
-  //     "seller_name": "Propstore Los",
-
-  //     "address": "Zurich, Switzerland",
-  //     "voting_avg_review": 4.5,
-  //     "number_review": 44,
-  //     images: [
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-  //     ], status: "0",
-
-  //   },
-  //   {
-
-  //     "image_path": "https://image.invaluable.com/housePhotos/ActivityAuctions/35/766735/H22175-L365595994_mid.jpg",
-  //     "time": "Mar 20, 1:00 AM GMT+7",
-  //     "auction_room_name": "Propstore Los Angeles March Auction",
-  //     "seller_name": "Propstore Los",
-  //     "address": "Zurich, Switzerland",
-  //     "voting_avg_review": 4.5,
-  //     "number_review": 44,
-  //     images: [
-  //     ], status: "1",
-  //   },
-  //   {
-
-  //     "image_path": "https://image.invaluable.com/housePhotos/houseofwhitley/48/766248/H20767-L364655923_mid.jpg",
-  //     "time": "Mar 14, 11:00 PM GMT+7",
-  //     "auction_room_name": "Auctions at",
-  //     "seller_name": "Propstore Los",
-
-  //     "address": "Zurich, Switzerland",
-  //     "voting_avg_review": 4.5,
-  //     "number_review": 44,
-  //     images: [
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-  //     ], status: "1",
-  //   },
-  //   {
-
-  //     "image_path": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
-  //     "time": "Mar 17, 11:00 PM GMT+7",
-  //     "auction_room_name": "Worldly Wonders",
-  //     "seller_name": "Propstore Los",
-  //     "address": "Zurich, Switzerland",
-  //     "voting_avg_review": 4.5,
-  //     "number_review": 44,
-  //     images: [
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-  //     ], status: "1",
-
-  //   },
-  //   {
-
-  //     "image_path": "https://image.invaluable.com/housePhotos/houseofwhitley/48/766248/H20767-L364655923_mid.jpg",
-  //     "time": "Mar 14, 11:00 PM GMT+7",
-  //     "auction_room_name": "Auctions at",
-  //     "seller_name": "Propstore Los",
-
-  //     "address": "Zurich, Switzerland",
-  //     "voting_avg_review": 4.5,
-  //     "number_review": 44,
-  //     images: [
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-  //     ], status: "0",
-  //   },
-  //   {
-
-  //     "image_path": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
-  //     "time": "Mar 17, 11:00 PM GMT+7",
-  //     "auction_room_name": "Worldly Wonders",
-  //     "seller_name": "Propstore Los",
-  //     "address": "Zurich, Switzerland",
-  //     "voting_avg_review": 4.5,
-  //     "number_review": 44,
-  //     images: [
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-  //     ], status: "0",
-
-  //   },
-  //   {
-
-  //     "image_path": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
-  //     "time": "Mar 17, 11:00 PM GMT+7",
-  //     "auction_room_name": "Worldly Wonders",
-  //     "seller_name": "Propstore Los",
-  //     "address": "Zurich, Switzerland",
-  //     "voting_avg_review": 4.5,
-  //     "number_review": 44,
-  //     images: [
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/81/766081/H0928-L364614319_mid.jpg",
-  //       "https://image.invaluable.com/housePhotos/schuler/34/766134/H0928-L364617627_mid.jpg"
-  //     ], status: "0",
-
-  //   },
-  // ]
 
   return (
     <div>
