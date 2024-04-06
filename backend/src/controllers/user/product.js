@@ -6,6 +6,7 @@ const AuctionProductStatus = require('../../../constants/auction_product_status'
 
 const Product = require('../../models/product')
 const Image = require('../../models/image')
+const Category = require('../../models/category')
 
 let get_products = async (req, res) => {
     try {
@@ -28,4 +29,17 @@ let get_products = async (req, res) => {
 }
 
 
-module.exports = {get_products}
+let get_categories = async (req, res) => {
+    try {
+        const categories = await Category.findAll();
+
+        logger.info(`${statusCode.HTTP_200_OK} category length: ${categories.length}`)   
+        return res.status(statusCode.HTTP_200_OK).json(categories)
+    } catch (error) {
+        logger.error(`Get products error: ${error}`);
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+
+module.exports = {get_products, get_categories}

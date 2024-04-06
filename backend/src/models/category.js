@@ -9,7 +9,11 @@ const Category = sequelize.define('category', {
         autoIncrement: true,
         primaryKey: true,
     },
-    name: {
+    title: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    image_path: {
         type: DataTypes.STRING,
         allowNull: true,
     },
