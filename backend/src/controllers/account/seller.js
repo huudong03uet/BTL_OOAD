@@ -1,12 +1,23 @@
-const logger = require('../../../conf/logger');
-const sequelize = require('../../../conf/sequelize');
-const statusCode = require('../../../constants/status');
 const Card = require('../../models/card');
 const Seller = require('../../models/seller');
 const User = require('../../models/user');
+const { check_required_field } = require('../util');
+const { role_edit_profile, role_change_password, role_forgot_password } = require('./role');
 
-const { find_or_create_location, check_required_field } = require('../util');
 
+const edit_profile = async (req, res) => {
+    return await role_edit_profile(req, res, Seller)
+}
+
+
+const change_password = async(req, res) => {
+    return await role_change_password(req, res, Seller)
+}
+
+
+let forgot_password = async (req, res) => {
+    return await role_forgot_password(req, res, Seller)
+}
 
 let register = async (req, res) => {
     const t = await sequelize.transaction();
@@ -75,4 +86,9 @@ let register = async (req, res) => {
 }
 
 
-module.exports = { register }
+module.exports = {
+    edit_profile,
+    change_password,
+    forgot_password,
+    register,
+};

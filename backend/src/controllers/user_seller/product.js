@@ -52,30 +52,6 @@ let add_product = async (req, res) => {
     }
 }
 
-let get_product_detail = async (req, res) => {
-    try {
-        const product_id = req.params.product_id;
-
-        const product = await Product.findByPk(product_id, {
-            include: {
-                model: Image,
-                attributes: ['id', 'path']
-            }
-        });
-
-        if (!product) {
-            logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Không tìm thấy product`);
-            return res.status(statusCode.HTTP_404_NOT_FOUND).json("Không tìm thấy product");
-        }
-
-        logger.info(`${statusCode.HTTP_200_OK} [product:${product.id}]`)
-        return res.status(statusCode.HTTP_200_OK).json(product);
-    } catch (error) {
-        logger.error(`Get product detail: ${error}`)
-        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
-    }
-}
-
 let get_product_by_status = async (req, res) => {
     try {
         const status = req.params.status;

@@ -2,22 +2,24 @@ const logger = require('../../../conf/logger');
 const sequelize = require('../../../conf/sequelize');
 const AuctionRequestStatus = require('../../../constants/auction_request_status');
 const statusCode = require('../../../constants/status');
+
 const Auction = require('../../models/auction');
 const AuctionRequest = require('../../models/auction_request');
 const Product = require('../../models/product');
 const User = require('../../models/user');
+
 const { check_required_field } = require('../util');
 
 
 let create_auction = async (req, res) => {
     const t = await sequelize.transaction();
     try {
-        const { user_id, name, condition_coin, location_id, description, status, time_auction } = req.body;
-
         if (!check_required_field(req.body, ["user_id", "name", "condition_coin", "location_id", "description", "status", "time_auction"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
+
+        const { user_id, name, condition_coin, location_id, description, status, time_auction } = req.body;
 
         const auctionData = {
             name: name,
@@ -55,12 +57,12 @@ let create_auction = async (req, res) => {
 let add_user = async (req, res) => {
     const transaction = await sequelize.transaction();
     try {
-        const { auction_id, user_id } = req.body;
-
         if (!check_required_field(req.body, ["auction_id", "user_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
+
+        const { auction_id, user_id } = req.body;
 
         const auction = Auction.findByPk(auction_id);
         const user = User.findByPk(user_id);
@@ -86,12 +88,12 @@ let add_user = async (req, res) => {
 let add_product = async (req, res) => {
     const transaction = await sequelize.transaction();
     try {
-        const { auction_id, product_id } = req.body;
-
         if (!check_required_field(req.body, ["auction_id", "product_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
+
+        const { auction_id, product_id } = req.body;
 
         const auction = Auction.findByPk(auction_id);
         const product = Product.findByPk(product_id);

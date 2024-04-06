@@ -63,26 +63,10 @@ const Product = sequelize.define("product", {
 Product.belongsTo(Seller, { foreignKey: "seller_id" });
 Seller.hasMany(Product, { foreignKey: "seller_id" });
 
+Product.belongsToMany(Category, { through: "Category_Product", foreignKey: "product_id" });
+Category.belongsToMany(Product, { through: "Category_Product", foreignKey: "category_id" });
+
 Product.belongsTo(Auction, { foreignKey: "auction_id" });
 Auction.hasMany(Product, { foreignKey: "auction_id" });
-
-const Category_Product = sequelize.define("category_product", {
-  // id: {
-  //   type: DataTypes.INTEGER,
-  //   autoIncrement: true,
-  //   primaryKey: true,
-  // },
-},
-{
-  tableName: "category_product",
-}
-);
-
-Product.belongsToMany(Category, { through: Category_Product, foreignKey: "product_id" });
-Category.belongsToMany(Product, { through: Category_Product, foreignKey: "category_id" });
-Category_Product.belongsTo(Product, {foreignKey: "product_id"})
-Category_Product.belongsTo(Category, {foreignKey: "category_id"})
-Product.hasMany(Category_Product, {foreignKey: "product_id"});
-Category.hasMany(Category_Product, {foreignKey: "category_id"});
 
 module.exports = Product;
