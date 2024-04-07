@@ -3,6 +3,7 @@ const statusCode = require('../../../constants/status')
 const logger = require("../../../conf/logger")
 
 const AuctionProductStatus = require('../../../constants/auction_product_status')
+const AuctionProductVisibilityStatus = require('../../../constants/product_visibility')
 
 const Product = require('../../models/product')
 const Image = require('../../models/image')
@@ -25,7 +26,8 @@ let get_products = async (req, res) => {
     try {
         const products = await Product.findAll({
             where: {
-                status: [AuctionProductStatus.NOT_YET_SOLD, AuctionProductStatus.ON_SALE]
+                status: [AuctionProductStatus.NOT_YET_SOLD, AuctionProductStatus.ON_SALE],
+                visibility: AuctionProductVisibilityStatus.PUBLIC
             },
             include: {
                 model: Image,

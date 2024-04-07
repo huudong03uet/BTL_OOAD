@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 
 const sequelize = require("../../conf/sequelize");
 const AuctionProductStatus = require('../../constants/auction_product_status')
+const AuctionProductVisibilityStatus = require('../../constants/product_visibility')
 
 const Category = require("./category");
 const Seller = require("./seller");
@@ -53,6 +54,12 @@ const Product = sequelize.define("product", {
     allowNull: false,
     values: [AuctionProductStatus.NOT_YET_SOLD, AuctionProductStatus.ON_SALE, AuctionProductStatus.SOLD],
     defaultValue: AuctionProductStatus.NOT_YET_SOLD,
+  },
+  visibility: {
+    type: DataTypes.ENUM,
+    allowNull: false,
+    values: [AuctionProductVisibilityStatus.PUBLIC, AuctionProductVisibilityStatus.PRIVATE],
+    defaultValue: AuctionProductVisibilityStatus.PUBLIC,
   },
 },
   {

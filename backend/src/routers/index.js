@@ -8,9 +8,9 @@
 // const productRouter = require('./component/product')
 
 const authRouter = require('./auth')
-// const accountRouter = require('./account')
+const accountRouter = require('./account')
 const auctionRouter = require('./auction')
-// const componentRouter = require('./component')
+const componentRouter = require('./component')
 
 
 function route(app) {
@@ -23,9 +23,9 @@ function route(app) {
     // app.use("/user/auction", userAuctionRouter);
     // app.use("/product", productRouter);
 
-    // app.use("/", componentRouter)
+    app.use("/", componentRouter)
     app.use("/auth", authRouter);
-    // app.use("/account", accountRouter);
+    app.use("/account", accountRouter);
     app.use("/auction", auctionRouter);
 }
 

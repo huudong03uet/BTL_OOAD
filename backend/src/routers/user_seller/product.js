@@ -4,7 +4,6 @@ const path = require('path');
 const fs = require('fs');
 
 const router = express.Router();
-const productController = require("../../controllers/user_seller/product")
 
 const MEDIA = "media/";
 const PRODUCT_FOLDER = MEDIA + 'products/';
@@ -31,6 +30,5 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/add', upload.array('images', 5), productController.add_product)
-router.get('/detail/id=:product_id', productController.get_product_detail)
 
 module.exports = router;
