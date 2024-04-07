@@ -1,8 +1,7 @@
 "use client"
+import { user_login_service } from '@/services/auth/login';
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-
-import login_service from "@/services/auth/login";
 
 function ModalLogin(props: any) {
   const [username, setUsername] = useState('');
@@ -29,7 +28,7 @@ function ModalLogin(props: any) {
       setError('Please enter your password.');
       return;
     }
-    let err = await login_service(password, username)
+    let err = await user_login_service(password, username)
 
     if (typeof err === 'string') {
       setError(err);

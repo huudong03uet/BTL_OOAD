@@ -23,4 +23,4 @@ let seller_register = async (seller_info: any, card_info: any, location_info: an
 }
 
 
-export default seller_register;
+export { seller_register } ;

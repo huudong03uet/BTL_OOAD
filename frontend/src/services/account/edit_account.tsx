@@ -6,9 +6,9 @@ import UserDataService from '../model/user';
 import { HOST } from '@/services/host';
 import Location from '@/models/location';
 
-const edit_account_service = async (user: User, location: Location) => {
+const user_edit_account_service = async (user: User, location: Location) => {
     try {
-        let url = `${HOST}/my-account/edit-profile`;
+        let url = `${HOST}/account/user/edit-profile`;
         let body = {
             user: user,
             location: location,
@@ -34,4 +34,4 @@ const edit_account_service = async (user: User, location: Location) => {
     }
 };
 
-export default edit_account_service;
+export { user_edit_account_service };

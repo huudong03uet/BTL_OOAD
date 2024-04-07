@@ -3,7 +3,7 @@ import { Form, } from "react-bootstrap";
 import style from '../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import UserDataService from "@/services/model/user";
-import add_product from "@/services/product/product";
+import { seller_add_product } from "@/services/product/seller";
 
 
 export default function AddProduct() {
@@ -46,7 +46,7 @@ export default function AddProduct() {
                 formData.append('images', image);
             });
 
-            await add_product(formData);
+            await seller_add_product(formData);
         } else {
             console.error('Hình ảnh không được để trống');
         }

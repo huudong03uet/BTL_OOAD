@@ -9,7 +9,8 @@ import Category from '@/models/category';
 import AuctionSummary from '@/models/auction_summary';
 import AuctionInformation from '@/models/auction_information';
 import { useEffect, useState } from 'react';
-import get_auction_upcoming, { get_category_service } from '@/services/user/auction';
+import { user_get_auction_upcoming } from '@/services/auction/user';
+import { user_get_category_service } from '@/services/product/user';
 
 
 const HomePage = () => {
@@ -48,7 +49,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await get_category_service();
+        const data = await user_get_category_service();
         setCuratedCollections(data);
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);
@@ -57,35 +58,6 @@ const HomePage = () => {
 
     fetchData()
 }, [])
-
-
-  // const curatedCollections: Category[] = [
-  //   {
-  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Hygge.jpg",
-  //     "title": "The Hygge Edit",
-  //   },
-  //   {
-  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Flawsome.jpg",
-  //     "title": "Totally Flawsome",
-  //   },
-  //   {
-  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/06/Collections-Category-Garden_Party.jpg",
-  //     "title": "Midsummer Garden Party",
-  //   },
-  //   {
-  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/05/Collections-Category-Bazaar.jpg",
-  //     "title": "Heritage Bazaar",
-  //   },
-  //   {
-  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/09/Collections-Category-Time_Honored_Crafts.jpg",
-  //     "title": "Time-Honored Crafts",
-  //   },
-  //   {
-  //     "image_path": "https://www.invaluable.com/inv/discover/wp-content/uploads/sites/87/2023/09/Collections-Category-Grand_Tour.jpg",
-  //     "title": "The Grand Tour",
-  //   },
-
-  // ]
 
   const promotedAuctions: AuctionSummary[] = [
     {
@@ -149,8 +121,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await get_auction_upcoming();
-        console.log(data);
+        const data = await user_get_auction_upcoming();
         setUpcomingOnlineAuctions(data);
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);
@@ -187,7 +158,7 @@ const HomePage = () => {
         <Container>
           <div className={styles.header_section}>Curated Collections</div>
           <div className="row">
-            {curatedCollections.map((object, i) => (
+            {/* {curatedCollections.map((object, i) => (
               <div className="col-sm-2" key={i}>
                 <div>
                   <img src={object.image_path} alt={object.title} className="img-fluid" ></img>
@@ -201,7 +172,7 @@ const HomePage = () => {
 
 
               </div>
-            ))}
+            ))} */}
           </div>
         </Container>
       </div>

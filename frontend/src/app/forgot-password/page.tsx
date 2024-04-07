@@ -1,6 +1,6 @@
 'use client'
+import { user_forgot_password_service } from "@/services/account/user";
 import React, { useState } from "react";
-import forgot_password_service from "@/services/my_account/forgot_password";
 
 
 export default function Item() {
@@ -12,7 +12,7 @@ export default function Item() {
             return;
         }
 
-        await forgot_password_service(email);
+        await user_forgot_password_service(email);
     }
 
     return (

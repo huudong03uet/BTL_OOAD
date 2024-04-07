@@ -5,9 +5,9 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import User from "@/models/user";
 import UserDataService from "@/services/model/user";
-import edit_account_service from "@/services/my_account/edit_account";
 import Location from "@/models/location";
-import get_location_service from "@/services/my_account/get_location";
+import get_location_service from "@/services/component/location";
+import { user_edit_account_service } from "@/services/account/user";
 
 
 export default function EditProfileSeller() {
@@ -89,7 +89,7 @@ export default function EditProfileSeller() {
     };
 
     const handleClick = async () => {
-        await edit_account_service(user, location);
+        await user_edit_account_service(user, location);
     }
 
 

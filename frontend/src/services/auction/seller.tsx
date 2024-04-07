@@ -4,9 +4,9 @@ import axios from 'axios';
 import { HOST } from '@/services/host';
 import Auction from '@/models/auction';
 
-const auction_create_service = async (auctionData: Auction) => {
+const seller_auction_create_service = async (auctionData: Auction) => {
     try {
-        let url = `${HOST}/auction/create`;
+        let url = `${HOST}/auction/seller/create`;
         let response = await axios.post(url, auctionData);
         return;
     } catch (error: any) {
@@ -15,4 +15,4 @@ const auction_create_service = async (auctionData: Auction) => {
     }
 };
 
-export default auction_create_service;
+export { seller_auction_create_service };

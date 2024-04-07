@@ -4,9 +4,9 @@ import axios from 'axios';
 import UserDataService from '../model/user';
 import { HOST } from '@/services/host';
 
-const change_password_service = async (old_password: number, new_password: number) => {
+const user_change_password_service = async (old_password: number, new_password: number) => {
     try {
-        let url = `${HOST}/my-account/change-password`;
+        let url = `${HOST}/account/user/change-password`;
         let body = {
             user_id: UserDataService.getUserData()?.user_id,
             old_password: old_password,
@@ -20,4 +20,4 @@ const change_password_service = async (old_password: number, new_password: numbe
     }
 };
 
-export default change_password_service;
+export { user_change_password_service };

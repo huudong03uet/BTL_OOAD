@@ -6,7 +6,7 @@ import { Modal } from 'react-bootstrap';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import style from '../style.module.css';
 import { useState } from 'react';
-import seller_register from '@/services/seller/register';
+import { seller_register } from '@/services/account/seller';
 
 export default function PaymentOptions() {
     const [showModal, setShowModal] = useState(false);

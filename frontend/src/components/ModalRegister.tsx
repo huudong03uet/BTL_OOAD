@@ -1,7 +1,6 @@
+import { user_sign_up_service } from '@/services/auth/sign_up';
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
-
-import sign_up_service from '@/services/auth/sign_up';
 
 
 
@@ -74,7 +73,7 @@ function ModalRegister(props: any) {
             setError('Passwords do not match.')
           }
           
-          let err = await sign_up_service(firstName, lastName, password, username, email);
+          let err = await user_sign_up_service(firstName, lastName, password, username, email);
 
           if (typeof err === 'string') {
             setError(err);
