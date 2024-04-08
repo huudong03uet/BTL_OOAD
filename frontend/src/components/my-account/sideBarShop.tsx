@@ -37,7 +37,7 @@ function SideBarShop() {
                 </div>
                 <div className='ps-4'>
                     <Link className={style.div_text} href="/seller/my-products">
-                        My products
+                        My Products
                     </Link>
 
                     <Link className={style.div_text} href="/seller/add-product" >
@@ -45,7 +45,7 @@ function SideBarShop() {
                     </Link>
                     
                     <Link className={style.div_text} href="/seller/product-history" >
-                        Product history
+                        Product History
                     </Link>
                 </div>
             </div>
@@ -55,13 +55,13 @@ function SideBarShop() {
                 </div>
                 <div className='ps-4'>
                     <Link className={style.div_text} href="/seller/my-auction">
-                        My auction
+                        My Auction
                     </Link>
                     <Link className={style.div_text} href="/seller/add-auction">
                         Add New Auction
                     </Link>
                     <Link className={style.div_text} href="/seller/auction-history">
-                        Auction history
+                        Auction History
                     </Link>
                 </div>
             </div>

@@ -18,8 +18,10 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Link from "next/link";
 
 
+//  cứ lấy hết thông tin có của auction -> không cần lọc, dư sẽ để vào phần detail hoặc bỏ
 
 
 export default function MyAuction() {
@@ -39,16 +41,16 @@ export default function MyAuction() {
                             <TableRow>
 
                                 {/* cell 1, 2, 3, ... */}
-                                <TableCell align="center" style={{ width: '5%' , paddingLeft: '0px', paddingRight: '0px'}}>ID</TableCell>
-                                <TableCell align="center" style={{ width: 'auto' , paddingLeft: '0px', paddingRight: '0px'}}>Auction name</TableCell>
-                                <TableCell align="center" style={{ width: '15%' , paddingLeft: '0px', paddingRight: '0px'}}>Topic</TableCell>
-                                <TableCell align="center" style={{ width: '10%' , paddingLeft: '0px', paddingRight: '0px'}}>Number product</TableCell>
-                                <TableCell  align="center" style={{ width: '15%' , paddingLeft: '0px', paddingRight: '0px'}}>Time start</TableCell>
-                               
-                                <TableCell align="center" style={{ width: '10%' , paddingLeft: '0px', paddingRight: '0px'}}>Organization day </TableCell>
-                                <TableCell align="center" style={{ width: '15%' , paddingLeft: '0px', paddingRight: '0px'}}>Status</TableCell>
-                                
-                                <TableCell align="center" style={{ width: '5%' , paddingLeft: '0px', paddingRight: '0px'}}>Detail</TableCell>
+                                <TableCell align="center" style={{ width: '5%', paddingLeft: '0px', paddingRight: '0px' }}>ID</TableCell>
+                                <TableCell align="center" style={{ width: 'auto', paddingLeft: '0px', paddingRight: '0px' }}>Auction name</TableCell>
+                                <TableCell align="center" style={{ width: '15%', paddingLeft: '0px', paddingRight: '0px' }}>Topic</TableCell>
+                                <TableCell align="center" style={{ width: '10%', paddingLeft: '0px', paddingRight: '0px' }}>Number product</TableCell>
+                                <TableCell align="center" style={{ width: '15%', paddingLeft: '0px', paddingRight: '0px' }}>Time start</TableCell>
+
+                                <TableCell align="center" style={{ width: '10%', paddingLeft: '0px', paddingRight: '0px' }}>Organization day </TableCell>
+                                <TableCell align="center" style={{ width: '10%', paddingLeft: '0px', paddingRight: '0px' }}>Status</TableCell>
+                                <TableCell align="center" style={{ width: '10%', paddingLeft: '0px', paddingRight: '0px' }}>Edit</TableCell>
+                                <TableCell align="center" style={{ width: '5%', paddingLeft: '0px', paddingRight: '0px' }}>Detail</TableCell>
 
                             </TableRow>
                         </TableHead>
@@ -56,7 +58,7 @@ export default function MyAuction() {
 
                         <TableBody>
                             {rows.map((row, index) => (
-                                <Row key={row.name} row={row} index={index}/>
+                                <Row key={row.name} row={row} index={index} />
                             ))}
                         </TableBody>
                     </Table>
@@ -100,7 +102,7 @@ function createData(
     };
 }
 
-function Row(props: { row: ReturnType<typeof createData> , index: number}) {
+function Row(props: { row: ReturnType<typeof createData>, index: number }) {
     const { row } = props;
     const { index } = props;
     const [open, setOpen] = React.useState(false);
@@ -108,7 +110,7 @@ function Row(props: { row: ReturnType<typeof createData> , index: number}) {
     return (
         <React.Fragment>
             <TableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-               
+
                 {/* cell 1, 2, 3, ... */}
 
                 <TableCell align="center" component="th" scope="row">
@@ -122,6 +124,13 @@ function Row(props: { row: ReturnType<typeof createData> , index: number}) {
                 <TableCell align="center">{row.start_bid}</TableCell>
                 <TableCell align="center">{row.max_bid}</TableCell>
                 <TableCell align="center">{row.status}</TableCell>
+
+                <TableCell align="center">
+                    <Link href="/seller/edit-auction">
+                        <button className="btn btn-primary w-100">Edit</button>
+                    </Link>
+                    {/* <button className="btn btn-primary w-100">Edit</button> */}
+                </TableCell>
 
                 <TableCell align="center">
                     <IconButton

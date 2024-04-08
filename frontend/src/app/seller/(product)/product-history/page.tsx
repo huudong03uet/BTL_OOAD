@@ -2,8 +2,6 @@
 import { Form, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import UserDataService from "@/services/model/user";
-import { seller_add_product } from "@/services/product/seller";
 
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -19,7 +17,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-
+//  cứ lấy hết thông tin có của product -> không cần lọc, dư sẽ để vào phần detail hoặc bỏ
 
 
 export default function ProductHistory() {
@@ -42,7 +40,7 @@ export default function ProductHistory() {
                                 <TableCell align="center" style={{ width: '5%' , paddingLeft: '0px', paddingRight: '0px'}}>ID</TableCell>
                                 <TableCell align="center" style={{ width: 'auto' , paddingLeft: '0px', paddingRight: '0px'}}>Name</TableCell>
                                 <TableCell align="center" style={{ width: '15%' , paddingLeft: '0px', paddingRight: '0px'}}>Time auction</TableCell>
-                                <TableCell  align="center" style={{ width: '15%' , paddingLeft: '0px', paddingRight: '0px'}}>Room auction</TableCell>
+                                <TableCell align="center" style={{ width: '15%' , paddingLeft: '0px', paddingRight: '0px'}}>Room auction</TableCell>
                                 <TableCell align="center" style={{ width: '10%' , paddingLeft: '0px', paddingRight: '0px'}}>Max bid</TableCell>
                                 <TableCell align="center" style={{ width: '10%' , paddingLeft: '0px', paddingRight: '0px'}}>Winner</TableCell>
                                 <TableCell align="center" style={{ width: '15%' , paddingLeft: '0px', paddingRight: '0px'}}>Status</TableCell>

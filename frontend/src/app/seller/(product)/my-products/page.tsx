@@ -18,9 +18,10 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Link from "next/link";
 
 
-
+//  cứ lấy hết thông tin có của product -> không cần lọc, dư sẽ để vào phần detail hoặc bỏ
 
 export default function MyProduct() {
 
@@ -41,12 +42,12 @@ export default function MyProduct() {
                                 {/* cell 1, 2, 3, ... */}
                                 <TableCell align="center" style={{ width: '5%' , paddingLeft: '0px', paddingRight: '0px'}}>ID</TableCell>
                                 <TableCell align="center" style={{ width: 'auto' , paddingLeft: '0px', paddingRight: '0px'}}>Name</TableCell>
-                                <TableCell align="center" style={{ width: '15%' , paddingLeft: '0px', paddingRight: '0px'}}>Min estimate</TableCell>
-                                <TableCell  align="center" style={{ width: '15%' , paddingLeft: '0px', paddingRight: '0px'}}>Max estimate</TableCell>
+                                <TableCell align="center" style={{ width: '10%' , paddingLeft: '0px', paddingRight: '0px'}}>Min estimate</TableCell>
+                                <TableCell  align="center" style={{ width: '10%' , paddingLeft: '0px', paddingRight: '0px'}}>Max estimate</TableCell>
                                 <TableCell align="center" style={{ width: '10%' , paddingLeft: '0px', paddingRight: '0px'}}>Start bid</TableCell>
                                 <TableCell align="center" style={{ width: '10%' , paddingLeft: '0px', paddingRight: '0px'}}>Time auction</TableCell>
-                                <TableCell align="center" style={{ width: '15%' , paddingLeft: '0px', paddingRight: '0px'}}>Status</TableCell>
-                                
+                                <TableCell align="center" style={{ width: '10%' , paddingLeft: '0px', paddingRight: '0px'}}>Status</TableCell>
+                                <TableCell align="center" style={{ width: '10%' , paddingLeft: '0px', paddingRight: '0px'}}>Edit</TableCell>
                                 <TableCell align="center" style={{ width: '5%' , paddingLeft: '0px', paddingRight: '0px'}}>Detail</TableCell>
 
                             </TableRow>
@@ -121,6 +122,12 @@ function Row(props: { row: ReturnType<typeof createData> , index: number}) {
                 <TableCell align="center">{row.start_bid}</TableCell>
                 <TableCell align="center">{row.max_bid}</TableCell>
                 <TableCell align="center">{row.status}</TableCell>
+
+                <TableCell align="center">
+                    <Link href="/seller/edit-product">
+                        <button className="btn btn-primary w-100">Edit</button>
+                    </Link>
+                </TableCell>
 
                 <TableCell align="center">
                     <IconButton
