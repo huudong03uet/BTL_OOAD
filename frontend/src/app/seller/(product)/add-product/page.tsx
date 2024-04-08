@@ -1,6 +1,6 @@
 'use client'
 import { Form, } from "react-bootstrap";
-import style from '../../my-account/style.module.css'
+import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import UserDataService from "@/services/model/user";
 import { seller_add_product } from "@/services/product/seller";
@@ -95,6 +95,39 @@ export default function AddProduct() {
                                 className={style.custom_form_control}
                                 value={productCategory}
                                 onChange={(e) => setProductCategory(e.target.value)}
+                            />
+                        </div>
+                    </div>
+
+                    <div className="row">
+                        <div className="col-4">
+                            <Form.Label>Min estimate (VNĐ)</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Min estimate"
+                                className={style.custom_form_control}
+                                value={producttitle}
+                                // onChange={(e) => setProducttitle(e.target.value)}
+                            />
+                        </div>
+                        <div className="col-4">
+                            <Form.Label>Max estimate (VNĐ)</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Max estimate"
+                                className={style.custom_form_control}
+                                value={productArtist}
+                                // onChange={(e) => setProductArtist(e.target.value)}
+                            />
+                        </div>
+                        <div className="col-4">
+                            <Form.Label>Start Bid (VNĐ)</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Start bid"
+                                className={style.custom_form_control}
+                                value={productArtist}
+                                // onChange={(e) => setProductArtist(e.target.value)}
                             />
                         </div>
                     </div>

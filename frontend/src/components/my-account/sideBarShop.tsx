@@ -36,32 +36,33 @@ function SideBarShop() {
                     Product
                 </div>
                 <div className='ps-4'>
-                    <div className={style.div_text}>
+                    <Link className={style.div_text} href="/seller/my-products">
                         My products
-                    </div>
+                    </Link>
 
                     <Link className={style.div_text} href="/seller/add-product" >
                         Add New Product
                     </Link>
-                    <div className={style.div_text}>
+                    
+                    <Link className={style.div_text} href="/seller/product-history" >
                         Product history
-                    </div>
+                    </Link>
                 </div>
             </div>
             <div className={style.div_module}>
-                <div className={style.div_text}>
+                <div className={style.div_text} >
                     Auction
                 </div>
                 <div className='ps-4'>
-                    <div className={style.div_text}>
+                    <Link className={style.div_text} href="/seller/my-auction">
                         My auction
-                    </div>
-                    <div className={style.div_text}>
+                    </Link>
+                    <Link className={style.div_text} href="/seller/add-auction">
                         Add New Auction
-                    </div>
-                    <div className={style.div_text}>
+                    </Link>
+                    <Link className={style.div_text} href="/seller/auction-history">
                         Auction history
-                    </div>
+                    </Link>
                 </div>
             </div>
             <div className={style.div_module}>
@@ -85,7 +86,7 @@ function SideBarShop() {
 
             <div className={style.div_module}>
 
-                <Link className={style.div_text} href="/my-account" >
+                <Link className={style.div_text} href="/my-account/home" >
                     Change to User
                 </Link>
 
