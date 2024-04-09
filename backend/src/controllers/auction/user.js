@@ -65,16 +65,19 @@ let get_auction_by_status = async (req, res) => {
                 },
                 {
                     model: Seller,
-                    attributes: ["name"],
-                    include: [
-                        {
-                            model: Review,
-                            attributes: [
-                                [Sequelize.literal('(SELECT AVG(star) FROM review WHERE review.seller_id = auction.seller_id)'), 'average_star'],
-                                [Sequelize.literal('(SELECT COUNT(id) FROM review WHERE review.seller_id = auction.seller_id)'), 'count_star'],
-                            ],
-                        }
-                    ]
+                      include: [{
+                        model: Review,
+                        attributes: [],
+                        required: true
+                      }],
+                      group: ['Seller.id'],
+                      having: sequelize.where(sequelize.col('Seller.id'), '=', sequelize.col('Auction.seller_id')),
+                      attributes: [
+                        'name',
+                        [sequelize.fn('AVG', sequelize.col('star')), 'avg_star'],
+                        [sequelize.fn('COUNT', sequelize.col('comment')), 'count']
+                      ],                 
+                                        
                 },
                 {
                     model: User,
@@ -91,9 +94,10 @@ let get_auction_by_status = async (req, res) => {
             let out = {};
             out["time"] = auction.dataValues.time_auction;
             out["auction_room_name"] = auction.dataValues.name;
-            if (auction.dataValues.seller.reviews && auction.dataValues.seller.reviews.length > 0) {
-                out["number_review"] = auction.dataValues.seller.reviews[0].dataValues.count_star;
-                out["voting_avg_review"] = auction.dataValues.seller.reviews[0].dataValues.average_star;
+            console.log(auction.seller)
+            if (auction.seller.dataValues) {
+                out["number_review"] = auction.seller.dataValues.count;
+                out["voting_avg_review"] = auction.seller.dataValues.avg_star;
             } else {
                 out["number_review"] = 0;
                 out["voting_avg_review"] = 0;

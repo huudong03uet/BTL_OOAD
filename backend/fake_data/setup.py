@@ -1,9 +1,5 @@
 from setuptools import setup
 
-# Đọc thông tin từ tệp cấu hình
-config = ConfigParser()
-config.read('.env')
-
 setup(
     name='my_app',
     version='1.0',
