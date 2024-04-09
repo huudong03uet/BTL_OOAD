@@ -61,6 +61,11 @@ const Product = sequelize.define("product", {
     values: [AuctionProductVisibilityStatus.PUBLIC, AuctionProductVisibilityStatus.PRIVATE],
     defaultValue: AuctionProductVisibilityStatus.PUBLIC,
   },
+  condition_report: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+    defaultValue: "All items sold 'As Is'. Authenticity guaranteed, but grade and condition not. Use pictures for your judgment",
+  }
 },
   {
     tableName: "product",

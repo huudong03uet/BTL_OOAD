@@ -8,6 +8,7 @@ const AuctionProductVisibilityStatus = require('../../../constants/product_visib
 const Product = require('../../models/product')
 const Image = require('../../models/image')
 const Category = require('../../models/category')
+const { check_required_field } = require('../util')
 
 let get_categories = async (req, res) => {
     try {
@@ -45,12 +46,17 @@ let get_products = async (req, res) => {
 
 let get_product_detail = async (req, res) => {
     try {
+        if (!check_required_field(req.params, ["product_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
         const product_id = req.params.product_id;
 
         const product = await Product.findByPk(product_id, {
             include: {
                 model: Image,
-                attributes: ['id', 'path']
+                attributes: ['id', 'url']
             }
         });
 
