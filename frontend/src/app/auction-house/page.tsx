@@ -4,7 +4,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '@smastrom/react-rating/style.css'
 import { Container, Button, Form, Row, Col, InputGroup, Dropdown } from "react-bootstrap";
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import styles from '@/styles/customer/auctionHouse.module.css';
 import styles2 from '@/styles/auction_house/soldItem.module.css'
 import AppHeader from '@/components/AppHeader';
@@ -21,6 +21,7 @@ import User from '@/models/user';
 import Comment from '@/components/auction-house/Comment';
 import PassAuction from '@/components/auction-house/PastAuction';
 import { object } from 'zod';
+import { user_get_auction_upcoming } from '@/services/auction/user';
 
 
 interface CommentProps {
@@ -74,6 +75,20 @@ const AuctionHouse = (auctionHouse: AuctionHouseProps) => {
             tabContentRef.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
     };
+
+    const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionInformation[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+        try {
+            const data = await user_get_auction_upcoming();
+            setUpcomingOnlineAuctions(data);
+        } catch (error) {
+            console.error('Error fetching upcoming online auctions:', error);
+        }
+        };
+
+        fetchData()
+    }, [])
 
     //fake data
     const auctionHouseFake = {
@@ -197,7 +212,6 @@ const AuctionHouse = (auctionHouse: AuctionHouseProps) => {
                 , status: "1",
 
             }
-            // Add more upcoming auctions if needed
         ],
         auctionHouse_soldAuctions: [
             {

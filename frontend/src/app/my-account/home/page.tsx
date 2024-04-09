@@ -1,14 +1,13 @@
 'use client'
-import { Container, Button, Form, Row, Col, InputGroup, Dropdown } from "react-bootstrap";
+import { Container, } from "react-bootstrap";
 import style from '../style.module.css';
 import React, { useEffect, useState } from 'react';
-import SideBarUser from "@/components/my-account/sideBarUser";
-import { CountryDropdown, RegionDropdown, CountryRegionData } from "react-country-region-selector";
 import UpcomingAuctions from "@/components/shared/upcomingAuctions";
 import ViewItem from "@/components/shared/viewItem";
 import UserDataService from "@/services/model/user";
 import AuctionInformation from "@/models/auction_information";
 import { user_get_auction_upcoming } from "@/services/auction/user";
+import get_artist_recommend_service from "@/services/component/artist";
 
 
 export default function MyInvaluable() {
@@ -46,7 +45,6 @@ export default function MyInvaluable() {
         const fetchData = async () => {
             try {
                 const data = await user_get_auction_upcoming();
-                console.log(data);
                 setUpcomingOnlineAuctions(data);
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
@@ -54,32 +52,47 @@ export default function MyInvaluable() {
         }
 
         fetchData()
-    })
+    }, [])
 
+    const [exploreRecommendedArtists, setExploreRecommendedArtists] = useState<{ name: string; image: string }[]>([]);
 
-    const exploreRecommendedArtists = [
-        {
-            'name': 'Andy Warhol',
-            'image': 'https://image.invaluable.com/housePhotos/whiteknight/22/617422/H21019-L133600799.jpg',
-
-        },
-        {
-            'name': 'Andy Warhol',
-            'image': 'https://image.invaluable.com/housePhotos/888Auctions/26/626026/H4602-L144500860.jpg',
-
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await get_artist_recommend_service();
+                setExploreRecommendedArtists(data);
+            } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
+            }
         }
-        ,
-        {
-            'name': 'Andy Warhol',
-            'image': 'https://image.invaluable.com/housePhotos/888Auctions/26/626026/H4602-L144500852.jpg',
 
-        },
-        {
-            'name': 'Andy Warhol',
-            'image': 'https://image.invaluable.com/housePhotos/Expertizezcom/71/625271/H19606-L143520478.jpg',
+        fetchData()
+    }, [])
 
-        }
-    ]
+
+    // const exploreRecommendedArtists = [
+    //     {
+    //         'name': 'Andy Warhol',
+    //         'image': 'https://image.invaluable.com/housePhotos/whiteknight/22/617422/H21019-L133600799.jpg',
+
+    //     },
+    //     {
+    //         'name': 'Andy Warhol',
+    //         'image': 'https://image.invaluable.com/housePhotos/888Auctions/26/626026/H4602-L144500860.jpg',
+
+    //     }
+    //     ,
+    //     {
+    //         'name': 'Andy Warhol',
+    //         'image': 'https://image.invaluable.com/housePhotos/888Auctions/26/626026/H4602-L144500852.jpg',
+
+    //     },
+    //     {
+    //         'name': 'Andy Warhol',
+    //         'image': 'https://image.invaluable.com/housePhotos/Expertizezcom/71/625271/H19606-L143520478.jpg',
+
+    //     }
+    // ]
 
 
 
