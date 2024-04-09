@@ -85,9 +85,11 @@ export default function AddProduct() {
                         </div>
                     </div>
 
+
+                   
                     <div className="row">
 
-                        <div className="col-12">
+                        <div className="col-6">
                             <Form.Label>Category</Form.Label>
                             <Form.Control
                                 type="text"
@@ -95,6 +97,15 @@ export default function AddProduct() {
                                 className={style.custom_form_control}
                                 value={productCategory}
                                 onChange={(e) => setProductCategory(e.target.value)}
+                            />
+                        </div>
+
+                        <div className="col-6">
+                            <Form.Label>Dimension</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Category"
+                                className={style.custom_form_control}
                             />
                         </div>
                     </div>
@@ -131,7 +142,16 @@ export default function AddProduct() {
                             />
                         </div>
                     </div>
-
+                    <div className="row">
+                        <div className="col-12">
+                            <Form.Label>Provenance</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Description"
+                                className={style.custom_form_control}
+                            />
+                        </div>
+                    </div>
                     <div className="row">
                         <div className="col-12">
                             <Form.Label>Description</Form.Label>
