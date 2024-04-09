@@ -1,6 +1,6 @@
 'use client'
 import { Form, } from "react-bootstrap";
-import style from '../../my-account/style.module.css'
+import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import User from "@/models/user";

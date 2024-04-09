@@ -3,6 +3,7 @@
     padding: 6px 0;
     text-decoration: none;
     color: #000000;
+    display: flex;
 }
 .div_text:hover {
     text-decoration: underline;
