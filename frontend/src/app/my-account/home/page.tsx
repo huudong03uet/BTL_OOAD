@@ -52,6 +52,8 @@ export default function MyInvaluable() {
                 console.error('Error fetching upcoming online auctions:', error);
             }
         }
+
+        fetchData()
     })
 
 

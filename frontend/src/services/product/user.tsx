@@ -16,9 +16,9 @@ let user_get_category_service = async () => {
     }
 }
 
-export async function get_detail_product(product_id: number) {
+let user_get_detail_product = async (product_id: number) => {
     try {
-        let url = `${HOST}/product/detail/id=${product_id}`;
+        let url = `${HOST}/product/user/detail/product_id=${product_id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -27,4 +27,4 @@ export async function get_detail_product(product_id: number) {
     }
 }
 
-export { user_get_category_service, } ;
+export { user_get_category_service, user_get_detail_product } ;

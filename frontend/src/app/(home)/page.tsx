@@ -9,7 +9,7 @@ import Category from '@/models/category';
 import AuctionSummary from '@/models/auction_summary';
 import AuctionInformation from '@/models/auction_information';
 import { useEffect, useState } from 'react';
-import { user_get_auction_upcoming } from '@/services/auction/user';
+import { user_get_auction_promote, user_get_auction_upcoming } from '@/services/auction/user';
 import { user_get_category_service } from '@/services/product/user';
 
 
@@ -50,6 +50,7 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         const data = await user_get_category_service();
+        console.log(data)
         setCuratedCollections(data);
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);
@@ -59,62 +60,21 @@ const HomePage = () => {
     fetchData()
 }, [])
 
-  const promotedAuctions: AuctionSummary[] = [
-    {
 
-      "image_path": "https://image.invaluable.com/housePhotos/ShowplaceAntiques/29/764929/H20259-L362812913.jpg",
-      "time": "Mar 17, 11:00 PM GMT+7",
-      "title": "Prints, Multiples & Works on Paper",
-      "seller_name": "Auctions at",
+const [promotedAuctions, setPromotedAuctions] = useState<AuctionSummary[]>([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await user_get_auction_promote();
+        setPromotedAuctions(data);
+      } catch (error) {
+        console.error('Error fetching upcoming online auctions:', error);
+      }
+    };
 
-    },
-    {
-
-      "image_path": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365289746_mid.JPG",
-      "time": "Mar 17, 11:00 PM GMT+7",
-      "title": "South Florida Fine Jewelry & Fashion Auction",
-      "seller_name": "Propstore Los",
-
-
-    },
-    {
-
-      "image_path": "https://image.invaluable.com/housePhotos/houseofwhitley/59/766359/H20767-L364795035_mid.jpg",
-      "time": "Mar 17, 11:00 PM GMT+7",
-      "title": "Long Island Home Decor & Estate Collections",
-      "seller_name": "Propstore Los",
-
-
-    },
-    {
-
-      "image_path": "https://image.invaluable.com/housePhotos/ActivityAuctions/35/766735/H22175-L365595994_mid.jpg",
-      "time": "Mar 20, 1:00 AM GMT+7",
-      "title": "Propstore Los Angeles March Auction",
-      "seller_name": "Propstore Los",
-
-
-    },
-    {
-
-      "image_path": "https://image.invaluable.com/housePhotos/houseofwhitley/48/766248/H20767-L364655923_mid.jpg",
-      "time": "Mar 14, 11:00 PM GMT+7",
-      "title": "Auctions at",
-      "seller_name": "Propstore Los",
-
-
-    },
-    {
-
-      "image_path": "https://image.invaluable.com/housePhotos/propstore/69/765169/H23042-L363158593_mid.jpg",
-      "time": "Mar 17, 11:00 PM GMT+7",
-      "title": "Worldly Wonders",
-      "seller_name": "Propstore Los",
-
-
-    }
-  ]
+    fetchData()
+}, [])
 
   const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionInformation[]>([]);
 
@@ -158,7 +118,7 @@ const HomePage = () => {
         <Container>
           <div className={styles.header_section}>Curated Collections</div>
           <div className="row">
-            {/* {curatedCollections.map((object, i) => (
+            {curatedCollections.map((object, i) => (
               <div className="col-sm-2" key={i}>
                 <div>
                   <img src={object.image_path} alt={object.title} className="img-fluid" ></img>
@@ -172,7 +132,7 @@ const HomePage = () => {
 
 
               </div>
-            ))} */}
+            ))}
           </div>
         </Container>
       </div>

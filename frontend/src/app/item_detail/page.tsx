@@ -5,13 +5,12 @@ import React, { useEffect, useState } from 'react';
 import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
 import VerticalSlide from "@/components/item/VerticalSlide";
-import Item from "@/models/product_detail";
-import { get_detail_product } from "@/services/product/product";
 
 import { Modal } from 'react-bootstrap';
 import ProductDetail from "@/models/product_detail";
+import { user_get_detail_product } from "@/services/product/user";
 
-export default function Item(props: Item) {
+export default function Item(props: ProductDetail) {
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
@@ -31,7 +30,7 @@ export default function Item(props: Item) {
   useEffect(() => {
     const fetchItemData = async () => {
       try {
-        const data = await get_detail_product(1);
+        const data = await user_get_detail_product(1);
         setItemData(data);
       } catch (error) {
         console.error("Error fetching item data:", error);
@@ -71,7 +70,7 @@ export default function Item(props: Item) {
           <Container>
             <div className={style['contend-aside-holder']}>
               <div className={style.contend}>
-              <VerticalSlide images={itemData.images ? itemData.images.map(image => image.path) : []}></VerticalSlide>
+              <VerticalSlide images={itemData.images ? itemData.images.map(image => image.url) : []}></VerticalSlide>
                 <div className={style['sharing-btn']}>
                   <i className="fa fa-envelope"></i>
                   <i className="fa fa-share"></i>
@@ -160,12 +159,12 @@ export default function Item(props: Item) {
                 </div>
               </div>
               {itemData?.status === 'sold' ? (
-                <p className={style.est}>Est: ${itemData?.estimate_min} USD - ${itemData?.estimate_max} USD</p>
+                <p className={style.est}>Est: ${itemData?.min_estimate} USD - ${itemData?.max_estimate} USD</p>
               ) : (<div className={style.aside}>
                 <div className={style['bid-room-inner']}>
                   <div className={style['bid-status']}>
-                    <p className={style.est}>Est: ${itemData?.estimate_min} USD - ${itemData?.estimate_max} USD</p>
-                    <p className={style.usd}><b>${itemData?.max_bid} USD</b><span className={style['bid-count']}>     {itemData?.count_bid} bids</span></p>
+                    <p className={style.est}>Est: ${itemData?.min_estimate} USD - ${itemData?.max_estimate} USD</p>
+                    <p className={style.usd}><b>${itemData?.max_bid} USD</b><span className={style['bid-count']}>     {itemData?.numerical_order} bids</span></p>
                   </div>
                   <form action="" className={style['form-group-bid']}>
                     <label htmlFor=""><span>Set Max Bid:</span></label>

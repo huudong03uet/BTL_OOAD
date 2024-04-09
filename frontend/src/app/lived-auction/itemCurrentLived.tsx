@@ -14,7 +14,7 @@ import ProductDetail from '@/models/product_detail';
 
 
 // type SizeType = ConfigProviderProps['componentSize'];
-export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: ProductDetail , handleButtonClick: any}) {
+export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: ProductDetail, handleButtonClick: any }) {
 
     const nextIcon = <ArrowForwardIosOutlinedIcon style={{ color: "black" }} />;
     const prevIcon = <ArrowBackIosOutlinedIcon style={{ color: "black" }} />
@@ -42,19 +42,17 @@ export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: Prod
                 <div>
                     <Carousel activeIndex={index} onSelect={handleSelect} nextIcon={nextIcon} prevIcon={prevIcon}>
 
-                        {obj.images.map((image_child_obj, index) => (
+                        {obj.images && obj.images.map((image_child_obj, index) => (
                             <Carousel.Item key={index}>
                                 <div className='bg-white w-100 h-100 d-flex justify-content-center align-items-center'>
-                                    <img src={image_child_obj.path} style={{ maxHeight: "300px", width: "auto" }}></img>
-
+                                    <img src={image_child_obj.url} style={{ maxHeight: "300px", width: "auto" }} />
                                 </div>
-
                             </Carousel.Item>
                         ))}
                     </Carousel>
                 </div>
                 <div style={{ fontWeight: "400", fontSize: "16px" }} className="mt-3">
-                    Estimate: ${obj.estimate_min} - ${obj.estimate_max}
+                    Estimate: ${obj?.min_estimate} - ${obj?.max_estimate}
                 </div>
                 <div className="d-flex justify-content-center m-2">
                     <Button variant="outline-dark d-flex align-items-center rounded-pill" onClick={handleButtonClick}>

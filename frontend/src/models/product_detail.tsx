@@ -1,6 +1,6 @@
 interface Image {
     id: number,
-    path: string,
+    url: string,
 }
 
 
@@ -9,10 +9,10 @@ export default interface ProductDetail {
     images: Image[];
     title: string;
     status: string;
-    count_bid?: number;
+    numerical_order?: number;
     max_bid?: number;
-    estimate_min?: number;
-    estimate_max?: number;
+    min_estimate?: number;
+    max_estimate?: number;
     price?:number;
     description: string;
     dimensions: string;

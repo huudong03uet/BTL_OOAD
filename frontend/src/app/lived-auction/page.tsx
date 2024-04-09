@@ -10,73 +10,28 @@ import { useRouter } from 'next/navigation'
 import ProductDetail from '@/models/product_detail';
 import ItemSummary from '@/models/product_summary';
 import AuctionInformation from '@/models/auction_information';
-// type SizeType = ConfigProviderProps['componentSize'];
+import { user_get_detail_product } from '@/services/product/user';
+import { user_get_auction_info } from '@/services/auction/user';
+
 export default function LivedAuction() {
 
-    const infoAuction: AuctionInformation = {
-        "auction_room_name": "Key Date Coins Spectacular AM Live Auction 11 pt 1 Day 3",
-        "seller_name": "Key Date Coins",
-        "number_watching": 84,
-        "voting_avg_review": 4.6,
-        "number_review": 24,
-    }
+    const [infoAuction, setInfoAuction] = useState({} as AuctionInformation);
+    const [lotsAuction, setLotsAuction] = useState<ItemSummary[]>([]);
 
-    const lotsAuction: ItemSummary[] = [
-        {
-            "status": "0",
-            "title": "Royal Mint 1980 gold proof set of 4 coins, compris",
-            "id": 1,
-            "max_bid": 10,
-            "love": 1,
-            "estimate_min": 10,
-            "image_path": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366354002_mid.jpg",
-        },
-        {
-            "status": "0",
-            "title": "A collection of British pre-decimal coins as taken",
-            "id": 2,
-            "max_bid": 10,
-            "love": 1,
-            "estimate_min": 10,
-            "image_path": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366354000_mid.jpg",
-        },
-        {
-            "status": "1",
-            "title": "dang ban rat nhieu la nhieu la nhieu ng ban rat nhieu la nhieu la nhieu ng ban rat nhieu la nhieu la nhieu",
-            "id": 3,
-            "max_bid": 10,
-            "love": 1,
-            "estimate_min": 10,
-            "image_path": "https://image.invaluable.com/housePhotos/Raffan_Kelaher_and_Thomas/75/765975/H3937-L364405684_mid.jpg",
-        },
-        {
-            "status": "2",
-            "title": "Two half sovereigns, one dated 1895, with veiled V",
-            "id": 4,
-            "max_bid": 10,
-            "love": 1,
-            "estimate_min": 10,
-            "image_path": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353894_mid.jpg",
-        },
-        {
-            "status": "2",
-            "title": "A collection of 14 circulated silver coins and an ",
-            "id": 5,
-            "max_bid": 10,
-            "love": 1,
-            "estimate_min": 10,
-            "image_path": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353885_mid.jpg",
-        },
-        {
-            "status": "2",
-            "title": "A large official Royal Mint silver medal celebrati",
-            "id": 6,
-            "max_bid": 10,
-            "love": 1,
-            "estimate_min": 10,
-            "image_path": "https://image.invaluable.com/housePhotos/Ewbank/74/767174/H0472-L366353897_mid.jpg",
-        }
-    ]
+    useEffect(() => {
+        const fetchItemData = async () => {
+          try {
+            const data = await user_get_auction_info(1);
+            setInfoAuction(data.infoAuction);
+            setLotsAuction(data.lotsAuction);
+          } catch (error) {
+            console.error("Error fetching item data:", error);
+          }
+        };
+    
+        fetchItemData();
+      }, []);
+
     function nextCostAuction(currentCost: number) {
         if (currentCost < 200) {
             return currentCost + 10;
@@ -107,49 +62,21 @@ export default function LivedAuction() {
 
 
     const currentCost = 100;
-    const currentAuction: ProductDetail = {
-        "id": 1234,
-        "images": [
-            {
-                "id": 1,
-                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731521.jpg",
-            },
-            {
-                "id": 1,
-                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731519.jpg",
-            },
-            {
-                "id": 1,
-                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731520.jpg",
-            },
-            {
-                "id": 1,
-                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731527.jpg",
-            },
-            {
-                "id": 1,
-                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731523.jpg",
-            },
-            {
-                "id": 1,
-                "path": "https://image.invaluable.com/housePhotos/loeckx/34/766834/H3359-L365731529.jpg"
-            },
-        ],
-        "title": "Two half sovereigns, one dated 1895, with veiled V",
-        "status": "2",
-        "count_bid": 10,
-        "max_bid": 100,
-        "estimate_min": 123,
-        "estimate_max": 125,
-        "description": "Two half sovereigns, one dated 1895, with veiled V",
 
-        "dimensions": "3x3x4",
-        "artist": "Dagoty à Paris (*)",
-        "love": 1,
-        "condition_report": "chip to foot, chip to lion",
+    const [currentAuction, setCurrentAuction] = useState({} as ProductDetail)
 
-        "provenance": "A rare pair of Empire porcelain vases 'karyatids', by Dagoty à Paris (*)",
-    }
+    useEffect(() => {
+        const fetchItemData = async () => {
+          try {
+            const data = await user_get_detail_product(1);
+            setCurrentAuction(data);
+          } catch (error) {
+            console.error("Error fetching item data:", error);
+          }
+        };
+    
+        fetchItemData();
+      }, []);
 
     const [size, setSize] = useState<String>('button_1');
 
@@ -175,6 +102,15 @@ export default function LivedAuction() {
                 top: scrollHeight,
                 behavior: 'smooth'
             });
+        }
+    };
+
+    const handleLotClick = async (productId: number) => {
+        try {
+            const data = await user_get_detail_product(productId);
+            setCurrentAuction(data);
+        } catch (error) {
+            console.error("Error fetching item data:", error);
         }
     };
 
@@ -229,7 +165,7 @@ export default function LivedAuction() {
                                 <div style={{ overflowY: 'scroll', height: "calc(100vh - 270px)", position: "relative" }}>
                                     {lotsAuction.map((object, index) => (
                                         <div key={index} className='p-3' style={{ backgroundColor: object.status === "1" ? '#FDF3F5' : 'white' }}>
-                                            <ItemLivedAuction obj={object} />
+                                            <ItemLivedAuction obj={object} onClick={() => handleLotClick(object.id)}/>
                                         </div>
                                     ))}
                                 </div>
