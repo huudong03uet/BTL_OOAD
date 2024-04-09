@@ -335,4 +335,14 @@ let get_auction_info = async (req, res) => {
     }
 }
 
+
+let get_auction_sold = async (req, res) => {
+    try {
+        
+    } catch (error) {
+        logger.error(`Auction add product: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
 module.exports = { get_auction_by_status, get_auction_promote, get_auction_info }
