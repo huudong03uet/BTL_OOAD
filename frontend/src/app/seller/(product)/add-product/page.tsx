@@ -160,7 +160,6 @@ export default function AddProduct() {
                             <Form.Control
                                 type="text"
                                 placeholder="Provenance"
-                                placeholder="provenance"
                                 value={provenance}
                                 onChange={(e) => setProvenance(e.target.value)}
                                 className={style.custom_form_control}

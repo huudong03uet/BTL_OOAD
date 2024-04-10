@@ -113,18 +113,7 @@ export default function EditProfileSeller() {
                             type="text"
                             placeholder="First name"
                             className={style.custom_form_control}
-                            name="firstName"
-                            value={user.first_name}
-                            onChange={handleChangeUser}
-                        />
-                    </div>
-                    <div className="col-3">
-                        <Form.Control
-                            type="text"
-                            placeholder="Last name"
-                            className={style.custom_form_control}
-                            name="firstName"
-                            value={user.last_name}
+                            name="name"
                             onChange={handleChangeUser}
                         />
                     </div>
@@ -137,11 +126,9 @@ export default function EditProfileSeller() {
                                     type="text"
                                     placeholder="New Email Address"
                                     className={style.custom_form_control}
-                                />
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Password"
-                                    className={style.custom_form_control}
+                                    value={user.email}
+                                    name="email"
+                                    onChange={handleChangeUser}
                                 />
                                 <div className='d-flex align-items-center'>
                                     <button type="button" className="btn btn-danger">Update</button>

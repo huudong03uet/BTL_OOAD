@@ -23,6 +23,7 @@ export default function EditProfile() {
 
     useEffect(() => {
         const userData = UserDataService.getUserData();
+        console.log(userData)
         if (userData) {
             setUser(prevUser => ({
                 ...prevUser,
@@ -89,17 +90,15 @@ export default function EditProfile() {
     };
 
     const handleClick = async () => {
+        // console.log(user)
         await user_edit_account_service(user, location);
+        setUpdateEmail(false)
     }
 
 
 
     return (
         <div className='row mx-0'>
-            {/* <div className="col-2">
-                <SideBarMyAccount />
-            </div> */}
-            {/* <div className="col-10 px-5"> */}
             <div className={style.div_title}>
                 Edit Profile
             </div>
@@ -137,14 +136,12 @@ export default function EditProfile() {
                                     type="text"
                                     placeholder="New Email Address"
                                     className={style.custom_form_control}
-                                />
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Password"
-                                    className={style.custom_form_control}
+                                    name="email"
+                                    value={user.email}
+                                    onChange={handleChangeUser}
                                 />
                                 <div className='d-flex align-items-center'>
-                                    <button type="button" className="btn btn-danger">Update</button>
+                                    <button type="button" onClick={() => handleClick()} className="btn btn-danger">Update</button>
                                     <a onClick={() => setUpdateEmail(false)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
                                         Cancel
                                     </a>
@@ -175,18 +172,20 @@ export default function EditProfile() {
                                 <Form.Control
                                     type="text"
                                     placeholder="Current Password"
-                                    value=""
+                                    value="current_password"
                                     className={style.custom_form_control}
                                 />
                                 <Form.Control
                                     type="text"
                                     placeholder="New Password"
                                     className={style.custom_form_control}
+                                    value="new_password"
                                 />
                                 <Form.Control
                                     type="text"
                                     placeholder="Confirm New Password"
                                     className={style.custom_form_control}
+                                    value="confirm_password"
                                 />
                                 <div className='d-flex align-items-center'>
                                     <button type="button" className="btn btn-danger">Update</button>
