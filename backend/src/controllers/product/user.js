@@ -30,10 +30,12 @@ let get_products = async (req, res) => {
                 status: [AuctionProductStatus.NOT_YET_SOLD, AuctionProductStatus.ON_SALE],
                 visibility: AuctionProductVisibilityStatus.PUBLIC
             },
-            include: {
-                model: Image,
-                attributes: ["id", 'path', "url"]
-            }
+            include: [
+                {
+                    model: Image,
+                    attributes: ["id", 'path', "url"]
+                }
+            ]
         });
 
         logger.info(`${statusCode.HTTP_200_OK} product length: ${products.length}`)
@@ -54,10 +56,16 @@ let get_product_detail = async (req, res) => {
         const product_id = req.params.product_id;
 
         const product = await Product.findByPk(product_id, {
-            include: {
-                model: Image,
-                attributes: ['id', 'url']
-            }
+            include: [
+                {
+                    model: Image,
+                    attributes: ['id', 'url']
+                },
+                {
+                    model: Category,
+                    attributes: ['id', 'title']
+                }
+            ]
         });
 
         if (!product) {

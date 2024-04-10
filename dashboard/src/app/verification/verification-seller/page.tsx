@@ -24,6 +24,7 @@ const VerificationSellerPage = () => {
         user_id: "HA8HA",
         name: "Free package",
         time_create: `Jan 13,2023`,
+        email: 'abc@gmail.com',
         status: 'pending',
   
     },
@@ -31,6 +32,7 @@ const VerificationSellerPage = () => {
         user_id: "HA8HA",
         name: "Free package",
         time_create: `Jan 13,2023`,
+        email: 'abc@gmail.com',
         status: 'pending',
   
     },
@@ -38,6 +40,7 @@ const VerificationSellerPage = () => {
         user_id: "HA8HA",
         name: "Free package",
         time_create: `Jan 13,2023`,
+        email: 'abc@gmail.com',
         status: 'pending',
   
     },
@@ -45,6 +48,7 @@ const VerificationSellerPage = () => {
         user_id: "HA8HA",
         name: "Free package",
         time_create: `Jan 13,2023`,
+        email: 'abc@gmail.com',
         status: 'pending',
   
     },

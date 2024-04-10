@@ -2,10 +2,11 @@
 import axios from 'axios';
 
 import { HOST } from '@/services/host';
+import UserDataService from '../model/user';
 
-const get_location_service = async (location_id: number) => {
+const get_review_service = async () => {
     try {
-        let url = `${HOST}/location/id=${location_id}`;
+        let url = `${HOST}/review/user_id=${UserDataService.getUserData()?.user_id}`;
         let response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -14,4 +15,4 @@ const get_location_service = async (location_id: number) => {
     }
 };
 
-export default get_location_service;
+export default get_review_service;

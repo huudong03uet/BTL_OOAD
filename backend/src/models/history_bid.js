@@ -2,6 +2,7 @@ const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
 const Product = require('./product');
+const User = require('./user');
 
 const BidHistory = sequelize.define('bid_history', {
     id: {
@@ -30,5 +31,8 @@ const BidHistory = sequelize.define('bid_history', {
 
 BidHistory.belongsTo(Product, {foreignKey: "product_id"})
 Product.hasMany(BidHistory, {foreignKey: "product_id"})
+
+BidHistory.belongsTo(User, {foreignKey: "user_id"})
+User.hasMany(BidHistory, {foreignKey: "user_id"})
 
 module.exports = BidHistory;

@@ -19,12 +19,14 @@ const User = require('../../models/user');
 const LoveProduct = require('../../models/product_love');
 
 
-let get_auction_by_status = async (req, res) => {
+let get_auction_upcomming = async (req, res) => {
     try {
         if (!check_required_field(req.params, ["user_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
+
+        console.log(req.params.user_id)
 
         const auctions = await Auction.findAll({
             where: {
@@ -65,16 +67,20 @@ let get_auction_by_status = async (req, res) => {
                 },
                 {
                     model: Seller,
-                    attributes: ["name"],
                     include: [
                         {
                             model: Review,
-                            attributes: [
-                                [Sequelize.literal('(SELECT AVG(star) FROM review WHERE review.seller_id = auction.seller_id)'), 'average_star'],
-                                [Sequelize.literal('(SELECT COUNT(id) FROM review WHERE review.seller_id = auction.seller_id)'), 'count_star'],
-                            ],
+                            attributes: [],
+                            required: true
                         }
-                    ]
+                    ],
+                    group: ['Seller.id'],
+                    having: sequelize.where(sequelize.col('Seller.id'), '=', sequelize.col('Auction.seller_id')),
+                    attributes: [
+                        'name',
+                        [sequelize.fn('AVG', sequelize.col('star')), 'avg_star'],
+                        [sequelize.fn('COUNT', sequelize.col('comment')), 'count']
+                    ],
                 },
                 {
                     model: User,
@@ -89,29 +95,27 @@ let get_auction_by_status = async (req, res) => {
 
         for (let auction of auctions) {
             let out = {};
-            out["time"] = auction.dataValues.time_auction;
-            out["auction_room_name"] = auction.dataValues.name;
-            if (auction.dataValues.seller.reviews && auction.dataValues.seller.reviews.length > 0) {
-                out["number_review"] = auction.dataValues.seller.reviews[0].dataValues.count_star;
-                out["voting_avg_review"] = auction.dataValues.seller.reviews[0].dataValues.average_star;
-            } else {
-                out["number_review"] = 0;
-                out["voting_avg_review"] = 0;
-            }
+            out["time"] = auction.time_auction;
+            out["auction_room_name"] = auction.name;
+            out["number_review"] = auction.seller ? auction.seller.count : 0;
+            out["voting_avg_review"] = auction.seller ? auction.seller.avg_star : 0;
             let images = [];
             for (let product of auction.products) {
-                images.push(product.images[0].url);
+                if (product.images.length > 0) {
+                    images.push(product.images[0].url);
+                }
             }
             let firstImage = images.shift();
             out["images"] = images;
             out["image_path"] = firstImage;
-            out["seller_name"] = auction.seller.name;
+            out["seller_name"] = auction.seller ? auction.seller.name : '';
             out["status"] = auction.status;
-            out['address'] = auction.location.location
+            out['address'] = auction.location ? auction.location.location : '';
 
             result.push(out)
         }
 
+        logger.info(`${statusCode.HTTP_200_OK} auction uppcomming ${result.length}`)
         return res.status(statusCode.HTTP_200_OK).json(result);
     } catch (error) {
         logger.error(`Login: ${error}`)
@@ -244,17 +248,20 @@ let get_auction_info = async (req, res) => {
                 },
                 {
                     model: Seller,
-                    attributes: ['name'],
                     include: [
                         {
                             model: Review,
-                            attributes: [
-                                [sequelize.literal('(SELECT AVG(star) FROM review WHERE review.seller_id = auction.seller_id)'), 'average_star'],
-                                [sequelize.literal('(SELECT COUNT(id) FROM review WHERE review.seller_id = auction.seller_id)'), 'count_star']
-                            ]
-                        },
-                        
-                    ]
+                            attributes: [],
+                            required: true
+                        }
+                    ],
+                    group: ['Seller.id'],
+                    having: sequelize.where(sequelize.col('Seller.id'), '=', sequelize.col('Auction.seller_id')),
+                    attributes: [
+                        'name',
+                        [sequelize.fn('AVG', sequelize.col('star')), 'avg_star'],
+                        [sequelize.fn('COUNT', sequelize.col('comment')), 'count']
+                    ],
                 },
                 {
                     model: Location,
@@ -293,9 +300,9 @@ let get_auction_info = async (req, res) => {
         let infoAuction = {};
         infoAuction["time"] = auction.dataValues.time_auction;
         infoAuction["auction_room_name"] = auction.dataValues.name;
-        if (auction.dataValues.seller.reviews && auction.dataValues.seller.reviews.length > 0) {
-            infoAuction["number_review"] = auction.dataValues.seller.reviews[0].dataValues.count_star;
-            infoAuction["voting_avg_review"] = auction.dataValues.seller.reviews[0].dataValues.average_star;
+        if (auction.seller.dataValues) {
+            infoAuction["number_review"] = auction.seller.dataValues.count;
+            infoAuction["voting_avg_review"] = auction.seller.dataValues.avg_star;
         } else {
             infoAuction["number_review"] = 0;
             infoAuction["voting_avg_review"] = 0;
@@ -338,11 +345,11 @@ let get_auction_info = async (req, res) => {
 
 let get_auction_sold = async (req, res) => {
     try {
-        
+
     } catch (error) {
         logger.error(`Auction add product: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 }
 
-module.exports = { get_auction_by_status, get_auction_promote, get_auction_info }
+module.exports = { get_auction_upcomming, get_auction_promote, get_auction_info }

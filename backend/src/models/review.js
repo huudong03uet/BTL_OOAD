@@ -13,7 +13,7 @@ const Review = sequelize.define(
       primaryKey: true,
     },
     star: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.DOUBLE,
       allowNull: false,
       defaultValue: 0,
     },

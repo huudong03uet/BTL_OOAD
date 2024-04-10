@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 route(app);
 
 
-app.post('/hello', (req, res) => {
+app.get('/hello', (req, res) => {
     console.log(req.body)
     res.send("ok")
 });

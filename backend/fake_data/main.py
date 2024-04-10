@@ -135,14 +135,14 @@ try:
 
         category_name = item.get('category')
 
-        category_check_sql = "SELECT id FROM category WHERE name = %s"
+        category_check_sql = "SELECT id FROM category WHERE title = %s"
         cursor.execute(category_check_sql, (category_name,))
         existing_category = cursor.fetchone()
 
         if existing_category:
             category_id = existing_category[0]
         else:
-            category_sql = "INSERT INTO category (name, description, createdAt, updatedAt) VALUES (%s, %s, %s, %s)"
+            category_sql = "INSERT INTO category (title, description, createdAt, updatedAt) VALUES (%s, %s, %s, %s)"
             category_values = (category_name, "", createdAt, updatedAt)
             cursor.execute(category_sql, category_values)
             category_id = cursor.lastrowid

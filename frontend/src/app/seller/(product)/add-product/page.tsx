@@ -12,6 +12,11 @@ export default function AddProduct() {
     const [productArtist, setProductArtist] = useState<string>('');
     const [productCategory, setProductCategory] = useState<string>('');
     const [productImages, setProductImages] = useState<File[]>([]);
+    const [dimension, setDimension] = useState<string>('');
+    const [minEstimate, setMinEstimate] = useState<string>('');
+    const [maxEstimate, setMaxEstimate] = useState<string>('');
+    const [startBid, setStartBid] = useState<string>('');
+    const [provenance, setProvenance] = useState<string>('');
     const [user_id, setUserID] = useState<string | null>(UserDataService.getUserData()?.user_id?.toString() || null);
 
 
@@ -39,6 +44,11 @@ export default function AddProduct() {
         formData.append("description", productDescription);
         formData.append("category_name", productCategory);
         formData.append("artist", productArtist);
+        formData.append("dimension", dimension);
+        formData.append("min_estimate", minEstimate);
+        formData.append("max_estimate", maxEstimate);
+        formData.append("startBid", startBid);
+        formData.append("provenance", provenance);
 
         if (productImages.length > 0 && user_id !== null) {
             formData.append("user_id", user_id);
@@ -106,6 +116,8 @@ export default function AddProduct() {
                                 type="text"
                                 placeholder="Dimension"
                                 className={style.custom_form_control}
+                                value={dimension}
+                                onChange={(e) => setDimension(e.target.value)}
                             />
                         </div>
                     </div>
@@ -117,8 +129,8 @@ export default function AddProduct() {
                                 type="text"
                                 placeholder="Min estimate"
                                 className={style.custom_form_control}
-                                value={producttitle}
-                                // onChange={(e) => setProducttitle(e.target.value)}
+                                value={minEstimate}
+                                onChange={(e) => setMinEstimate(e.target.value)}
                             />
                         </div>
                         <div className="col-4">
@@ -127,8 +139,8 @@ export default function AddProduct() {
                                 type="text"
                                 placeholder="Max estimate"
                                 className={style.custom_form_control}
-                                value={productArtist}
-                                // onChange={(e) => setProductArtist(e.target.value)}
+                                value={maxEstimate}
+                                onChange={(e) => setMaxEstimate(e.target.value)}
                             />
                         </div>
                         <div className="col-4">
@@ -137,8 +149,8 @@ export default function AddProduct() {
                                 type="text"
                                 placeholder="Start bid"
                                 className={style.custom_form_control}
-                                value={productArtist}
-                                // onChange={(e) => setProductArtist(e.target.value)}
+                                value={startBid}
+                                onChange={(e) => setStartBid(e.target.value)}
                             />
                         </div>
                     </div>
@@ -148,6 +160,9 @@ export default function AddProduct() {
                             <Form.Control
                                 type="text"
                                 placeholder="Provenance"
+                                placeholder="provenance"
+                                value={provenance}
+                                onChange={(e) => setProvenance(e.target.value)}
                                 className={style.custom_form_control}
                             />
                         </div>
