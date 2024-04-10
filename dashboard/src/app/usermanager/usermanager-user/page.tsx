@@ -1,10 +1,8 @@
-import React, { useState } from "react";
-import FormElements from "@/components/FormElements";
-import { Metadata } from "next";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import TableUser from "@/components/UsersManagement/TableUser";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
+import TableUser from "@/components/UsersManagement/TableUser";
 import { User } from "@/types/user";
+import { Metadata } from "next";
 
 
 export const metadata: Metadata = {
@@ -55,7 +53,7 @@ const UserManager = () => {
   
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="User Manager"></Breadcrumb>
+      <Breadcrumb pageName="User Information"></Breadcrumb>
       <TableUser packageData={packageDatafake}></TableUser>
     </DefaultLayout>
 
