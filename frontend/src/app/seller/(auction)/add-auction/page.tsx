@@ -1,5 +1,5 @@
 'use client'
-import { Form, } from "react-bootstrap";
+import { Form, Modal, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import UserDataService from "@/services/model/user";
@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-
+import MyProductTable, { TableActivity } from "@/app/seller/(product)/my-products/product-table-component";
 
 enum AuctionVisibility {
     PUBLIC = 0,
@@ -24,6 +24,7 @@ enum AuctionVisibility {
 
 
 export default function AddAuction() {
+    const [showNotificationModal, setShowNotificationModal] = useState(false);
 
     const [dateValue, setDateValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
     const [timeStartValue, setTimeStartValue] = React.useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
@@ -149,7 +150,7 @@ export default function AddAuction() {
                 <div className={style.div_header}>
                     Product Information
                 </div>
-                <div className="row">
+                {/* <div className="row">
                     <div className="col-12">
                         <Form.Label>Image of products (1 -&gt; 5 images)</Form.Label>
                         <Form.Control
@@ -162,16 +163,32 @@ export default function AddAuction() {
                     </div>
 
 
+                </div> */}
+                <div>
+                    <MyProductTable activity={TableActivity.VIEW_IN_AUCTION}></MyProductTable>
                 </div>
-
+                {/*  button add product -> show modal add product */}
+                <div className='d-flex justify-content-center'>
+                    <button type="button" className="btn btn-dark mx-1 px-3" onClick={() => setShowNotificationModal(true)}
+                    >Add Product</button>
+                    </div>
             </div>
 
             <div>
-                {
-                    <button type="submit" className="btn btn-dark mb-4 col-2" >Create Auction</button>
+                <button type="submit" className="btn btn-dark mb-4 col-2" >Create Auction</button>
 
-                }
             </div>
+
+            <Modal size="xl" show={showNotificationModal} onHide={() => setShowNotificationModal(false)}>
+                <Modal.Header >
+                    <Modal.Title style={{ width: '100%' }}>
+                        Add Product
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <MyProductTable activity={TableActivity.ADD_TO_AUCTION}></MyProductTable>
+                </Modal.Body>
+            </Modal>
 
         </div >
     );

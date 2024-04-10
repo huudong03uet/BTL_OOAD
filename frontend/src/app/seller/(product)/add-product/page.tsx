@@ -160,7 +160,6 @@ export default function AddProduct() {
                             <Form.Control
                                 type="text"
                                 placeholder="Provenance"
-                                placeholder="provenance"
                                 value={provenance}
                                 onChange={(e) => setProvenance(e.target.value)}
                                 className={style.custom_form_control}
@@ -202,7 +201,7 @@ export default function AddProduct() {
                     </div>
                 </div>
             </form>
-
+{/* 
             <div>
                 <h3>Danh sách hình ảnh:</h3>
                 {productImages.length > 0 && (
@@ -215,7 +214,7 @@ export default function AddProduct() {
                         ))}
                     </ul>
                 )}
-            </div>
+            </div> */}
         </div >
     );
 }
