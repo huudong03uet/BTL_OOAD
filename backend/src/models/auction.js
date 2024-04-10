@@ -41,6 +41,11 @@ const Auction = sequelize.define('auction', {
         allowNull: false,
         defaultValue: DataTypes.NOW,
     },
+    is_delete: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    }
 },
     {
         tableName: 'auction',

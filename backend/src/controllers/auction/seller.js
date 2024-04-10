@@ -1,6 +1,10 @@
+const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
+
 const logger = require('../../../conf/logger');
 const sequelize = require('../../../conf/sequelize');
 const AuctionRequestStatus = require('../../../constants/auction_request_status');
+const AuctionProductStatus = require('../../../constants/auction_product_status')
 const statusCode = require('../../../constants/status');
 
 const Auction = require('../../models/auction');
@@ -9,6 +13,8 @@ const Product = require('../../models/product');
 const User = require('../../models/user');
 
 const { check_required_field } = require('../util');
+const Seller = require('../../models/seller');
+const Location = require('../../models/location');
 
 
 let create_auction = async (req, res) => {
@@ -116,4 +122,62 @@ let add_product = async (req, res) => {
     }
 }
 
-module.exports = { create_auction, add_user, add_product }
+let get_past_auction = async(req, res) => {
+    try {
+        if (!check_required_field(req.params, ["user_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        const { user_id } = req.params;
+
+        let auctions = await Auction.findAll({
+            include: [
+                {
+                    model: Product,
+                    attributes: [],
+                    where: {
+                        status: {
+                            [Op.eq]: AuctionProductStatus.SOLD
+                        }
+                    }
+                },
+                {
+                    model: Seller,
+                    attributes: [],
+                    where: {
+                        user_id: user_id
+                    },
+                    required: true
+                },
+                {
+                    model: Location,
+                    attributes: [
+                        [Sequelize.literal("CONCAT(country, ', ', city)"), "location"]
+                    ]
+                }
+            ],
+            group: ['auction.id'],
+            having: Sequelize.literal('COUNT(products.id) = COUNT(CASE WHEN products.status = "sold" THEN 1 ELSE NULL END)')
+        });
+
+
+        let result = []
+
+        for (let auction of auctions) {
+            let out = {}
+            out["date"] = auction.dataValues.time_auction
+            out["title"] = auction.dataValues.name
+            out["location"] = auction.dataValues.location.dataValues.location
+            result.push(out)
+        }
+
+        logger.info(`${statusCode.HTTP_200_OK} auction past length ${result.length}`)
+        return res.status(statusCode.HTTP_200_OK).json(result);
+    } catch (error) {
+        logger.error(`Auction get passt: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+module.exports = { create_auction, add_user, add_product, get_past_auction }

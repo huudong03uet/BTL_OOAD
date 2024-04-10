@@ -9,12 +9,12 @@ const Location = require('../../models/location');
 
 let get_location = async (req, res) => {
     try {
-        const location_id = req.params.location_id;
-
         if (!check_required_field(req.params, ["location_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
+
+        const location_id = req.params.location_id;
 
         const location = await Location.findByPk(location_id);
 

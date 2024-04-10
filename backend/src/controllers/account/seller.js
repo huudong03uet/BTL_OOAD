@@ -1,4 +1,9 @@
+const logger = require('../../../conf/logger');
+const sequelize = require('../../../conf/sequelize')
+const statusCode = require('../../../constants/status')
 const Card = require('../../models/card');
+const Location = require('../../models/location');
+const Review = require('../../models/review');
 const Seller = require('../../models/seller');
 const User = require('../../models/user');
 const { check_required_field } = require('../util');
@@ -22,11 +27,6 @@ let forgot_password = async (req, res) => {
 let register = async (req, res) => {
     const t = await sequelize.transaction();
     try {
-        const user_id = req.body.user_id;
-        const {name, email, phone, desciption} = req.body.seller_info;
-        const {id, expiry, cvn, name_card } = req.body.card_info;
-        const {country, address, city, state, postal} = req.body.location_info;
-
         if (!check_required_field(req.body, ["user_id", "seller_info", "card_info", "location_info"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
@@ -41,6 +41,11 @@ let register = async (req, res) => {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
+
+        const user_id = req.body.user_id;
+        const {name, email, phone, desciption} = req.body.seller_info;
+        const {id, expiry, cvn, name_card } = req.body.card_info;
+        const {country, address, city, state, postal} = req.body.location_info;
 
         let seller = await Seller.findOne({
             where: {
@@ -85,10 +90,61 @@ let register = async (req, res) => {
     }
 }
 
+let get_info_seller = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["user_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let seller = await Seller.findOne({
+            where: {
+                user_id: req.params.user_id
+            },
+            include: [
+                {
+                    model: Location,
+                    attributes: ["x", "y"]
+                },
+                {
+                    model: Review,
+                    attributes: [
+                        [sequelize.fn('AVG', sequelize.col('star')), 'avg_star'],
+                    ],
+                }
+            ]
+        });
+
+        if (!seller) {
+            logger.info(`${statusCode.HTTP_400_BAD_REQUEST} Không tìm thấy seller`)
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Không tìm thấy seller")
+        }
+
+        let result = {}
+        result["auctionHouse_id"] = seller.dataValues.id
+        result["auctionHouse_name"] = seller.dataValues.name
+        result["auctionHouse_createdTime"] = seller.dataValues.createdAt
+        result["auctionHouse_location"] = {"x": seller.dataValues.location.dataValues.x, "y": seller.dataValues.location.dataValues.y}
+        if (seller.dataValues.reviews.length > 0) {
+            result["auctionHouse_vote"] = seller.dataValues.reviews[0].avg_star;
+        } else {
+            result["auctionHouse_vote"] = 0;
+        }
+        
+
+        logger.info(`${statusCode.HTTP_200_OK} [seller: ${seller.id}]`)
+        return res.status(statusCode.HTTP_200_OK).json(result)
+    } catch (error) {
+        logger.error(`get info seller error: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
 
 module.exports = {
     edit_profile,
     change_password,
     forgot_password,
     register,
+    get_info_seller
 };

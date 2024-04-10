@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
-const AuctionRoomProduct = require('./auction_room_product');
+const Product = require('./product');
 const BidHistory = require('./history_bid');
 
 const Winner = sequelize.define('winner', {
@@ -16,8 +16,8 @@ const Winner = sequelize.define('winner', {
     }
 );
 
-Winner.belongsTo(AuctionRoomProduct, {foreignKey: "auction_product_id"})
-AuctionRoomProduct.hasMany(Winner, {foreignKey: "auction_product_id"})
+Winner.hasOne(Product, {foreignKey: "winner_id"})
+Product.hasOne(Winner, {foreignKey: "product_id"})
 
 Winner.hasOne(BidHistory, {foreignKey: "winner_id"})
 BidHistory.hasOne(Winner, {foreignKey: "bid_history_id"})
