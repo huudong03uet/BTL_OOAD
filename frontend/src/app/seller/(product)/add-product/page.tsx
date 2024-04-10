@@ -104,7 +104,7 @@ export default function AddProduct() {
                             <Form.Label>Dimension</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Category"
+                                placeholder="Dimension"
                                 className={style.custom_form_control}
                             />
                         </div>
@@ -147,7 +147,7 @@ export default function AddProduct() {
                             <Form.Label>Provenance</Form.Label>
                             <Form.Control
                                 type="text"
-                                placeholder="Description"
+                                placeholder="Provenance"
                                 className={style.custom_form_control}
                             />
                         </div>

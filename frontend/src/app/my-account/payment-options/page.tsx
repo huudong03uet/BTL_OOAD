@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import { Modal } from 'react-bootstrap';
-import style from '../../style.module.css';
+import style from '../style.module.css';
 
 
 export default function PaymentOptions() {

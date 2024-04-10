@@ -2,8 +2,6 @@
 import { Form, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import UserDataService from "@/services/model/user";
-import { seller_add_product } from "@/services/product/seller";
 
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
