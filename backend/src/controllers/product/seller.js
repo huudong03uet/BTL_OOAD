@@ -56,8 +56,6 @@ let add_product = async (req, res) => {
 
         Object.keys(productData).forEach(key => productData[key] === undefined && delete productData[key]);
 
-        console.log(productData)
-
         const product = await Product.create( productData , { transaction: t })
 
         await product.addCategory(category, { transaction: t })
@@ -82,6 +80,64 @@ let add_product = async (req, res) => {
                 logger.error(`Error deleting image from Cloudinary: ${deleteError}`);
             }
         }
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+let update_product = async (req, res) => {
+    const t = await sequelize.transaction();
+    try {
+        if (!check_required_field(req.body, ["user_id", "id", "title", "description", "artist", "category_name"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        const { id, title, description, artist, category_name, dimension, min_estimate, max_estimate, provenance } = req.body;
+        
+        const product = await Product.findByPk(id,{
+            include: [
+                {
+                    model: Seller,
+                    attributes: ["user_id"]
+                }
+            ]
+        });
+
+        if (!product) {
+            logger.error(`${statusCode.HTTP_404_NOT_FOUND} Product not found.`);
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json("Product not found.");
+        }
+
+        if (product.seller.dataValues.user_id !== req.body.user_id) {
+            logger.error(`${statusCode.HTTP_403_FORBIDDEN} Product not appect.`);
+            return res.status(statusCode.HTTP_403_FORBIDDEN).json("Product not appect.");
+        }
+
+        product.title = title;
+        product.description = description;
+        product.artist = artist;
+
+        if (dimension !== undefined) product.dimension = dimension;
+        if (min_estimate !== undefined) product.min_estimate = min_estimate;
+        if (max_estimate !== undefined) product.max_estimate = max_estimate;
+        if (provenance !== undefined) product.provenance = provenance;
+
+        if (category_name !== undefined) {
+            const [category, created] = await Category.findOrCreate({
+                where: { title: category_name },
+                transaction: t
+            });
+            await product.setCategories([category], { transaction: t });
+        }
+
+        await product.save({ transaction: t });
+        await t.commit();
+
+        logger.info(`${statusCode.HTTP_200_OK} [Product: ${id}]`)
+        res.status(statusCode.HTTP_200_OK).json(product);
+    } catch (error) {
+        logger.error(`Update product: ${error}`);
+        await t.rollback();
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 }
@@ -149,4 +205,5 @@ let get_product_sold = async (req, res) => {
 module.exports = {
     add_product,
     get_product_sold,
+    update_product
 };
