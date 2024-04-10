@@ -22,5 +22,16 @@ let seller_register = async (seller_info: any, card_info: any, location_info: an
     }
 }
 
+let seller_info = async () => {
+    try {
+        let url = `${HOST}/account/seller/info/user_id=${UserDataService.getUserData()?.user_id}`;
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
 
-export { seller_register } ;
+
+export { seller_register, seller_info } ;

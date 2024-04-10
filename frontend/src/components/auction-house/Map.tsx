@@ -12,6 +12,9 @@ interface MapProps {
 }
 
 const Map: React.FC<MapProps> = ({ location }) => {
+    if (!location) {
+        return null;
+    }
 
     const containerStyle = {
         width: '100%',

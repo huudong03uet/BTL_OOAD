@@ -9,12 +9,14 @@ interface CommentProps {
   user: User;
   vote: number;
   comment: string;
-  time_create: Date;
+  dateString: string;
 }
 
-const Comment: React.FC<CommentProps> = ({ user, vote, comment, time_create }) => {
+const Comment: React.FC<CommentProps> = ({ user, vote, comment, dateString }) => {
   // Hàm làm tròn số vote
   const roundedVote = Math.round(vote);
+
+  const date = new Date(dateString);
 
   // Ngôi sao vote
   const starsYellow = Array.from({ length: roundedVote }, (_, index) => (
@@ -25,9 +27,9 @@ const Comment: React.FC<CommentProps> = ({ user, vote, comment, time_create }) =
   ));
 
   // Format thời gian
-  const day = time_create.getDate().toString().padStart(2, '0');
-  const month = (time_create.getMonth() + 1).toString().padStart(2, '0');
-  const year = time_create.getFullYear();
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear();
   const time = `${day}/${month}/${year}`;
 
   return (
