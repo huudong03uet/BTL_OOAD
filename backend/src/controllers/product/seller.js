@@ -202,8 +202,39 @@ let get_product_sold = async (req, res) => {
     }
 }
 
+let get_products = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["user_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let products = await Product.findAll({
+            include: [
+                {
+                    model: Seller,
+                    where: {
+                        user_id: req.params.user_id
+                    },
+                    attributes: ["name"]
+                },
+                {
+                    model: Winner,
+                }
+            ]
+        })
+
+        logger.info(`${statusCode.HTTP_200_OK} products length ${products.length}`)
+        return res.status(statusCode.HTTP_200_OK).json(products);
+    } catch (error) {
+        logger.error(`Get product: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
 module.exports = {
     add_product,
     get_product_sold,
-    update_product
+    update_product,
+    get_products,
 };

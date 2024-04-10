@@ -7,5 +7,6 @@ const UPLOAD = require('../../../conf/storage')
 router.post("/create", UPLOAD.UPLAOD_PRODUCT.array('images', 5), productController.add_product);
 router.post("/update", productController.update_product);
 router.get("/sold/user_id=:user_id", productController.get_product_sold);
+router.get("/all/user_id=:user_id", productController.get_products);
 
 module.exports = router;
