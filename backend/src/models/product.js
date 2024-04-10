@@ -20,7 +20,15 @@ const Product = sequelize.define("product", {
   },
   description: {
     type: DataTypes.TEXT,
-    allowNull: false,
+    allowNull: true,
+  },
+  dimension: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  provenance: {
+    type: DataTypes.TEXT,
+    allowNull: true,
   },
   is_inspect: {
     type: DataTypes.BOOLEAN,

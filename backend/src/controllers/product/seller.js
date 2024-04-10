@@ -24,7 +24,7 @@ let add_product = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        const { user_id, title, description, artist, category_name } = req.body;
+        const { user_id, title, description, artist, category_name, dimension, min_estimate, max_estimate, startBid, provenance } = req.body;
         
         const images = await Promise.all(req.files.map(async file => {
             const result = await upload_image(file.path.replace(/\\/g, '/'), "product");
@@ -36,18 +36,29 @@ let add_product = async (req, res) => {
         }));
 
         const [category, created] = await Category.findOrCreate({
-            where: { name: category_name },
+            where: { title: category_name },
             transaction: t
         });
 
         const seller = await Seller.findOne({where: {user_id: user_id}})
 
-        const product = await Product.create({
+        const productData = {
             title,
             description,
             seller_id: seller.id,
             artist,
-        }, { transaction: t })
+            dimension,
+            min_estimate,
+            max_estimate,
+            startBid,
+            provenance
+        };
+
+        Object.keys(productData).forEach(key => productData[key] === undefined && delete productData[key]);
+
+        console.log(productData)
+
+        const product = await Product.create( productData , { transaction: t })
 
         await product.addCategory(category, { transaction: t })
 
@@ -60,7 +71,6 @@ let add_product = async (req, res) => {
         await t.commit();
 
         logger.info(`${statusCode.HTTP_201_CREATED} [product:${product.id}]`)
-
         res.status(statusCode.HTTP_201_CREATED).json(product)
     } catch (error) {
         logger.error(`Add product: ${error}`)
