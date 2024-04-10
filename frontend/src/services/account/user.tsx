@@ -6,7 +6,7 @@ import { HOST } from '@/services/host';
 import User from '@/models/user';
 import Location from '@/models/location';
 
-const user_change_password_service = async (old_password: number, new_password: number) => {
+const user_change_password_service = async (old_password: string, new_password: string) => {
     try {
         let url = `${HOST}/account/user/change-password`;
         let body = {

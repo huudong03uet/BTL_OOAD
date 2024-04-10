@@ -7,7 +7,7 @@ import User from "@/models/user";
 import UserDataService from "@/services/model/user";
 import Location from "@/models/location";
 import get_location_service from "@/services/component/location";
-import { user_edit_account_service } from "@/services/account/user";
+import { user_change_password_service, user_edit_account_service } from "@/services/account/user";
 
 
 export default function EditProfile() {
@@ -15,6 +15,9 @@ export default function EditProfile() {
     const [user, setUser] = useState<User>(initialUserData);
     const initialLocation = {} as Location;
     const [location, setLocation] = useState<Location>(initialLocation)
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
 
 
     const [updateEmail, setUpdateEmail] = useState(false);
@@ -59,6 +62,17 @@ export default function EditProfile() {
         fetchData();
     }, []);
 
+    const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        if (name === 'old_password') {
+            setOldPassword(value);
+        } else if (name === 'new_password') {
+            setNewPassword(value);
+        } else if (name === 'confirm_password') {
+            setConfirmPassword(value);
+        }
+    };
+
     const handleChangeUser = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setUser(prevUser => ({
@@ -94,6 +108,23 @@ export default function EditProfile() {
         await user_edit_account_service(user, location);
         setUpdateEmail(false)
     }
+
+
+    const handleClickChangePassword = async () => {
+        if (newPassword !== confirmPassword) {
+            // Handle password mismatch
+            return;
+        }
+        try {
+            await user_change_password_service(oldPassword, newPassword);
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
+            setChangePassword(false)
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
 
 
@@ -170,25 +201,31 @@ export default function EditProfile() {
                         changePassword ? (
                             <div className='col-6'>
                                 <Form.Control
-                                    type="text"
+                                    type="password"
                                     placeholder="Current Password"
-                                    value="current_password"
+                                    name="old_password"
+                                    value={oldPassword}
+                                    onChange={handleChangePassword}
                                     className={style.custom_form_control}
                                 />
                                 <Form.Control
-                                    type="text"
+                                    type="password"
                                     placeholder="New Password"
+                                    name="new_password"
+                                    value={newPassword}
+                                    onChange={handleChangePassword}
                                     className={style.custom_form_control}
-                                    value="new_password"
                                 />
                                 <Form.Control
-                                    type="text"
+                                    type="password"
                                     placeholder="Confirm New Password"
+                                    name="confirm_password"
+                                    value={confirmPassword}
+                                    onChange={handleChangePassword}
                                     className={style.custom_form_control}
-                                    value="confirm_password"
                                 />
                                 <div className='d-flex align-items-center'>
-                                    <button type="button" className="btn btn-danger">Update</button>
+                                    <button type="button" className="btn btn-danger" onClick={handleClickChangePassword}>Update</button>
                                     <a onClick={() => setChangePassword(false)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
                                         Cancel
                                     </a>
