@@ -142,15 +142,8 @@ let update_product = async (req, res) => {
     }
 }
 
-let get_product_sold = async (req, res) => {
+let _get_product_sold = async (user_id) => {
     try {
-        if (!check_required_field(req.params, ["user_id"])) {
-            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
-            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
-        }
-
-        const { user_id } = req.params;
-
         let products = await Product.findAll({
             where: {
                 status: AuctionProductStatus.SOLD
@@ -180,6 +173,21 @@ let get_product_sold = async (req, res) => {
                 }
             ]
         })
+
+        return products
+    } catch (error) {
+        throw error
+    }
+}
+
+let get_product_sold = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["user_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let products = await _get_product_sold(req.params.user_id)
 
         let result = []
 
@@ -232,9 +240,27 @@ let get_products = async (req, res) => {
     }
 }
 
+let get_product_history = async(req, res) => {
+    try {
+        if (!check_required_field(req.params, ["user_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let products = await _get_product_sold(req.params.user_id)
+
+        logger.info(`${statusCode.HTTP_200_OK} products history length ${products.length}`)
+        return res.status(statusCode.HTTP_200_OK).json(products);
+    } catch (error) {
+        logger.error(`Sold product: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
 module.exports = {
     add_product,
     get_product_sold,
     update_product,
     get_products,
+    get_product_history
 };
