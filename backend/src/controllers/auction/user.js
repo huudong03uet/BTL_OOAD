@@ -26,6 +26,8 @@ let get_auction_upcomming = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
+        console.log(req.params.user_id)
+
         const auctions = await Auction.findAll({
             where: {
                 time_auction: {
