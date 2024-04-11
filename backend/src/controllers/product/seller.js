@@ -19,12 +19,12 @@ let add_product = async (req, res) => {
     const t = await sequelize.transaction();
     let imagesToDelete = [];
     try {
-        if (!check_required_field(req.body, ["user_id", "title", "description", "artist", "category_name"])) {
+        if (!check_required_field(req.body, ["seller_id", "title", "description", "artist", "category_name"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        const { user_id, title, description, artist, category_name, dimension, min_estimate, max_estimate, startBid, provenance } = req.body;
+        const { seller_id, title, description, artist, category_name, dimension, min_estimate, max_estimate, startBid, provenance } = req.body;
         
         const images = await Promise.all(req.files.map(async file => {
             const result = await upload_image(file.path.replace(/\\/g, '/'), "product");
@@ -40,7 +40,7 @@ let add_product = async (req, res) => {
             transaction: t
         });
 
-        const seller = await Seller.findOne({where: {user_id: user_id}})
+        const seller = await Seller.findByPk(seller_id)
 
         const productData = {
             title,
@@ -87,7 +87,7 @@ let add_product = async (req, res) => {
 let update_product = async (req, res) => {
     const t = await sequelize.transaction();
     try {
-        if (!check_required_field(req.body, ["user_id", "id", "title", "description", "artist", "category_name"])) {
+        if (!check_required_field(req.body, ["seller_id", "id", "title", "description", "artist", "category_name"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
@@ -95,12 +95,9 @@ let update_product = async (req, res) => {
         const { id, title, description, artist, category_name, dimension, min_estimate, max_estimate, provenance } = req.body;
         
         const product = await Product.findByPk(id,{
-            include: [
-                {
-                    model: Seller,
-                    attributes: ["user_id"]
-                }
-            ]
+            where: {
+                seller_id: req.body.seller_id
+            }
         });
 
         if (!product) {

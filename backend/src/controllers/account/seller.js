@@ -90,16 +90,11 @@ let register = async (req, res) => {
     }
 }
 
-let get_info_seller = async (req, res) => {
+let _get_info_seller = async (user_id) => {
     try {
-        if (!check_required_field(req.params, ["user_id"])) {
-            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
-            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
-        }
-
         let seller = await Seller.findOne({
             where: {
-                user_id: req.params.user_id
+                user_id: user_id
             },
             include: [
                 {
@@ -114,6 +109,21 @@ let get_info_seller = async (req, res) => {
                 }
             ]
         });
+
+        return seller;
+    } catch (error) {
+        throw error
+    }
+}
+
+let get_info_seller = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["user_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let seller = await _get_info_seller(req.params.user_id)
 
         if (!seller) {
             logger.info(`${statusCode.HTTP_400_BAD_REQUEST} Không tìm thấy seller`)
@@ -140,11 +150,34 @@ let get_info_seller = async (req, res) => {
     }
 }
 
+let get_seller_by_user_id = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["user_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let seller = await _get_info_seller(req.params.user_id)
+
+        if (!seller) {
+            logger.info(`${statusCode.HTTP_400_BAD_REQUEST} Không tìm thấy seller`)
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Không tìm thấy seller")
+        }
+
+        logger.info(`${statusCode.HTTP_200_OK} [seller: ${seller.id}]`)
+        return res.status(statusCode.HTTP_200_OK).json(seller)
+    } catch (error) {
+        logger.error(`get info seller by user: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
 
 module.exports = {
     edit_profile,
     change_password,
     forgot_password,
     register,
-    get_info_seller
+    get_info_seller,
+    get_seller_by_user_id,
 };
