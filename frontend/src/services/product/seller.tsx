@@ -4,6 +4,7 @@ import axios from 'axios';
 import { HOST } from '@/services/host';
 import UserDataService from '../model/user';
 import ProductDetail from '@/models/product_detail';
+import SellerDataService from '../model/seller';
 
 
 let seller_add_product = async (formData: FormData) => {
@@ -40,10 +41,14 @@ let seller_update_product = async (product: ProductDetail, category: string) => 
             body[key] = value;
         }
         body["category_name"] = category
-        body["user_id"] = UserDataService.getUserData()?.user_id
 
-        const response = await axios.post(url, body)
-        return;
+        const sellerData = await SellerDataService.getSellerData();
+        if (sellerData !== null) {
+            body["seller_id"] = sellerData.id;
+
+            const response = await axios.post(url, body);
+            return;
+        }
     } catch (error: any) {
         console.error('Error fetching data:', error);
         return error.response.data;

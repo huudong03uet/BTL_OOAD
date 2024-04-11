@@ -2,8 +2,8 @@
 import { Form, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import UserDataService from "@/services/model/user";
 import { seller_add_product } from "@/services/product/seller";
+import SellerDataService from "@/services/model/seller";
 
 
 export default function AddProduct() {
@@ -17,7 +17,18 @@ export default function AddProduct() {
     const [maxEstimate, setMaxEstimate] = useState<string>('');
     const [startBid, setStartBid] = useState<string>('');
     const [provenance, setProvenance] = useState<string>('');
-    const [user_id, setUserID] = useState<string | null>(UserDataService.getUserData()?.user_id?.toString() || null);
+    const [seller_id, setSellerID] = useState<string | null>(null);
+
+    useEffect(() => {
+        async function fetchData() {
+            const sellerData = await SellerDataService.getSellerData();
+            if (sellerData !== null) {
+                setSellerID(sellerData.id.toString());
+            }
+        }
+
+        fetchData();
+    }, []);
 
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,8 +61,8 @@ export default function AddProduct() {
         formData.append("startBid", startBid);
         formData.append("provenance", provenance);
 
-        if (productImages.length > 0 && user_id !== null) {
-            formData.append("user_id", user_id);
+        if (productImages.length > 0 && seller_id !== null) {
+            formData.append("seller_id", seller_id);
             productImages.forEach((image) => {
                 formData.append('images', image);
             });
@@ -201,7 +212,7 @@ export default function AddProduct() {
                     </div>
                 </div>
             </form>
-{/* 
+
             <div>
                 <h3>Danh sách hình ảnh:</h3>
                 {productImages.length > 0 && (
@@ -214,7 +225,7 @@ export default function AddProduct() {
                         ))}
                     </ul>
                 )}
-            </div> */}
+            </div>
         </div >
     );
 }

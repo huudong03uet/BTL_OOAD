@@ -147,9 +147,9 @@ export default function AddAuction() {
             </div>
 
             <div className={style.div_section}>
-                <div className={style.div_header}>
+                {/* <div className={style.div_header}>
                     Product Information
-                </div>
+                </div> */}
                 {/* <div className="row">
                     <div className="col-12">
                         <Form.Label>Image of products (1 -&gt; 5 images)</Form.Label>
@@ -164,9 +164,9 @@ export default function AddAuction() {
 
 
                 </div> */}
-                <div>
+                {/* <div>
                     <MyProductTable activity={TableActivity.VIEW_IN_AUCTION}></MyProductTable>
-                </div>
+                </div> */}
                 {/*  button add product -> show modal add product */}
                 <div className='d-flex justify-content-center'>
                     <button type="button" className="btn btn-dark mx-1 px-3" onClick={() => setShowNotificationModal(true)}

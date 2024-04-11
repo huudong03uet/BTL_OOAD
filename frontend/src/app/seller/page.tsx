@@ -1,11 +1,19 @@
 'use client'
-import { Container, Button, Form, Row, Col, InputGroup, Dropdown } from "react-bootstrap";
-import style from '@/styles/customer/homePage.module.css';
-import React, { useState } from 'react';
-import SideBarUser from "@/components/my-account/sideBarUser";
 
+import { useEffect } from 'react';
+import SellerDataService from "@/services/model/seller";
 
 export default function MyAccount() {
+    useEffect(() => {
+        async function fetchData() {
+            const data = await SellerDataService.getSellerData();
+            if (data?.id == null) {
+                window.location.href = '/my-account/register-seller';
+            }
+        }
+
+        fetchData();
+    }, []);
 
     return (
         <div className='row'>
