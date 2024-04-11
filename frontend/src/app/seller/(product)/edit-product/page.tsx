@@ -5,7 +5,6 @@ import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import ProductDetail from "@/models/product_detail";
 import { user_get_detail_product } from "@/services/product/user";
 import { seller_update_product } from "@/services/product/seller";
-import { useRouter } from 'next/router';
 
 
 export default function EditProduct() {
@@ -15,10 +14,17 @@ export default function EditProduct() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await user_get_detail_product(72);
-                setProduct(data);
-                if (data.categories != null) {
-                    setProductCategory(data.categories[0].title);
+                let url = new URL(window.location.href)
+                const idParam = url.searchParams.get("id");
+                if (idParam !== null) {
+                    const id = parseInt(idParam, 10);
+                    const data = await user_get_detail_product(id);
+                    setProduct(data);
+                    if (data.categories != null) {
+                        setProductCategory(data.categories[0].title);
+                    }
+                } else {
+                    console.error('ID not found in URL');
                 }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
@@ -26,8 +32,6 @@ export default function EditProduct() {
         };
 
         fetchData()
-
-        console.log(useRouter())
     }, [])
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

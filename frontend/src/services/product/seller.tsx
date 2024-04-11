@@ -76,9 +76,27 @@ let seller_get_all_products = async () => {
     }
 }
 
+
+let seller_get_product_history = async () => {
+    try {
+        const sellerData = await SellerDataService.getSellerData();
+        if (sellerData !== null) {
+            let url = `${HOST}/product/seller/history/seller_id=${sellerData.id}`;
+            let response = await axios.get(url);
+            return response.data;
+        }
+
+        return null
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
+
 export {
     seller_add_product,
     seller_product_sold_service,
     seller_update_product,
     seller_get_all_products,
+    seller_get_product_history
 };

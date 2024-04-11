@@ -68,7 +68,7 @@ export default function MyProductTable(
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((row, index) => (
+                        {data && data.map((row, index) => (
                             <Row key={row.id} row={row} index={index} activity={props.activity} />
                         ))}
                     </TableBody>
