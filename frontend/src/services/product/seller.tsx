@@ -24,9 +24,14 @@ let seller_add_product = async (formData: FormData) => {
 
 let seller_product_sold_service = async () => {
     try {
-        let url = `${HOST}/product/seller/sold/user_id=${UserDataService.getUserData()?.user_id}`;
-        let response = await axios.get(url);
-        return response.data;
+        const sellerData = await SellerDataService.getSellerData();
+        if (sellerData !== null) {
+            let url = `${HOST}/product/seller/sold/seller_id=${sellerData.id}`;
+            let response = await axios.get(url);
+            return response.data;
+        }
+
+        return null
     } catch (error: any) {
         console.error('Error fetching data:', error);
         return error.response.data;
@@ -55,4 +60,25 @@ let seller_update_product = async (product: ProductDetail, category: string) => 
     }
 }
 
-export { seller_add_product, seller_product_sold_service, seller_update_product } ;
+let seller_get_all_products = async () => {
+    try {
+        const sellerData = await SellerDataService.getSellerData();
+        if (sellerData !== null) {
+            let url = `${HOST}/product/seller/all/seller_id=${sellerData.id}`;
+            let response = await axios.get(url);
+            return response.data;
+        }
+
+        return null
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
+
+export {
+    seller_add_product,
+    seller_product_sold_service,
+    seller_update_product,
+    seller_get_all_products,
+};

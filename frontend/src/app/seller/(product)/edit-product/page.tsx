@@ -5,6 +5,7 @@ import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import ProductDetail from "@/models/product_detail";
 import { user_get_detail_product } from "@/services/product/user";
 import { seller_update_product } from "@/services/product/seller";
+import { useRouter } from 'next/router';
 
 
 export default function EditProduct() {
@@ -25,6 +26,8 @@ export default function EditProduct() {
         };
 
         fetchData()
+
+        console.log(useRouter())
     }, [])
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {

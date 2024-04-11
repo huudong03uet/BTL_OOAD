@@ -1,31 +1,28 @@
 'use client'
-import { Form, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import UserDataService from "@/services/model/user";
-import { seller_add_product } from "@/services/product/seller";
-
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
-import IconButton from '@mui/material/IconButton';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import Link from "next/link";
-import MyProductTable, {TableActivity} from "./product-table-component";
+import MyProductTable, { TableActivity } from '../../component/product-table';
+import ItemSummary from '@/models/product_summary';
+import { seller_get_all_products } from '@/services/product/seller';
 
 
 //  cứ lấy hết thông tin có của product -> không cần lọc, dư sẽ để vào phần detail hoặc bỏ
 
 export default function MyProduct() {
+    const [data, setData] = useState<ItemSummary[]>([])
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await seller_get_all_products();
+                setData(data);
+            } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
+            }
+        };
+
+        fetchData()
+    }, [])
 
 
     return (
@@ -35,8 +32,7 @@ export default function MyProduct() {
                 My Product
             </div>
             <div className={style.div_section}>
-               <MyProductTable activity={TableActivity.VIEW_MY_PRODUCT}></MyProductTable>
-
+               <MyProductTable activity={TableActivity.VIEW_MY_PRODUCT} data={data}></MyProductTable>
             </div>
 
 

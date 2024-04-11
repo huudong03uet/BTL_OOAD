@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-import MyProductTable, { TableActivity } from "@/app/seller/(product)/my-products/product-table-component";
+import MyProductTable, { TableActivity } from "@/app/seller/component/product-table";
 
 enum AuctionVisibility {
     PUBLIC = 0,
