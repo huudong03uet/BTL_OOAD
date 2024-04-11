@@ -139,18 +139,16 @@ let update_product = async (req, res) => {
     }
 }
 
-let _get_product_sold = async (user_id) => {
+let _get_product_sold = async (seller_id) => {
     try {
         let products = await Product.findAll({
             where: {
-                status: AuctionProductStatus.SOLD
+                status: AuctionProductStatus.SOLD,
+                seller_id: seller_id
             },
             include: [
                 {
                     model: Seller,
-                    where: {
-                        user_id: user_id
-                    },
                     attributes: ["name"]
                 },
                 {
@@ -179,12 +177,12 @@ let _get_product_sold = async (user_id) => {
 
 let get_product_sold = async (req, res) => {
     try {
-        if (!check_required_field(req.params, ["user_id"])) {
+        if (!check_required_field(req.params, ["seller_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let products = await _get_product_sold(req.params.user_id)
+        let products = await _get_product_sold(req.params.seller_id)
 
         let result = []
 
@@ -207,20 +205,42 @@ let get_product_sold = async (req, res) => {
     }
 }
 
+let convert_result_item_summary = (products) => {
+    try {
+        let result = []
+        for(let product of products) {
+            let out = {}
+            out["id"] = product.id
+            out["status"] = product.status
+            out["title"] = product.title
+            out["estimate_min"] = product.min_estimate
+            out["estimate_max"] = product.max_estimate
+            out["artist"] = product.artist
+            out["time"] = product.createdAt
+
+            result.push(out)
+        }
+
+        return result
+    } catch (error) {
+        throw error
+    }
+}
+
 let get_products = async (req, res) => {
     try {
-        if (!check_required_field(req.params, ["user_id"])) {
+        if (!check_required_field(req.params, ["seller_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
         let products = await Product.findAll({
+            where: {
+                seller_id: req.params.seller_id
+            },
             include: [
                 {
                     model: Seller,
-                    where: {
-                        user_id: req.params.user_id
-                    },
                     attributes: ["name"]
                 },
                 {
@@ -229,8 +249,10 @@ let get_products = async (req, res) => {
             ]
         })
 
+        let reesult = convert_result_item_summary(products)
+
         logger.info(`${statusCode.HTTP_200_OK} products length ${products.length}`)
-        return res.status(statusCode.HTTP_200_OK).json(products);
+        return res.status(statusCode.HTTP_200_OK).json(reesult);
     } catch (error) {
         logger.error(`Get product: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
@@ -239,15 +261,17 @@ let get_products = async (req, res) => {
 
 let get_product_history = async(req, res) => {
     try {
-        if (!check_required_field(req.params, ["user_id"])) {
+        if (!check_required_field(req.params, ["seller_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let products = await _get_product_sold(req.params.user_id)
+        let products = await _get_product_sold(req.params.seller_id)
+
+        let result = convert_result_item_summary(products)
 
         logger.info(`${statusCode.HTTP_200_OK} products history length ${products.length}`)
-        return res.status(statusCode.HTTP_200_OK).json(products);
+        return res.status(statusCode.HTTP_200_OK).json(result);
     } catch (error) {
         logger.error(`Sold product: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
