@@ -9,6 +9,8 @@ const Product = require('../../models/product')
 const Image = require('../../models/image')
 const Category = require('../../models/category')
 const { check_required_field } = require('../util')
+const { update_value_redis, get_value_redis, set_value_redis } = require('../util/redis')
+const Seller = require('../../models/seller')
 
 let get_categories = async (req, res) => {
     try {
@@ -48,7 +50,7 @@ let get_products = async (req, res) => {
 
 let get_product_detail = async (req, res) => {
     try {
-        if (!check_required_field(req.params, ["product_id"])) {
+        if (!check_required_field(req.params, ["product_id", "user_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
@@ -64,6 +66,10 @@ let get_product_detail = async (req, res) => {
                 {
                     model: Category,
                     attributes: ['id', 'title']
+                },
+                {
+                    model: Seller,
+                    attributes: ["name"]
                 }
             ]
         });
@@ -72,6 +78,17 @@ let get_product_detail = async (req, res) => {
             logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Không tìm thấy product`);
             return res.status(statusCode.HTTP_404_NOT_FOUND).json("Không tìm thấy product");
         }
+
+        let value = {}
+        value["id"] = product.dataValues.id
+        value["time"] = product.dataValues.createdAt
+        value["title"] = product.dataValues.title
+        value["max_bid"] = product.dataValues.max_estimate
+        value["image_path"] = product.dataValues.images[0].dataValues.url
+        value["user_sell"] = product.dataValues.seller.name
+
+        await update_value_redis(`${req.params.user_id}_1`, `${product.id}`)
+        await set_value_redis(`${product.id}`, value)
 
         logger.info(`${statusCode.HTTP_200_OK} [product:${product.id}]`)
         return res.status(statusCode.HTTP_200_OK).json(product);
@@ -82,4 +99,31 @@ let get_product_detail = async (req, res) => {
 }
 
 
-module.exports = {get_products, get_categories, get_product_detail}
+let get_product_recently = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["user_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let result = [];
+        for (let i = 1; i <= 3; ++i) {
+            let out = await get_value_redis(`${req.params.user_id}_${i}`);
+            if (out) {
+                let product = await get_value_redis(`${out}`);
+                if (product) {
+                    result.push(product);
+                }
+            }
+        }
+        
+        logger.info(`${statusCode.HTTP_200_OK} product recently length ${result.length}`);
+        return res.status(statusCode.HTTP_200_OK).json(result);
+    } catch (error) {
+        logger.error(`Get product recently: ${error}`);
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+
+module.exports = {get_products, get_categories, get_product_detail, get_product_recently}

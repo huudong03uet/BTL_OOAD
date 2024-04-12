@@ -14,6 +14,7 @@ const BidHistory = require('../../models/history_bid');
 
 const { upload_image, delete_image, check_required_field } = require('../util');
 const { convert_result_item_summary } = require('../util/convert');
+const { delete_key_redis } = require('../util/redis');
 
 
 let add_product = async (req, res) => {
@@ -125,6 +126,8 @@ let update_product = async (req, res) => {
 
         await product.save({ transaction: t });
         await t.commit();
+
+        await delete_key_redis(`${product.id}`)
 
         logger.info(`${statusCode.HTTP_200_OK} [Product: ${id}]`)
         res.status(statusCode.HTTP_200_OK).json(product);
