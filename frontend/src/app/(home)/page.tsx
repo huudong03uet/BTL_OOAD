@@ -10,7 +10,9 @@ import AuctionSummary from '@/models/auction_summary';
 import { useEffect, useState } from 'react';
 import { user_get_auction_promote, user_get_auction_upcoming } from '@/services/auction/user';
 import { user_get_category_service, user_get_recently_product } from '@/services/product/user';
-
+import ChatSupport from '@/components/chat/chat_support';
+import { Fab } from '@mui/material';
+import ChatIcon from '@mui/icons-material/Chat';
 
 const HomePage = () => {
 
@@ -76,10 +78,10 @@ const HomePage = () => {
     };
 
     fetchData()
-}, [])
+  }, [])
 
 
-const [promotedAuctions, setPromotedAuctions] = useState<AuctionSummary[]>([]);
+  const [promotedAuctions, setPromotedAuctions] = useState<AuctionSummary[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -96,7 +98,7 @@ const [promotedAuctions, setPromotedAuctions] = useState<AuctionSummary[]>([]);
     };
 
     fetchData()
-}, [])
+  }, [])
 
   const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionSummary[]>([]);
 
@@ -116,7 +118,9 @@ const [promotedAuctions, setPromotedAuctions] = useState<AuctionSummary[]>([]);
     };
 
     fetchData()
-}, [])
+  }, [])
+
+
 
   return (
     <div>
@@ -201,6 +205,8 @@ const [promotedAuctions, setPromotedAuctions] = useState<AuctionSummary[]>([]);
           ))}
         </Container>
       </div>
+
+
     </div>
   );
 };

@@ -1,5 +1,11 @@
 /* file này để các css dùng chúng nhé */
+/* import 'react-chat-elements/dist/main.css'; */
+/* 
 
+
+ */
+
+/* import 'react-chat-elements/dist/main.css'; // Commented out import statement
 /* CSS for footer */
 .btn-equal-size {
     width: 100px; /* Đặt kích thước cố định cho tất cả các MDBBtn, bạn có thể điều chỉnh giá trị này tùy thích */
