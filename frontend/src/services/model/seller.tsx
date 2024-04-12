@@ -16,6 +16,9 @@ export default class SellerDataService {
 
         if (typeof data_seller === 'string') {
             SellerDataService.sellerData = JSON.parse(data_seller);
+            if (SellerDataService.sellerData?.id == null) {
+                return SellerDataService.fetchSellerData();
+            }
             return SellerDataService.sellerData;
         } else {
             return SellerDataService.fetchSellerData();

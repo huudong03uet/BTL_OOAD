@@ -2,9 +2,7 @@
 import { Form, Modal, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import UserDataService from "@/services/model/user";
-import { seller_add_product } from "@/services/product/seller";
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs, { Dayjs } from 'dayjs';
@@ -15,6 +13,10 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import MyProductTable, { TableActivity } from "@/app/seller/component/product-table";
+import { seller_auction_create_service, seller_auction_show_product } from "@/services/auction/seller";
+import ItemSummary from "@/models/product_summary";
+import Location from "@/models/location";
+import SellerDataService from "@/services/model/seller";
 
 enum AuctionVisibility {
     PUBLIC = 0,
@@ -25,15 +27,92 @@ enum AuctionVisibility {
 
 export default function AddAuction() {
     const [showNotificationModal, setShowNotificationModal] = useState(false);
-
-    const [dateValue, setDateValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
-    const [timeStartValue, setTimeStartValue] = React.useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
-    const [timeEndValue, setTimeEndValue] = React.useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
-    const [visibility, setVisibility] = React.useState(AuctionVisibility.PUBLIC);
+    const [data, setData] = useState<ItemSummary[]>([])
+    const [auctionStates, setAuctionStates] = useState<boolean[]>([]);
+    const [timeStartValue, setTimeStartValue] = useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
+    const [visibility, setVisibility] = useState(AuctionVisibility.PUBLIC);
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+    const [conditionCoin, setConditionCoin] = useState('');
+    const [location, setLocation] = useState<Location>({} as Location)
+    
 
     const handleChange = (event: SelectChangeEvent) => {
         setVisibility(event.target.value as unknown as AuctionVisibility);
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await seller_auction_show_product(null);
+                setData(data);
+                setAuctionStates(Array(data.length).fill(false));
+            } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
+            }
+        };
+
+        fetchData()
+    }, [])
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        if (name === 'name') {
+            setName(value);
+        } else if (name === 'description') {
+            setDescription(value);
+        } else if (name == 'conditionCoin') {
+            setConditionCoin(value)
+        }
+    };
+
+    const handleChangeLocation = (e: ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setLocation(prevLocation => ({
+            ...prevLocation,
+            [name]: value
+        }));
+    };
+
+    const selectCountry = (val: string) => {
+        setLocation(prevLocation => ({
+            ...prevLocation,
+            country: val
+        }));
+    };
+
+    const selectCity = (val: string) => {
+        setLocation(prevLocation => ({
+            ...prevLocation,
+            city: val
+        }));
+    };
+
+    const handleCreateAuction = async () => {
+        let products: number[] = [];
+        data.forEach((product, index) => {
+            if (auctionStates[index]) {
+                products.push(product.id)
+            }
+        });
+
+        let seller_data = await SellerDataService.getSellerData()
+
+        let auction_data = {
+            "name": name,
+            "condition_coin": conditionCoin,
+            "description": description,
+            "time_auction": timeStartValue?.format("YYYY-MM-DD HH:mm"),
+            "location": location,
+            "seller_id": seller_data?.id,
+            "status": visibility === AuctionVisibility.PUBLIC ? "public" : "private",
+            "products": products
+        }
+
+        await seller_auction_create_service(auction_data)
+    };
+    
+
     return (
         <div className='row mx-5'>
 
@@ -44,92 +123,19 @@ export default function AddAuction() {
                 <div className={style.div_header}>
                     Auction Information
                 </div>
+
                 <div className="row">
-                    <div className="col-6">
+
+                    <div className="col-12">
                         <Form.Label>Auction name</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Auction name"
                             className={style.custom_form_control}
+                            value={name}
+                            name="name"
+                            onChange={handleInputChange}
                         />
-                    </div>
-                    <div className="col-6">
-                        <Form.Label>Artist</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Artist"
-                            className={style.custom_form_control}
-                        />
-                    </div>
-                </div>
-
-                <div className="row">
-
-                    <div className="col-12">
-                        <Form.Label>Category</Form.Label>
-                        <Form.Control
-                            type="text"
-                            placeholder="Category"
-                            className={style.custom_form_control}
-                        />
-                    </div>
-                </div>
-
-                <div className="row mb-3">
-
-
-
-                    <div className="col-3">
-                        <Form.Label>Date organization</Form.Label>
-                        <div className='w-100'>
-                            <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                <DatePicker
-                                    value={dateValue}
-                                    onChange={(newValue) => setDateValue(newValue)}
-                                />
-                            </LocalizationProvider>
-                        </div>
-
-                    </div>
-                    <div className="col-3">
-                        <Form.Label>Time start</Form.Label>
-                        <div className='w-100'>
-                            <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                <TimePicker
-                                    value={timeStartValue}
-                                    onChange={(newValue) => setTimeStartValue(newValue)}
-                                />
-                            </LocalizationProvider>
-
-                        </div>
-                    </div>
-
-                    <div className="col-3">
-                        <Form.Label>Time end (Estimate)</Form.Label>
-                        <div className='w-100'>
-                            <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                <TimePicker
-                                    value={timeEndValue}
-                                    onChange={(newValue) => setTimeEndValue(newValue)}
-                                />
-                            </LocalizationProvider>
-
-                        </div>
-                    </div>
-
-                    <div className='col-3'>
-                        <Form.Label>Visibility </Form.Label>
-                        <FormControl fullWidth>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={visibility.toString()} // Convert visibility to string
-                                onChange={handleChange}
-                            >
-                                <MenuItem value={AuctionVisibility.PUBLIC}>Public</MenuItem>
-                                <MenuItem value={AuctionVisibility.PRIVATE}>Private</MenuItem>
-                            </Select>
-                        </FormControl>
                     </div>
                 </div>
 
@@ -140,6 +146,102 @@ export default function AddAuction() {
                             type="text"
                             placeholder="Description"
                             className={style.custom_form_control}
+                            value={description}
+                            name="description"
+                            onChange={handleInputChange}
+                        />
+                    </div>
+                </div>
+
+                <div className="row mb-3">
+                    <div className="col-3">
+                        <Form.Label>Condition Coin</Form.Label>
+                        <Form.Control
+                            type="number"
+                            placeholder="Condition Coin"
+                            className={style.custom_form_control}
+                            value={conditionCoin}
+                            name="conditionCoin"
+                            onChange={handleInputChange}
+                        />
+                    </div>
+
+                    <div className="col-3">
+                        <Form.Label>Time start</Form.Label>
+                        <div className='w-100'>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                <TimePicker
+                                    value={timeStartValue}
+                                    onChange={(newValue) => setTimeStartValue(newValue)}
+                                />
+                            </LocalizationProvider>
+                        </div>
+                    </div>
+
+                    <div className='col-3'>
+                        <Form.Label>Visibility </Form.Label>
+                        <FormControl fullWidth>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                value={visibility.toString()}
+                                onChange={handleChange}
+                            >
+                                <MenuItem value={AuctionVisibility.PUBLIC}>Public</MenuItem>
+                                <MenuItem value={AuctionVisibility.PRIVATE}>Private</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-6">
+                        {/* <Form.Control
+                                type="text"
+                                placeholder="Selected Country"
+                                className={style.custom_form_control}
+                                defaultValue={accountInfo.country ? accountInfo.country: ""}
+                            /> */}
+                        <CountryDropdown
+                            value={location.country}
+                            onChange={(val) => selectCountry(val)}
+                            classes={style.custom_form_control_selected}
+                        />
+                    </div>
+
+                    <div className="col-6">
+                        <RegionDropdown
+                            country={location.country}
+                            value={location.city}
+                            onChange={(val) => selectCity(val)}
+
+
+                            classes={style.custom_form_control_selected}
+                        />
+                    </div>
+
+                </div>
+
+                <div className="row">
+                    <div className="col-6">
+                        <Form.Control
+                            type="text"
+                            placeholder="Address"
+                            className={style.custom_form_control}
+                            name="address"
+                            value={location.address}
+                            onChange={handleChangeLocation}
+                        />
+                    </div>
+
+                    <div className="col-6">
+                        <Form.Control
+                            type="text"
+                            placeholder="State"
+                            className={style.custom_form_control}
+                            name="state"
+                            value={location.state}
+                            onChange={handleChangeLocation}
                         />
                     </div>
                 </div>
@@ -147,27 +249,6 @@ export default function AddAuction() {
             </div>
 
             <div className={style.div_section}>
-                {/* <div className={style.div_header}>
-                    Product Information
-                </div> */}
-                {/* <div className="row">
-                    <div className="col-12">
-                        <Form.Label>Image of products (1 -&gt; 5 images)</Form.Label>
-                        <Form.Control
-                            type="file"
-                            placeholder="Image"
-                            className={style.custom_form_control}
-                            name="firstName"
-                            multiple
-                        />
-                    </div>
-
-
-                </div> */}
-                {/* <div>
-                    <MyProductTable activity={TableActivity.VIEW_IN_AUCTION}></MyProductTable>
-                </div> */}
-                {/*  button add product -> show modal add product */}
                 <div className='d-flex justify-content-center'>
                     <button type="button" className="btn btn-dark mx-1 px-3" onClick={() => setShowNotificationModal(true)}
                     >Add Product</button>
@@ -175,8 +256,9 @@ export default function AddAuction() {
             </div>
 
             <div>
-                <button type="submit" className="btn btn-dark mb-4 col-2" >Create Auction</button>
-
+                <button type="submit" className="btn btn-dark mb-4 col-2" onClick={handleCreateAuction}>
+                    Create Auction
+                </button>
             </div>
 
             <Modal size="xl" show={showNotificationModal} onHide={() => setShowNotificationModal(false)}>
@@ -186,7 +268,7 @@ export default function AddAuction() {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <MyProductTable activity={TableActivity.ADD_TO_AUCTION}></MyProductTable>
+                    <MyProductTable activity={TableActivity.ADD_TO_AUCTION} data={data} auctionStates={auctionStates} setAuctionStates={setAuctionStates}></MyProductTable>
                 </Modal.Body>
             </Modal>
 

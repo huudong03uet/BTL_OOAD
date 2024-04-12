@@ -7,7 +7,6 @@ import styles from './page.module.css';
 import ItemSummary from '@/models/product_summary';
 import Category from '@/models/category';
 import AuctionSummary from '@/models/auction_summary';
-import AuctionInformation from '@/models/auction_information';
 import { useEffect, useState } from 'react';
 import { user_get_auction_promote, user_get_auction_upcoming } from '@/services/auction/user';
 import { user_get_category_service } from '@/services/product/user';
@@ -76,7 +75,7 @@ const [promotedAuctions, setPromotedAuctions] = useState<AuctionSummary[]>([]);
     fetchData()
 }, [])
 
-  const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionInformation[]>([]);
+  const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionSummary[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {

@@ -13,8 +13,7 @@ import { user_change_password_service, user_edit_account_service } from "@/servi
 export default function EditProfile() {
     const initialUserData = UserDataService.getUserData() || {} as User;
     const [user, setUser] = useState<User>(initialUserData);
-    const initialLocation = {} as Location;
-    const [location, setLocation] = useState<Location>(initialLocation)
+    const [location, setLocation] = useState<Location>({} as Location)
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');

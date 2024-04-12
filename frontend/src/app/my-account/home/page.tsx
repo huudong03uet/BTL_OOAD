@@ -5,9 +5,9 @@ import React, { useEffect, useState } from 'react';
 import UpcomingAuctions from "@/components/shared/upcomingAuctions";
 import ViewItem from "@/components/shared/viewItem";
 import UserDataService from "@/services/model/user";
-import AuctionInformation from "@/models/auction_information";
 import { user_get_auction_upcoming } from "@/services/auction/user";
 import get_artist_recommend_service from "@/services/component/artist";
+import AuctionSummary from "@/models/auction_summary";
 
 
 export default function MyInvaluable() {
@@ -39,7 +39,7 @@ export default function MyInvaluable() {
 
     ];
 
-    const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionInformation[]>([]);
+    const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionSummary[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
