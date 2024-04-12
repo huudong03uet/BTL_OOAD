@@ -45,7 +45,11 @@ export default function MyInvaluable() {
         const fetchData = async () => {
             try {
                 const data = await user_get_auction_upcoming();
-                setUpcomingOnlineAuctions(data);
+                if (Array.isArray(data)) {
+                    setUpcomingOnlineAuctions(data);
+                } else {
+                    setUpcomingOnlineAuctions([])
+                }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
@@ -60,7 +64,11 @@ export default function MyInvaluable() {
         const fetchData = async () => {
             try {
                 const data = await get_artist_recommend_service();
-                setExploreRecommendedArtists(data);
+                if (Array.isArray(data)) {
+                    setExploreRecommendedArtists(data);
+                } else {
+                    setExploreRecommendedArtists([])
+                }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }

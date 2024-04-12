@@ -66,7 +66,11 @@ const [promotedAuctions, setPromotedAuctions] = useState<AuctionSummary[]>([]);
     const fetchData = async () => {
       try {
         const data = await user_get_auction_promote();
-        setPromotedAuctions(data);
+        if (Array.isArray(data)) {
+          setPromotedAuctions(data);
+        } else {
+          setPromotedAuctions([])
+        }
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);
       }
@@ -81,7 +85,12 @@ const [promotedAuctions, setPromotedAuctions] = useState<AuctionSummary[]>([]);
     const fetchData = async () => {
       try {
         const data = await user_get_auction_upcoming();
-        setUpcomingOnlineAuctions(data);
+        if (Array.isArray(data)) {
+          setUpcomingOnlineAuctions(data);
+        } else {
+          setUpcomingOnlineAuctions([])
+        }
+
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);
       }
@@ -166,7 +175,7 @@ const [promotedAuctions, setPromotedAuctions] = useState<AuctionSummary[]>([]);
       <div className='py-3'>
         <Container>
           <div className={styles.header_section}>Upcoming Online Auctions</div>
-          {upcomingOnlineAuctions.map((object, i) => (
+          {upcomingOnlineAuctions && upcomingOnlineAuctions.map((object, i) => (
             <div className="row" key={i}>
               <UpcomingAuctions obj={object} />
             </div>

@@ -23,7 +23,11 @@ export default function LivedAuction() {
           try {
             const data = await user_get_auction_info(1);
             setInfoAuction(data.infoAuction);
-            setLotsAuction(data.lotsAuction);
+            if (Array.isArray(data.lotsAuction)) {
+                setLotsAuction(data.lotsAuction);
+            } else {
+                setLotsAuction([])
+            }
           } catch (error) {
             console.error("Error fetching item data:", error);
           }

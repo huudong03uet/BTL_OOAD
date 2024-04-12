@@ -6,18 +6,17 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 function SideBarUser() {
-    const router = useRouter();
+    // const router = useRouter();
 
     const acceptRegister: boolean = true;
 
     const [showModal, setShowModal] = useState<boolean>(false); // State for modal visibility
 
     const handleConfirmSignout = () => {
-      // Thực hiện logic đăng xuất
-      setShowModal(false); // Hide modal after logout
-      UserDataService.setUserData(null); // Ví dụ: Cập nhật trạng thái người dùng
+      setShowModal(false);
+      UserDataService.removeUserData();
       alert('Đăng xuất thành công!');
-      router.push(''); // Chuyển hướng đến trang mới
+      window.location.href = '/';
 
     };
   
