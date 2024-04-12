@@ -8,36 +8,55 @@ import UserDataService from "@/services/model/user";
 import { user_get_auction_upcoming } from "@/services/auction/user";
 import get_artist_recommend_service from "@/services/component/artist";
 import AuctionSummary from "@/models/auction_summary";
+import { user_get_recently_product } from "@/services/product/user";
 
 
 export default function MyInvaluable() {
     const user_name = UserDataService.getUserData()?.user_name;
-    const recentlyViewedItems: any[] = [
-        {
-            "image": "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-            "time": "Jan 1, 8:00 AM GMT+7",
-            "name": "CHINESE CRACKLE GLAZE WINE CUP WITH ORIGINAL RECEIPT ON STAND,",
-            "cost": 1000,
+    const [recentlyViewedItems, setRecentlyViewedItems] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await user_get_recently_product();
+                if (Array.isArray(data)) {
+                    setRecentlyViewedItems(data);
+                } else {
+                    setRecentlyViewedItems([])
+                }
+            } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
+            }
+        }
+
+        fetchData()
+    }, [])
+    // const recentlyViewedItems: any[] = [
+    //     {
+    //         "image": "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //         "time": "Jan 1, 8:00 AM GMT+7",
+    //         "name": "CHINESE CRACKLE GLAZE WINE CUP WITH ORIGINAL RECEIPT ON STAND,",
+    //         "cost": 1000,
 
 
-        },
-        {
-            "image": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L366072565.JPG",
-            "time": "Jan 1, 8:00 AM GMT+7",
-            "name": "John Nieto, Corn Dancers, ca. 1989",
-            "cost": 1000,
+    //     },
+    //     {
+    //         "image": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L366072565.JPG",
+    //         "time": "Jan 1, 8:00 AM GMT+7",
+    //         "name": "John Nieto, Corn Dancers, ca. 1989",
+    //         "cost": 1000,
 
 
-        },
-        {
-            "image": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365897550.JPG",
-            "time": "Jan 1, 8:00 AM GMT+7",
-            "name": "Luis Jimenez, American Dream, 1972",
-            "cost": 4000,
+    //     },
+    //     {
+    //         "image": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365897550.JPG",
+    //         "time": "Jan 1, 8:00 AM GMT+7",
+    //         "name": "Luis Jimenez, American Dream, 1972",
+    //         "cost": 4000,
 
-        },
+    //     },
 
-    ];
+    // ];
 
     const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionSummary[]>([]);
 

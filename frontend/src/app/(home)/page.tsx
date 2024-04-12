@@ -9,39 +9,58 @@ import Category from '@/models/category';
 import AuctionSummary from '@/models/auction_summary';
 import { useEffect, useState } from 'react';
 import { user_get_auction_promote, user_get_auction_upcoming } from '@/services/auction/user';
-import { user_get_category_service } from '@/services/product/user';
+import { user_get_category_service, user_get_recently_product } from '@/services/product/user';
 
 
 const HomePage = () => {
 
-  const recentlyViewedItems: ItemSummary[] = [
-    {
-      "image_path": "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-      "time": "Jan 1, 8:00 AM GMT+7",
-      "title": "CHINESE CRACKLE GLAZE WINE CUP WITH ORIGINAL RECEIPT ON STAND,",
-      "max_bid": 1000,
-      "user_sell": "testtt",
-      id: 1000,
+  // const recentlyViewedItems: ItemSummary[] = [
+  //   {
+  //     "image_path": "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+  //     "time": "Jan 1, 8:00 AM GMT+7",
+  //     "title": "CHINESE CRACKLE GLAZE WINE CUP WITH ORIGINAL RECEIPT ON STAND,",
+  //     "max_bid": 1000,
+  //     "user_sell": "testtt",
+  //     id: 1000,
 
-    },
-    {
-      "image_path": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L366072565.JPG",
-      "time": "Jan 1, 8:00 AM GMT+7",
-      "title": "John Nieto, Corn Dancers, ca. 1989",
-      "max_bid": 1000,
-      "user_sell": "testtt",
-      id: 1100,
+  //   },
+  //   {
+  //     "image_path": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L366072565.JPG",
+  //     "time": "Jan 1, 8:00 AM GMT+7",
+  //     "title": "John Nieto, Corn Dancers, ca. 1989",
+  //     "max_bid": 1000,
+  //     "user_sell": "testtt",
+  //     id: 1100,
 
-    },
-    {
-      "image_path": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365897550.JPG",
-      "time": "Jan 1, 8:00 AM GMT+7",
-      "title": "Luis Jimenez, American Dream, 1972",
-      "max_bid": 4000,
-      "user_sell": "testtt",
-      id: 1200,
-    }
-  ];
+  //   },
+  //   {
+  //     "image_path": "https://image.invaluable.com/housePhotos/santafeartauction/15/766615/H21322-L365897550.JPG",
+  //     "time": "Jan 1, 8:00 AM GMT+7",
+  //     "title": "Luis Jimenez, American Dream, 1972",
+  //     "max_bid": 4000,
+  //     "user_sell": "testtt",
+  //     id: 1200,
+  //   }
+  // ];
+
+  const [recentlyViewedItems, setRecentlyViewedItems] = useState<any[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await user_get_recently_product();
+                if (Array.isArray(data)) {
+                    setRecentlyViewedItems(data);
+                } else {
+                    setRecentlyViewedItems([])
+                }
+            } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
+            }
+        }
+
+        fetchData()
+    }, [])
 
   const [curatedCollections, setCuratedCollections] = useState<Category[]>([]);
 
