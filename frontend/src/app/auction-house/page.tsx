@@ -14,7 +14,6 @@ import AppFooter from '@/components/AppFooter';
 import Map from '@/components/auction-house/Map';
 import Tab from '@/components/auction-house/Tab';
 import TabContent from '@/components/auction-house/TabContent';
-import AuctionInformation from '@/models/auction_information';
 import SoldItem from '@/components/shared/soldItem';
 import User from '@/models/user';
 import Comment from '@/components/auction-house/Comment';
@@ -25,6 +24,7 @@ import { seller_info } from '@/services/account/seller';
 import { seller_auction_past_service } from '@/services/auction/seller';
 import { seller_product_sold_service } from '@/services/product/seller';
 import get_review_service from '@/services/component/review';
+import AuctionSummary from '@/models/auction_summary';
 
 interface CommentProps {
     id?: string;
@@ -219,7 +219,11 @@ const AuctionHouse = () => {
         const fetchData = async () => {
             try {
                 const data = await get_review_service();
-                setReview(data);
+                if (Array.isArray(data)) {
+                    setReview(data);
+                } else {
+                    setReview([])
+                }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
@@ -228,13 +232,17 @@ const AuctionHouse = () => {
         fetchData()
     }, [])
 
-    const [upcomingAuctions, setUpcomingAuctions] = useState<AuctionInformation[]>([]);
+    const [upcomingAuctions, setUpcomingAuctions] = useState<AuctionSummary[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const data = await user_get_auction_upcoming();
-                setUpcomingAuctions(data);
+                if (Array.isArray(data)) {
+                    setUpcomingAuctions(data);
+                } else {
+                    setUpcomingAuctions([])
+                }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }

@@ -38,4 +38,20 @@ let user_get_auction_info = async (auction_id: number) => {
     }
 }
 
-export { user_get_auction_upcoming, user_get_auction_promote, user_get_auction_info };
+let user_get_product_id_of_auction = async (auction_id: number) => {
+    try {
+        let url = `${HOST}/auction/user/id-of-auction/auction_id=${auction_id}/user_id=${UserDataService.getUserData()?.user_id}`;
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
+
+export {
+    user_get_auction_upcoming,
+    user_get_auction_promote,
+    user_get_auction_info,
+    user_get_product_id_of_auction
+};

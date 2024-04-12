@@ -11,11 +11,19 @@ export default class SellerDataService {
         SellerDataService.sellerData = data;
     }
 
+    static removeUserData() {
+        window.localStorage.removeItem('dataSeller');
+        SellerDataService.sellerData = null;
+    }
+
     static async getSellerData(): Promise<Seller | null> {
         const data_seller = window.localStorage.getItem('dataSeller');
 
         if (typeof data_seller === 'string') {
             SellerDataService.sellerData = JSON.parse(data_seller);
+            if (SellerDataService.sellerData?.id == null) {
+                return SellerDataService.fetchSellerData();
+            }
             return SellerDataService.sellerData;
         } else {
             return SellerDataService.fetchSellerData();

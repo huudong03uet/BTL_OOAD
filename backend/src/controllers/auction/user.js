@@ -17,6 +17,7 @@ const Location = require('../../models/location');
 const Review = require('../../models/review');
 const User = require('../../models/user');
 const LoveProduct = require('../../models/product_love');
+const { convert_result_auction_summary } = require('../util/convert');
 
 
 let get_auction_upcomming = async (req, res) => {
@@ -25,8 +26,6 @@ let get_auction_upcomming = async (req, res) => {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
-
-        console.log(req.params.user_id)
 
         const auctions = await Auction.findAll({
             where: {
@@ -91,29 +90,7 @@ let get_auction_upcomming = async (req, res) => {
             ]
         });
 
-        let result = []
-
-        for (let auction of auctions) {
-            let out = {};
-            out["time"] = auction.time_auction;
-            out["auction_room_name"] = auction.name;
-            out["number_review"] = auction.seller ? auction.seller.count : 0;
-            out["voting_avg_review"] = auction.seller ? auction.seller.avg_star : 0;
-            let images = [];
-            for (let product of auction.products) {
-                if (product.images.length > 0) {
-                    images.push(product.images[0].url);
-                }
-            }
-            let firstImage = images.shift();
-            out["images"] = images;
-            out["image_path"] = firstImage;
-            out["seller_name"] = auction.seller ? auction.seller.name : '';
-            out["status"] = auction.status;
-            out['address'] = auction.location ? auction.location.location : '';
-
-            result.push(out)
-        }
+        let result = convert_result_auction_summary(auctions)
 
         logger.info(`${statusCode.HTTP_200_OK} auction uppcomming ${result.length}`)
         return res.status(statusCode.HTTP_200_OK).json(result);
@@ -175,37 +152,9 @@ let get_auction_promote = async (req, res) => {
             ]
         });
 
-        let result = []
-        let atLeastOneAdded = false;
+        let result = convert_result_auction_summary(auctions)
 
-        for (let auction of auctions) {
-            if (Math.random() < 0.5) {
-                continue
-            }
-            let out = {};
-            out["time"] = auction.dataValues.time_auction;
-            out["image_path"] = auction.products[0].images[0].url;
-            out["seller_name"] = auction.seller.name;
-            out["status"] = auction.status;
-            out["title"] = auction.dataValues.title;
-
-            result.push(out)
-            atLeastOneAdded = true;
-        }
-
-        if (!atLeastOneAdded && auctions.length > 0) {
-            let randomIndex = Math.floor(Math.random() * auctions.length);
-            let auction = auctions[randomIndex];
-            let out = {};
-            out["time"] = auction.dataValues.time_auction;
-            out["image_path"] = auction.products[0].images[0].url;
-            out["seller_name"] = auction.seller.name;
-            out["status"] = auction.status;
-            out["title"] = auction.dataValues.title;
-
-            result.push(out);
-        }
-
+        logger.info(`${statusCode.HTTP_200_OK} auction promote ${result.length}`)
         return res.status(statusCode.HTTP_200_OK).json(result);
     } catch (error) {
         logger.error(`Login: ${error}`)
@@ -343,13 +292,62 @@ let get_auction_info = async (req, res) => {
 }
 
 
-let get_auction_sold = async (req, res) => {
-    try {
+// let get_auction_sold = async (req, res) => {
+//     try {
 
+//     } catch (error) {
+//         logger.error(`Auction add product: ${error}`)
+//         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+//     }
+// }
+
+
+let get_product_in_auction = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["auction_id", "user_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let auction = await Auction.findByPk(req.params.auction_id, {
+            where: {
+                [Op.or]: [
+                    { status: AuctionStatus.PUBLIC },
+                    { '$users.id$': req.params.user_id, status: AuctionStatus.PRIVATE }
+                ]
+            },
+            attributes: [],
+            include: [
+                {
+                    model: Product,
+                    attributes: ['id'],
+                },
+                {
+                    model: Seller,
+                    where: {
+                        user_id: req.params.user_id
+                    },
+                    attributes: []
+                }
+            ]
+        });
+
+        let result = []
+        for (let product of auction.products) {
+            result.push(product.dataValues.id)
+        }
+
+        logger.info(`${statusCode.HTTP_200_OK} [Auction: ${req.params.auction_id}].`)
+        return res.status(statusCode.HTTP_200_OK).json(result);
     } catch (error) {
         logger.error(`Auction add product: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 }
 
-module.exports = { get_auction_upcomming, get_auction_promote, get_auction_info }
+module.exports = { 
+    get_auction_upcomming, 
+    get_auction_promote, 
+    get_auction_info,
+    get_product_in_auction,
+}

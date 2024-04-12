@@ -1,6 +1,6 @@
 
 export default interface Auction {
-    auction_id: number,
+    id: number,
     name: string,
     status: string,
     time_auction: Date,
@@ -8,5 +8,5 @@ export default interface Auction {
     description?: string,
     time_register: string,
     location_id: number,
-    user_id: number,
+    seller_id: number,
 }

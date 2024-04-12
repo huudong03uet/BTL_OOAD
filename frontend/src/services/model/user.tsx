@@ -1,4 +1,5 @@
 import User from "@/models/user";
+import SellerDataService from "./seller";
 
 export default class UserDataService {
     private static userData: User | null = null;
@@ -14,6 +15,12 @@ export default class UserDataService {
     static setUserData(data: User | null) {
         window.localStorage.setItem('dataUser', JSON.stringify(data));
         UserDataService.userData = data;
+    }
+
+    static removeUserData() {
+        window.localStorage.removeItem('dataUser');
+        SellerDataService.removeUserData()
+        UserDataService.userData = null;
     }
 
     static getUserData(): User | null {

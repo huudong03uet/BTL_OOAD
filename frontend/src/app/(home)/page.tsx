@@ -7,7 +7,6 @@ import styles from './page.module.css';
 import ItemSummary from '@/models/product_summary';
 import Category from '@/models/category';
 import AuctionSummary from '@/models/auction_summary';
-import AuctionInformation from '@/models/auction_information';
 import { useEffect, useState } from 'react';
 import { user_get_auction_promote, user_get_auction_upcoming } from '@/services/auction/user';
 import { user_get_category_service } from '@/services/product/user';
@@ -69,7 +68,11 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         const data = await user_get_auction_promote();
-        setPromotedAuctions(data);
+        if (Array.isArray(data)) {
+          setPromotedAuctions(data);
+        } else {
+          setPromotedAuctions([])
+        }
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);
       }
@@ -78,13 +81,18 @@ const HomePage = () => {
     fetchData()
   }, [])
 
-  const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionInformation[]>([]);
+  const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionSummary[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await user_get_auction_upcoming();
-        setUpcomingOnlineAuctions(data);
+        if (Array.isArray(data)) {
+          setUpcomingOnlineAuctions(data);
+        } else {
+          setUpcomingOnlineAuctions([])
+        }
+
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);
       }
@@ -171,7 +179,7 @@ const HomePage = () => {
       <div className='py-3'>
         <Container>
           <div className={styles.header_section}>Upcoming Online Auctions</div>
-          {upcomingOnlineAuctions.map((object, i) => (
+          {upcomingOnlineAuctions && upcomingOnlineAuctions.map((object, i) => (
             <div className="row" key={i}>
               <UpcomingAuctions obj={object} />
             </div>

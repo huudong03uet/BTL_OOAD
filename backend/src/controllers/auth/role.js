@@ -78,7 +78,7 @@ async function role_sign_up(req, res, Model) {
 
         if (success) {
             const newAccount = await Model.create({
-                [`${Model.name.toLowerCase()}_name`]: username,
+                [`${Model.name.toLowerCase()}_name`]: role_name,
                 first_name: first_name,
                 last_name: last_name,
                 email: email,

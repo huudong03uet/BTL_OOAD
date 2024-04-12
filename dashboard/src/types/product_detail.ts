@@ -6,7 +6,7 @@ interface Image {
 
 export type ProductDetail = {
     id: number;
-    images: Image[];
+    images?: Image[];
     title: string;
     status: string;
     count_bid?: number;

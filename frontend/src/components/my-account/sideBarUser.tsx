@@ -1,7 +1,28 @@
 import style from './style.module.css';
 import Link from 'next/link';
+import UserDataService from "@/services/model/user";
+import ModalConfirm from "@/components/ModalConfirm";
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+
 function SideBarUser() {
+    // const router = useRouter();
+
     const acceptRegister: boolean = true;
+
+    const [showModal, setShowModal] = useState<boolean>(false); // State for modal visibility
+
+    const handleConfirmSignout = () => {
+      setShowModal(false);
+      UserDataService.removeUserData();
+      alert('Đăng xuất thành công!');
+      window.location.href = '/';
+
+    };
+  
+    const handleCancelSignout = () => {
+      setShowModal(false);
+    };
 
     return (
         // <div className='ps-5 ms-3'>
@@ -50,6 +71,15 @@ function SideBarUser() {
 
             </div>
 
+        {showModal && (
+            <ModalConfirm // Pass show prop with state value
+              show={showModal}
+              onConfirm={handleConfirmSignout}
+              onCancel={handleCancelSignout}
+            />
+          )}
+    
+
 
             {/* {
                     !registeredSeller ? (
@@ -84,6 +114,7 @@ function SideBarUser() {
                         </div>
                     )
                 } */}
+
 
             <div className={style.div_module}>
                 {
@@ -149,7 +180,7 @@ function SideBarUser() {
 
                 </Link>
             </div>
-            <div className={style.div_module}>
+            <div className={style.div_module} onClick={() => setShowModal(true)}>
                 <div className={style.div_text} style={{ color: '#797676' }}>
                     Signout
                 </div>

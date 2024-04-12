@@ -9,13 +9,13 @@ import { Radio } from 'antd';
 import { useRouter } from 'next/navigation'
 import ProductDetail from '@/models/product_detail';
 import ItemSummary from '@/models/product_summary';
-import AuctionInformation from '@/models/auction_information';
 import { user_get_detail_product } from '@/services/product/user';
 import { user_get_auction_info } from '@/services/auction/user';
+import AuctionSummary from '@/models/auction_summary';
 
 export default function LivedAuction() {
 
-    const [infoAuction, setInfoAuction] = useState({} as AuctionInformation);
+    const [infoAuction, setInfoAuction] = useState({} as AuctionSummary);
     const [lotsAuction, setLotsAuction] = useState<ItemSummary[]>([]);
 
     useEffect(() => {
@@ -23,7 +23,11 @@ export default function LivedAuction() {
           try {
             const data = await user_get_auction_info(1);
             setInfoAuction(data.infoAuction);
-            setLotsAuction(data.lotsAuction);
+            if (Array.isArray(data.lotsAuction)) {
+                setLotsAuction(data.lotsAuction);
+            } else {
+                setLotsAuction([])
+            }
           } catch (error) {
             console.error("Error fetching item data:", error);
           }

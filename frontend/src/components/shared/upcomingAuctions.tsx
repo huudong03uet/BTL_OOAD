@@ -2,7 +2,7 @@ import React from 'react'
 
 import '@smastrom/react-rating/style.css'
 import { Rating, ThinStar } from '@smastrom/react-rating'
-import AuctionInformation from '@/models/auction_information';
+import AuctionSummary from '@/models/auction_summary';
 
 // Declare it outside your component so it doesn't get re-created
 const myStyles = {
@@ -33,7 +33,7 @@ function openLivedAuction() {
     window.open('/lived-auction', '_blank', windowFeatures);
 }
 
-function UpcomingAuctions({ obj }: { obj: AuctionInformation }) {
+function UpcomingAuctions({ obj }: { obj: AuctionSummary }) {
     return (
         <div style={{ borderTop: "2px solid #440a77" }}>
             <div className="container">
