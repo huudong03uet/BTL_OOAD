@@ -26,7 +26,6 @@ import { seller_auction_past_service } from '@/services/auction/seller';
 import { seller_product_sold_service } from '@/services/product/seller';
 import get_review_service from '@/services/component/review';
 
-
 interface CommentProps {
     id?: string;
     user: User;
@@ -543,6 +542,8 @@ const AuctionHouse = () => {
 
                 </div>
             </Container>
+
+
             <AppFooter />
         </>
     );

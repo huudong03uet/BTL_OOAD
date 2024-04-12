@@ -4,11 +4,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.css';
-import AppHeader from '@/components/AppHeader'
-import AppFooter from '@/components/AppFooter';
-import AppNav from '@/components/AppNav';
-import AppBreadCrumb from '@/components/AppBreadCrumb';
-import Container from 'react-bootstrap/Container';
+import ChatComponent from "@/components/chat/chat_component";
+import 'react-chat-elements/dist/main.css';
 
 const inter = Inter({ subsets: ["latin"] });
 // function openNewPage() {
@@ -26,7 +23,7 @@ export default function RootLayout({
       <body className={inter.className}>
 
         {children}
-
+        <ChatComponent/>
       </body>
 
     </html>

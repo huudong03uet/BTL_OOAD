@@ -27,7 +27,10 @@ export default function EditProduct() {
 
         fetchData()
 
-        console.log(useRouter())
+
+        
+
+
     }, [])
 
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
