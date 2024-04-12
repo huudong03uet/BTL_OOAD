@@ -14,10 +14,17 @@ export default function EditProduct() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await user_get_detail_product(72);
-                setProduct(data);
-                if (data.categories != null) {
-                    setProductCategory(data.categories[0].title);
+                let url = new URL(window.location.href)
+                const idParam = url.searchParams.get("id");
+                if (idParam !== null) {
+                    const id = parseInt(idParam, 10);
+                    const data = await user_get_detail_product(id);
+                    setProduct(data);
+                    if (data.categories != null) {
+                        setProductCategory(data.categories[0].title);
+                    }
+                } else {
+                    console.error('ID not found in URL');
                 }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);

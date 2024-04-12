@@ -16,15 +16,28 @@ const role_edit_profile = async (req, res, Model) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        if (!check_required_field(req.body[`${Model.name.toLowerCase()}`], [`${Model.name.toLowerCase()}_id`, "first_name", "last_name"])) {
+        if (!check_required_field(req.body[Model.name.toLowerCase()], [`${Model.name.toLowerCase()}_id`, "first_name", "last_name", "email"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        const first_name = req.body.first_name;
-        const last_name = req.body.last_name;
-        const phone = req.body.phone;
-        const role_id = req.body[`${Model.name.toLowerCase()}_id`]
+        let role_data = {}
+
+        if (Model.name.toLowerCase() == "seller") {
+            role_data = {
+                "phone": req.body[Model.name.toLowerCase()].phone,
+                "email": req.body[Model.name.toLowerCase()].email,
+                "name": req.body[Model.name.toLowerCase()].name,
+            }
+        } else {
+            role_data = {
+                "phone": req.body[Model.name.toLowerCase()].phone,
+                "email": req.body[Model.name.toLowerCase()].email,
+                "last_name": req.body[Model.name.toLowerCase()].last_name,
+                "first_name": req.body[Model.name.toLowerCase()].first_name,
+            }
+        }
+        const role_id = req.body[Model.name.toLowerCase()][`${Model.name.toLowerCase()}_id`]
         const { country, address, city, state, postal_code } = req.body.location;
 
         const role = await Model.findByPk(role_id);
@@ -38,9 +51,7 @@ const role_edit_profile = async (req, res, Model) => {
 
         role.set(
             {
-                first_name: first_name,
-                last_name: last_name,
-                phone: phone,
+                ...role_data,
                 location_id: location.id
             },
             { transaction: t }

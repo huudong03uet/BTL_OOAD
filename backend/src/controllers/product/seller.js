@@ -19,12 +19,12 @@ let add_product = async (req, res) => {
     const t = await sequelize.transaction();
     let imagesToDelete = [];
     try {
-        if (!check_required_field(req.body, ["user_id", "title", "description", "artist", "category_name"])) {
+        if (!check_required_field(req.body, ["seller_id", "title", "description", "artist", "category_name"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        const { user_id, title, description, artist, category_name, dimension, min_estimate, max_estimate, startBid, provenance } = req.body;
+        const { seller_id, title, description, artist, category_name, dimension, min_estimate, max_estimate, startBid, provenance } = req.body;
         
         const images = await Promise.all(req.files.map(async file => {
             const result = await upload_image(file.path.replace(/\\/g, '/'), "product");
@@ -40,7 +40,7 @@ let add_product = async (req, res) => {
             transaction: t
         });
 
-        const seller = await Seller.findOne({where: {user_id: user_id}})
+        const seller = await Seller.findByPk(seller_id)
 
         const productData = {
             title,
@@ -87,7 +87,7 @@ let add_product = async (req, res) => {
 let update_product = async (req, res) => {
     const t = await sequelize.transaction();
     try {
-        if (!check_required_field(req.body, ["user_id", "id", "title", "description", "artist", "category_name"])) {
+        if (!check_required_field(req.body, ["seller_id", "id", "title", "description", "artist", "category_name"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
@@ -95,12 +95,9 @@ let update_product = async (req, res) => {
         const { id, title, description, artist, category_name, dimension, min_estimate, max_estimate, provenance } = req.body;
         
         const product = await Product.findByPk(id,{
-            include: [
-                {
-                    model: Seller,
-                    attributes: ["user_id"]
-                }
-            ]
+            where: {
+                seller_id: req.body.seller_id
+            }
         });
 
         if (!product) {
@@ -142,25 +139,16 @@ let update_product = async (req, res) => {
     }
 }
 
-let get_product_sold = async (req, res) => {
+let _get_product_sold = async (seller_id) => {
     try {
-        if (!check_required_field(req.params, ["user_id"])) {
-            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
-            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
-        }
-
-        const { user_id } = req.params;
-
         let products = await Product.findAll({
             where: {
-                status: AuctionProductStatus.SOLD
+                status: AuctionProductStatus.SOLD,
+                seller_id: seller_id
             },
             include: [
                 {
                     model: Seller,
-                    where: {
-                        user_id: user_id
-                    },
                     attributes: ["name"]
                 },
                 {
@@ -180,6 +168,21 @@ let get_product_sold = async (req, res) => {
                 }
             ]
         })
+
+        return products
+    } catch (error) {
+        throw error
+    }
+}
+
+let get_product_sold = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["seller_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let products = await _get_product_sold(req.params.seller_id)
 
         let result = []
 
@@ -202,8 +205,83 @@ let get_product_sold = async (req, res) => {
     }
 }
 
+let convert_result_item_summary = (products) => {
+    try {
+        let result = []
+        for(let product of products) {
+            let out = {}
+            out["id"] = product.id
+            out["status"] = product.status
+            out["title"] = product.title
+            out["estimate_min"] = product.min_estimate
+            out["estimate_max"] = product.max_estimate
+            out["artist"] = product.artist
+            out["time"] = product.createdAt
+
+            result.push(out)
+        }
+
+        return result
+    } catch (error) {
+        throw error
+    }
+}
+
+let get_products = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["seller_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let products = await Product.findAll({
+            where: {
+                seller_id: req.params.seller_id
+            },
+            include: [
+                {
+                    model: Seller,
+                    attributes: ["name"]
+                },
+                {
+                    model: Winner,
+                }
+            ]
+        })
+
+        let reesult = convert_result_item_summary(products)
+
+        logger.info(`${statusCode.HTTP_200_OK} products length ${products.length}`)
+        return res.status(statusCode.HTTP_200_OK).json(reesult);
+    } catch (error) {
+        logger.error(`Get product: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+let get_product_history = async(req, res) => {
+    try {
+        if (!check_required_field(req.params, ["seller_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let products = await _get_product_sold(req.params.seller_id)
+
+        let result = convert_result_item_summary(products)
+
+        logger.info(`${statusCode.HTTP_200_OK} products history length ${products.length}`)
+        return res.status(statusCode.HTTP_200_OK).json(result);
+    } catch (error) {
+        logger.error(`Sold product: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
 module.exports = {
     add_product,
     get_product_sold,
-    update_product
+    update_product,
+    get_products,
+    get_product_history
 };
