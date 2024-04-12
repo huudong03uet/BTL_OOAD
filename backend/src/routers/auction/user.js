@@ -7,6 +7,6 @@ const auctionController = require("../../controllers/auction/user")
 router.get("/upcomming/user_id=:user_id", auctionController.get_auction_upcomming);
 router.get("/promote/user_id=:user_id", auctionController.get_auction_promote);
 router.get("/info/auction_id=:auction_id/user_id=:user_id", auctionController.get_auction_info);
-
+router.get("/id-of-auction/auction_id=:auction_id/user_id=:user_id", auctionController.get_product_in_auction);
 
 module.exports = router;

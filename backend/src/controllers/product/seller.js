@@ -13,6 +13,7 @@ const Winner = require('../../models/winner');
 const BidHistory = require('../../models/history_bid');
 
 const { upload_image, delete_image, check_required_field } = require('../util');
+const { convert_result_item_summary } = require('../util/convert');
 
 
 let add_product = async (req, res) => {
@@ -101,11 +102,6 @@ let update_product = async (req, res) => {
         });
 
         if (!product) {
-            logger.error(`${statusCode.HTTP_404_NOT_FOUND} Product not found.`);
-            return res.status(statusCode.HTTP_404_NOT_FOUND).json("Product not found.");
-        }
-
-        if (product.seller.dataValues.user_id !== req.body.user_id) {
             logger.error(`${statusCode.HTTP_403_FORBIDDEN} Product not appect.`);
             return res.status(statusCode.HTTP_403_FORBIDDEN).json("Product not appect.");
         }
@@ -139,11 +135,16 @@ let update_product = async (req, res) => {
     }
 }
 
-let _get_product_sold = async (seller_id) => {
+let _get_product_by_status = async (seller_id, status) => {
     try {
+        let require = false;
+        if (status.length == 1 && status[0] == AuctionProductStatus.SOLD) {
+            require = true;
+        }
+
         let products = await Product.findAll({
             where: {
-                status: AuctionProductStatus.SOLD,
+                status: status,
                 seller_id: seller_id
             },
             include: [
@@ -164,7 +165,7 @@ let _get_product_sold = async (seller_id) => {
                             attributes: ["amount"],
                         }
                     ],
-                    required: true,
+                    required: require,
                 }
             ]
         })
@@ -182,7 +183,7 @@ let get_product_sold = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let products = await _get_product_sold(req.params.seller_id)
+        let products = await _get_product_by_status(req.params.seller_id, [AuctionProductStatus.SOLD])
 
         let result = []
 
@@ -205,28 +206,6 @@ let get_product_sold = async (req, res) => {
     }
 }
 
-let convert_result_item_summary = (products) => {
-    try {
-        let result = []
-        for(let product of products) {
-            let out = {}
-            out["id"] = product.id
-            out["status"] = product.status
-            out["title"] = product.title
-            out["estimate_min"] = product.min_estimate
-            out["estimate_max"] = product.max_estimate
-            out["artist"] = product.artist
-            out["time"] = product.createdAt
-
-            result.push(out)
-        }
-
-        return result
-    } catch (error) {
-        throw error
-    }
-}
-
 let get_products = async (req, res) => {
     try {
         if (!check_required_field(req.params, ["seller_id"])) {
@@ -234,20 +213,7 @@ let get_products = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let products = await Product.findAll({
-            where: {
-                seller_id: req.params.seller_id
-            },
-            include: [
-                {
-                    model: Seller,
-                    attributes: ["name"]
-                },
-                {
-                    model: Winner,
-                }
-            ]
-        })
+        let products = await _get_product_by_status(req.params.seller_id, [AuctionProductStatus.SOLD, AuctionProductStatus.NOT_YET_SOLD, AuctionProductStatus.ON_SALE])
 
         let reesult = convert_result_item_summary(products)
 
@@ -266,7 +232,7 @@ let get_product_history = async(req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let products = await _get_product_sold(req.params.seller_id)
+        let products = await _get_product_by_status(req.params.seller_id, [AuctionProductStatus.SOLD])
 
         let result = convert_result_item_summary(products)
 
@@ -277,6 +243,7 @@ let get_product_history = async(req, res) => {
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 }
+
 
 module.exports = {
     add_product,
