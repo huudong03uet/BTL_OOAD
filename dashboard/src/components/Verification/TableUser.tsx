@@ -66,9 +66,9 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <p
-                                        className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${packageItem.status === "Paid"
+                                        className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${packageItem.status === "accept"
                                             ? "bg-success text-success"
-                                            : packageItem.status === "Unpaid"
+                                            : packageItem.status === "reject"
                                                 ? "bg-danger text-danger"
                                                 : "bg-warning text-warning"
                                             }`}
@@ -107,6 +107,7 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
             </div>
             {showModalCreate && selectedPackage && (
                 <CreateModal
+
                     showModalCreate={showModalCreate}
                     setShowModalCreate={setShowModalCreate}
                     sellerInformation={selectedPackage}

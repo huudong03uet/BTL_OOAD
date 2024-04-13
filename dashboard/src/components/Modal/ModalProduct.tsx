@@ -5,11 +5,20 @@ import { useSWRConfig } from "swr"
 import { mutate } from "swr"
 import { FormRegisterProduct } from '@/types/form_register_product';
 import { product_insepect } from '@/service/product';
-
+import { StatusProductVerification } from '../Verification/TableProduct';
+//     const handleAcceptReject = (statusProductVerification: StatusProductVerification, packageItem: FormRegisterProduct) => {
+//   if (statusProductVerification === StatusProductVerification.accepted) {
+//     console.log("Accept");
+// }
+// else if (statusProductVerification === StatusProductVerification.rejected) {
+//     console.log("Reject");
+// }
+// };
 interface IProps {
   showModalCreate: boolean;
   setShowModalCreate: (value: boolean) => void;
   productInformation: FormRegisterProduct;
+  onAcceptReject: (statusProductVerification: StatusProductVerification, packageItem: FormRegisterProduct) => void;
 }
 
 function CreateModal(props: IProps) {
@@ -27,6 +36,11 @@ function CreateModal(props: IProps) {
 
   const handleButton = async (action: 'Reject' | 'Accept') => {
     await product_insepect(textAreaValue, productInformation.product_id, action)
+
+    props.onAcceptReject(action === 'Accept' ? StatusProductVerification.accepted : StatusProductVerification.rejected, productInformation);
+
+
+
     handleCloseModal();
   };
 
@@ -62,8 +76,8 @@ function CreateModal(props: IProps) {
     <Modal
       isOpen={showModalCreate}
       onClose={handleCloseModal}
-      size='lg'
-      style={{ top: '250px', left: '30%', transform: 'translate(-50%, -50%)' }} // Đặt vị trí modal
+      size='4xl'
+      style={{ top: '250px', left: '35%', transform: 'translate(-50%, -50%)' }} // Đặt vị trí modal
     >
       <ModalContent>
         <>

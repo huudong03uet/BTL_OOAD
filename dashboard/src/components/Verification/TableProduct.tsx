@@ -2,7 +2,9 @@
 import { Package } from "@/types/package";
 import { FormRegisterProduct } from "@/types/form_register_product";
 import CreateModal from "../Modal/ModalProduct";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import ReactPaginate from "react-paginate";
+import { Pagination } from "@nextui-org/react";
 
 interface IProps {
     showModalCreate: boolean;
@@ -14,14 +16,58 @@ interface TableProductProps {
     packageData: FormRegisterProduct[];
 }
 
+export enum StatusProductVerification {
+    pending = "pending",
+    accepted = "accepted",
+    rejected = "rejected",
+
+}
+
 const TableUser: React.FC<TableProductProps> = ({ packageData }) => {
     const [showModalCreate, setShowModalCreate] = useState<boolean>(false);
     const [selectedPackage, setSelectedPackage] = useState<FormRegisterProduct | null>(null);
+    // const [packageDataState, setPackageDataState] = useState<FormRegisterProduct[]>(packageData);
+    const [packageDataState, setPackageDataState] = useState(packageData);
+
+    useEffect(() => {
+        setPackageDataState(packageData);
+    }, [packageData]);
 
     const handleViewProduct = (packageItem: FormRegisterProduct) => {
         setSelectedPackage(packageItem);
         setShowModalCreate(true);
     }
+
+    // const [currentPackage, setCurrentPackage] = useState<FormRegisterProduct | null>(null);
+
+    const handleAcceptReject = (statusProductVerification: StatusProductVerification, packageItem: FormRegisterProduct) => {
+        const newPackageData = [...packageDataState];
+        // Tìm index của packageItem trong mảng
+        const index = newPackageData.findIndex((item) => item.product_id === packageItem.product_id);
+        // Thay đổi status của packageItem
+        newPackageData[index].status = statusProductVerification;
+        // Cập nhật lại packageDataState
+        setPackageDataState(newPackageData);
+        // Ẩn modal
+
+    };
+
+
+    // <Pagination 
+    // showControls total={pageCount}
+    // onChange={changePage}
+    // initialPage={1} 
+    // />
+    /// set page
+    const [pageNumber, setPageNumber] = useState(1);
+    const itemsPerPage = 5;
+    const pagesVisited = (pageNumber - 1) * itemsPerPage;
+    const pageCount = Math.ceil(packageDataState.length / itemsPerPage);
+    const changePage = (selected: number) => {
+        setPageNumber(selected);
+    }
+
+
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
             <div className="flex justify-between px-8 pb-4">
@@ -61,66 +107,67 @@ const TableUser: React.FC<TableProductProps> = ({ packageData }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {packageData.map((packageItem, key) => (
-                            <tr key={key}>
-                                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                    <h5 className="font-medium text-black dark:text-white">
-                                        {packageItem.product_id}
-                                    </h5>
-                                </td>
-                                <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
-                                    <h5 className="font-medium text-black dark:text-white">
-                                        {packageItem.title}
-                                    </h5>
+                        {packageDataState.slice(pagesVisited, pagesVisited + itemsPerPage)
+                            .map((packageItem, key) => (
+                                <tr key={key}>
+                                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                                        <h5 className="font-medium text-black dark:text-white">
+                                            {packageItem.product_id}
+                                        </h5>
+                                    </td>
+                                    <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
+                                        <h5 className="font-medium text-black dark:text-white">
+                                            {packageItem.title}
+                                        </h5>
 
-                                </td>
-                                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                    <p className="text-black dark:text-white">
-                                        {packageItem.time_create}
-                                    </p>
-                                </td>
-                                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                    <p
-                                        className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${packageItem.status === "Paid"
-                                            ? "bg-success text-success"
-                                            : packageItem.status === "Unpaid"
-                                                ? "bg-danger text-danger"
-                                                : "bg-warning text-warning"
-                                            }`}
-                                    >
-                                        {packageItem.status}
-                                    </p>
-                                </td>
-                                <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
-                                    <div className="flex items-center space-x-3.5">
-                                        <button className="hover:text-primary" onClick={() => { handleViewProduct(packageItem) }}>
-                                            <svg
-                                                className="fill-current"
-                                                width="18"
-                                                height="18"
-                                                viewBox="0 0 18 18"
-                                                fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
-                                                    fill=""
-                                                />
-                                                <path
-                                                    d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
-                                                    fill=""
-                                                />
-                                            </svg>
-                                        </button>
+                                    </td>
+                                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                                        <p className="text-black dark:text-white">
+                                            {packageItem.time_create}
+                                        </p>
+                                    </td>
+                                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                                        <p
+                                            className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${packageItem.status === "accepted"
+                                                ? "bg-success text-success"
+                                                : packageItem.status === "rejected"
+                                                    ? "bg-danger text-danger"
+                                                    : "bg-warning text-warning"
+                                                }`}
+                                        >
+                                            {packageItem.status}
+                                        </p>
+                                    </td>
+                                    <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
+                                        <div className="flex items-center space-x-3.5">
+                                            <button className="hover:text-primary" onClick={() => { handleViewProduct(packageItem) }}>
+                                                <svg
+                                                    className="fill-current"
+                                                    width="18"
+                                                    height="18"
+                                                    viewBox="0 0 18 18"
+                                                    fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                >
+                                                    <path
+                                                        d="M8.99981 14.8219C3.43106 14.8219 0.674805 9.50624 0.562305 9.28124C0.47793 9.11249 0.47793 8.88749 0.562305 8.71874C0.674805 8.49374 3.43106 3.20624 8.99981 3.20624C14.5686 3.20624 17.3248 8.49374 17.4373 8.71874C17.5217 8.88749 17.5217 9.11249 17.4373 9.28124C17.3248 9.50624 14.5686 14.8219 8.99981 14.8219ZM1.85605 8.99999C2.4748 10.0406 4.89356 13.5562 8.99981 13.5562C13.1061 13.5562 15.5248 10.0406 16.1436 8.99999C15.5248 7.95936 13.1061 4.44374 8.99981 4.44374C4.89356 4.44374 2.4748 7.95936 1.85605 8.99999Z"
+                                                        fill=""
+                                                    />
+                                                    <path
+                                                        d="M9 11.3906C7.67812 11.3906 6.60938 10.3219 6.60938 9C6.60938 7.67813 7.67812 6.60938 9 6.60938C10.3219 6.60938 11.3906 7.67813 11.3906 9C11.3906 10.3219 10.3219 11.3906 9 11.3906ZM9 7.875C8.38125 7.875 7.875 8.38125 7.875 9C7.875 9.61875 8.38125 10.125 9 10.125C9.61875 10.125 10.125 9.61875 10.125 9C10.125 8.38125 9.61875 7.875 9 7.875Z"
+                                                        fill=""
+                                                    />
+                                                </svg>
+                                            </button>
 
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
                     </tbody>
                 </table>
             </div>
-            <div className="flex justify-between border-t border-stroke px-8 pt-5 dark:border-strokedark">
+            {/* <div className="flex justify-between border-t border-stroke px-8 pt-5 dark:border-strokedark">
                 <p className="font-medium">Showing 1 of 3 pages</p>
                 <div className="flex">
                     <button className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-primary hover:text-whiter" >
@@ -148,9 +195,31 @@ const TableUser: React.FC<TableProductProps> = ({ packageData }) => {
                         </svg>
                     </button>
                 </div>
+            </div> */}
+            <div className='flex'>
+                <div className='w-1/2'>
+
+                </div>
+                <div className='w-1/2 '>
+                    {
+                        packageDataState.length > 0 && <Pagination
+                        className='flex justify-end p-6'
+                            showControls
+                            total={pageCount}
+                            onChange={changePage}
+                            // first is 1
+                            initialPage={1}
+                        />
+                    }
+
+                </div>
+
             </div>
+
+
             {showModalCreate && selectedPackage && (
                 <CreateModal
+                    onAcceptReject={handleAcceptReject}
                     showModalCreate={showModalCreate}
                     setShowModalCreate={setShowModalCreate}
                     productInformation={selectedPackage}
