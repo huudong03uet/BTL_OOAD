@@ -4,13 +4,14 @@ import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import MyProductTable, { TableActivity } from '../../component/product-table';
 import ItemSummary from '@/models/product_summary';
 import { seller_get_all_products } from '@/services/product/seller';
-import { useRouter } from 'next/router';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 
 //  cứ lấy hết thông tin có của product -> không cần lọc, dư sẽ để vào phần detail hoặc bỏ
 
 export default function MyProduct() {
     const [data, setData] = useState<ItemSummary[]>([])
+    const router = useRouter();
     
     useEffect(() => {
         const fetchData = async () => {
@@ -26,8 +27,7 @@ export default function MyProduct() {
         //  <Link href={`/seller/edit-product?id=${row.id}`}>
 
         //  get id of product from router
-            const router = useRouter();
-            const { id } = router.query;
+        
     }, [])
 
 
