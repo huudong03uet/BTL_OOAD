@@ -1,8 +1,10 @@
+'use client'
 import { useState } from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
 import { useSWRConfig } from "swr"
 import { mutate } from "swr"
 import { FormRegisterProduct } from '@/types/form_register_product';
+import { product_insepect } from '@/service/product';
 
 interface IProps {
   showModalCreate: boolean;
@@ -23,13 +25,8 @@ function CreateModal(props: IProps) {
 //     // handleCloseModal();
 // };
 
-  const handleButton = (action: 'Reject' | 'Accept') => {
-    if (action === 'Accept') {
-        console.log("Additional Text:", textAreaValue);
-        // Đây là nơi bạn có thể xử lý khi người dùng chọn "Accept"
-    } else if (action === 'Reject') {
-        // Đây là nơi bạn có thể xử lý khi người dùng chọn "Reject"
-    }
+  const handleButton = async (action: 'Reject' | 'Accept') => {
+    await product_insepect(textAreaValue, productInformation.product_id, action)
     handleCloseModal();
   };
 

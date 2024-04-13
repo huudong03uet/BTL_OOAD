@@ -14,5 +14,25 @@ let product_not_insepct = async () => {
     }
 }
 
+let product_insepect = async (description: string, product_id: number, status: string) => {
+    try {
+        let url = `${HOST}/product/admin/inspect`;
+        let body = {
+            "description": description,
+            "product_id": product_id,
+            "admin_id": 1,
+            "status": status
+        }
+        const response = await axios.post(url, body);
+        return;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
 
-export { product_not_insepct } ;
+
+export { 
+    product_not_insepct,
+    product_insepect,
+} ;
