@@ -95,7 +95,7 @@ let get_auction_upcomming = async (req, res) => {
         logger.info(`${statusCode.HTTP_200_OK} auction uppcomming ${result.length}`)
         return res.status(statusCode.HTTP_200_OK).json(result);
     } catch (error) {
-        logger.error(`Login: ${error}`)
+        logger.error(`Get auction upcomming: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 }
@@ -157,7 +157,7 @@ let get_auction_promote = async (req, res) => {
         logger.info(`${statusCode.HTTP_200_OK} auction promote ${result.length}`)
         return res.status(statusCode.HTTP_200_OK).json(result);
     } catch (error) {
-        logger.error(`Login: ${error}`)
+        logger.error(`Get auction promote: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 }
