@@ -31,8 +31,20 @@ let product_insepect = async (description: string, product_id: number, status: s
     }
 }
 
+let product_all = async () => {
+    try {
+        let url = `${HOST}/product/admin/all`;
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
+
 
 export { 
     product_not_insepct,
     product_insepect,
+    product_all
 } ;
