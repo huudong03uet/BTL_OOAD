@@ -141,6 +141,7 @@ let get_all_product = async(req, res) => {
 }
 
 
+
 module.exports = {
     get_all_product_not_inspect,
     product_inspect,
