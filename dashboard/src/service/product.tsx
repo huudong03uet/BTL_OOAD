@@ -42,9 +42,23 @@ let product_all = async () => {
     }
 }
 
+let category_all = async () => {
+    try {
+        let url = `${HOST}/product/user/all-category`
+
+        const response = await axios.get(url);
+
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
+
 
 export { 
     product_not_insepct,
     product_insepect,
-    product_all
+    product_all,
+    category_all
 } ;
