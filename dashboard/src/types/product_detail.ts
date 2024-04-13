@@ -1,6 +1,6 @@
 interface Image {
     id: number,
-    path: string,
+    url: string,
 }
 
 
@@ -11,13 +11,11 @@ export type ProductDetail = {
     status: string;
     count_bid?: number;
     max_bid?: number;
-    estimate_min?: number;
-    estimate_max?: number;
-    price?:number;
+    max_estimate?: number;
+    min_estimate?: number;
     description: string;
     dimensions: string;
     artist: string;
-    love?: number;
     condition_report?: string;
     provenance?: string;
 }
