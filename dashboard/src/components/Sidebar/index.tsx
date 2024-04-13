@@ -434,7 +434,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <polyline points="22 4 12 14.01 9 11.01"></polyline>
                         </svg>
 
-                        Users Manager
+                        Manager
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"
                             }`}
@@ -461,7 +461,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <li>
                             <Link
                               href="/usermanager/usermanager-user"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/verification/verification-seller" &&
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white 
+                              ${pathname === "/usermanager/usermanager-user" &&
                                 "text-white"
                                 }`}
                             >
@@ -471,11 +472,23 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           <li>
                             <Link
                               href="/usermanager/usermanager-seller"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/verification/verification-seller" &&
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white 
+                              ${pathname === "/usermanager/usermanager-seller" &&
                                 "text-white"
                                 }`}
                             >
                               Seller Information
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/usermanager/manager-category"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white 
+                              ${pathname === "/usermanager/manager-category" &&
+                                "text-white"
+                                }`}
+                            >
+                              Category
                             </Link>
                           </li>
                         </ul>
