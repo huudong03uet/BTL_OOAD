@@ -121,8 +121,29 @@ let product_inspect = async (req, res) => {
 }
 
 
+let get_all_product = async(req, res) => {
+    try {
+        let products = await Product.findAll({
+            include: [
+                {
+                    model: Image,
+                    attributes: ["url", "id"]
+                },
+            ]
+        })
+
+        logger.info(`${statusCode.HTTP_200_OK} products length ${products.length}`)
+        return res.status(statusCode.HTTP_200_OK).json(products);
+    } catch (error) {
+        logger.error(`Sold product: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+
 module.exports = {
     get_all_product_not_inspect,
-    product_inspect
+    product_inspect,
+    get_all_product
 };
 
