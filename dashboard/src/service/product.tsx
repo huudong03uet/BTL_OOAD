@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 import { HOST } from './host';
+import AdminDataService from './admin_service';
 
 let product_not_insepct = async () => {
     try {
@@ -20,7 +21,7 @@ let product_insepect = async (description: string, product_id: number, status: s
         let body = {
             "description": description,
             "product_id": product_id,
-            "admin_id": 1,
+            "admin_id": AdminDataService.getAdminData()?.id,
             "status": status
         }
         const response = await axios.post(url, body);
