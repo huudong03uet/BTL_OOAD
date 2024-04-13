@@ -7,7 +7,7 @@ import UserDataService from '../model/user';
 
 let seller_register = async (seller_info: any, card_info: any, location_info: any) => {
     try {
-        let url = `${HOST}/seller/register`;
+        let url = `${HOST}/account/seller/register`;
         let body = {
             user_id: UserDataService.getUserData()?.user_id,
             card_info: card_info,

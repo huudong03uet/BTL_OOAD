@@ -133,7 +133,7 @@ export default function ChatSupport() {
           <ChatList
             id="chat-list-id"
             lazyLoadingImage="lazy-loading-image-url"
-            onClick={(info) => {
+            onClick={(info: any) => {
               setReadUser(info.id)
 
               setChatInfo({
