@@ -12,6 +12,7 @@ const Seller = require('../../models/seller');
 const Category = require('../../models/category');
 const Image = require('../../models/image');
 const Inspection = require('../../models/inspection');
+const status = require('../../../constants/status');
 
 
 let get_all_product_not_inspect = async (req, res) => {
@@ -37,12 +38,12 @@ let get_all_product_not_inspect = async (req, res) => {
         })
 
         let result = []
-        for(let product of products) {
+        for (let product of products) {
             let out = {}
             out["product_id"] = product.id
             out["title"] = product.title
             out["time_create"] = product.createdAt
-            out["status"] = product.status
+            out["status"] = "pendding"
             out["seller"] = product.seller
             out["estimate_min"] = product.min_estimate
             out["estimate_max"] = product.max_estimate
@@ -65,18 +66,55 @@ let get_all_product_not_inspect = async (req, res) => {
 }
 
 
-let product_inspect = async(req, res) => {
+let product_inspect = async (req, res) => {
+    const t = await sequelize.transaction();
     try {
-        if (!check_required_field(req.body, ["seller_id", "description", "product_id"])) {
+        if (!check_required_field(req.body, ["admin_id", "description", "product_id", "status"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        await Inspection.create(req.body);
+        const { admin_id, product_id } = req.body;
+
+        const existingInspection = await Inspection.findOne({
+            where: { admin_id: admin_id, product_id: product_id }
+        });
+
+        if (existingInspection) {
+            await Inspection.update(inspectionData, {
+                where: { admin_id: admin_id, product_id: product_id },
+                transaction: t
+            });
+        } else {
+            await Inspection.create(req.body, { transaction: t });
+        }
+
+        if (req.body.status == 'Accept') {
+            await Product.update({
+                inspect_status: InspectionType.INSPECTED
+            }, {
+                where: {
+                    id: req.body.product_id
+                },
+                transaction: t
+            });
+        } else if (req.body.status == 'Reject') {
+            await Product.update({
+                inspect_status: InspectionType.DENIED
+            }, {
+                where: {
+                    id: req.body.product_id
+                },
+                transaction: t
+            });
+        }
+
+        await t.commit();
 
         logger.info(`${statusCode.HTTP_201_CREATED} product inspect done`)
         return res.status(statusCode.HTTP_201_CREATED).json("Done");
     } catch (error) {
+        await t.rollback();
         logger.error(`Sold product: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
