@@ -4,7 +4,7 @@ interface Image {
 }
 interface Category {
     id?: number,
-    name?: string;
+    title?: string;
 }
 interface Seller {
     user_id?: number,

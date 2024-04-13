@@ -12,32 +12,54 @@ interface IProps {
 
 function CreateModal(props: IProps) {
   const { showModalCreate, setShowModalCreate, productInformation } = props;
+  const [textAreaValue, setTextAreaValue] = useState("");
+
+  const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextAreaValue(event.target.value);
+  };
+
+//   const handleButton = () => {
+//     console.log("Additional Text:", textAreaValue);
+//     // handleCloseModal();
+// };
+
+  const handleButton = (action: 'Reject' | 'Accept') => {
+    if (action === 'Accept') {
+        console.log("Additional Text:", textAreaValue);
+        // Đây là nơi bạn có thể xử lý khi người dùng chọn "Accept"
+    } else if (action === 'Reject') {
+        // Đây là nơi bạn có thể xử lý khi người dùng chọn "Reject"
+    }
+    handleCloseModal();
+  };
 
   const handleCloseModal = () => setShowModalCreate(false);
   const handleShowModal = () => setShowModalCreate(true);
 
   let { product_id, seller, title, images, estimate_min, estimate_max, description, dimensions, artist, category, condition_report, provenance, time_create, status } = productInformation;
 
-  const handleSubmit = () => {
-    status = "complete";
+  // const handleSubmit = () => {
+  //   status = "complete";
 
-    //call api sửa đổi trạng thái của product thành seller, be trả về với status là complete
-    fetch("http://localhost:8000/blogs",
-      {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({ status })
-      })
-      .then(function (res) {
-        handleCloseModal();
-        mutate("http://localhost:8000/blogs")
-      })
-      .catch(function (res) { console.log(res) })
+  //   //call api sửa đổi trạng thái của product thành seller, be trả về với status là complete
+  //   fetch("http://localhost:8000/blogs",
+  //     {
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json'
+  //       },
+  //       method: "POST",
+  //       body: JSON.stringify({ status })
+  //     })
+  //     .then(function (res) {
+  //       handleCloseModal();
+  //       mutate("http://localhost:8000/blogs")
+  //     })
+  //     .catch(function (res) { console.log(res) })
 
-  };
+  // };
+
+
 
   return (
     <Modal
@@ -71,7 +93,7 @@ function CreateModal(props: IProps) {
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 {category && category.map((obj, index) => (
                   <div key={index}>
-                    <p>{obj.name}</p>
+                    <p>{obj.title}</p>
                   </div>
                 ))}
               </div>
@@ -92,12 +114,22 @@ function CreateModal(props: IProps) {
                 ))}
               </div>
             </div>
+
+            <div className="mb-3 ml-3">
+              <textarea
+                value={textAreaValue}
+                onChange={handleTextAreaChange}
+                placeholder="Enter additional text here..."
+                className="form-control"
+                style={{ width: '100%', minHeight: '100px' }}
+              />
+            </div>
           </ModalBody>
           <ModalFooter style={{ justifyContent: 'space-between' }}>
-            <Button color="danger" onPress={handleCloseModal}>
+            <Button color="danger" onPress={() => handleButton('Reject')}>
               Reject
             </Button>
-            <Button color="primary" onPress={handleCloseModal}>
+            <Button color="primary"  onPress={() => handleButton('Accept')}>
               Accept
             </Button>
           </ModalFooter>
