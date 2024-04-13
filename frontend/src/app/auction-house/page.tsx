@@ -362,7 +362,11 @@ const AuctionHouse = () => {
         const fetchData = async () => {
             try {
                 const data = await seller_product_sold_service();
-                setSoldAuctions(data);
+                if (Array.isArray(data)) {
+                    setSoldAuctions(data);
+                  } else {
+                    setSoldAuctions([])
+                  }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
@@ -383,7 +387,11 @@ const AuctionHouse = () => {
         const fetchData = async () => {
             try {
                 const data = await seller_auction_past_service();
-                setPastAuctions(data);
+                if (Array.isArray(data)) {
+                    setPastAuctions(data);
+                  } else {
+                    setPastAuctions([])
+                  }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
