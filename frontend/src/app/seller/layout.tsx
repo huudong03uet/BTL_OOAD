@@ -17,9 +17,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-
-            <body className={inter.className}>
+            <section className={inter.className}>
 
                 <AppHeader />
                 <AppNav />
@@ -34,8 +32,6 @@ export default function RootLayout({
                     </div>
                 </div>
                 <AppFooter />
-            </body>
-
-        </html>
+            </section>
     );
 }

@@ -18,9 +18,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
 
-            <body className={inter.className}>
+            <section className={inter.className}>
                 {/* <div>
         <button onClick={openNewPage}>
           Detail page
@@ -40,8 +39,6 @@ export default function RootLayout({
                     </div>
                 </div>
                 <AppFooter />
-            </body>
-
-        </html>
+            </section>
     );
 }
