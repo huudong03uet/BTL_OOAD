@@ -15,10 +15,7 @@ import AdminDataService from "@/service/admin_service";
 // };
 
 const Profile = () => {
-  const initialAdminData = AdminDataService.getAdminData() || {} as Admin
-  const [admin, setAdmin] = useState<Admin>(initialAdminData);
-
-  
+  const admin = AdminDataService.getAdminData() || {} as Admin
 
   return (
     <DefaultLayout>
