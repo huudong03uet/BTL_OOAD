@@ -70,7 +70,6 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         const data = await user_get_category_service();
-        console.log(data)
         setCuratedCollections(data);
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);

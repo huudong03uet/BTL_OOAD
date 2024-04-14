@@ -2,6 +2,7 @@ const { DataTypes } = require("sequelize");
 
 const sequelize = require("../../conf/sequelize");
 const AuctionProductStatus = require('../../constants/auction_product_status')
+const InspectionType = require("../../constants/inspection")
 const AuctionProductVisibilityStatus = require('../../constants/product_visibility')
 
 const Category = require("./category");
@@ -30,10 +31,11 @@ const Product = sequelize.define("product", {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  is_inspect: {
-    type: DataTypes.BOOLEAN,
+  inspect_status: {
+    type: DataTypes.ENUM,
     allowNull: false,
-    defaultValue: false,
+    values: [InspectionType.DENIED, InspectionType.INSPECTED, InspectionType.INSPECTTING, InspectionType.NOT_INSPECT],
+    defaultValue: InspectionType.NOT_INSPECT,
   },
   artist: {
     type: DataTypes.STRING,

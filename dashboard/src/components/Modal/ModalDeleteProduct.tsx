@@ -1,7 +1,9 @@
+
 import { ProductDetail } from "@/types/product_detail";
 import { useState } from "react";
 import { mutate } from "swr"
 import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
+import { product_delete } from "@/service/product";
 
 
 
@@ -19,11 +21,11 @@ function DeleteModal(props: IProps) {
   const handleCloseModal = () => setShowModalDelete(false);
 
   //call api xóa Product, sau đó mutate lại data
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (ProductToDelete) {
-        // call api xóa Product
        console.log(ProductToDelete);
-       mutate("http://localhost:8000/blogs")
+        await product_delete(ProductToDelete.id)
+
     }
     handleCloseModal();
   };

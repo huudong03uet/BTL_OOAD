@@ -3,6 +3,7 @@ import { useState } from "react";
 import { mutate } from "swr"
 import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
 import { Form } from "react-bootstrap";
+import { category_create } from "@/service/product";
 
 interface IProps {
     showModal: boolean;
@@ -12,6 +13,7 @@ interface IProps {
 function ModalAddCategory(props: IProps) {
     const { showModal, setShowModal } = props;
     const [title, setTitle] = useState('');
+    const [image, setImage] = useState<File | null>(null);
 
     const handleCloseModal = () => setShowModal(false);
 
@@ -19,14 +21,28 @@ function ModalAddCategory(props: IProps) {
         setTitle(event.target.value);
     };
 
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            setImage(files[0]);
+        }
+    };
 
-    const handleSubmit = (event: React.FormEvent) => {
+
+    const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        console.log(title);
+        const formData = new FormData();
+        formData.append('title', title);
+        if (image) {
+            formData.append('image', image);
+        } else {
+            return;
+        }
 
+        console.log(formData.get("image"))
 
-        //call api tạo category
+        await category_create(formData)
     };
 
     return (
@@ -48,11 +64,10 @@ function ModalAddCategory(props: IProps) {
                     </label>
                         <div className="row">
                             <div className="col-12">
-                                <Form.Label>Image of products</Form.Label>
+                                <Form.Label>Image</Form.Label>
                                 <Form.Control
                                     type="file"
-                                    placeholder="Image"
-                                    name="firstName"
+                                    onChange={handleImageChange}
                                 />
                             </div>
                         </div>

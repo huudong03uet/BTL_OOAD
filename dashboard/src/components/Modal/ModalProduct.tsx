@@ -1,50 +1,83 @@
+'use client'
 import { useState } from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
 import { useSWRConfig } from "swr"
 import { mutate } from "swr"
 import { FormRegisterProduct } from '@/types/form_register_product';
-
+import { product_insepect } from '@/service/product';
+import { StatusProductVerification } from '../Verification/TableProduct';
+//     const handleAcceptReject = (statusProductVerification: StatusProductVerification, packageItem: FormRegisterProduct) => {
+//   if (statusProductVerification === StatusProductVerification.accepted) {
+//     console.log("Accept");
+// }
+// else if (statusProductVerification === StatusProductVerification.rejected) {
+//     console.log("Reject");
+// }
+// };
 interface IProps {
   showModalCreate: boolean;
   setShowModalCreate: (value: boolean) => void;
   productInformation: FormRegisterProduct;
+  onAcceptReject: (statusProductVerification: StatusProductVerification, packageItem: FormRegisterProduct) => void;
 }
 
 function CreateModal(props: IProps) {
   const { showModalCreate, setShowModalCreate, productInformation } = props;
+  const [textAreaValue, setTextAreaValue] = useState("");
+
+  const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextAreaValue(event.target.value);
+  };
+
+//   const handleButton = () => {
+//     console.log("Additional Text:", textAreaValue);
+//     // handleCloseModal();
+// };
+
+  const handleButton = async (action: 'Reject' | 'Accept') => {
+    await product_insepect(textAreaValue, productInformation.product_id, action)
+
+    props.onAcceptReject(action === 'Accept' ? StatusProductVerification.accepted : StatusProductVerification.rejected, productInformation);
+
+
+
+    handleCloseModal();
+  };
 
   const handleCloseModal = () => setShowModalCreate(false);
   const handleShowModal = () => setShowModalCreate(true);
 
   let { product_id, seller, title, images, estimate_min, estimate_max, description, dimensions, artist, category, condition_report, provenance, time_create, status } = productInformation;
 
-  const handleSubmit = () => {
-    status = "complete";
+  // const handleSubmit = () => {
+  //   status = "complete";
 
-    //call api sửa đổi trạng thái của product thành seller, be trả về với status là complete
-    fetch("http://localhost:8000/blogs",
-      {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({ status })
-      })
-      .then(function (res) {
-        handleCloseModal();
-        mutate("http://localhost:8000/blogs")
-      })
-      .catch(function (res) { console.log(res) })
+  //   //call api sửa đổi trạng thái của product thành seller, be trả về với status là complete
+  //   fetch("http://localhost:8000/blogs",
+  //     {
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json'
+  //       },
+  //       method: "POST",
+  //       body: JSON.stringify({ status })
+  //     })
+  //     .then(function (res) {
+  //       handleCloseModal();
+  //       mutate("http://localhost:8000/blogs")
+  //     })
+  //     .catch(function (res) { console.log(res) })
 
-  };
+  // };
+
+
 
   return (
     <Modal
       isOpen={showModalCreate}
       onClose={handleCloseModal}
-      size='lg'
-      style={{ top: '250px', left: '30%', transform: 'translate(-50%, -50%)' }} // Đặt vị trí modal
+      size='4xl'
+      style={{ top: '250px', left: '35%', transform: 'translate(-50%, -50%)' }} // Đặt vị trí modal
     >
       <ModalContent>
         <>
@@ -71,7 +104,7 @@ function CreateModal(props: IProps) {
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 {category && category.map((obj, index) => (
                   <div key={index}>
-                    <p>{obj.name}</p>
+                    <p>{obj.title}</p>
                   </div>
                 ))}
               </div>
@@ -92,12 +125,22 @@ function CreateModal(props: IProps) {
                 ))}
               </div>
             </div>
+
+            <div className="mb-3 ml-3">
+              <textarea
+                value={textAreaValue}
+                onChange={handleTextAreaChange}
+                placeholder="Enter additional text here..."
+                className="form-control"
+                style={{ width: '100%', minHeight: '100px' }}
+              />
+            </div>
           </ModalBody>
           <ModalFooter style={{ justifyContent: 'space-between' }}>
-            <Button color="danger" onPress={handleCloseModal}>
+            <Button color="danger" onPress={() => handleButton('Reject')}>
               Reject
             </Button>
-            <Button color="primary" onPress={handleCloseModal}>
+            <Button color="primary"  onPress={() => handleButton('Accept')}>
               Accept
             </Button>
           </ModalFooter>

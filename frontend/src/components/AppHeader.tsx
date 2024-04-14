@@ -37,15 +37,9 @@ function Header() {
 
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const [isLogin, setIsLogin] = useState(false);
 
-  useEffect(() => {
-    if (UserDataService.getUserData()?.user_id == null) {
-      setIsLogin(false)
-    } else {
-      setIsLogin(true)
-    }
-  })
+  const isLogin = UserDataService.getUserData()?.user_id == null ? false : true;
+  //  UserDataService.getUserData()?.user_id == null ? false : true;
 
 
 
@@ -246,7 +240,7 @@ function Header() {
         {/* Hiển thị modal khi showLoginModal hoặc showRegisterModal được set thành true */}
         {/* <ModalLogin show={showLoginModal} onHide={handleLoginModalClose} />
         <ModalRegister show={showRegisterModal} onHide={handleRegisterModalClose} /> */}
-        <ModalLogin show={showLoginModal} onHide={handleLoginModalClose} switchToRegister={handleSwitchToRegister} setIsLogin={setIsLogin} />
+        <ModalLogin show={showLoginModal} onHide={handleLoginModalClose} switchToRegister={handleSwitchToRegister}/>
         <ModalRegister show={showRegisterModal} onHide={handleRegisterModalClose} switchToLogin={handleSwitchToLogin} />
 
         {/* </Navbar.Collapse> */}

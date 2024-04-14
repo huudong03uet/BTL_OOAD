@@ -7,9 +7,14 @@ require('dotenv').config({path: './conf/.env'})
 
 const product = process.env.MEDIA + process.env.PRODUCT
 const avatar = process.env.MEDIA + process.env.AVATAR
+const category = process.env.MEDIA + process.env.CATEGORY
 
 if (!fs.existsSync(product)) {
     fs.mkdirSync(product, { recursive: true });
+}
+
+if (!fs.existsSync(category)) {
+    fs.mkdirSync(category, { recursive: true });
 }
 
 if (!fs.existsSync(avatar)) {
@@ -27,5 +32,6 @@ const STORAGE_PRODUCT = multer.diskStorage({
 
 const UPLAOD_PRODUCT = multer({ storage: STORAGE_PRODUCT });
 const UPLAOD_AVATAR = multer({ dest: avatar });
+const UPLAOD_CATEGORY= multer({ dest: category });
 
-module.exports = {UPLAOD_PRODUCT, UPLAOD_AVATAR}
+module.exports = {UPLAOD_PRODUCT, UPLAOD_AVATAR, UPLAOD_CATEGORY}

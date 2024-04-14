@@ -3,6 +3,7 @@
 import Category from "@/types/category"
 import ModalAddCategory from "../Modal/ModalAddCategory";
 import { useState } from "react";
+import { Pagination } from "@nextui-org/react";
 
 interface IProps {
     showModalCreate: boolean;
@@ -36,7 +37,13 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
     const handleAddCategory = () => {
         setShowModal(true);
     }
-
+    const [pageNumber, setPageNumber] = useState(1);
+    const itemsPerPage = 5;
+    const pagesVisited = (pageNumber - 1) * itemsPerPage;
+    const pageCount = Math.ceil(packageData.length / itemsPerPage);
+    const changePage = (selected: number) => {
+        setPageNumber(selected);
+    }
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
             <div className="flex justify-between px-8 pb-4">
@@ -70,7 +77,7 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {packageData.map((packageItem, key) => (
+                        {packageData.slice(pagesVisited, pagesVisited + itemsPerPage).map((packageItem, key) => (
                             <tr key={key}>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <h5 className="font-medium text-black dark:text-white">
@@ -140,7 +147,7 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
                     </tbody>
                 </table>
             </div>
-            <div className="flex justify-between border-t border-stroke px-8 pt-5 dark:border-strokedark">
+            {/* <div className="flex justify-between border-t border-stroke px-8 pt-5 dark:border-strokedark">
                 <p className="font-medium">Showing 1 of 3 pages</p>
                 <div className="flex">
                     <button className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-primary hover:text-whiter" >
@@ -168,6 +175,25 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
                         </svg>
                     </button>
                 </div>
+            </div> */}
+            <div className='flex'>
+                <div className='w-1/2'>
+
+                </div>
+                <div className='w-1/2 '>
+                    {
+                        packageData.length > 0 && <Pagination
+                        className='flex justify-end p-6'
+                            showControls
+                            total={pageCount}
+                            onChange={changePage}
+                            // first is 1
+                            initialPage={1}
+                        />
+                    }
+
+                </div>
+
             </div>
             <ModalAddCategory
                 showModal={showModal}

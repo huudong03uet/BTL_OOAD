@@ -160,10 +160,10 @@ export default function PaymentOptions() {
                 </Modal.Body>
                 <Modal.Footer className="justify-content-start">
                     <button type="button" className="btn btn-dark" onClick={handleSaveRequest}>Save Request</button>
-                    <p style={{ cursor: "pointer" }} className="mx-3" onClick={handleCloseModal}>Cancel</p>
+                    <p style={{ cursor: "pointer" }} className="mx-3" onClick={handleCloseModal}>Cancel</p>                
                 </Modal.Footer>
 
-            </Modal>
+            </Modal> 
 
 
         </div >

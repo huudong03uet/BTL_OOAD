@@ -3,7 +3,7 @@ import Link from 'next/link';
 import UserDataService from "@/services/model/user";
 import ModalConfirm from "@/components/ModalConfirm";
 import { useState } from 'react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 function SideBarUser() {
     // const router = useRouter();
