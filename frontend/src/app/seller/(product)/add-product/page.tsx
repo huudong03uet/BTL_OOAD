@@ -1,5 +1,5 @@
 'use client'
-import { Form, } from "react-bootstrap";
+import { Dropdown, DropdownButton, Form, InputGroup, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { seller_add_product } from "@/services/product/seller";
@@ -18,6 +18,35 @@ export default function AddProduct() {
     const [startBid, setStartBid] = useState<string>('');
     const [provenance, setProvenance] = useState<string>('');
     const [seller_id, setSellerID] = useState<string | null>(null);
+
+    function addProductCategory(category: string) {
+
+        //  add to productCategory (iff has -> + ', ' + category)
+        if (productCategory === '') {
+            setProductCategory(category);
+        } else {
+            setProductCategory(productCategory + ', ' + category);
+        }
+        
+
+    }
+
+    const categories = [
+        { id: 1, name: "Painting" },
+        { id: 2, name: "Sculpture" },
+        { id: 3, name: "Photography" },
+        { id: 4, name: "Print" },
+        { id: 5, name: "Drawing" },
+        { id: 6, name: "Mixed Media" },
+        { id: 7, name: "Installation" },
+        { id: 8, name: "Performance" },
+        { id: 9, name: "Video/Film/Animation" },
+        { id: 10, name: "Design/Decorative Art" },
+        { id: 11, name: "Textile Arts" },
+        { id: 12, name: "Other" }
+    ];
+
+
 
     useEffect(() => {
         async function fetchData() {
@@ -84,7 +113,7 @@ export default function AddProduct() {
             <form onSubmit={handleSubmit}>
                 <div className={style.div_section}>
                     <div className="row">
-                        <div className="col-6">
+                        <div className="col-12">
                             <Form.Label>Product name</Form.Label>
                             <Form.Control
                                 type="text"
@@ -94,6 +123,49 @@ export default function AddProduct() {
                                 onChange={(e) => setProducttitle(e.target.value)}
                             />
                         </div>
+
+                    </div>
+                    <div className='row'>
+                        <div className="col-12">
+                            <Form.Label>Category</Form.Label>
+                            {/* <Form.Control
+                                type="text"
+                                placeholder="Category"
+                                className={style.custom_form_control}
+                                value={productCategory}
+                                onChange={(e) => setProductCategory(e.target.value)}
+                            /> */}
+
+                            <InputGroup className="mb-3">
+                                <Form.Control aria-label="Text input with dropdown button" disabled
+
+                                    value={productCategory}
+
+
+
+                                />
+
+                                <DropdownButton
+                                    variant="outline-secondary"
+                                    title="Add Category"
+                                    id="in-group-dropdown-2"
+                                    align="end"
+                                >
+                                    {categories.map((category) => (
+                                        <Dropdown.Item
+                                            key={category.id}
+                                            onClick={() => addProductCategory(category.name)}
+                                        >
+                                            {category.name}
+                                        </Dropdown.Item>
+                                    ))}
+                                </DropdownButton>
+                            </InputGroup>
+                        </div>
+                    </div>
+
+
+                    <div className="row">
                         <div className="col-6">
                             <Form.Label>Artist</Form.Label>
                             <Form.Control
@@ -104,22 +176,7 @@ export default function AddProduct() {
                                 onChange={(e) => setProductArtist(e.target.value)}
                             />
                         </div>
-                    </div>
 
-
-                   
-                    <div className="row">
-
-                        <div className="col-6">
-                            <Form.Label>Category</Form.Label>
-                            <Form.Control
-                                type="text"
-                                placeholder="Category"
-                                className={style.custom_form_control}
-                                value={productCategory}
-                                onChange={(e) => setProductCategory(e.target.value)}
-                            />
-                        </div>
 
                         <div className="col-6">
                             <Form.Label>Dimension</Form.Label>
