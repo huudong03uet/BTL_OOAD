@@ -17,6 +17,7 @@ import { seller_auction_create_service, seller_auction_show_product } from "@/se
 import ItemSummary from "@/models/product_summary";
 import Location from "@/models/location";
 import SellerDataService from "@/services/model/seller";
+import { DesktopDatePicker } from "@mui/x-date-pickers";
 
 enum AuctionVisibility {
     PUBLIC = 0,
@@ -30,6 +31,7 @@ export default function AddAuction() {
     const [data, setData] = useState<ItemSummary[]>([])
     const [auctionStates, setAuctionStates] = useState<boolean[]>([]);
     const [timeStartValue, setTimeStartValue] = useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
+    const [dateStartValue, setDateStartValue] = useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
     const [visibility, setVisibility] = useState(AuctionVisibility.PUBLIC);
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -164,6 +166,19 @@ export default function AddAuction() {
                             name="conditionCoin"
                             onChange={handleInputChange}
                         />
+                    </div>
+
+
+                    <div className="col-3">
+                        <Form.Label>Date start</Form.Label>
+                        <div className='w-100'>
+                            <LocalizationProvider dateAdapter={AdapterDayjs} >
+                                <DesktopDatePicker 
+                                    value={dateStartValue}
+                                    onChange={(newValue) => setDateStartValue(newValue)}
+                                />
+                            </LocalizationProvider>
+                        </div>
                     </div>
 
                     <div className="col-3">

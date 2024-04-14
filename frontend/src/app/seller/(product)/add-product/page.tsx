@@ -146,7 +146,7 @@ export default function AddProduct() {
                                 />
 
                                 <DropdownButton
-                                    variant="outline-secondary"
+                                    variant="outline-dark"
                                     title="Add Category"
                                     id="in-group-dropdown-2"
                                     align="end"
