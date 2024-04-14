@@ -7,7 +7,7 @@ const statusCode = require('../../../constants/status')
 const InspectionType = require("../../../constants/inspection")
 
 const Product = require('../../models/product');
-const { check_required_field } = require('../util');
+const { check_required_field, delete_image, upload_image } = require('../util');
 const Seller = require('../../models/seller');
 const Category = require('../../models/category');
 const Image = require('../../models/image');
@@ -141,10 +141,56 @@ let get_all_product = async(req, res) => {
 }
 
 
+let add_category = async (req, res) => {
+    const t = await sequelize.transaction();
+    let imageToDelete = "";
+    try {
+        if (!check_required_field(req.body, ["title"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+        
+        // const image_path = req.files(async file => {
+        //     const result = await upload_image(file.path.replace(/\\/g, '/'), "category");
+        //     imagesToDelete = result.url;
+        //     return result.url
+        // });
+
+        const file = req.file;
+
+        if (file) {
+            const result = await upload_image(file.path.replace(/\\/g, '/'), "category");
+            imageToDelete = result.url;
+        } else {
+            // Xử lý lỗi khi không có file được tải lên
+        }
+
+        await Category.findOrCreate({
+            where: { title: req.body.title, image_path: imageToDelete },
+            transaction: t
+        });
+
+        await t.commit();
+
+        logger.info(`${statusCode.HTTP_201_CREATED} create category done`)
+        res.status(statusCode.HTTP_201_CREATED).json("done")
+    } catch (error) {
+        logger.error(`Add product: ${error}`)
+        await t.rollback();
+        try {
+            await delete_image(imageToDelete.split('/').slice(-2).join('/'));
+        } catch (deleteError) {
+            logger.error(`Error deleting image from Cloudinary: ${deleteError}`);
+        }
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
 
 module.exports = {
     get_all_product_not_inspect,
     product_inspect,
-    get_all_product
+    get_all_product,
+    add_category,
 };
 
