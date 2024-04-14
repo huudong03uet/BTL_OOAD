@@ -1,0 +1,11 @@
+/* appNav.module.css */
+
+@media (max-width: 800px) {
+    .Nav {
+        display: none;
+    }
+}
+/* Ẩn caret của nút toggle */
+.toggle::after {
+    color: white;
+}
