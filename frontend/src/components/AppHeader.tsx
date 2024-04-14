@@ -7,18 +7,32 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import Row from 'react-bootstrap/Row';
 import ModalLogin from './ModalLogin';
-import ModalNotification from './ModalNotification';
 import ModalRegister from './ModalRegister';
 import SideBar from './my-account/sideBarUser';
 import UserDataService from '@/services/model/user';
-
+import Popover from '@mui/material/Popover';
+import Notifications from './Notification';
 function Header() {
-  const spanStyle = {
-    left: '0px',
-    marginLeft: '0px'
+  // const spanStyle = {
+  //   left: '0px',
+  //   marginLeft: '0px'
+  // };
+
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+  // const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   setAnchorEl(event.currentTarget);
+  // }
+  const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    setAnchorEl(event.currentTarget as unknown as HTMLButtonElement);
+
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
-
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
   // const isLogin = false;
 
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -138,9 +152,15 @@ function Header() {
               <span className="fa fa-heart px-2" style={{ color: "#e4002b", fontSize: "1.6em" }}></span>
               Saved
             </Nav.Link>
-            <Nav.Link href="#link"
-              onMouseEnter={handleNotificationMouseEnter}
+
+            {/* <Nav.Link href="#link" 
+            
+            onClick={() => setShowNotificationModal(true)}
+            // onMouseEnter={handleNotificationMouseEnter}
               onMouseLeave={handleNotificationMouseLeave}
+          
+              
+        
             >
               <span className="fa fa-bell header-bell px-2" style={{ fontSize: "1.6em", color: "black" }}></span>
               Notifications
@@ -151,6 +171,38 @@ function Header() {
                 onDeleteAll={handleDeleteAll}
                 onNotificationSettings={handleNotificationSettings}
               />
+            </Nav.Link> */}
+            <Nav.Link>
+              {/* <Button aria-describedby={id} variant="contained" onClick={handleClick}>
+                Open Popover
+              </Button> */}
+              <div aria-describedby={id} onClick={handleClick} style={{ cursor: "pointer" }}>
+                <span className="fa fa-bell header-bell px-2" style={{ fontSize: "1.6em", color: "black" }}></span>
+                Notifications
+              </div>
+             
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+
+
+                className='mt-3'
+              >
+                <Notifications
+                  onMarkAllAsRead={handleMarkAllAsRead}
+                  onDeleteAll={handleDeleteAll}
+                  onNotificationSettings={handleNotificationSettings}
+
+                
+                ></Notifications>
+                {/* <Typography sx={{ p: 2 }}>The content of the Posưqqqqqqqqqqqqqqqqqqpover.</Typography> */}
+              </Popover>
             </Nav.Link>
             {/* fa fa-user */}
 

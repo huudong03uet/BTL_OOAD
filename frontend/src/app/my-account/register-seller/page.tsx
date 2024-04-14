@@ -55,7 +55,22 @@ export default function PaymentOptions() {
     };
 
 
-    const registeredSeller: boolean = false;
+    useEffect(()=>{
+        const fetchData = async () => {
+            try {
+              const data = await SellerDataService.getSellerData();
+              if (data?.id) {
+                window.location.href = '/seller';
+              }
+              
+      
+            } catch (error) {
+              console.error('Error fetching upcoming online auctions:', error);
+            }
+          };
+      
+          fetchData()
+    }, [])
 
     return (
         <div className='row mx-0'>
@@ -67,17 +82,7 @@ export default function PaymentOptions() {
                 <div className={style.div_header}>
                     Request for Seller Account
                 </div>
-                {
-                    registeredSeller ? (
-                        <div>
-                            <button type="button" className="btn btn-dark px-5" disabled>Request Processing</button>
-                        </div>
-                    ) : (
-                        <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Register as Seller</button>
-
-
-                    )
-                }
+                <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Register as Seller</button>
             </div >
 
 

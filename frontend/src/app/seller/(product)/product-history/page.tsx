@@ -31,6 +31,7 @@ export default function ProductHistory() {
 
             <div className={style.div_title}>
                 My Product
+                
             </div>
             <div className={style.div_section}>
                 <MyProductTable activity={TableActivity.VIEW_MY_PRODUCT} data={data}></MyProductTable>

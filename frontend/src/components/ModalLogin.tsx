@@ -40,7 +40,7 @@ function ModalLogin(props: any) {
   };
 
   return (
-    <Modal show={props.show} onHide={props.onHide} size="lg">
+    <Modal show={props.show} onHide={props.onHide} backdrop="static" size="lg">
       <Modal.Header closeButton>
       </Modal.Header>
       <Modal.Body>

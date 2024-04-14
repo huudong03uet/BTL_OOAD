@@ -12,24 +12,10 @@ const Inspection = sequelize.define('inspection', {
         autoIncrement: true,
         primaryKey: true,
     },
-    name: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
     description: {
         type: DataTypes.TEXT,
         allowNull: true,
     },
-    coin: {
-        type: DataTypes.DOUBLE,
-        defaultValue: 0.0,
-    },
-    type: {
-        type: DataTypes.ENUM,
-        allowNull: false,
-        values: [InspectionType.DENIED, InspectionType.INSPECTED, InspectionType.INSPECTTING, InspectionType.NOT_INSPECT],
-        defaultValue: InspectionType.NOT_INSPECT,
-    }
 },
     {
         tableName: 'inspection',

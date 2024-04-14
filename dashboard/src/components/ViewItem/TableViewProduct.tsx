@@ -1,9 +1,8 @@
 'use client'
-import { Package } from "@/types/package";
 import { ProductDetail } from "@/types/product_detail"
-import CreateModal from "../Modal/ModalSeller";
 import DeleteModal from "@/components/Modal/ModalDeleteProduct";
 import { useState } from "react";
+import { Pagination } from "@nextui-org/react";
 
 interface IProps {
     showModalCreate: boolean;
@@ -50,6 +49,15 @@ const TableProduct: React.FC<TableProductProps> = ({ packageData }) => {
         
         //setSelectedPackage(response.data)
     };
+
+
+    const [pageNumber, setPageNumber] = useState(1);
+    const itemsPerPage = 5;
+    const pagesVisited = (pageNumber - 1) * itemsPerPage;
+    const pageCount = Math.ceil(packageData.length / itemsPerPage);
+    const changePage = (selected: number) => {
+        setPageNumber(selected);
+    }
 
 
     return (
@@ -99,7 +107,7 @@ const TableProduct: React.FC<TableProductProps> = ({ packageData }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {packageData.map((packageItem, key) => (
+                        {packageData.slice(pagesVisited, pagesVisited + itemsPerPage).map((packageItem, key) => (
                             <tr key={key}>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <h5 className="font-medium text-black dark:text-white">
@@ -183,7 +191,7 @@ const TableProduct: React.FC<TableProductProps> = ({ packageData }) => {
                     </tbody>
                 </table>
             </div>
-            <div className="flex justify-between border-t border-stroke px-8 pt-5 dark:border-strokedark">
+            {/* <div className="flex justify-between border-t border-stroke px-8 pt-5 dark:border-strokedark">
                 <p className="font-medium">Showing 1 of 3 pages</p>
                 <div className="flex">
                     <button className="flex cursor-pointer items-center justify-center rounded-md p-1 px-2 hover:bg-primary hover:text-whiter" >
@@ -211,6 +219,25 @@ const TableProduct: React.FC<TableProductProps> = ({ packageData }) => {
                         </svg>
                     </button>
                 </div>
+            </div> */}
+             <div className='flex'>
+                <div className='w-1/2'>
+
+                </div>
+                <div className='w-1/2 '>
+                    {
+                        packageData.length > 0 && <Pagination
+                        className='flex justify-end p-6'
+                            showControls
+                            total={pageCount}
+                            onChange={changePage}
+                            // first is 1
+                            initialPage={1}
+                        />
+                    }
+
+                </div>
+
             </div>
             <DeleteModal
                 showModalDelete={showModalDelete}
