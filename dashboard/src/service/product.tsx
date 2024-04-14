@@ -56,10 +56,28 @@ let category_all = async () => {
     }
 }
 
+let category_create = async (formData: FormData) => {
+    try {
+        let url = `${HOST}/product/admin/category/create`;
+        const response = await axios.post(url, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        return;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
 
-export { 
+
+
+
+export {
     product_not_insepct,
     product_insepect,
     product_all,
-    category_all
-} ;
+    category_all,
+    category_create
+};
