@@ -1,5 +1,12 @@
 /* appNav.module.css */
-
+.Nav {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-top: 6px;
+    padding-bottom: 5px;
+    border-top: rgb(181, 181, 181) 1px solid;
+    border-bottom: rgb(181, 181, 181) 1px solid;
+}
 @media (max-width: 800px) {
     .Nav {
         display: none;
