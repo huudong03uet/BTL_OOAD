@@ -8,5 +8,6 @@ router.get("/not-inspect", productController.get_all_product_not_inspect);
 router.post("/inspect", productController.product_inspect);
 router.get("/all", productController.get_all_product);
 router.post("/category/create", UPLOAD.UPLAOD_CATEGORY.single('image'), productController.add_category);
+router.delete('/product_id=:product_id', productController.delete_product)
 
 module.exports = router;

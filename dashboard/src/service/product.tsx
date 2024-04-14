@@ -71,7 +71,18 @@ let category_create = async (formData: FormData) => {
     }
 }
 
+let product_delete = async (product_id: number) => {
+    try {
+        let url = `${HOST}/product/admin/product_id=${product_id}`
 
+        const response = await axios.delete(url);
+
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
 
 
 export {
@@ -79,5 +90,6 @@ export {
     product_insepect,
     product_all,
     category_all,
-    category_create
+    category_create,
+    product_delete
 };

@@ -182,10 +182,37 @@ let add_category = async (req, res) => {
 }
 
 
+let delete_product = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["product_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        const deletedProduct = await Product.destroy({
+            where: {
+                id: req.params.product_id
+            }
+        });
+
+        if (deletedProduct === 0) {
+            logger.error(`${statusCode.HTTP_404_NOT_FOUND} Product not found.`);
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json("Product not found.");
+        }
+
+        return res.status(statusCode.HTTP_200_OK).json("Product deleted successfully.");
+    } catch (error) {
+        logger.error(`Add product: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+
 module.exports = {
     get_all_product_not_inspect,
     product_inspect,
     get_all_product,
     add_category,
+    delete_product,
 };
 
