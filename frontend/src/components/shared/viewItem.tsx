@@ -1,8 +1,9 @@
 'use client'
 import ItemSummary from '@/models/product_summary';
+import Link from 'next/link';
 import React, { useState } from 'react'
 
-
+// http://localhost:8080/product/user/detail/product_id=10/user_id=10000
 
 
 function ViewItem({ obj }: { obj: ItemSummary }) {
@@ -32,26 +33,32 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
                     </button>
 
                 )}
-                <img src={obj.image_path} alt={obj.title} style={{width: "auto", height:"auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
+                <img src={obj.image_path} alt={obj.title} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
 
             </div>
-            <div >
-                <div>
-                    {obj.time}
-                </div>
-                <div style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
-                    className='my-1'>
-                    {obj.title}
-                </div>
-                <div>
-                    by {obj.user_sell}
-                </div>
-                <div className="fw-bold">
-                    ${obj.max_bid}
-                </div>
-            </div>
+            {/* <div
 
-        </div>
+            
+            > */}
+            <Link href={{ pathname: '/item_detail', query: { product_id: obj.id } }}
+            style={{ textDecoration: "none", color: "black" }}
+            >
+
+            <div>
+                {obj.time}
+            </div>
+            <div style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
+                className='my-1'>
+                {obj.title}
+            </div>
+            <div>
+                by {obj.user_sell}
+            </div>
+            <div className="fw-bold">
+                ${obj.max_bid}
+            </div>
+            </Link>
+        </div >
     );
 }
 
