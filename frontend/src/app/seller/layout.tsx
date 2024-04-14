@@ -11,17 +11,14 @@ import SideBarShop from "@/components/my-account/sideBarShop";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
+export default function SellerLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-
-            <body className={inter.className}>
-
-                <AppHeader />
+        <section>
+                            <AppHeader />
                 <AppNav />
                 <AppBreadCrumb />
                 <div className='row  mx-0'>
@@ -34,8 +31,10 @@ export default function RootLayout({
                     </div>
                 </div>
                 <AppFooter />
-            </body>
 
-        </html>
+
+        </section>
+
+    
     );
 }

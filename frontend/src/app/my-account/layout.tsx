@@ -12,15 +12,14 @@ import SideBarUser from "@/components/my-account/sideBarUser";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function RootLayout({
+export default function MyAccountLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
 
-            <body className={inter.className}>
+            <section className={inter.className}>
                 {/* <div>
         <button onClick={openNewPage}>
           Detail page
@@ -40,8 +39,7 @@ export default function RootLayout({
                     </div>
                 </div>
                 <AppFooter />
-            </body>
+            </section>
 
-        </html>
     );
 }
