@@ -128,13 +128,13 @@ function Header() {
             <Row>
               <Col xs="auto" className='w-100'>
 
-                <div className="input-group">
+                <div className="input-group border-right-0 rounded border-dark">
                   <i className="fa fa-search position-absolute top-50 ps-5 translate-middle" style={{ zIndex: "10", color: "#e4002b" }}></i>
 
                   <input
                     type="text"
                     placeholder="Search items & sellers"
-                    className="mr-sm-2 ps-5"
+                    className="mr-sm-2 ps-5 w-100 border rounded border-dark"
                     value={searchText}
                     onChange={handleChange}
                     onKeyPress={handleKeyPress}
