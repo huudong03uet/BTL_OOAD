@@ -13,7 +13,7 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
     }
     return (
         <div>
-            <div style={{ minHeight: "250px" }} className='position-relative d-flex align-items-center justify-content-center'>
+            <div style={{ height: "250px" }} className='position-relative d-flex align-items-center justify-content-center'>
                 {/* <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i> */}
                 {status == 0 ? (
                     <button
@@ -32,7 +32,7 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
                     </button>
 
                 )}
-                <img src={obj.image_path} alt={obj.title} className="img-thumbnail border-0"></img>
+                <img src={obj.image_path} alt={obj.title} style={{width: "auto", height:"auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
 
             </div>
             <div >

@@ -55,8 +55,15 @@ function UpcomingAuctions({ obj }: { obj: AuctionSummary }) {
                                     by {obj.seller_name}
                                 </div>
                                 <div className='d-flex'>
-                                    <Rating style={{ maxWidth: 100 }} value={obj.voting_avg_review} readOnly={true} itemStyles={myStyles} />
-                                    {' '} {obj.voting_avg_review} ({obj.number_review} Reviews)
+                                    <Rating style={{ maxWidth: 100 }} 
+                                    //  set 2 decimal places of object.voting_avg_review
+
+                                    value={obj.voting_avg_review}
+
+                                    readOnly={true} itemStyles={myStyles} />
+                                    {/* //  set 2 decimal places of object.voting_avg_review */}
+                                    {'\u00A0'}  {obj.voting_avg_review.toFixed(1)} {'\u00A0\u00A0'}  
+                                     ({obj.number_review} Reviews)
                                 </div>
                                 <div className="my-3">
                                     {obj.time}
@@ -98,7 +105,7 @@ function UpcomingAuctions({ obj }: { obj: AuctionSummary }) {
                         <div className="row">
                             {obj.images && obj.images.length > 0 && obj.images.map((object, i) => (
                                 <div className="col-2 mx-2 px-0 " key={i}>
-                                    <img src={object} style={{ width: "100%", height: "auto", maxWidth: "100%" }} className='position-relative top-50 start-50 translate-middle' />
+                                    <img src={object} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "150px" }} className='position-relative top-50 start-50 translate-middle' />
                                 </div>
                             ))}
                         </div>
