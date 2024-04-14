@@ -149,12 +149,6 @@ let add_category = async (req, res) => {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
-        
-        // const image_path = req.files(async file => {
-        //     const result = await upload_image(file.path.replace(/\\/g, '/'), "category");
-        //     imagesToDelete = result.url;
-        //     return result.url
-        // });
 
         const file = req.file;
 
@@ -162,7 +156,8 @@ let add_category = async (req, res) => {
             const result = await upload_image(file.path.replace(/\\/g, '/'), "category");
             imageToDelete = result.url;
         } else {
-            // Xử lý lỗi khi không có file được tải lên
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
         await Category.findOrCreate({
