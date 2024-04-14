@@ -14,9 +14,7 @@ import Dialog from "@mui/material/Dialog";
 import zIndex from "@mui/material/styles/zIndex";
 import ChatComponent from "@/components/chat/chat_component";
 
-
 export default function Home() {
-
 
 
   return (
@@ -27,12 +25,6 @@ export default function Home() {
       <AppBreadCrumb />
 
       <HomePage />
-
-  
-
-    
-
-
       <AppFooter />
     </>
   );

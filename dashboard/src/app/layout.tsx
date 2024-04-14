@@ -29,7 +29,7 @@ export default function RootLayout({
     //     </div>
     //   </div>
     // </>
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
   
      <body suppressHydrationWarning={true}>
          <div className="dark:bg-boxdark-2 dark:text-bodydark">

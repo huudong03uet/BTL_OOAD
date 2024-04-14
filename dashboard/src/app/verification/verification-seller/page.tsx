@@ -1,17 +1,14 @@
-import React, { useState } from "react";
+'use client'
+import React, { useState, useEffect } from "react";
 import FormElements from "@/components/FormElements";
-import { Metadata } from "next";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import TableUser from "@/components/Verification/TableUser";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { FormRegisterSeller } from "@/types/form_register_seller";
+import { FormRegisterSeller } from "@/types/form_register_seller"; 
+import axios from 'axios';
+import { HOST } from "@/service/host";
 
 
-export const metadata: Metadata = {
-  title: "Next.js Form Elements | TailAdmin - Next.js Dashboard Template",
-  description:
-    "This is Next.js Form Elements page for TailAdmin - Next.js Tailwind CSS Admin Dashboard Template",
-};
 
 interface TableUserProps {
   packageData: FormRegisterSeller[];
@@ -19,45 +16,33 @@ interface TableUserProps {
 
 const VerificationSellerPage = () => {  
 
-  const packageDatafake: FormRegisterSeller[] = [
-    {
-        user_id: "HA8HA",
-        name: "Free package",
-        time_create: `Jan 13,2023`,
-        email: 'abc@gmail.com',
-        status: 'pending',
-  
-    },
-    {
-        user_id: "HA8HA",
-        name: "Free package",
-        time_create: `Jan 13,2023`,
-        email: 'abc@gmail.com',
-        status: 'pending',
-  
-    },
-    {
-        user_id: "HA8HA",
-        name: "Free package",
-        time_create: `Jan 13,2023`,
-        email: 'abc@gmail.com',
-        status: 'pending',
-  
-    },
-    {
-        user_id: "HA8HA",
-        name: "Free package",
-        time_create: `Jan 13,2023`,
-        email: 'abc@gmail.com',
-        status: 'pending',
-  
-    },
-  ];
+  const [packageData, setPackageData] = useState<FormRegisterSeller[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${HOST}/account/seller/all`);
+        const data = response.data;
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid data format");
+        }
+        setPackageData(data);
+        console.log(data[0])
+        console.log(packageData);
+      } catch (error) {
+        console.error("Error fetching seller data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
   
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Verification Seller"></Breadcrumb>
-      <TableUser packageData={packageDatafake}></TableUser>
+      <TableUser packageData={packageData}></TableUser>
     </DefaultLayout>
 
   );

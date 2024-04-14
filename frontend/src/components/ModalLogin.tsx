@@ -34,8 +34,9 @@ function ModalLogin(props: any) {
       setError(err);
     } else {
       setError(null);
-      props.setIsLogin(true);
+      alert("login successfully!!")
       props.onHide();
+      window.location.href = '/';
     }
   };
 

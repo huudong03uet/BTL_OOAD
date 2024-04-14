@@ -27,6 +27,11 @@ const Seller = sequelize.define('seller', {
         type: DataTypes.STRING,
         allowNull: true,
     },
+    status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: "processing",
+    }
 },
     {
         tableName: 'seller',

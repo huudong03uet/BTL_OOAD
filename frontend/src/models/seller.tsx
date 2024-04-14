@@ -6,4 +6,5 @@ export default interface Seller {
     phone: string,
     location_id: number,
     user_id: number,
+    status: string
 }
