@@ -9,7 +9,7 @@ import style from '@/styles/home/appNav.module.css'
 function AlignmentExample() {
     return (
         <>
-            <Nav className={ `justify-content-center ${style.Nav}` } activeKey="/home" >
+            <Nav className={ `justify-content-center ${style.Nav} mt-0` } activeKey="/home" >
                 <Nav.Item>
                     <Nav.Link href="/home" style={{ color: 'red', textTransform: 'uppercase' }}>Auctions</Nav.Link>
                 </Nav.Item>

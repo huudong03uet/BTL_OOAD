@@ -215,10 +215,20 @@ function Header() {
                 </div>
                 {/* <div> */}
                 {/* </div> */}
-                <NavDropdown title="Name user" id="basic-nav-dropdown" className="d-flex align-items-center" >
+                <NavDropdown title="Name user" id="basic-nav-dropdown" className="d-flex align-items-center" 
+                align={{ lg: 'end' }}
+                >
 
-                  <SideBar></SideBar>
+                  <NavDropdown.Item href="/my-account/home">My account</NavDropdown.Item>
+                  <NavDropdown.Item href="/my-account/saved-items">Saved items</NavDropdown.Item>
+                  <NavDropdown.Item href="/my-account/settings">Settings</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="/seller">Selling center</NavDropdown.Item>
 
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="/logout">Log out</NavDropdown.Item>
+                  {/* <div className="d-flex align-items-center"> */}
+                  
                   {/* </div> */}
 
 
