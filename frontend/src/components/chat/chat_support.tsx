@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import styles from './style.module.css';
 
 import { ChatList } from "react-chat-elements"
-import MessageList from './message_list';
+import MessageListComponent from './message_list';
+import { message } from 'antd';
+import { date } from 'zod';
 
 
 
@@ -37,7 +39,7 @@ export default function ChatSupport() {
   // })
 
   const [, updateState] = React.useState();
-  const dataSourceUser: any[] = [
+  const dataSourceUser: any[] =  [
 
     {
       id: 1,
@@ -45,7 +47,8 @@ export default function ChatSupport() {
       alt: 'kursat_avatar',
       title: 'Kursat',
       subtitle: "Why don't we go to the mall this weekend ?",
-      date: new Date(),
+      // date: new Date(), -> 2 days ago
+      date: new Date(new Date().setDate(new Date().getDate() - 2)),
       unread: unreadKursat,
     },
     {
@@ -115,7 +118,7 @@ export default function ChatSupport() {
   ]
 
 
-  function setReadUser(userId: any ) {
+  function setReadUser(userId: any) {
     for (let i = 0; i < dataSourceUser.length; i++) {
       if (dataSourceUser[i].id === userId) {
         dataSourceUser[i].unread = 0
@@ -148,7 +151,7 @@ export default function ChatSupport() {
         </div>
       </div>
       <div className={styles.rightDivContainer}>
-        <MessageList chatInfo={chatInfo} chatType="text" updateState={updateState} />
+        <MessageListComponent chatInfo={chatInfo} chatType="text" updateState={updateState} />
       </div>
     </div>
   )
