@@ -4,19 +4,14 @@ import {
   MDBFooter,
   MDBContainer,
   MDBIcon,
-  MDBInput,
   MDBCol,
   MDBRow,
-  MDBBtn
 } from 'mdb-react-ui-kit';
-import { Container } from 'react-bootstrap';
-import { global } from 'styled-jsx/css';
-import { calc } from 'antd/es/theme/internal';
 
 export default function Footer() {
   const [showThankYou, setShowThankYou] = useState(false);
   const [showForm, setShowForm] = useState(true);
-  const handleSignUp = (e) => {
+  const handleSignUp = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     setShowForm(false);
     setShowThankYou(true);

@@ -8,10 +8,18 @@ import Navbar from 'react-bootstrap/Navbar';
 import Row from 'react-bootstrap/Row';
 import ModalLogin from './ModalLogin';
 import ModalRegister from './ModalRegister';
-import SideBar from './my-account/sideBarUser';
 import UserDataService from '@/services/model/user';
 import Popover from '@mui/material/Popover';
 import Notifications from './Notification';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import Input from '@mui/material/Input';
 function Header() {
   // const spanStyle = {
   //   left: '0px',
@@ -111,19 +119,29 @@ function Header() {
   const handleNotificationSettings = () => {
   };
 
+
+
+  const [showPassword, setShowPassword] = React.useState(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+
+  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary py-0">
       <Container className="row w-100" style={{ display: "contents" }}>
         <div className="col-3 d-flex justify-content-center ">
-          <Navbar.Brand href="/" >
+          <Navbar.Brand href="/" className='py-1'>
             <img src="/logo.png"
-              alt="test" width={"180px"}></img>
+              alt="test" width={"200px"}></img>
           </Navbar.Brand>
         </div>
         {/* <Navbar.Toggle aria-controls="basic-navbar-nav">
 
         </Navbar.Toggle> */}
-        <div className="col-5">
+        <div className="col-4">
           <Form >
             <Row>
               <Col xs="auto" className='w-100'>
@@ -146,12 +164,78 @@ function Header() {
           </Form>
         </div>
 
-        <div className="col-4 justify-content-center">
+        <div className="col-5 justify-content-center">
           <Nav className="me-auto justify-content-center">
-            <Nav.Link href="/my-account/saved-items">
-              <span className="fa fa-heart px-2" style={{ color: "#e4002b", fontSize: "1.6em" }}></span>
-              Saved
-            </Nav.Link>
+            {/* <Nav.Link href="/my-account/saved-items">
+              <span className="fa fa-coins px-2" style={{ color: "black" , fontSize: "1.6em" }}></span>
+              *{' '}Đ
+            </Nav.Link> */}
+            <div className='d-flex align-items-center'>
+              {/* <span className="fa fa-coins px-1" style={{ color: "#FAB005", fontSize: "1.6em" }}></span> */}
+              <img src="/img/money.png" alt="test" width={"30px"}></img>
+              <FormControl sx={{ m: 1, width: '15ch', color: "black" }}  disabled>
+                {/* <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel> */}
+                <Input
+                  style={{ color: "black" }}
+                  id="outlined-adornment-password"
+                  type={showPassword ? 'text' : 'password'}
+                  defaultValue="$ 23,132,132"
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="toggle password visibility"
+                        onClick={handleClickShowPassword}
+                        onMouseDown={handleMouseDownPassword}
+                        edge="end"
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                        
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                // label="Password"
+                />
+              </FormControl>
+            </div>
+
+
+            <div className='d-flex align-items-center'>
+              <Nav.Link>
+                {/* <Button aria-describedby={id} variant="contained" onClick={handleClick}>
+                Open Popover
+              </Button> */}
+                <div aria-describedby={id} onClick={handleClick} style={{ cursor: "pointer" }}>
+                  <span className="fa fa-bell header-bell px-2" style={{ fontSize: "1.6em", color: "black" }}></span>
+                  Notifications
+                </div>
+
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+
+
+                  className='mt-3'
+                >
+                  <Notifications
+                    onMarkAllAsRead={handleMarkAllAsRead}
+                    onDeleteAll={handleDeleteAll}
+                    onNotificationSettings={handleNotificationSettings}
+
+
+                  ></Notifications>
+                  {/* <Typography sx={{ p: 2 }}>The content of the Posưqqqqqqqqqqqqqqqqqqpover.</Typography> */}
+                </Popover>
+              </Nav.Link>
+            </div>
+
+
+
 
             {/* <Nav.Link href="#link" 
             
@@ -172,38 +256,7 @@ function Header() {
                 onNotificationSettings={handleNotificationSettings}
               />
             </Nav.Link> */}
-            <Nav.Link>
-              {/* <Button aria-describedby={id} variant="contained" onClick={handleClick}>
-                Open Popover
-              </Button> */}
-              <div aria-describedby={id} onClick={handleClick} style={{ cursor: "pointer" }}>
-                <span className="fa fa-bell header-bell px-2" style={{ fontSize: "1.6em", color: "black" }}></span>
-                Notifications
-              </div>
-             
-              <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
 
-
-                className='mt-3'
-              >
-                <Notifications
-                  onMarkAllAsRead={handleMarkAllAsRead}
-                  onDeleteAll={handleDeleteAll}
-                  onNotificationSettings={handleNotificationSettings}
-
-                
-                ></Notifications>
-                {/* <Typography sx={{ p: 2 }}>The content of the Posưqqqqqqqqqqqqqqqqqqpover.</Typography> */}
-              </Popover>
-            </Nav.Link>
             {/* fa fa-user */}
 
             {isLogin ? (
@@ -215,8 +268,8 @@ function Header() {
                 </div>
                 {/* <div> */}
                 {/* </div> */}
-                <NavDropdown title="Name user" id="basic-nav-dropdown" className="d-flex align-items-center" 
-                align={{ lg: 'end' }}
+                <NavDropdown title="Name user" id="basic-nav-dropdown" className="d-flex align-items-center"
+                  align={{ lg: 'end' }}
                 >
 
                   <NavDropdown.Item href="/my-account/home">My account</NavDropdown.Item>
@@ -225,14 +278,14 @@ function Header() {
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="/seller">Selling center</NavDropdown.Item>
 
-                  <NavDropdown.Divider/>
+                  <NavDropdown.Divider />
                   {/* payment-options */}
 
                   <NavDropdown.Item href="/my-account/payment-options">Payment options</NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="/logout">Log out</NavDropdown.Item>
                   {/* <div className="d-flex align-items-center"> */}
-                  
+
                   {/* </div> */}
 
 
@@ -254,7 +307,7 @@ function Header() {
         {/* Hiển thị modal khi showLoginModal hoặc showRegisterModal được set thành true */}
         {/* <ModalLogin show={showLoginModal} onHide={handleLoginModalClose} />
         <ModalRegister show={showRegisterModal} onHide={handleRegisterModalClose} /> */}
-        <ModalLogin show={showLoginModal} onHide={handleLoginModalClose} switchToRegister={handleSwitchToRegister}/>
+        <ModalLogin show={showLoginModal} onHide={handleLoginModalClose} switchToRegister={handleSwitchToRegister} />
         <ModalRegister show={showRegisterModal} onHide={handleRegisterModalClose} switchToLogin={handleSwitchToLogin} />
 
         {/* </Navbar.Collapse> */}
