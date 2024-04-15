@@ -2,6 +2,7 @@
 import { user_login_service } from '@/services/auth/login';
 import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
+import { ToastContainer, toast } from 'react-toastify';
 
 function ModalLogin(props: any) {
   const [username, setUsername] = useState('');
@@ -18,6 +19,10 @@ function ModalLogin(props: any) {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  
+    
+    
+    
     e.preventDefault(); 
     if (!username.trim()) {
       setError('Please enter your email.');
@@ -33,10 +38,23 @@ function ModalLogin(props: any) {
     if (typeof err === 'string') {
       setError(err);
     } else {
+      toast.success('Login successfully!', {
+        position: "bottom-left",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
       setError(null);
-      alert("login successfully!!")
+      // alert("login successfully!!")
+      
       props.onHide();
-      window.location.href = '/';
+      // window.location.href = '/';
+      // reload page
+      window.location.reload();
     }
   };
 
@@ -106,6 +124,7 @@ function ModalLogin(props: any) {
           <span className="dark-gray-text">By continuing with Google, you agree to Invaluable's <a href="/agreements/userTerms.cfm" target="_blank">terms of service</a> and <a href="/agreements/privacy.cfm" target="_blank">privacy policy</a>. Invaluable may send you communications; you can set your preferences in your account.</span>
         </p> */}
       </Modal.Body>
+      {/* <ToastContainer /> */}
     </Modal>
   );
 }
