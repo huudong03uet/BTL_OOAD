@@ -93,10 +93,27 @@ let seller_get_product_history = async () => {
     }
 }
 
+let seller_notify = async () => {
+    try {
+        const sellerData = await SellerDataService.getSellerData();
+        if (sellerData !== null) {
+            let url = `${HOST}/product/seller/notify/seller_id=${sellerData.id}`;
+            let response = await axios.get(url);
+            return response.data;
+        }
+
+        return null
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
+
 export {
     seller_add_product,
     seller_product_sold_service,
     seller_update_product,
     seller_get_all_products,
-    seller_get_product_history
+    seller_get_product_history,
+    seller_notify
 };

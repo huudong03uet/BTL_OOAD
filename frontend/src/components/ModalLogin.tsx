@@ -34,7 +34,7 @@ function ModalLogin(props: any) {
       setError(err);
     } else {
       setError(null);
-      props.setIsLogin(true);
+      // props.setIsLogin(true);
       props.onHide();
     }
   };
