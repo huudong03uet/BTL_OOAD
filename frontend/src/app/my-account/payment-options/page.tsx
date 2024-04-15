@@ -9,6 +9,11 @@ export default function PaymentOptions() {
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
 
+
+    const [showModalQRScan, setShowModalQRScan] = useState(false);
+    const handleCloseModalQRScan = () => setShowModalQRScan(false);
+    const handleShowModalQRScan = () => setShowModalQRScan(true);
+
     return (
         // <div className='row mx-0'>
         //         <div className={style.div_title}>
@@ -41,6 +46,21 @@ export default function PaymentOptions() {
             <div className={style.div_title}>
                 Payment Options
             </div>
+
+
+            <div className={style.div_section}>
+                <div className={style.div_header}>
+                    QR Scan
+                </div>
+                <p>
+                    Recharge your account with QR code.
+                </p>
+                <button type="button" className="btn btn-dark px-5" onClick={handleShowModalQRScan}>
+                    Scan QR Code
+                </button>
+            </div>
+
+
             <div className={style.div_section}>
                 <div className={style.div_header}>
                     Credit Cards
@@ -101,6 +121,26 @@ export default function PaymentOptions() {
                 <Modal.Footer className="justify-content-start">
                     <button type="button" className="btn btn-dark">Save Card</button>
                     <p className="mx-3" onClick={handleCloseModal}>Cancel</p>
+                </Modal.Footer>
+
+            </Modal>
+
+
+            <Modal show={showModalQRScan} onHide={handleCloseModalQRScan} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Scan QR Code
+
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    
+                </Modal.Body>
+                <Modal.Footer className="justify-content-start">
+                    <button type="button" className="btn btn-dark" disabled>
+                        Waiting for scan
+                    </button>
+                    <p className="mx-3" onClick={handleCloseModalQRScan}>Cancel</p>
                 </Modal.Footer>
 
             </Modal>
