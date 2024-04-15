@@ -9,8 +9,11 @@ import VerticalSlide from "@/components/item/VerticalSlide";
 import { Modal } from 'react-bootstrap';
 import ProductDetail from "@/models/product_detail";
 import { user_get_detail_product } from "@/services/product/user";
+import AppNav from "@/components/AppNav";
+import { useRouter, useSearchParams } from "next/navigation";
 
-export default function Item(props: ProductDetail) {
+// export default function Item(props: ProductDetail) {
+export default function Item() {
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
@@ -26,30 +29,38 @@ export default function Item(props: ProductDetail) {
   const togglePaymentShippingAccordion = () => {
     setIsPaymentShippingOpen(!isPaymentShippingOpen);
   };
+// Error: NextRouter was not mounted. https://nextjs.org/docs/messages/next-router-not-mounted
+    const searchParams = useSearchParams();  
+  
 
   useEffect(() => {
-    const fetchItemData = async () => {
+    const fetchData = async () => {
       try {
-        const data = await user_get_detail_product(1);
+        const productId = Number(searchParams.get('product_id'));
+        const data = await user_get_detail_product(productId);
         setItemData(data);
+        console.log('Product detail:', data);
       } catch (error) {
-        console.error("Error fetching item data:", error);
+        console.error('Error fetching product detail:', error);
       }
-    };
+    }
 
-    fetchItemData();
-  }, []);
+    fetchData()
+  }, [searchParams])
+
+
 
   return (
     <>
       <AppHeader></AppHeader>
+      <AppNav />
       <div>
         {/* Selection 1: Banner */}
-        <div className={style.banner}>
+        {/* <div className={style.banner}>
           <Container>
             <img alt="BP Parity Banner" src="https://image.invaluable.com/static/home/PDP_Desktop_bp_parity_banner.png"></img>
           </Container>
-        </div>
+        </div> */}
 
         {/* Selection 2: Title */}
         <div>

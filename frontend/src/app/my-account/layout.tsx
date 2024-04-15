@@ -6,7 +6,6 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import AppNav from "@/components/AppNav";
-import AppBreadCrumb from "@/components/AppBreadCrumb";
 import Container from "react-bootstrap/Container";
 import SideBarUser from "@/components/my-account/sideBarUser";
 
@@ -27,7 +26,6 @@ export default function MyAccountLayout({
 
       <AppHeader />
       <AppNav />
-      <AppBreadCrumb />
       <div className="row  mx-0">
         <div className="col-2">
           <SideBarUser />
