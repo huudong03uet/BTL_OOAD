@@ -1,5 +1,5 @@
 'use client'
-import React from 'react';
+import React, { useState } from 'react';
 import {
   MDBFooter,
   MDBContainer,
@@ -11,265 +11,105 @@ import {
 } from 'mdb-react-ui-kit';
 import { Container } from 'react-bootstrap';
 import { global } from 'styled-jsx/css';
+import { calc } from 'antd/es/theme/internal';
 
 export default function Footer() {
+  const [showThankYou, setShowThankYou] = useState(false);
+  const [showForm, setShowForm] = useState(true);
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    setShowForm(false);
+    setShowThankYou(true);
+  };
   return (
-    <MDBFooter color='white' bgColor='dark'>
-      <div>
-        <section className="mb-4 text-center p-2" style={{ backgroundColor: '#720007' }}>
-          <MDBBtn outline color="light" floating className='m-1 btn-equal-size' href='#!' role='button'>
-            <MDBIcon fab icon='facebook-f' />
-          </MDBBtn>
+    <>
+      <MDBFooter className='text-center p-2' style={{ backgroundColor: "#720007" }}>
+      
+        <a href="">
+            <MDBIcon fab icon='facebook-f' color="light" className="fs-2 p-3 pe-5" />
+          </a>
+          <a href="">
+            <MDBIcon fab icon='google' color="light" className="fs-2 p-3 pe-5" />
+          </a>
+          <a href=""><MDBIcon fab icon='instagram' color="light" className="fs-2 p-3 pe-5" /></a>
+          <a href=""><MDBIcon fab icon='github' color="light" className="fs-2 p-3 pe-5" /></a>
+      </MDBFooter>
+      <MDBFooter className='' color='white' bgColor='dark'>
 
-          {/* <MDBBtn outline color="light" floating className='m-1 btn-equal-size' href='#!' role='button'>
-            <MDBIcon fab icon='twitter' />
-          </MDBBtn>
-
-          <MDBBtn outline color="light" floating className='m-1 btn-equal-size' href='#!' role='button'>
-            <MDBIcon fab icon='google' />
-          </MDBBtn> */}
-
-          <MDBBtn outline color="light" floating className='m-1 btn-equal-size' href='#!' role='button'>
-            <MDBIcon fab icon='instagram' />
-          </MDBBtn>
-
-          <MDBBtn outline color="light" floating className='m-1 btn-equal-size' href='#!' role='button'>
-            <MDBIcon fab icon='linkedin-in' />
-          </MDBBtn>
-
-          <MDBBtn outline color="light" floating className='m-1 btn-equal-size' href='#!' role='button'>
-            <MDBIcon fab icon='github' />
-          </MDBBtn>
-        </section>
-
-{/* 
-        <section className=''>
-          <form action=''>
-            <MDBRow className='d-flex justify-content-center'>
-              <MDBCol size="auto">
-                <p className='pt-2'>
-                  <strong>Sign up for our newsletter</strong>
-                </p>
-              </MDBCol>
-
-              <MDBCol md='5' start>
-                <MDBInput contrast type='email' placeholder='Email address' className='mb-4' />
-              </MDBCol>
-
-              <MDBCol size="auto">
-                <MDBBtn outline color='light' type='submit' className='mb-4'>
-                  Subscribe
-                </MDBBtn>
-              </MDBCol>
-            </MDBRow>
-          </form>
-        </section>
-
-        <section className='mb-4'>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt distinctio earum repellat quaerat
-            voluptatibus placeat nam, commodi optio pariatur est quia magnam eum harum corrupti dicta, aliquam
-            sequi voluptate quas.
-          </p>
-        </section>
-
-        <section className=''>
-          <MDBRow>
-            <MDBCol lg='3' md='6' className='mb-4 mb-md-0'>
-              <h5 className='text-uppercase'>Links</h5>
-
-              <ul className='list-unstyled mb-0'>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 1
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 2
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 3
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 4
-                  </a>
-                </li>
-              </ul>
-            </MDBCol>
-
-            <MDBCol lg='3' md='6' className='mb-4 mb-md-0'>
-              <h5 className='text-uppercase'>Links</h5>
-
-              <ul className='list-unstyled mb-0'>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 1
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 2
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 3
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 4
-                  </a>
-                </li>
-              </ul>
-            </MDBCol>
-
-            <MDBCol lg='3' md='6' className='mb-4 mb-md-0'>
-              <h5 className='text-uppercase'>Links</h5>
-
-              <ul className='list-unstyled mb-0'>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 1
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 2
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 3
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 4
-                  </a>
-                </li>
-              </ul>
-            </MDBCol>
-
-            <MDBCol lg='3' md='6' className='mb-4 mb-md-0'>
-              <h5 className='text-uppercase'>Links</h5>
-
-              <ul className='list-unstyled mb-0'>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 1
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 2
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 3
-                  </a>
-                </li>
-                <li>
-                  <a href='#!' className='text-white'>
-                    Link 4
-                  </a>
-                </li>
-              </ul>
-            </MDBCol>
-          </MDBRow>
-        </section>
-      </div>
-
-      <div className='text-center p-3' style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
-        © 2020 Copyright:
-        <a className='text-white' href='https://mdbootstrap.com/'>
-          MDBootstrap.com
-        </a> */}
+      <MDBContainer className='p-4'>
         <MDBRow>
-          <MDBCol lg='6' md='12' className='mb-4 mb-md-0'>
-            <MDBContainer className='p-4'>
-              <MDBRow>
-                <MDBCol lg='5' md='12' className='mb-4 mb-md-0'>
-                  <div className="row px-3 d-flex flex-row">
-                    <h5 className='text-uppercase'>Links</h5>
-                    <div className='list-unstyled mb-0 row'>
-                      <div>
-                        <a href='/blog'>Blog</a>
-                      </div>
-                      <div>
-                        <a href='/about-us'>About</a>
-                      </div>
-                      <div>
-                        <a href='/contact'>Contact</a>
-                      </div>
-                      <div>
-                        <a href='/careers'>Careers</a>
-                      </div>
+          <MDBCol className='mb-4 mb-md-0'>
+              <div>
+                <div className='d-flex mb-3'>
+                  <div className='pe-4'>Blog</div>
+                  <div className='pe-4'>|</div>
+                  <div className='pe-4'>About</div>
+                  <div className='pe-4'>|</div>
+                  <div className='pe-4'>Contact</div>
+                  <div className='pe-4'>|</div>
+                  <div className='pe-4'>Careers</div>
+                </div>
+                <div className="row">
+                  <div className="col-6 col-xs-6 col-sm-6 col-lg-4 mb-3">
+                    Subscriptions
+                  </div>
+                  <div className="col-6 col-xs-6 col-sm-6 col-lg-4 mb-3">
+                    Artist Database
+                  </div>
+                  <div className="col-6 col-xs-6 col-sm-6 col-lg-4 mb-3">
+                    Press
+                  </div>
+                  <div className="col-6 col-xs-6 col-sm-6 col-lg-4 mb-3">
+                    Price Archive
+                  </div>
+                  <div className="col-6 col-xs-6 col-sm-6 col-lg-4 mb-3">
+                    Sell on Invaluable
+                  </div>
+                  <div className="col-6 col-xs-6 col-sm-6 col-lg-4 mb-3 ">
+                    Help
+                  </div>
+                  <div className="col-6 col-xs-6 col-sm-6 col-lg-4 mb-3">
+                    Auction News
+                  </div>
+                  <div className="col-xs-12 col-sm-12">
+                    <div className="_live-chat_hbe81_3"><i className="fa fa-comment me-2"></i>Live Chat
                     </div>
                   </div>
-
-                </MDBCol>
-                <MDBCol lg='7' md='12' className='mb-4 mb-md-0'>
-                  <h5 className='text-uppercase'>Additional Links</h5>
-                  <ul className='list-unstyled mb-0'>
-                    <li>
-                      <a href='/subOverview'>Subscriptions</a>
-                    </li>
-                    <li>
-                      <a href='/artists'>Artist Database</a>
-                    </li>
-                    <li>
-                      <a href='/press'>Press</a>
-                    </li>
-                    <li>
-                      <a href='/advancedSearch'>Price Archive</a>
-                    </li>
-                    <li>
-                      <a href='https://www.invaluable.com/sell-with-invaluable.html' target='_blank' rel='noreferrer'>Sell on Invaluable</a>
-                    </li>
-                    <li>
-                      <a href='/help'>Help</a>
-                    </li>
-                    <li>
-                      <a href='/auctionnews'>Auction News</a>
-                    </li>
-                    <li>
-                      <div className='_live-chat_hbe81_3'>
-                        <button><i className='fa fa-comment'></i>Live Chat</button>
-                      </div>
-                    </li>
-                  </ul>
-                </MDBCol>
-              </MDBRow>
-            </MDBContainer>
+                </div>
+              </div>
           </MDBCol>
-          <MDBCol lg='6' md='12' className='mb-4 mb-md-0'>
-            <div className='_footer-logo_a506i_3'>
-              <img className='_logo-img_a506i_11' src='https://image.invaluable.com/static/invaluable/footer/logo.svg' alt='Invaluable Logo' />
-              <p>As the world's leading online auction marketplace, thousands of auction houses use Invaluable to deepen relationships with millions of clients around the world. Stay connected to the things you love with curated items and auctions sent to your inbox.</p>
-              <form className='_footer-signup-form_a506i_27'>
-                <input type='text' placeholder='Email' />
-                <button className='_btn_a506i_65 btn btn-secondary' style={{marginLeft: 10}} type='submit'>Sign Up</button>
-              </form>
-              <p className='_unsubscribe-policy-text_a506i_90'>You can unsubscribe at any time. View our <a href='/privacy-policy'>Privacy Policy.</a></p>
+
+          <MDBCol className='mb-4 mb-md-0'>
+            <div>
+              <div className="">
+                <img className="mb-2" src="https://image.invaluable.com/static/invaluable/footer/logo.svg" alt="Invaluable Logo">
+                </img>
+                <p>As the world's leading online auction marketplace, thousands of auction
+                  houses use Invaluable to deepen relationships with millions of clients
+                  around the world. Stay connected to the things you love with curated items
+                  and auctions sent to your inbox. </p>
+              </div>
+
+              {showForm && (
+                <div className="d-flex mb-2">
+                  <div style={{ width: "100%" }}>
+                    <input className="p-3" type="text" placeholder="Email" value="" style={{ width: "70%", height: "40px" }}></input>
+                    <button className="" onClick={handleSignUp} style={{ backgroundColor: "#720007", color: "#fff", width: "30%", height: "40px", cursor: "pointer", border: "none" }}>Sign Up</button>
+                  </div>
+                </div>)}
+              {showThankYou && <p className=""><span className='fw-bold'>Thank you for subscribing!</span><br></br>
+                You will receive bidding tips, auction updates, curated items and more in your inbox.</p>}
+              <p className="">You can unsubscribe at any time. View our
+                <a href="" style={{ color: "#FFF" }} className='ms-2'>Privacy Policy.</a>
+              </p>
             </div>
           </MDBCol>
-
         </MDBRow>
+      </MDBContainer>
 
-
-
-        <div className='_sub-footer_1vo11_3 text-center p-2'>
+        <div className='text-center p-3' style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
           <p>&copy; 2024 Invaluable, LLC. and participating auction houses. All Rights Reserved.</p>
-
         </div>
-      </div>
-    </MDBFooter>
+      </MDBFooter ></>
   );
 }
