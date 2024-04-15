@@ -225,7 +225,7 @@ let delete_product = async (req, res) => {
 }
 
 
-<<<<<<< HEAD
+
 let notify = async (req, res) => {
     try {
         if (!check_required_field(req.params, ["admin_id"])) {
@@ -239,7 +239,9 @@ let notify = async (req, res) => {
         res.status(statusCode.HTTP_200_OK).json(notifies);
     } catch (error) {
         logger.error(`Add product: ${error}`)
-=======
+    }
+}
+
 let delete_category = async (req, res) => {
     try {
         const { category_id } = req.body;
@@ -258,7 +260,6 @@ let delete_category = async (req, res) => {
         return res.status(statusCode.HTTP_200_OK).json("Category deleted successfully.");
     } catch (error) {
         logger.error(`Delete category: ${error}`);
->>>>>>> d26966f5bebad9c89f61ba9821fe510e26a2da6e
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 }
@@ -270,11 +271,7 @@ module.exports = {
     get_all_product,
     add_category,
     delete_product,
-<<<<<<< HEAD
     notify,
-=======
     delete_category,
-
->>>>>>> d26966f5bebad9c89f61ba9821fe510e26a2da6e
 };
 
