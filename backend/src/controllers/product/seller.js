@@ -14,7 +14,8 @@ const BidHistory = require('../../models/history_bid');
 
 const { upload_image, delete_image, check_required_field } = require('../util');
 const { convert_result_item_summary } = require('../util/convert');
-const { delete_key_redis } = require('../util/redis');
+const { delete_key_redis, set_value_redis, get_notifies } = require('../util/redis');
+const Admin = require('../../models/admin');
 
 
 let add_product = async (req, res) => {
@@ -44,6 +45,11 @@ let add_product = async (req, res) => {
 
         const seller = await Seller.findByPk(seller_id)
 
+        if (!seller) {
+            logger.error(`${statusCode.HTTP_403_FORBIDDEN} Không tìm thấy seller`);
+            return res.status(statusCode.HTTP_403_FORBIDDEN).json("Không tìm thấy seller")
+        }
+
         const productData = {
             title,
             description,
@@ -67,6 +73,25 @@ let add_product = async (req, res) => {
             path: image.path,
             product_id: product.id
         })), { transaction: t });
+
+        let admin = await Admin.findAll({
+            attributes: ["id"]
+        })
+
+        const notifyKey = `admin:product:${product.id}`;
+        const notifyValue = {
+            "message": `Seller ${seller.name} has created a new product ${title}`,
+            "date": Date.now(),
+            "header": "Product",
+            "image": images[0].url,
+        };
+        set_value_redis(notifyKey, notifyValue);
+
+        for(let admin_id of admin) {
+            const timestamp = Date.now();
+            const notifyKeyForAdmin = `admin:${admin_id}:${timestamp}`;
+            set_value_redis(notifyKeyForAdmin, notifyKey);
+        }
 
         await t.commit();
 
@@ -248,10 +273,31 @@ let get_product_history = async(req, res) => {
 }
 
 
+let notify = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["seller_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        const notifies = await get_notifies(`seller:${req.params.seller_id}:*`);
+
+        // console.log("abc")
+
+        // logger.info(`${statusCode.HTTP_200_OK} notifies length ${notifies.length}`);
+        res.status(statusCode.HTTP_200_OK).json(notifies);
+    } catch (error) {
+        logger.error(`Add product: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+
 module.exports = {
     add_product,
     get_product_sold,
     update_product,
     get_products,
-    get_product_history
+    get_product_history,
+    notify
 };

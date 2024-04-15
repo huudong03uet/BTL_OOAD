@@ -1,10 +1,10 @@
 const client = require('../../../conf/redis');
 
-let set_value_redis = async (key, jsonValue) => {
+let set_value_redis = async (key, jsonValue, ttl = 60 * 60 * 24 * 7) => {
     const stringValue = JSON.stringify(jsonValue);
-    // await client.connect()
     await client.set(key, stringValue);
-    // await client.disconnect();
+    const expireTime = Date.now() + ttl;
+    await client.expireAt(key, Math.floor(expireTime));
 };
 
 let update_value_redis = async (key, value) => {
@@ -28,22 +28,43 @@ let update_value_redis = async (key, value) => {
 };
 
 let get_value_redis = async (key) => {
-    // await client.connect()
     const stringValue = await client.get(key);
-    // await client.disconnect();
+    if (stringValue === null) {
+        return null;
+    }
     const jsonValue = JSON.parse(stringValue);
     return jsonValue;
 };
 
 let delete_key_redis = async (key) => {
-    // await client.connect()
     await client.del(key);
-    // await client.disconnect();
 };
+
+
+async function get_notifies(key) {
+    try {
+        let keys = await client.keys(key, (err, keys) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve(keys);
+            }
+        });
+
+        const values = await Promise.all(keys.map(key => get_value_redis(key)));
+
+        return values;
+
+    } catch (error) {
+        console.error(`Error getting notifies for ${role} ${role_id}: ${error.message}`);
+        throw error;
+    }
+}
 
 module.exports = {
     set_value_redis,
     get_value_redis,
     delete_key_redis,
-    update_value_redis
+    update_value_redis,
+    get_notifies
 };
