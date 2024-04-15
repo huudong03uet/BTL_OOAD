@@ -112,12 +112,12 @@ function Header() {
   };
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary ">
+    <Navbar expand="lg" className="bg-body-tertiary py-0">
       <Container className="row w-100" style={{ display: "contents" }}>
         <div className="col-3 d-flex justify-content-center ">
           <Navbar.Brand href="/" >
-            <img src="https://image.invaluable.com/static/header/IN_Red32.svg"
-              alt="test" width={"200px"}></img>
+            <img src="/logo.png"
+              alt="test" width={"180px"}></img>
           </Navbar.Brand>
         </div>
         {/* <Navbar.Toggle aria-controls="basic-navbar-nav">

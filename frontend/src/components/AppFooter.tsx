@@ -82,7 +82,7 @@ export default function Footer() {
           <MDBCol className='mb-4 mb-md-0'>
             <div>
               <div className="">
-                <img className="mb-2" src="https://image.invaluable.com/static/invaluable/footer/logo.svg" alt="Invaluable Logo">
+                <img className="mb-2" src="/logo.png" height="40px" alt="Invaluable Logo">
                 </img>
                 <p>As the world's leading online auction marketplace, thousands of auction
                   houses use Invaluable to deepen relationships with millions of clients
