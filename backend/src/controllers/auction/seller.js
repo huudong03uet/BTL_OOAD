@@ -8,7 +8,6 @@ const AuctionProductVisibilityStatus = require('../../../constants/product_visib
 const statusCode = require('../../../constants/status');
 
 const Auction = require('../../models/auction');
-const AuctionRequest = require('../../models/auction_request');
 const Product = require('../../models/product');
 const User = require('../../models/user');
 
