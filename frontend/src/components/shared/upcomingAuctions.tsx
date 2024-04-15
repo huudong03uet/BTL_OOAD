@@ -3,7 +3,7 @@ import React from 'react'
 import '@smastrom/react-rating/style.css'
 import { Rating, ThinStar } from '@smastrom/react-rating'
 import AuctionSummary from '@/models/auction_summary';
-
+import dateFormat, { masks } from "dateformat";
 // Declare it outside your component so it doesn't get re-created
 const myStyles = {
     itemShapes: ThinStar,
@@ -66,7 +66,8 @@ function UpcomingAuctions({ obj }: { obj: AuctionSummary }) {
                                      ({obj.number_review} Reviews)
                                 </div>
                                 <div className="my-3">
-                                    {obj.time}
+                                    {/* {obj.time} */}
+                                    {dateFormat(obj.time, " mmm dd, yyyy - hh:MM TT")}
                                 </div>
                                 <div>
                                     {obj.address}

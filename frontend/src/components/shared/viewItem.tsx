@@ -2,7 +2,7 @@
 import ItemSummary from '@/models/product_summary';
 import Link from 'next/link';
 import React, { useState } from 'react'
-
+import dateFormat, { masks } from "dateformat";
 // http://localhost:8080/product/user/detail/product_id=10/user_id=10000
 
 
@@ -45,17 +45,23 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
             >
 
             <div>
-                {obj.time}
+                {dateFormat(obj.time, " mmm dd, yyyy - hh:MM TT")}
             </div>
             <div style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
-                className='my-1'>
+                className='my-1 fw-bold'>
                 {obj.title}
             </div>
             <div>
                 by {obj.user_sell}
             </div>
             <div className="fw-bold">
-                ${obj.max_bid}
+                {/* ${obj.max_bid} */}
+                ${
+                    obj.min_estimate == null ? obj.max_bid : obj.min_estimate
+                }
+
+
+                {/* min  */}
             </div>
             </Link>
         </div >

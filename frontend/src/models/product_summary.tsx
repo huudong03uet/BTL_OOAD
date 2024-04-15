@@ -3,12 +3,13 @@ export default interface ItemSummary {
     status?: string,
     title: string,
     love?: number,
-    estimate_min?: number,
-    estimate_max?: number,
+    min_estimate?: number,
+    max_estimate?: number,
     max_bid?: number,
     price?: number,
     artist?: string,
     time?: string,
-    image_path: string,
-    user_sell?: string;
+    image_path?: string,
+    user_sell?: string,
+    // user_sell?: string;
 }

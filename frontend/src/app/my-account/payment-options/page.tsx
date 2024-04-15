@@ -1,13 +1,35 @@
 'use client'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import style from '../style.module.css';
-
+import { PaymentElement } from '@stripe/react-stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import { StripeElementsOptions, loadStripe } from '@stripe/stripe-js';
+import CheckoutForm from './checkoutFrom';
 
 export default function PaymentOptions() {
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
+
+    const stripePromise = loadStripe('pk_test_51P5nnuEEyiRNEX94IGdm9D5KhGRBxqU3lKR0Zd6yIRUdq9mSMu1YNmYUxXMMuvJ7KiMw71FFKl2bEfhRwTNwsCYX00LonkWw3K');
+    const options: StripeElementsOptions = {
+        mode: 'payment',
+        amount: 1099,
+        currency: 'usd',
+        // Fully customizable with appearance API.
+        appearance: {
+            /*...*/
+        },
+        
+    };
+
+
+
+
+    const [showModalQRScan, setShowModalQRScan] = useState(false);
+    const handleCloseModalQRScan = () => setShowModalQRScan(false);
+    const handleShowModalQRScan = () => setShowModalQRScan(true);
 
     return (
         // <div className='row mx-0'>
@@ -37,70 +59,92 @@ export default function PaymentOptions() {
         //     {/* </div> */}
         // </div >
 
+
+
+
         <div className='row mx-0'>
             <div className={style.div_title}>
                 Payment Options
             </div>
+
+
+            <div className={style.div_section}>
+                <div className={style.div_header}>
+                    QR Scan
+                </div>
+                <p>
+                    Recharge your account with QR code.
+                </p>
+                <button type="button" className="btn btn-dark px-5" onClick={handleShowModalQRScan}>
+                    Scan QR Code
+                </button>
+            </div>
+
+
             <div className={style.div_section}>
                 <div className={style.div_header}>
                     Credit Cards
                 </div>
                 <p>
-                    Add a credit card to make bidding fast and easy.
+                    Using your credit card to make bidding fast and easy.
                 </p>
-                <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Add A New Card</button>
+                <button
+                    onClick={() => {
+                        window.open("https://buy.stripe.com/test_fZe9AZ7Q61ScgXS8wx", "_blank")
+
+
+                    }}
+
+
+                    // onClick={handleShowModal}
+
+                    type="button" className="btn btn-dark px-5">Using a card</button>
             </div>
-            <div className={style.div_section}>
+            {/* <div className={style.div_section}>
                 <div className={style.div_header}>
                     Bank Accounts
                 </div>
-                <button type="button" className="btn btn-dark px-5">Add A Bank Account</button>
-            </div>
+                <button type="button" className="btn btn-dark px-5"
+                // https://buy.stripe.com/test_aEU6oN6M2eEY9vq288
+                
+            
+                
+            
+                >Add A Bank Account</button>
+            </div> */}
 
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Add A New Card</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <div className="mb-3">
-                        <input type="text" className="form-control" id="cardNumber" placeholder="Card Number" />
-                    </div>
-                    <p><i className="fa fa-lock" aria-hidden="true"></i><span className='mx-1'>Security server <a rel="noopener noreferrer" target="_blank" style={{ color: "#004bd6" }}>Certified by VikingCloud</a></span></p>
-                    <div className="mb-3 d-flex">
-                        <input type="text" className="form-control me-2" placeholder="MM/YY" />
-                        <input type="text" className="form-control" placeholder="CVN" />
-                    </div>
-                    <div className="mb-3">
-                        <input type="text" className="form-control" id="nameOnCard" placeholder="Name on Card" />
-                    </div>
-                    <div className="mb-3 form-check">
-                        <input type="checkbox" className="form-check-input" id="billingAddress" />
-                        <label className="form-check-label" htmlFor="billingAddress">Billing address is same as shipping address</label>
-                    </div>
-                    <div className="mb-3">
-                        <select className="form-select" id="country">
-                            <option>Select Country</option>
-                            {/* Thêm các option cho select country */}
-                        </select>
-                    </div>
-                    <div className="mb-3">
-                        <input type="text" className="form-control" id="address" placeholder="Enter Address" />
-                    </div>
-                    <div className="row mb-3">
-                        <div className="col">
-                            <input type="text" className="form-control" id="city" placeholder="Enter City" />
-                        </div>
-                        <div className="col">
-                            <input type="text" className="form-control" id="state" placeholder="Enter State" />
-                        </div>
-                    </div>
-                    <div className="mb-3">
-                        <input type="text" className="form-control" id="postalCode" placeholder="Enter Postal Code" />
-                    </div>
+                    <Elements stripe={stripePromise} options={options}>
+                        <CheckoutForm />
+                    </Elements>
                 </Modal.Body>
                 <Modal.Footer className="justify-content-start">
-                    <button type="button" className="btn btn-dark">Save Card</button>
+                    {/* <button type="button" className="btn btn-dark">Save Card</button> */}
                     <p className="mx-3" onClick={handleCloseModal}>Cancel</p>
+                </Modal.Footer>
+
+            </Modal>
+
+
+            <Modal show={showModalQRScan} onHide={handleCloseModalQRScan} size="lg">
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        Scan QR Code
+
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+
+                </Modal.Body>
+                <Modal.Footer className="justify-content-start">
+                    <button type="button" className="btn btn-dark" disabled>
+                        Waiting for scan
+                    </button>
+                    <p className="mx-3" onClick={handleCloseModalQRScan}>Cancel</p>
                 </Modal.Footer>
 
             </Modal>
