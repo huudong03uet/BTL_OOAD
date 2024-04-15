@@ -9,7 +9,7 @@ import Category from '@/models/category';
 import AuctionSummary from '@/models/auction_summary';
 import { useEffect, useState } from 'react';
 import { user_get_auction_promote, user_get_auction_upcoming } from '@/services/auction/user';
-import { user_get_category_service, user_get_recently_product } from '@/services/product/user';
+import { user_get_all_product, user_get_category_service, user_get_product_accept, user_get_recently_product } from '@/services/product/user';
 import ChatSupport from '@/components/chat/chat_support';
 import { Fab } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
@@ -53,6 +53,7 @@ const HomePage = () => {
         const data = await user_get_recently_product();
         if (Array.isArray(data)) {
           setRecentlyViewedItems(data);
+          console.log(data);
         } else {
           setRecentlyViewedItems([])
         }
@@ -68,9 +69,10 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await user_get_recently_product();
+        const data = await user_get_product_accept();
         if (Array.isArray(data)) {
-          setRecommendItemForYou(data);
+          setRecommendItemForYou(data.slice(0, 4) );
+          console.log(data.slice(0, 4));
         } else {
           setRecommendItemForYou([])
         }

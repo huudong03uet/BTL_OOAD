@@ -87,8 +87,8 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
                                 <TableRow>
                                     <TableCell align="center">{index + 1}</TableCell>
                                     <TableCell>{row.title}</TableCell>
-                                    <TableCell align="center">{row.estimate_min}</TableCell>
-                                    <TableCell align="center">{row.estimate_max}</TableCell>
+                                    <TableCell align="center">{row.min_estimate}</TableCell>
+                                    <TableCell align="center">{row.max_estimate}</TableCell>
                                     <TableCell align="center">{row.max_bid}</TableCell>
                                     <TableCell align="center">{row.status}</TableCell>
                                     {(activity === TableActivity.VIEW_MY_PRODUCT || activity === TableActivity.ADD_TO_AUCTION || activity === TableActivity.VIEW_IN_AUCTION) && (

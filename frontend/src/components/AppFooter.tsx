@@ -196,9 +196,9 @@ export default function Footer() {
             <MDBContainer className='p-4'>
               <MDBRow>
                 <MDBCol lg='5' md='12' className='mb-4 mb-md-0'>
-                  <div class="row px-3 d-flex flex-row">
-                    <h5 class='text-uppercase'>Links</h5>
-                    <div class='list-unstyled mb-0 row'>
+                  <div className="row px-3 d-flex flex-row">
+                    <h5 className='text-uppercase'>Links</h5>
+                    <div className='list-unstyled mb-0 row'>
                       <div>
                         <a href='/blog'>Blog</a>
                       </div>

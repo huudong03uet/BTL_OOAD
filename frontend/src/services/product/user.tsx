@@ -40,4 +40,33 @@ let user_get_recently_product = async () => {
     }
 }
 
-export { user_get_category_service, user_get_detail_product, user_get_recently_product } ;
+
+let user_get_all_product = async () => {
+    try {
+        let url = `${HOST}/product/user/all-product`;
+        const response = await axios.get(url);
+        return response.data;
+        
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
+
+let user_get_product_accept = async () => {
+    try {
+        let url = `${HOST}/product/user/product-accept`;
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
+
+
+export { user_get_category_service, user_get_detail_product, user_get_recently_product, user_get_all_product 
+
+, user_get_product_accept
+
+} ;
