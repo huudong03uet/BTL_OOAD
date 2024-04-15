@@ -26,7 +26,7 @@ export default class UserDataService {
     }
 
     static getUserData(): User | null {
-        const data_user = localStorage.getItem('dataUser');
+        const data_user = window.localStorage.getItem('dataUser');
 
         if (typeof data_user === 'string') {
             UserDataService.userData = JSON.parse(data_user);
