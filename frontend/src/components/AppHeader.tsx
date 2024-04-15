@@ -225,6 +225,10 @@ function Header() {
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="/seller">Selling center</NavDropdown.Item>
 
+                  <NavDropdown.Divider/>
+                  {/* payment-options */}
+
+                  <NavDropdown.Item href="/my-account/payment-options">Payment options</NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item href="/logout">Log out</NavDropdown.Item>
                   {/* <div className="d-flex align-items-center"> */}

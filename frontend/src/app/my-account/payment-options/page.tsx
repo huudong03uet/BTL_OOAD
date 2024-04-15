@@ -66,17 +66,29 @@ export default function PaymentOptions() {
                     Credit Cards
                 </div>
                 <p>
-                    Add a credit card to make bidding fast and easy.
+                    Using your credit card to make bidding fast and easy.
                 </p>
-                <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Add A New Card</button>
+                <button
+                onClick={() => {
+                    window.open("https://buy.stripe.com/test_fZe9AZ7Q61ScgXS8wx", "_blank")
+                }}
+                
+                
+                type="button" className="btn btn-dark px-5">Using a card</button>
             </div>
-            <div className={style.div_section}>
+            {/* <div className={style.div_section}>
                 <div className={style.div_header}>
                     Bank Accounts
                 </div>
-                <button type="button" className="btn btn-dark px-5">Add A Bank Account</button>
-            </div>
-
+                <button type="button" className="btn btn-dark px-5"
+                // https://buy.stripe.com/test_aEU6oN6M2eEY9vq288
+                
+            
+                
+            
+                >Add A Bank Account</button>
+            </div> */}
+{/* 
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>Add A New Card</Modal.Title>
@@ -100,7 +112,6 @@ export default function PaymentOptions() {
                     <div className="mb-3">
                         <select className="form-select" id="country">
                             <option>Select Country</option>
-                            {/* Thêm các option cho select country */}
                         </select>
                     </div>
                     <div className="mb-3">
@@ -143,7 +154,7 @@ export default function PaymentOptions() {
                     <p className="mx-3" onClick={handleCloseModalQRScan}>Cancel</p>
                 </Modal.Footer>
 
-            </Modal>
+            </Modal> */}
         </div>
     );
 }
