@@ -47,22 +47,43 @@ const HomePage = () => {
 
   const [recentlyViewedItems, setRecentlyViewedItems] = useState<any[]>([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await user_get_recently_product();
-                if (Array.isArray(data)) {
-                    setRecentlyViewedItems(data);
-                } else {
-                    setRecentlyViewedItems([])
-                }
-            } catch (error) {
-                console.error('Error fetching upcoming online auctions:', error);
-            }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await user_get_recently_product();
+        if (Array.isArray(data)) {
+          setRecentlyViewedItems(data);
+        } else {
+          setRecentlyViewedItems([])
         }
+      } catch (error) {
+        console.error('Error fetching upcoming online auctions:', error);
+      }
+    }
 
-        fetchData()
-    }, [])
+    fetchData()
+  }, [])
+
+  const [recommendItemForYou, setRecommendItemForYou] = useState<ItemSummary[]>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await user_get_recently_product();
+        if (Array.isArray(data)) {
+          setRecommendItemForYou(data);
+        } else {
+          setRecommendItemForYou([])
+        }
+      } catch (error) {
+        console.error('Error fetching upcoming online auctions:', error);
+      }
+    }
+
+    fetchData()
+  }, [])
+
+
+
 
   const [curatedCollections, setCuratedCollections] = useState<Category[]>([]);
 
@@ -126,19 +147,31 @@ const HomePage = () => {
       {/* <h1>My Next.js App</h1>
       <Button label="Click me" onClick={handleClick} /> */}
       {/*  */}
+      {recentlyViewedItems.length > 0 && (
+        <div className='py-3'>
+          <Container>
+            <div className={styles.header_section}>Recently Viewed Items</div>
+            <div className="row">
+              {recentlyViewedItems.map((object, i) => (
+                <div className="col-sm-3" key={i}>
+                  <ViewItem obj={object} />
+                </div>
+              ))}
+            </div>
+          </Container>
+        </div>
+      )}
+
       <div className='py-3'>
+        {/* Recommended Items For You */}
         <Container>
-          <div className={styles.header_section}>Recently Viewed Items</div>
-          {/* <div className="container"> */}
+          <div className={styles.header_section}>Recommended Items For You</div>
           <div className="row">
-            {recentlyViewedItems.map((object, i) => (
+            {recommendItemForYou.map((object, i) => (
               <div className="col-sm-3" key={i}>
                 <ViewItem obj={object} />
-
               </div>
             ))}
-
-            {/* </div> */}
           </div>
         </Container>
       </div>
