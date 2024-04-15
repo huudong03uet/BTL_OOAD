@@ -208,11 +208,36 @@ let delete_product = async (req, res) => {
 }
 
 
+let delete_category = async (req, res) => {
+    try {
+        const { category_id } = req.body;
+
+        const deletedCategory = await Category.destroy({
+            where: {
+                id: category_id
+            }
+        });
+
+        if (deletedCategory === 0) {
+            logger.error(`${statusCode.HTTP_404_NOT_FOUND} Category not found.`);
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json("Category not found.");
+        }
+
+        return res.status(statusCode.HTTP_200_OK).json("Category deleted successfully.");
+    } catch (error) {
+        logger.error(`Delete category: ${error}`);
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+
 module.exports = {
     get_all_product_not_inspect,
     product_inspect,
     get_all_product,
     add_category,
     delete_product,
+    delete_category,
+
 };
 

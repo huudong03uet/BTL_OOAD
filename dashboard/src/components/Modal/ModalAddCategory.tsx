@@ -39,10 +39,13 @@ function ModalAddCategory(props: IProps) {
         } else {
             return;
         }
+        mutate('http://localhost:8000/blogs');
 
         console.log(formData.get("image"))
 
-        await category_create(formData)
+        const data = await category_create(formData)
+        alert("Create category successfully!!");
+        setShowModal(false);
     };
 
     return (

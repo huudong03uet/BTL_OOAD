@@ -2,9 +2,10 @@
 
 import Category from "@/types/category"
 import ModalAddCategory from "../Modal/ModalAddCategory";
-import { useState } from "react";
 import { Pagination } from "@nextui-org/react";
-
+import { product_delete } from "@/service/product";
+import DeleteModal from "@/components/Modal/ModalDeleteCategory";
+import { useEffect, useState } from "react";
 interface IProps {
     showModalCreate: boolean;
     setShowModalCreate: (value: boolean) => void;
@@ -16,11 +17,21 @@ interface TableCategoryProps {
 }
 
 const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
+    
 
     const [selectedPackage, setSelectedPackage] = useState<Category | null>(null);
 
+    const [showModalCreate, setShowModalCreate] = useState<boolean>(false);
 
-    const [Categorys, setCategorys] = useState<Category[]>([]);
+    const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
+    const [categoryToDelete, setCategoryToDelete] = useState<Category>();
+
+    const [categories, setCategories] = useState<Category[]>([]);
+
+    useEffect(() => {
+        setCategories(packageData);
+    }, [packageData]);
+
     const [showModal, setShowModal] = useState(false);
 
 
@@ -40,10 +51,21 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
     const [pageNumber, setPageNumber] = useState(1);
     const itemsPerPage = 5;
     const pagesVisited = (pageNumber - 1) * itemsPerPage;
-    const pageCount = Math.ceil(packageData.length / itemsPerPage);
+    const pageCount = Math.ceil(categories.length / itemsPerPage);
     const changePage = (selected: number) => {
         setPageNumber(selected);
     }
+
+    let handleViewCategory = (category: Category) => {
+
+    }
+
+    let handleDeleteCategory = (category: Category) => {
+        setCategoryToDelete(category);
+        setShowModalDelete(true);
+    }
+
+
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
             <div className="flex justify-between px-8 pb-4">
@@ -77,7 +99,7 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {packageData.slice(pagesVisited, pagesVisited + itemsPerPage).map((packageItem, key) => (
+                        {categories.slice(pagesVisited, pagesVisited + itemsPerPage).map((packageItem, key) => (
                             <tr key={key}>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <h5 className="font-medium text-black dark:text-white">
@@ -92,7 +114,7 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <div className="flex items-center space-x-3.5">
-                                        <button className="hover:text-primary">
+                                        <button className="hover:text-primary" onClick={() => { handleViewCategory(packageItem) }}>
                                             <svg
                                                 className="fill-current"
                                                 width="18"
@@ -111,7 +133,7 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
                                                 />
                                             </svg>
                                         </button>
-                                        <button className="hover:text-primary">
+                                        <button className="hover:text-primary" onClick={() => { handleDeleteCategory(packageItem) }}>
                                             <svg
                                                 className="fill-current"
                                                 width="18"
@@ -182,7 +204,7 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
                 </div>
                 <div className='w-1/2 '>
                     {
-                        packageData.length > 0 && <Pagination
+                        categories.length > 0 && <Pagination
                         className='flex justify-end p-6'
                             showControls
                             total={pageCount}
@@ -195,6 +217,13 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
                 </div>
 
             </div>
+            <DeleteModal
+                showModalDelete={showModalDelete}
+                setShowModalDelete={setShowModalDelete}
+                categoryToDelete={categoryToDelete}
+                categories={categories}
+                setCategories={setCategories}
+            />
             <ModalAddCategory
                 showModal={showModal}
                 setShowModal={setShowModal}></ModalAddCategory>
