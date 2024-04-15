@@ -40,8 +40,6 @@ function ModalAddCategory(props: IProps) {
             return;
         }
 
-        console.log(formData.get("image"))
-
         await category_create(formData)
     };
 
