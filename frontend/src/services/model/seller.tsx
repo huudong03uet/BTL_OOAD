@@ -11,7 +11,7 @@ export default class SellerDataService {
         SellerDataService.sellerData = data;
     }
 
-    static removeUserData() {
+    static removeSellerData() {
         window.localStorage.removeItem('dataSeller');
         SellerDataService.sellerData = null;
     }

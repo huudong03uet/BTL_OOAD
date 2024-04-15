@@ -40,7 +40,9 @@ function ModalAddCategory(props: IProps) {
             return;
         }
 
-        await category_create(formData)
+        const data = await category_create(formData)
+        alert("Create category successfully!!");
+        setShowModal(false);
     };
 
     return (

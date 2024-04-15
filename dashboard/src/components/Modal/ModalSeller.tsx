@@ -3,6 +3,9 @@ import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from
 import { FormRegisterSeller } from '@/types/form_register_seller';
 import { useSWRConfig } from "swr"
 import { mutate } from "swr"
+import axios from 'axios';
+import { HOST } from '@/service/host';
+
 
 interface IProps {
   showModalCreate: boolean;
@@ -16,28 +19,29 @@ function CreateModal(props: IProps) {
   const handleCloseModal = () => setShowModalCreate(false);
   const handleShowModal = () => setShowModalCreate(true);
 
-  let { user_id, name, email, phoneNumber, description, card_number, expiry, cvn, nameOnCard, country, address, city, state, postalCode, time_create, status } = sellerInformation;
+  let { seller_id, name, email, phoneNumber, description, card_number, expiry, cvn, nameOnCard, country, address, city, state, time_create, status } = sellerInformation;
 
-  const handleSubmit = () => {
-    status = "complete";
 
-    //call api sửa đổi trạng thái của user thành seller, be trả về với status là complete
-    fetch("http://localhost:8000/blogs",
-      {
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        method: "POST",
-        body: JSON.stringify({ status })
-      })
-      .then(function (res) {
-        handleCloseModal();
-        mutate("http://localhost:8000/blogs")
-      })
-      .catch(function (res) { console.log(res) })
+  const handleSubmit = async (newStatus: string) => {
+    try {
+      // Gọi API để thực hiện sửa đổi trạng thái của seller
+      const url = `${HOST}/account/seller/handle_verification_seller`
+      const response = await axios.post(url, {
+        seller_id: seller_id,
+        status: newStatus, // Thay đổi status thành complete
+      });
 
+      if (!response.data) {
+        throw new Error('Failed to update seller status');
+      }
+
+      // Nếu thành công, cập nhật lại dữ liệu bằng cách sử dụng mutate từ SWR
+      handleCloseModal(); 
+    } catch (error) {
+      console.error('Error updating seller status:', error);
+    }
   };
+
 
   return (
     <Modal
@@ -50,9 +54,6 @@ function CreateModal(props: IProps) {
         <>
           <ModalHeader className="flex flex-col gap-1">Verification Seller</ModalHeader>
           <ModalBody style={{ maxHeight: '300px', overflowY: 'auto' }}>
-            <div className="mb-0">
-              <strong>Seller Information:</strong>
-            </div>
             <div className="mb-0 ml-3">
               <p><strong>Seller Name:</strong> {name}</p>
             </div>
@@ -62,9 +63,6 @@ function CreateModal(props: IProps) {
             </div>
             <div className="mb-1 ml-3">
               <p><strong>Description:</strong> {description}</p>
-            </div>
-            <div className="mb-0">
-              <strong>Card Information:</strong>
             </div>
             <div className="mb-0 ml-3">
               <p><strong>Card Number:</strong> {card_number}</p>
@@ -90,15 +88,12 @@ function CreateModal(props: IProps) {
               <p className='ml-3'><strong>City:</strong> {city}</p>
               <p className='mr-40'><strong>State:</strong> {state}</p>
             </div>
-            <div className="mb-0 ml-3">
-              <p><strong>Postal Code:</strong> {postalCode}</p>
-            </div>
           </ModalBody>
           <ModalFooter style={{ justifyContent: 'space-between' }}>
-            <Button color="danger" onPress={handleCloseModal}>
+            <Button color="danger" onPress={() => handleSubmit('reject')}>
               Reject
             </Button>
-            <Button color="primary" onPress={handleCloseModal}>
+            <Button color="primary" onPress={() => handleSubmit('accept')}>
               Accept
             </Button>
           </ModalFooter>

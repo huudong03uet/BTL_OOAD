@@ -6,7 +6,7 @@ const Location = require('../../models/location');
 const Review = require('../../models/review');
 const Seller = require('../../models/seller');
 const User = require('../../models/user');
-const { check_required_field } = require('../util');
+const { check_required_field, find_or_create_location } = require('../util');
 const { role_edit_profile, role_change_password, role_forgot_password } = require('./role');
 
 
@@ -32,7 +32,7 @@ let register = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        if (!check_required_field(req.body.seller_info, ["name", "email", "phone", "desciption"])) {
+        if (!check_required_field(req.body.seller_info, ["name", "email", "phone", "description"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
@@ -43,10 +43,9 @@ let register = async (req, res) => {
         }
 
         const user_id = req.body.user_id;
-        const {name, email, phone, desciption} = req.body.seller_info;
+        const {name, email, phone, description} = req.body.seller_info;
         const {id, expiry, cvn, name_card } = req.body.card_info;
         const {country, address, city, state, postal} = req.body.location_info;
-
         let seller = await Seller.findOne({
             where: {
                 user_id: user_id
@@ -64,7 +63,7 @@ let register = async (req, res) => {
             name: name,
             email: email,
             phone: phone,
-            desciption: desciption,
+            desciption: description,
             user_id: user_id,
             location_id: location.id
         }, {transaction: t});
@@ -74,7 +73,7 @@ let register = async (req, res) => {
         let card = await Card.create({
             id: id,
             expiry: expiry,
-            cvn: cvn,
+            CVN: cvn,
             name: name_card,
             seller_id: seller.id
         }, {transaction: t})
@@ -172,6 +171,92 @@ let get_seller_by_user_id = async (req, res) => {
     }
 }
 
+const getAllSellers = async (req, res) => {
+    try {
+        const sellers = await Seller.findAll({
+            include: [
+                {
+                    model: Location,
+                }
+            ]
+        });
+
+        if (!sellers || sellers.length === 0) {
+            logger.info(`${statusCode.HTTP_404_NOT_FOUND} No sellers found`);
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json("No sellers found");
+        }
+        console.log(sellers);
+
+        // Map over the sellers array to extract required properties
+        const formattedSellers = await Promise.all(sellers.map(async seller => {
+            const card = await Card.findOne({
+                where: {
+                    seller_id: seller.id
+                }
+            });
+            
+            return {
+                seller_id: seller.id,
+                name: seller.name,
+                status: seller.status,
+                phoneNumber: seller.phone,
+                email: seller.email,
+                description: seller.desciption,
+                card_number: card ? card.id : null,
+                expiry: card ? card.expiry : null,
+                cvn: card ? card.cvn : null,
+                nameOnCard: card ? card.name : null,
+                country: seller.location?.country,
+                address: seller.location?.address,
+                city: seller.location?.city,
+                state: seller.location?.state,
+                postalCode: seller.location?.postal,
+                time_create: seller.createdAt,
+            };
+        }));
+
+        logger.info(`${statusCode.HTTP_200_OK} All sellers retrieved successfully`);
+        return res.status(statusCode.HTTP_200_OK).json(formattedSellers);
+    } catch (error) {
+        logger.error(`Error getting all sellers: ${error}`);
+        return res.status(statusCode.HTTP_500_INTERNAL_SERVER_ERROR).json("Internal server error");
+    }
+}
+
+const handle_verification_seller = async (req, res) => {
+    try {
+        const { seller_id, status } = req.body;
+
+        // Kiểm tra xem có đủ thông tin không
+        if (!seller_id || !status) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        // Kiểm tra xem status có hợp lệ không
+        if (status !== 'processing' && status !== 'accept' && status !== 'rejected') {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Invalid status.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Invalid status.");
+        }
+
+        // Tìm và cập nhật thông tin của seller
+        const seller = await Seller.findByPk(seller_id);
+        if (!seller) {
+            logger.error(`${statusCode.HTTP_404_NOT_FOUND} Seller not found.`);
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json("Seller not found.");
+        }
+
+        seller.status = status;
+        await seller.save();
+
+        logger.info(`${statusCode.HTTP_200_OK} Seller status updated successfully.`);
+        return res.status(statusCode.HTTP_200_OK).json("Seller status updated successfully.");
+    } catch (error) {
+        logger.error(`Error handling seller verification: ${error}`);
+        return res.status(statusCode.HTTP_500_INTERNAL_SERVER_ERROR).json("Internal server error");
+    }
+}
+
 
 module.exports = {
     edit_profile,
@@ -180,4 +265,6 @@ module.exports = {
     register,
     get_info_seller,
     get_seller_by_user_id,
+    getAllSellers,
+    handle_verification_seller
 };

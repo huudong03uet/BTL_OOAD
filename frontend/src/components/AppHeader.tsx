@@ -128,13 +128,13 @@ function Header() {
             <Row>
               <Col xs="auto" className='w-100'>
 
-                <div className="input-group">
+                <div className="input-group border-right-0 rounded border-dark">
                   <i className="fa fa-search position-absolute top-50 ps-5 translate-middle" style={{ zIndex: "10", color: "#e4002b" }}></i>
 
                   <input
                     type="text"
                     placeholder="Search items & sellers"
-                    className="mr-sm-2 ps-5"
+                    className="mr-sm-2 ps-5 w-100 border rounded border-dark"
                     value={searchText}
                     onChange={handleChange}
                     onKeyPress={handleKeyPress}
@@ -215,10 +215,20 @@ function Header() {
                 </div>
                 {/* <div> */}
                 {/* </div> */}
-                <NavDropdown title="Name user" id="basic-nav-dropdown" className="d-flex align-items-center" >
+                <NavDropdown title="Name user" id="basic-nav-dropdown" className="d-flex align-items-center" 
+                align={{ lg: 'end' }}
+                >
 
-                  <SideBar></SideBar>
+                  <NavDropdown.Item href="/my-account/home">My account</NavDropdown.Item>
+                  <NavDropdown.Item href="/my-account/saved-items">Saved items</NavDropdown.Item>
+                  <NavDropdown.Item href="/my-account/settings">Settings</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="/seller">Selling center</NavDropdown.Item>
 
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item href="/logout">Log out</NavDropdown.Item>
+                  {/* <div className="d-flex align-items-center"> */}
+                  
                   {/* </div> */}
 
 

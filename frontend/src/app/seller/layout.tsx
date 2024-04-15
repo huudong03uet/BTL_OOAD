@@ -6,7 +6,6 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import AppNav from "@/components/AppNav";
-import AppBreadCrumb from "@/components/AppBreadCrumb";
 import SideBarShop from "@/components/my-account/sideBarShop";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,7 +19,6 @@ export default function SellerLayout({
     <section className={inter.className}>
       <AppHeader />
       <AppNav />
-      <AppBreadCrumb />
       <div className="row  mx-0">
         <div className="col-2">
           <SideBarShop />

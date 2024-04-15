@@ -15,10 +15,10 @@ let seller_register = async (seller_info: any, card_info: any, location_info: an
             location_info: location_info,
         }
         const response = await axios.post(url, body);
-        return response.data;
+        return response;
     } catch (error: any) {
         console.error('Error fetching data:', error);
-        return error.response.data;
+        return error.response;
     }
 }
 

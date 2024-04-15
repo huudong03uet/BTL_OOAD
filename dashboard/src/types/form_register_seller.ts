@@ -1,7 +1,7 @@
 export type FormRegisterSeller = {
-    user_id: string,
+    seller_id: string,
     name: string,
-    phoneNumber?: number,
+    phoneNumber?: string,
     email?: string,
     description?: string,
     card_number?: number,
@@ -12,7 +12,6 @@ export type FormRegisterSeller = {
     address?: string,
     city?: string,
     state?: string,
-    postalCode?: string,
     time_create: string,
     status?: string,
 };

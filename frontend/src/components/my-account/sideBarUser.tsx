@@ -4,6 +4,7 @@ import UserDataService from "@/services/model/user";
 import ModalConfirm from "@/components/ModalConfirm";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import SellerDataService from '@/services/model/seller';
 
 function SideBarUser() {
     // const router = useRouter();
@@ -15,6 +16,7 @@ function SideBarUser() {
     const handleConfirmSignout = () => {
       setShowModal(false);
       UserDataService.removeUserData();
+      SellerDataService.removeSellerData();
       alert('Đăng xuất thành công!');
       window.location.href = '/';
 

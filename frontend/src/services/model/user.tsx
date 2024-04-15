@@ -21,7 +21,7 @@ export default class UserDataService {
 
     static removeUserData() {
         window.localStorage.removeItem('dataUser');
-        SellerDataService.removeUserData()
+        SellerDataService.removeSellerData()
         UserDataService.userData = null;
     }
 
