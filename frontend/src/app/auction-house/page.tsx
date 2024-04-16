@@ -9,7 +9,6 @@ import styles from '@/styles/customer/auctionHouse.module.css';
 import styles2 from '@/styles/auction_house/soldItem.module.css'
 import AppHeader from '@/components/AppHeader';
 import AppNav from '@/components/AppNav'
-import AppBreadCrumb from '@/components/AppBreadCrumb'
 import AppFooter from '@/components/AppFooter';
 import Map from '@/components/auction-house/Map';
 import Tab from '@/components/auction-house/Tab';
@@ -25,6 +24,9 @@ import { seller_auction_past_service } from '@/services/auction/seller';
 import { seller_product_sold_service } from '@/services/product/seller';
 import get_review_service from '@/services/component/review';
 import AuctionSummary from '@/models/auction_summary';
+import Rating from '@mui/material/Rating';
+import Box from '@mui/material/Box';
+import StarIcon from '@mui/icons-material/Star';
 
 interface CommentProps {
     id?: string;
@@ -348,7 +350,28 @@ const AuctionHouse = () => {
     //     // Add more past auctions if needed
     // ]
 
+    const labels: { [index: string]: string } = {
+        0.5: 'Useless',
+        1: 'Useless+',
+        1.5: 'Poor',
+        2: 'Poor+',
+        2.5: 'Ok',
+        3: 'Ok+',
+        3.5: 'Good',
+        4: 'Good+',
+        4.5: 'Excellent',
+        5: 'Excellent+',
+      };
+      
+      function getLabelText(value: number) {
+        return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
+      }
 
+
+      const [value, setValue] = React.useState<number | null>(2);
+      const [hover, setHover] = React.useState(-1);
+      
+      
     const [soldAuctions, setSoldAuctions] = useState<{
         "image_path": string,
         "time": string,
@@ -364,9 +387,9 @@ const AuctionHouse = () => {
                 const data = await seller_product_sold_service();
                 if (Array.isArray(data)) {
                     setSoldAuctions(data);
-                  } else {
+                } else {
                     setSoldAuctions([])
-                  }
+                }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
@@ -389,9 +412,9 @@ const AuctionHouse = () => {
                 const data = await seller_auction_past_service();
                 if (Array.isArray(data)) {
                     setPastAuctions(data);
-                  } else {
+                } else {
                     setPastAuctions([])
-                  }
+                }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
@@ -407,7 +430,6 @@ const AuctionHouse = () => {
         <>
             <AppHeader />
             <AppNav />
-            <AppBreadCrumb />
             <Container>
                 <div>
                     {auctionHouse && (
@@ -494,6 +516,37 @@ const AuctionHouse = () => {
                             <TabContent id="review" active={activeTab === 'review'} ref={tabContentRefs.review}>
                                 {/* Nội dung của tab review */}
                                 <div className={styles2.header_section}>Reviews ({review?.length})</div>
+
+                                {/* give review */}
+                                <div>
+                                    <div>
+                                        Give a review
+                                    </div>
+                                    <div className='d-flex'>
+                                        <Rating
+                                            name="hover-feedback"
+                                            value={value}
+                                            precision={0.5}
+                                            getLabelText={getLabelText}
+                                            onChange={(event, newValue) => {
+                                                setValue(newValue);
+                                            }}
+                                            onChangeActive={(event, newHover) => {
+                                                setHover(newHover);
+                                            }}
+                                            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                                        />
+                                        {value !== null && (
+                                            <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <input type="text" className="form-control" placeholder="Write a review" />
+                                    </div>
+                                    <div>
+                                        <button type="button" className="btn btn-primary">Submit</button>
+                                        </div>
+                                </div>
                                 <div className='py-3'>
                                     <Container>
                                         {review && review.length > 0 && review.map((obj, index) => {

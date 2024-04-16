@@ -20,6 +20,7 @@ import Input from '@mui/material/Input';
 import SellerDataService from '@/services/model/seller';
 import ModalConfirm from './ModalConfirm';
 
+import { ToastContainer, toast } from 'react-toastify';
 
 
 
@@ -136,12 +137,28 @@ function Header() {
   
   const [showModal, setShowModal] = useState<boolean>(false); // State for modal visibility
 
+
   const handleConfirmSignout = () => {
+    toast.success('Logout successfully!', {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
     setShowModal(false);
     UserDataService.removeUserData();
     SellerDataService.removeSellerData();
-    alert('Đăng xuất thành công!');
-    window.location.href = '/';
+
+    
+    
+    // alert('Đăng xuất thành công!');
+
+    // window.location.href = '/';
+    //  reload page
+    window.location.reload();
 
   };
 
@@ -172,7 +189,7 @@ function Header() {
                   <input
                     type="text"
                     placeholder="Search items & sellers"
-                    className="mr-sm-2 ps-5 w-100 border rounded border-dark"
+                    className="mr-sm-2 ps-5 w-100 border rounded border-dark py-1"
                     value={searchText}
                     onChange={handleChange}
                     onKeyPress={handleKeyPress}
@@ -342,6 +359,7 @@ function Header() {
               onCancel={handleCancelSignout}
             />
           )}
+
     </Navbar>
   );
 }
