@@ -1,24 +1,24 @@
 'use client'
 import { Package } from "@/types/package";
-import { FormRegisterSeller } from "@/types/form_register_seller";
 import CreateModal from "../Modal/ModalSeller";
 import { useState } from "react";
+import Seller from "@/types/seller";
 
 interface IProps {
     showModalCreate: boolean;
     setShowModalCreate: (value: boolean) => void;
-    sellerInformation: FormRegisterSeller;
+    sellerInformation: Seller;
 }
 
 interface TableUserProps {
-    packageData: FormRegisterSeller[];
+    packageData: Seller[];
 }
 
 const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
     const [showModalCreate, setShowModalCreate] = useState<boolean>(false);
-    const [selectedPackage, setSelectedPackage] = useState<FormRegisterSeller | null>(null);
+    const [selectedPackage, setSelectedPackage] = useState<Seller | null>(null);
 
-    const handleViewSeller = (packageItem: FormRegisterSeller) => {
+    const handleViewSeller = (packageItem: Seller) => {
         setSelectedPackage(packageItem);
         setShowModalCreate(true);
     }
@@ -50,7 +50,7 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                             <tr key={key}>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <h5 className="font-medium text-black dark:text-white">
-                                        {packageItem.seller_id}
+                                        {packageItem.id}
                                     </h5>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
@@ -61,7 +61,7 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <p className="text-black dark:text-white">
-                                        {packageItem.time_create}
+                                        {packageItem.createdAt.toString()}
                                     </p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">

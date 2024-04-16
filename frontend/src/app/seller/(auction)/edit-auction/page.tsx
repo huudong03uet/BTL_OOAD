@@ -66,7 +66,7 @@ export default function AddAuction() {
                     dataaa = await get_location_service(dataaa.location_id)
                     
                     setLocation({
-                        "location_id": dataaa.id,
+                        "id": dataaa.id,
                         "country": dataaa.country,
                         "address": dataaa.address,
                         "city": dataaa.city,

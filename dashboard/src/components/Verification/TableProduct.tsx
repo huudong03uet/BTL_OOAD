@@ -1,19 +1,18 @@
 'use client'
 import { Package } from "@/types/package";
-import { FormRegisterProduct } from "@/types/form_register_product";
 import CreateModal from "../Modal/ModalProduct";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Pagination } from "@nextui-org/react";
-
+import { Product } from "@/types/product";
 interface IProps {
     showModalCreate: boolean;
     setShowModalCreate: (value: boolean) => void;
-    productInformation: FormRegisterProduct;
+    productInformation: Product;
 }
 
 interface TableProductProps {
-    packageData: FormRegisterProduct[];
+    packageData: Product[];
 }
 
 export enum StatusProductVerification {
@@ -25,7 +24,7 @@ export enum StatusProductVerification {
 
 const TableUser: React.FC<TableProductProps> = ({ packageData }) => {
     const [showModalCreate, setShowModalCreate] = useState<boolean>(false);
-    const [selectedPackage, setSelectedPackage] = useState<FormRegisterProduct | null>(null);
+    const [selectedPackage, setSelectedPackage] = useState<Product | null>(null);
     // const [packageDataState, setPackageDataState] = useState<FormRegisterProduct[]>(packageData);
     const [packageDataState, setPackageDataState] = useState(packageData);
 
@@ -33,14 +32,14 @@ const TableUser: React.FC<TableProductProps> = ({ packageData }) => {
         setPackageDataState(packageData);
     }, [packageData]);
 
-    const handleViewProduct = (packageItem: FormRegisterProduct) => {
+    const handleViewProduct = (packageItem: Product) => {
         setSelectedPackage(packageItem);
         setShowModalCreate(true);
     }
 
     // const [currentPackage, setCurrentPackage] = useState<FormRegisterProduct | null>(null);
 
-    const handleAcceptReject = (statusProductVerification: StatusProductVerification, packageItem: FormRegisterProduct) => {
+    const handleAcceptReject = (statusProductVerification: StatusProductVerification, packageItem: Product) => {
         const newPackageData = [...packageDataState];
         // Tìm index của packageItem trong mảng
         const index = newPackageData.findIndex((item) => item.product_id === packageItem.product_id);

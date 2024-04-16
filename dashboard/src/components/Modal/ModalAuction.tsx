@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
 import { useSWRConfig } from "swr"
 import { mutate } from "swr"
-import { FormRegisterAuction } from '@/types/form_register_auction';
+import { FormRegisterAuction } from '@/types/auction';
 
 interface IProps {
   showModalCreate: boolean;

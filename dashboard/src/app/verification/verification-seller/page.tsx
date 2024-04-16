@@ -2,21 +2,21 @@
 import React, { useState, useEffect } from "react";
 import FormElements from "@/components/FormElements";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import TableUser from "@/components/Verification/TableUser";
+import TableUser from "@/components/Verification/TableSeller";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { FormRegisterSeller } from "@/types/form_register_seller"; 
 import axios from 'axios';
 import { HOST } from "@/service/host";
+import Seller from "@/types/seller";
 
 
 
 interface TableUserProps {
-  packageData: FormRegisterSeller[];
+  packageData: Seller[];
 }
 
 const VerificationSellerPage = () => {  
 
-  const [packageData, setPackageData] = useState<FormRegisterSeller[]>([]);
+  const [packageData, setPackageData] = useState<Seller[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {

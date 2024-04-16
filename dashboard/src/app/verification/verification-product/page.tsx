@@ -1,13 +1,11 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
-import FormElements from "@/components/FormElements";
-import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import TableProduct from "@/components/Verification/TableProduct";
-import { FormRegisterProduct } from "@/types/form_register_product";
 import { product_not_insepct } from "@/service/product";
+import Product from "@/types/product";
 
 // export const metadata: Metadata = {
 //   title: "Next.js Form Elements | TailAdmin - Next.js Dashboard Template",
@@ -16,12 +14,12 @@ import { product_not_insepct } from "@/service/product";
 // };
 
 interface TableUserProps {
-  packageData: FormRegisterProduct[];
+  packageData: Product[];
 }
 
 const VerificationProductPage = () => {
 
-  const [packageDatafake, setPackageDatafake] = useState<FormRegisterProduct[]>([])
+  const [packageDatafake, setPackageDatafake] = useState<Product[]>([])
 
   useEffect(() => {
     const fetchData = async () => {

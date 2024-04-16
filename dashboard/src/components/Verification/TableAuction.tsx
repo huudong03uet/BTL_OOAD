@@ -1,6 +1,6 @@
 'use client'
 import { Package } from "@/types/package";
-import { FormRegisterAuction } from "@/types/form_register_auction";
+import { FormRegisterAuction } from "@/types/auction";
 import CreateModal from "../Modal/ModalAuction";
 import { useState } from "react";
 
