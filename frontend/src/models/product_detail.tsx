@@ -20,6 +20,12 @@ interface Seller {
     name: string;
 }
 
+interface Auction {
+    id: number;
+    name: string;
+    time: Date;
+}
+
 export default interface ProductDetail {
     id: number;
     images: Image[];
@@ -40,4 +46,6 @@ export default interface ProductDetail {
     visibility: string;
     categories: Category[];
     seller: Seller;
+    createdAt: string;
+    auction: Auction;
 }

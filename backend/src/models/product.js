@@ -31,12 +31,6 @@ const Product = sequelize.define("product", {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  inspect_status: {
-    type: DataTypes.ENUM,
-    allowNull: false,
-    values: [InspectionType.DENIED, InspectionType.INSPECTED, InspectionType.INSPECTTING, InspectionType.NOT_INSPECT],
-    defaultValue: InspectionType.NOT_INSPECT,
-  },
   artist: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -56,8 +50,9 @@ const Product = sequelize.define("product", {
     defaultValue: 0,
   },
   auto_extend_time: {
-    type: DataTypes.DATE,
-    allowNull: true,
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 10,
   },
   status: {
     type: DataTypes.ENUM,
