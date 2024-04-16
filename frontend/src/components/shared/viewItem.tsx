@@ -66,28 +66,28 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
             
             > */}
             <Link href={{ pathname: '/item_detail', query: { product_id: obj.id } }}
-            style={{ textDecoration: "none", color: "black" }}
+                style={{ textDecoration: "none", color: "black" }}
             >
 
-            <div>
-                {dateFormat(obj.time, " mmm dd, yyyy - hh:MM TT")}
-            </div>
-            <div style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
-                className='my-1 fw-bold'>
-                {obj.title}
-            </div>
-            <div>
-                by {obj.user_sell}
-            </div>
-            <div className="fw-bold">
-                {/* ${obj.max_bid} */}
-                ${
-                    obj.min_estimate == null ? obj.max_bid : obj.min_estimate
-                }
+                <div>
+                    {dateFormat(obj.time, " mmm dd, yyyy - hh:MM TT")}
+                </div>
+                <div style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
+                    className='my-1 fw-bold'>
+                    {obj.title}
+                </div>
+                <div>
+                    <Link href={`/auction-house/${obj.seller_id}`}>by {obj.user_sell}</Link>
+                </div>
+                <div className="fw-bold">
+                    {/* ${obj.max_bid} */}
+                    ${
+                        obj.min_estimate == null ? obj.max_bid : obj.min_estimate
+                    }
 
 
-                {/* min  */}
-            </div>
+                    {/* min  */}
+                </div>
             </Link>
         </div >
     );
