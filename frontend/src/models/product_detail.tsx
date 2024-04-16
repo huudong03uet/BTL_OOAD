@@ -3,6 +3,22 @@ interface Image {
     url: string,
 }
 
+interface Inspect {
+    id: number;
+    admin_id: number;
+    description: string;
+    status: string;
+}
+
+interface Category {
+    id: number;
+    name: string;
+}
+
+interface Seller {
+    id: number;
+    name: string;
+}
 
 export default interface ProductDetail {
     id: number;
@@ -20,4 +36,8 @@ export default interface ProductDetail {
     love?: number;
     condition_report?: string;
     provenance?: string;
+    inspect: Inspect | null;
+    visibility: string;
+    categories: Category[];
+    seller: Seller;
 }

@@ -18,6 +18,9 @@ interface Seller {
 interface Product {
     id: number;
     title: string;
+    image_path: Image[];
+    love: number;
+    seller: Seller;
     description: string;
     artist: string;
     max_estimate: number;
@@ -27,13 +30,11 @@ interface Product {
     status: string;
     visibility: string;
     condition_report: string;
-    seller_id: string;
     auction_id: string | null;
     winner_id: string | null;
     dimension: string;
     provenance: string;
     inspect: Inspect | null;
-    image_path: Image[];
-    love: number;
-    seller: Seller;
+    seller_id: string;
 }
+
