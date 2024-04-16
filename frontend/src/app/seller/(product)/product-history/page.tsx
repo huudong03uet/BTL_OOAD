@@ -4,14 +4,14 @@ import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 
 import MyProductTable, { TableActivity } from '../../component/product-table';
-import ItemSummary from "@/models/product_summary";
+import Product from "@/models/product";
 import { seller_get_product_history } from "@/services/product/seller";
 
 
 
 export default function ProductHistory() {
 
-    const [data, setData] = useState<ItemSummary[]>([])
+    const [data, setData] = useState<Product[]>([])
 
     useEffect(() => {
         const fetchData = async () => {
