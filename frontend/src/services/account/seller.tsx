@@ -22,9 +22,9 @@ let seller_register = async (seller_info: any, card_info: any, location_info: an
     }
 }
 
-let seller_info = async () => {
+let seller_info = async (seller_id: number) => {
     try {
-        let url = `${HOST}/account/seller/info/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/account/seller/info/seller_id=${seller_id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {

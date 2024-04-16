@@ -53,7 +53,6 @@ const HomePage = () => {
         const data = await user_get_recently_product();
         if (Array.isArray(data)) {
           setRecentlyViewedItems(data);
-          console.log(data);
         } else {
           setRecentlyViewedItems([])
         }

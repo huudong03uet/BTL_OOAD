@@ -22,16 +22,11 @@ let seller_add_product = async (formData: FormData) => {
     }
 }
 
-let seller_product_sold_service = async () => {
+let seller_product_sold_service = async (seller_id: number) => {
     try {
-        const sellerData = await SellerDataService.getSellerData();
-        if (sellerData !== null) {
-            let url = `${HOST}/product/seller/sold/seller_id=${sellerData.id}`;
-            let response = await axios.get(url);
-            return response.data;
-        }
-
-        return null
+        let url = `${HOST}/product/seller/sold/seller_id=${seller_id}`;
+        let response = await axios.get(url);
+        return response.data;
     } catch (error: any) {
         console.error('Error fetching data:', error);
         return error.response.data;

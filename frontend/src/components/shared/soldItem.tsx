@@ -2,7 +2,7 @@
 import ItemSummary from '@/models/product_summary';
 import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import styles from '@/styles/auction_house/soldItem.module.css'
 
 function SoldItem({ obj }: { obj: ItemSummary }) {
@@ -48,7 +48,7 @@ function SoldItem({ obj }: { obj: ItemSummary }) {
                     {obj.title}
                 </div>
                 <div>
-                    <Link to={`/auction-house/${obj.seller_id}`}>by {obj.user_sell}</Link>
+                <Link href={`/auction-house/${obj.seller_id}`}>by {obj.user_sell}</Link>
                 </div>
                 <div className="fw-bold">
                     ${obj.price}
