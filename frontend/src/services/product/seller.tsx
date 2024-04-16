@@ -15,7 +15,7 @@ let seller_add_product = async (formData: FormData) => {
                 'Content-Type': 'multipart/form-data'
             }
         });
-        return;
+        return response.data;
     } catch (error: any) {
         console.error('Error fetching data:', error);
         return error.response.data;

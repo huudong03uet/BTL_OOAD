@@ -154,9 +154,8 @@ function ModalRegister(props: any) {
                         <label className="form-check-label" htmlFor="newArrivals">Email me new arrivals and personalized recommendations from premier auction houses.</label>
                     </div>
                     <div className="mb-3 form-check">
-                        <input type="checkbox" className="form-check-input" id="termsOfService" />
-                        <label className="form-check-label" htmlFor="termsOfService">I have read and accept Auction's terms of service and privacy policy.</label>
-                    </div>
+                        <input type="checkbox" className="form-check-input" id="termsOfService"/>
+                        <label className="form-check-label" htmlFor="termsOfService">I have read and accept Invaluable's terms of service and privacy policy.</label>                    </div>
                     <div className='d-flex justify-content-center mb-2'>
                         <button type="submit" className="btn px-4 w-100" style={{ backgroundColor: '#222', color: '#FFFFFF' }}>Continue</button>
                     </div>

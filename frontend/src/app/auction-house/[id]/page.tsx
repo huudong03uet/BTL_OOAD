@@ -9,6 +9,10 @@ import styles from '@/styles/customer/auctionHouse.module.css';
 import styles2 from '@/styles/auction_house/soldItem.module.css'
 import AppHeader from '@/components/AppHeader';
 import AppNav from '@/components/AppNav'
+<<<<<<< HEAD:frontend/src/app/auction-house/page.tsx
+// import AppBreadCrumb from '@/components/AppBreadCrumb'
+=======
+>>>>>>> ee04a0c8cbc6b743d68652e26baec859527fc0e0:frontend/src/app/auction-house/[id]/page.tsx
 import AppFooter from '@/components/AppFooter';
 import Map from '@/components/auction-house/Map';
 import Tab from '@/components/auction-house/Tab';
@@ -233,6 +237,10 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         <>
             <AppHeader />
             <AppNav />
+<<<<<<< HEAD:frontend/src/app/auction-house/page.tsx
+            {/* <AppBreadCrumb /> */}
+=======
+>>>>>>> ee04a0c8cbc6b743d68652e26baec859527fc0e0:frontend/src/app/auction-house/[id]/page.tsx
             <Container>
                 <div>
                     {auctionHouse && (
