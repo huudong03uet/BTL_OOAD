@@ -21,34 +21,34 @@ const UserManager = () => {
 
   const packageDatafake: User[] = [
     {
-        user_id: 123,
+        id: 123,
         user_name: "Free package",
         email: "abc@gmail.com",
-        phone_number: "0123456789",
-        created_at: `Jan 13,2023`,
+        phone: "0123456789",
+        createdAt: `Jan 13,2023`,
 
     },
     {
-        user_id: 123,
+      id: 123,
         user_name: "Free package",
         email: "abc@gmail.com",
-        phone_number: "0123456789",
-        created_at: `Jan 13,2023`,
+        phone: "0123456789",
+        createdAt: `Jan 13,2023`,
     },
     {
-        user_id: 123,
+      id: 123,
         user_name: "Free package",
         email: "abc@gmail.com",
-        phone_number: "0123456789",
-        created_at: `Jan 13,2023`,
+        phone: "0123456789",
+        createdAt: `Jan 13,2023`,
   
     },
     {
-        user_id: 123,
+      id: 123,
         user_name: "Free package",
         email: "abc@gmail.com",
-        phone_number: "0123456789",
-        created_at: `Jan 13,2023`,
+        phone: "0123456789",
+        createdAt: `Jan 13,2023`,
  
     },
   ];
