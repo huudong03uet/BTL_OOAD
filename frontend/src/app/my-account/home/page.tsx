@@ -190,6 +190,7 @@ export default function MyInvaluable() {
                 </div>
                 <Container>
                     {upcomingOnlineAuctions.map((object, i) => (
+                        // eslint-disable-next-line react/jsx-key
                         <div className="row">
                             <UpcomingAuctions obj={object} />
                         </div>

@@ -88,7 +88,7 @@ export default function Footer() {
               {showForm && (
                 <div className="d-flex mb-2">
                   <div style={{ width: "100%" }}>
-                    <input className="p-3" type="text" placeholder="Email" value="" style={{ width: "70%", height: "40px" }}></input>
+                    <input className="p-3" type="text" placeholder="Email" value="" style={{ width: "70%", height: "40px" }} readOnly></input>
                     <button className="" onClick={handleSignUp} style={{ backgroundColor: "#720007", color: "#fff", width: "30%", height: "40px", cursor: "pointer", border: "none" }}>Sign Up</button>
                   </div>
                 </div>)}

@@ -4,13 +4,15 @@ import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { seller_add_product } from "@/services/product/seller";
 import SellerDataService from "@/services/model/seller";
+import { user_get_category_service }from '@/services/product/user';
+import Category from "@/models/category";
 
 
 export default function AddProduct() {
     const [producttitle, setProducttitle] = useState<string>('');
     const [productDescription, setProductDescription] = useState<string>('');
     const [productArtist, setProductArtist] = useState<string>('');
-    const [productCategory, setProductCategory] = useState<string>('');
+    const [productCategory, setProductCategory] = useState<Category>();
     const [productImages, setProductImages] = useState<File[]>([]);
     const [dimension, setDimension] = useState<string>('');
     const [minEstimate, setMinEstimate] = useState<string>('');
@@ -18,35 +20,53 @@ export default function AddProduct() {
     const [startBid, setStartBid] = useState<string>('');
     const [provenance, setProvenance] = useState<string>('');
     const [seller_id, setSellerID] = useState<string | null>(null);
+    const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
 
-    function addProductCategory(category: string) {
+    const sortCategoriesByTitle = (categories: Category[]) => {
+        return [...categories].sort((a, b) => a.title.localeCompare(b.title));
+    };
+    
 
-        //  add to productCategory (iff has -> + ', ' + category)
-        if (productCategory === '') {
-            setProductCategory(category);
-        } else {
-            setProductCategory(productCategory + ', ' + category);
+    function addProductCategory(category: Category) {
+        const index = selectedCategories.findIndex((cat) => cat.id === category.id);
+        if (index === -1) {
+            setSelectedCategories([...selectedCategories, category]);
+            const updatedCategories = categories.filter((cat) => cat.id !== category.id);
+            setCategories(updatedCategories);
         }
-        
-
     }
 
-    const categories = [
-        { id: 1, name: "Painting" },
-        { id: 2, name: "Sculpture" },
-        { id: 3, name: "Photography" },
-        { id: 4, name: "Print" },
-        { id: 5, name: "Drawing" },
-        { id: 6, name: "Mixed Media" },
-        { id: 7, name: "Installation" },
-        { id: 8, name: "Performance" },
-        { id: 9, name: "Video/Film/Animation" },
-        { id: 10, name: "Design/Decorative Art" },
-        { id: 11, name: "Textile Arts" },
-        { id: 12, name: "Other" }
-    ];
+    function removeProductCategory(category: Category) {
+        const index = categories.findIndex((cat) => cat.id === category.id);
+        if (index === -1) {
+            let newCategories = [...categories, category];
+            setCategories(sortCategoriesByTitle(newCategories));
+            const updatedSelectedCategories = selectedCategories.filter((cat) => cat.id !== category.id);
+            setSelectedCategories(updatedSelectedCategories);
+        }
+    }
+    
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            const data = await user_get_category_service();
+            const simplifiedCategories: Category[] = data.map((category: any) => ({
+                id: category.id,
+                title: category.title,
+                image_path: category.image_path
+            }));
+            
+            setCategories(simplifiedCategories); 
 
-
+          } catch (error) {
+            console.error('Error fetching upcoming online auctions:', error);
+          }
+        };
+    
+        fetchData()
+      }, [])
+    
 
     useEffect(() => {
         async function fetchData() {
@@ -82,13 +102,14 @@ export default function AddProduct() {
         let formData = new FormData();
         formData.append("title", producttitle);
         formData.append("description", productDescription);
-        formData.append("category_name", productCategory);
         formData.append("artist", productArtist);
         formData.append("dimension", dimension);
         formData.append("min_estimate", minEstimate);
         formData.append("max_estimate", maxEstimate);
         formData.append("startBid", startBid);
         formData.append("provenance", provenance);
+        formData.append("categories", JSON.stringify(selectedCategories));
+
 
         if (productImages.length > 0 && seller_id !== null) {
             formData.append("seller_id", seller_id);
@@ -96,10 +117,14 @@ export default function AddProduct() {
                 formData.append('images', image);
             });
 
-            await seller_add_product(formData);
+            const data = await seller_add_product(formData);
+            if(data) {
+                alert("Upload data success!");
+            }
         } else {
             console.error('Hình ảnh không được để trống');
         }
+
     };
 
 
@@ -135,31 +160,30 @@ export default function AddProduct() {
                                 value={productCategory}
                                 onChange={(e) => setProductCategory(e.target.value)}
                             /> */}
-
                             <InputGroup className="mb-3">
-                                <Form.Control aria-label="Text input with dropdown button" disabled
-
-                                    value={productCategory}
-
-
-
-                                />
-
                                 <DropdownButton
                                     variant="outline-dark"
-                                    title="Add Category"
+                                    title="Add product categories"
                                     id="in-group-dropdown-2"
                                     align="end"
                                 >
                                     {categories.map((category) => (
                                         <Dropdown.Item
                                             key={category.id}
-                                            onClick={() => addProductCategory(category.name)}
+                                            onClick={() => addProductCategory(category)}
                                         >
-                                            {category.name}
+                                            {category.title}
                                         </Dropdown.Item>
                                     ))}
                                 </DropdownButton>
+                                <div className="selected-categories">
+                                    {selectedCategories.map((selectedCategory) => (
+                                        <span key={selectedCategory.id} className="selected-category">
+                                            {selectedCategory.title}
+                                            <button type="button" onClick={() => removeProductCategory(selectedCategory)}>Xóa</button>
+                                        </span>
+                                    ))}
+                                </div>
                             </InputGroup>
                         </div>
                     </div>

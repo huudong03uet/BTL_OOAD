@@ -9,7 +9,7 @@ import styles from '@/styles/customer/auctionHouse.module.css';
 import styles2 from '@/styles/auction_house/soldItem.module.css'
 import AppHeader from '@/components/AppHeader';
 import AppNav from '@/components/AppNav'
-import AppBreadCrumb from '@/components/AppBreadCrumb'
+// import AppBreadCrumb from '@/components/AppBreadCrumb'
 import AppFooter from '@/components/AppFooter';
 import Map from '@/components/auction-house/Map';
 import Tab from '@/components/auction-house/Tab';
@@ -407,7 +407,7 @@ const AuctionHouse = () => {
         <>
             <AppHeader />
             <AppNav />
-            <AppBreadCrumb />
+            {/* <AppBreadCrumb /> */}
             <Container>
                 <div>
                     {auctionHouse && (

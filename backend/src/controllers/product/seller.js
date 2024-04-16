@@ -22,13 +22,12 @@ let add_product = async (req, res) => {
     const t = await sequelize.transaction();
     let imagesToDelete = [];
     try {
-        if (!check_required_field(req.body, ["seller_id", "title", "description", "artist", "category_name"])) {
+        if (!check_required_field(req.body, ["seller_id", "title", "description", "artist", "categories"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        const { seller_id, title, description, artist, category_name, dimension, min_estimate, max_estimate, startBid, provenance } = req.body;
-        
+        const { seller_id, title, description, artist, categories, dimension, min_estimate, max_estimate, startBid, provenance } = req.body;
         const images = await Promise.all(req.files.map(async file => {
             const result = await upload_image(file.path.replace(/\\/g, '/'), "product");
             imagesToDelete.push(result.url);
@@ -38,10 +37,6 @@ let add_product = async (req, res) => {
             }
         }));
 
-        const [category, created] = await Category.findOrCreate({
-            where: { title: category_name },
-            transaction: t
-        });
 
         const seller = await Seller.findByPk(seller_id)
 
@@ -65,8 +60,17 @@ let add_product = async (req, res) => {
         Object.keys(productData).forEach(key => productData[key] === undefined && delete productData[key]);
 
         const product = await Product.create( productData , { transaction: t })
-
-        await product.addCategory(category, { transaction: t })
+        const arr_categories = JSON.parse(categories); 
+        for (const category of arr_categories) {
+            const category_id = category.id;
+            const categoryInstance = await Category.findByPk(category_id);
+            if (!categoryInstance) {
+                logger.error(`${statusCode.HTTP_404_NOT_FOUND} Category with ID ${category_id} not found`);
+                await t.rollback();
+                return res.status(statusCode.HTTP_404_NOT_FOUND).json(`Category with ID ${category_id} not found`);
+            }
+            await product.addCategory(categoryInstance, { transaction: t });
+        }
 
         await Image.bulkCreate(images.map(image => ({
             url: image.url,
@@ -96,7 +100,7 @@ let add_product = async (req, res) => {
         await t.commit();
 
         logger.info(`${statusCode.HTTP_201_CREATED} [product:${product.id}]`)
-        res.status(statusCode.HTTP_201_CREATED).json(product)
+        res.status(statusCode.HTTP_201_CREATED).json(product);
     } catch (error) {
         logger.error(`Add product: ${error}`)
         await t.rollback();
