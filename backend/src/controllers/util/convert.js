@@ -30,7 +30,6 @@ let convert_result_auction_summary = (auctions) => {
             out["time"] = auction.time_auction;
             out["title"] = auction.name;
             out["auction_room_name"] = auction.name;
-            console.log(auction.seller)
             out["number_review"] = auction.seller ? auction.seller.dataValues.count : 0;
             out["voting_avg_review"] = auction.seller ? auction.seller.dataValues.avg_star : 0;
             let images = [];

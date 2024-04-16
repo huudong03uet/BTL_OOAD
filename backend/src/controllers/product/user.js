@@ -11,6 +11,7 @@ const Category = require('../../models/category')
 const { check_required_field } = require('../util')
 const { update_value_redis, get_value_redis, set_value_redis } = require('../util/redis')
 const Seller = require('../../models/seller')
+const { get } = require('../../routers/product/user')
 
 let get_categories = async (req, res) => {
     try {
@@ -107,10 +108,15 @@ let get_product_recently = async (req, res) => {
         }
 
         let result = [];
-        for (let i = 1; i <= 3; ++i) {
+        for (let i = 1; i <= 4; ++i) {
             let out = await get_value_redis(`${req.params.user_id}_${i}`);
             if (out) {
                 let product = await get_value_redis(`${out}`);
+
+
+                //  get image
+
+
                 if (product) {
                     result.push(product);
                 }
@@ -126,4 +132,45 @@ let get_product_recently = async (req, res) => {
 }
 
 
-module.exports = {get_products, get_categories, get_product_detail, get_product_recently}
+let get_product_accept = async (req, res) => {
+    try {
+        const products = await Product.findAll({
+            where: {
+                status: [AuctionProductStatus.NOT_YET_SOLD, AuctionProductStatus.ON_SALE],
+            },
+         
+            include: [
+                {
+                    model: Image,
+                    attributes: ["id", 'path', "url"]
+                },
+                {
+                    model: Seller,
+                    attributes: ["name"]
+                },
+                
+                // seller_name: sequelize.col('seller.name')
+
+            ],
+            //  add attribute sell_name = seller.name
+            attributes: { include: [
+                [sequelize.literal('seller.name'), 'user_sell'],
+                // image_path: sequelize.col('images.url')
+
+                [sequelize.literal('images.url'), 'image_path']
+            
+            ] }
+
+        });
+
+       
+
+        logger.info(`${statusCode.HTTP_200_OK} product length: ${products.length}`)
+        return res.status(statusCode.HTTP_200_OK).json(products);
+    } catch (error) {
+        logger.error(`Get products error: ${error}`);
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+module.exports = {get_products, get_categories, get_product_detail, get_product_recently, get_product_accept}

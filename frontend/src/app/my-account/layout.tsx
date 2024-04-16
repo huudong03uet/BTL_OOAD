@@ -6,9 +6,10 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import AppNav from "@/components/AppNav";
-import AppBreadCrumb from "@/components/AppBreadCrumb";
 import Container from "react-bootstrap/Container";
 import SideBarUser from "@/components/my-account/sideBarUser";
+import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,6 +18,9 @@ export default function MyAccountLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+
   return (
     <section className={inter.className}>
       {/* <div>
@@ -27,7 +31,6 @@ export default function MyAccountLayout({
 
       <AppHeader />
       <AppNav />
-      <AppBreadCrumb />
       <div className="row  mx-0">
         <div className="col-2">
           <SideBarUser />

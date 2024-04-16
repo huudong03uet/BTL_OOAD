@@ -49,6 +49,11 @@ let user_get_product_id_of_auction = async (auction_id: number) => {
     }
 }
 
+
+
+
+
+
 export {
     user_get_auction_upcoming,
     user_get_auction_promote,

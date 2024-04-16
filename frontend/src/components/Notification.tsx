@@ -1,4 +1,5 @@
 import get_notification from '@/services/notification';
+import { seller_notify } from '@/services/product/seller';
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-bootstrap/Modal';
 
@@ -8,7 +9,7 @@ interface NotificationElementInterface {
     message: string;
     image: string;
     read: boolean;
-    date: Date;
+    date: string;
 }
 
 interface NotificationProps {
@@ -59,7 +60,7 @@ const NotificationElement = ({ notificationElement }: { notificationElement: Not
 
                     <div>
                         <small>
-                            <small className='text-muted'>{notificationElement.date.toDateString()}</small>
+                            <small className='text-muted'>{notificationElement.date}</small>
 
                         </small>
                     </div>
@@ -78,55 +79,56 @@ const NotificationElement = ({ notificationElement }: { notificationElement: Not
 }
 
 const Notifications: React.FC<NotificationProps> = ({ onMarkAllAsRead, onDeleteAll, onNotificationSettings }) => {
-    const [notifications, setNotifications] = useState<NotificationElementInterface[]>([
-        {
-            id: 1,
-            header: 'Notification Header',
-            message: 'a d c s d d d d s s s s  s a a a a a a a a a a a a a a s ds s ad sa d ad sa dsa d qa rư e dq wd sa d ad á d a',
-            image: 'https://via.placeholder.com/200',
-            read: false,
-            date: new Date()
-        },
-        {
-            id: 2,
-            header: 'Notification Header',
-            message: 'Notification Message',
-            image: 'https://via.placeholder.com/200',
-            read: false,
-            date: new Date()
-        },
-        {
-            id: 3,
-            header: 'Notification Header',
-            message: 'Notification Message',
-            image: 'https://via.placeholder.com/200',
-            read: false,
-            date: new Date()
-        },
-        {
-            id: 4,
-            header: 'Notification Header',
-            message: 'Notification Message',
-            image: 'https://via.placeholder.com/200',
-            read: false,
-            date: new Date()
-        },
+    const [notifications, setNotifications] = useState<NotificationElementInterface[]>([]);
+    // {
+    //     id: 1,
+    //     header: 'Notification Header',
+    //     message: 'a d c s d d d d s s s s  s a a a a a a a a a a a a a a s ds s ad sa d ad sa dsa d qa rư e dq wd sa d ad á d a',
+    //     image: 'https://via.placeholder.com/200',
+    //     read: true,
+    //     date: new Date()
+    // },
+    // {
+    //     id: 2,
+    //     header: 'Notification Header',
+    //     message: 'Notification Message',
+    //     image: 'https://via.placeholder.com/200',
+    //     read: false,
+    //     date: new Date()
+    // },
+    // {
+    //     id: 3,
+    //     header: 'Notification Header',
+    //     message: 'Notification Message',
+    //     image: 'https://via.placeholder.com/200',
+    //     read: false,
+    //     date: new Date()
+    // },
+    // {
+    //     id: 4,
+    //     header: 'Notification Header',
+    //     message: 'Notification Message',
+    //     image: 'https://via.placeholder.com/200',
+    //     read: false,
+    //     date: new Date()
+    // },
 
 
-    ]);
+
+
     const [showSettingsButtons, setShowSettingsButtons] = useState(false);
 
     useEffect(() => {
-        // const fetchNotifications = async () => {
-        //     try {
-        //         const res = await get_notification();
-        //         setNotifications(res);
-        //     } catch (error) {
-        //         console.error('Error fetching notifications:', error);
-        //     }
-        // };
+        const fetchNotifications = async () => {
+            try {
+                const res = await seller_notify();
+                setNotifications(res);
+            } catch (error) {
+                console.error('Error fetching notifications:', error);
+            }
+        };
 
-        // fetchNotifications();
+        fetchNotifications();
     }, [notifications]);
 
 

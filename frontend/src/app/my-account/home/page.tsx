@@ -84,7 +84,9 @@ export default function MyInvaluable() {
             try {
                 const data = await get_artist_recommend_service();
                 if (Array.isArray(data)) {
-                    setExploreRecommendedArtists(data);
+                    // setExploreRecommendedArtists(data);
+                    //  set max 4 artists
+                    setExploreRecommendedArtists(data.slice(0, 4));
                 } else {
                     setExploreRecommendedArtists([])
                 }

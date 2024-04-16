@@ -6,7 +6,7 @@ export default class UserDataService {
 
     constructor() {
         if (typeof localStorage !== 'undefined') {
-            const data_user = localStorage.getItem('dataUser');
+            const data_user = window.localStorage.getItem('dataUser');
             if (typeof data_user === 'string') {
                 UserDataService.userData = JSON.parse(data_user);
             }
@@ -21,7 +21,7 @@ export default class UserDataService {
 
     static removeUserData() {
         window.localStorage.removeItem('dataUser');
-        SellerDataService.removeUserData()
+        SellerDataService.removeSellerData()
         UserDataService.userData = null;
     }
 

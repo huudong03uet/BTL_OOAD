@@ -13,6 +13,7 @@ const Category = require('../../models/category');
 const Image = require('../../models/image');
 const Inspection = require('../../models/inspection');
 const status = require('../../../constants/status');
+const { get_notifies, set_value_redis, get_value_redis, delete_key_redis } = require('../util/redis');
 
 
 let get_all_product_not_inspect = async (req, res) => {
@@ -81,13 +82,29 @@ let product_inspect = async (req, res) => {
         });
 
         if (existingInspection) {
-            await Inspection.update(inspectionData, {
+            await Inspection.update(req.body, {
                 where: { admin_id: admin_id, product_id: product_id },
                 transaction: t
             });
         } else {
             await Inspection.create(req.body, { transaction: t });
         }
+
+        const product = await Product.findByPk(product_id);
+
+        let notifyValue = await get_value_redis(`admin:product:${product_id}`)
+        if (notifyValue) {
+            notifyValue.message = `New product ${product.title} has been ${req.body.status}`
+        } else {
+            notifyValue = {
+                "message": `New product ${product.title} has been ${req.body.status}`,
+                "date": Date.now(),
+                "header": "Product",
+                "image": 'https://via.placeholder.com/200',
+            };
+        }
+        set_value_redis(`admin:product:${product.id}`, notifyValue)
+        set_value_redis(`seller:${product.seller_id}:product:${product.id}`, notifyValue)
 
         if (req.body.status == 'Accept') {
             await Product.update({
@@ -208,11 +225,53 @@ let delete_product = async (req, res) => {
 }
 
 
+
+let notify = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["admin_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        const notifies = await get_notifies("admin", req.params.admin_id);
+
+        // logger.info(`${statusCode.HTTP_200_OK} notifies length ${notifies.length}`);
+        res.status(statusCode.HTTP_200_OK).json(notifies);
+    } catch (error) {
+        logger.error(`Add product: ${error}`)
+    }
+}
+
+let delete_category = async (req, res) => {
+    try {
+        const { category_id } = req.body;
+
+        const deletedCategory = await Category.destroy({
+            where: {
+                id: category_id
+            }
+        });
+
+        if (deletedCategory === 0) {
+            logger.error(`${statusCode.HTTP_404_NOT_FOUND} Category not found.`);
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json("Category not found.");
+        }
+
+        return res.status(statusCode.HTTP_200_OK).json("Category deleted successfully.");
+    } catch (error) {
+        logger.error(`Delete category: ${error}`);
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+
 module.exports = {
     get_all_product_not_inspect,
     product_inspect,
     get_all_product,
     add_category,
     delete_product,
+    notify,
+    delete_category,
 };
 

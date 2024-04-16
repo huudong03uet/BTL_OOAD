@@ -1,9 +1,9 @@
 'use client'
 import ItemSummary from '@/models/product_summary';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import React, { useState } from 'react'
-
-
+import dateFormat, { masks } from "dateformat";
+// http://localhost:8080/product/user/detail/product_id=10/user_id=10000
 
 
 function ViewItem({ obj }: { obj: ItemSummary }) {
@@ -14,7 +14,7 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
     }
     return (
         <div>
-            <div style={{ minHeight: "250px" }} className='position-relative d-flex align-items-center justify-content-center'>
+            <div style={{ height: "250px" }} className='position-relative d-flex align-items-center justify-content-center'>
                 {/* <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i> */}
                 {status == 0 ? (
                     <button
@@ -33,26 +33,38 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
                     </button>
 
                 )}
-                <img src={obj.image_path} alt={obj.title} className="img-thumbnail border-0"></img>
+                <img src={obj.image_path} alt={obj.title} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
 
             </div>
-            <div >
+            {/* <div
+
+            
+            > */}
+            <Link href={{ pathname: '/item_detail', query: { product_id: obj.id } }}
+                style={{ textDecoration: "none", color: "black" }}
+            >
+
                 <div>
-                    {obj.time}
+                    {dateFormat(obj.time, " mmm dd, yyyy - hh:MM TT")}
                 </div>
                 <div style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
-                    className='my-1'>
+                    className='my-1 fw-bold'>
                     {obj.title}
                 </div>
                 <div>
-                <Link to={`/auction-house/${obj.seller_id}`}>by {obj.user_sell}</Link>
+                    <Link href={`/auction-house/${obj.seller_id}`}>by {obj.user_sell}</Link>
                 </div>
                 <div className="fw-bold">
-                    ${obj.max_bid}
-                </div>
-            </div>
+                    {/* ${obj.max_bid} */}
+                    ${
+                        obj.min_estimate == null ? obj.max_bid : obj.min_estimate
+                    }
 
-        </div>
+
+                    {/* min  */}
+                </div>
+            </Link>
+        </div >
     );
 }
 

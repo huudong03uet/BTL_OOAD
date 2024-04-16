@@ -4,7 +4,7 @@ export default class AdminDataService {
     private static adminData: Admin | null = null;
 
     constructor() {
-        const data_Admin = localStorage.getItem('dataAdmin');
+        const data_Admin = window.localStorage.getItem('dataAdmin');
 
         if (typeof data_Admin === 'string') {
             AdminDataService.adminData = JSON.parse(data_Admin);

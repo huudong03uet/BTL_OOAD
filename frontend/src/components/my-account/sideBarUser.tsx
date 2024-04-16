@@ -4,6 +4,8 @@ import UserDataService from "@/services/model/user";
 import ModalConfirm from "@/components/ModalConfirm";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import SellerDataService from '@/services/model/seller';
+import { toast } from 'react-toastify';
 
 function SideBarUser() {
     // const router = useRouter();
@@ -13,9 +15,19 @@ function SideBarUser() {
     const [showModal, setShowModal] = useState<boolean>(false); // State for modal visibility
 
     const handleConfirmSignout = () => {
+        toast.success('Logout successfully!', {
+            position: "bottom-left",
+            autoClose: 3000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
       setShowModal(false);
       UserDataService.removeUserData();
-      alert('Đăng xuất thành công!');
+      SellerDataService.removeSellerData();
+      
       window.location.href = '/';
 
     };
@@ -26,7 +38,7 @@ function SideBarUser() {
 
     return (
         // <div className='ps-5 ms-3'>
-        <div className='ps-0 ms-3'>
+        <div className='ps-4 ms-3 pe-4'>
             <div className={style.div_module}>
                 <Link className={style.div_text} href="/my-account/home" >
                     My Invaluable

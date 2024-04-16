@@ -9,5 +9,6 @@ router.post("/update", productController.update_product);
 router.get("/sold/seller_id=:seller_id", productController.get_product_sold);
 router.get("/all/seller_id=:seller_id", productController.get_products);
 router.get("/history/seller_id=:seller_id", productController.get_product_history);
+router.get('/notify/seller_id=:seller_id', productController.notify)
 
 module.exports = router;

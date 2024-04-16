@@ -1,6 +1,3 @@
-
-
-
 'use client'
 import { Modal } from 'react-bootstrap';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
@@ -8,6 +5,7 @@ import style from '../style.module.css';
 import { useEffect, useState } from 'react';
 import { seller_register } from '@/services/account/seller';
 import SellerDataService from '@/services/model/seller';
+import { boolean } from 'zod';
 
 export default function PaymentOptions() {
     const [showModal, setShowModal] = useState(false);
@@ -27,7 +25,7 @@ export default function PaymentOptions() {
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [postalCode, setPostalCode] = useState('');
-
+    const [isRequested, setIsRequested] = useState(false);
     const handleSaveRequest = async () => {
         const seller_info = {
             name: sellerName,
@@ -51,7 +49,9 @@ export default function PaymentOptions() {
             postal: postalCode
         }
 
-        await seller_register(seller_info, card_info, location_info)
+        const response = await seller_register(seller_info, card_info, location_info)
+        console.log(response)
+        
     };
 
 
@@ -59,10 +59,13 @@ export default function PaymentOptions() {
         const fetchData = async () => {
             try {
               const data = await SellerDataService.getSellerData();
-              if (data?.id) {
+              console.log(data);
+              if (data?.id && data?.status == "accept") {
                 window.location.href = '/seller';
               }
-              
+              if (data?.id && ! (data?.status == "accept")) {
+                setIsRequested(true);
+              }
       
             } catch (error) {
               console.error('Error fetching upcoming online auctions:', error);
@@ -82,8 +85,12 @@ export default function PaymentOptions() {
                 <div className={style.div_header}>
                     Request for Seller Account
                 </div>
-                <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Register as Seller</button>
-            </div >
+                {isRequested ? (
+                    <p>You have already submitted a request. Please wait for admin approval.</p>
+                ) : (
+                    <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Register as Seller</button>
+                )}
+            </div>
 
 
 

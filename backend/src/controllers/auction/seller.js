@@ -16,6 +16,8 @@ const { check_required_field, find_or_create_location } = require('../util');
 const Seller = require('../../models/seller');
 const Location = require('../../models/location');
 const { convert_result_item_summary } = require('../util/convert');
+const { set_value_redis } = require('../util/redis');
+const Admin = require('../../models/admin');
 
 
 let create_auction = async (req, res) => {

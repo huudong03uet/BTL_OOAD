@@ -6,7 +6,7 @@ function SideBarShop() {
 
     return (
         // <div className='ps-5 ms-3'>
-        <div className='ps-0 ms-3'>
+        <div className='ps-4 ms-3 pe-4'>
             <div className={style.div_module}>
                 <Link className={style.div_text} href="/seller" >
                     Seller center

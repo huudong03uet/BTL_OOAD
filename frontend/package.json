@@ -21,6 +21,8 @@
     "@nextui-org/react": "^2.2.10",
     "@react-google-maps/api": "^2.19.3",
     "@smastrom/react-rating": "^1.5.0",
+    "@stripe/react-stripe-js": "^2.7.0",
+    "@stripe/stripe-js": "^3.3.0",
     "@types/googlemaps": "^3.43.3",
     "antd": "^5.15.3",
     "axios": "^1.6.8",
@@ -28,6 +30,7 @@
     "bootstrap-icons": "^1.11.3",
     "clsx": "^2.1.0",
     "css-loader": "^6.10.0",
+    "dateformat": "^5.0.3",
     "faker-js": "^1.0.0",
     "jwt-decode": "^4.0.0",
     "livekit-client": "^2.0.10",
@@ -46,6 +49,7 @@
     "react-icons": "^5.0.1",
     "react-router-dom": "^6.22.3",
     "react-spring": "^9.7.3",
+    "react-toastify": "^10.0.5",
     "style-loader": "^3.3.4",
     "swr": "^2.2.5",
     "tailwindcss": "^3.4.1",
@@ -53,6 +57,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/dateformat": "^5.0.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
