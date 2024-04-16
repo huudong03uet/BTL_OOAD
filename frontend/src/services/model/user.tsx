@@ -26,6 +26,12 @@ export default class UserDataService {
     }
 
     static getUserData(): User | null {
+        // if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') {
+        //     return null;
+        // }
+
+
+
         const data_user = window.localStorage.getItem('dataUser');
 
         if (typeof data_user === 'string') {

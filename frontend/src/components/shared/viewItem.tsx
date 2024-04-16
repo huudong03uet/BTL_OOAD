@@ -88,7 +88,7 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
                 </div>
                 <div>
                     <StyledLink href={`/auction-house/${obj.seller_id}`}
-                    
+                    onClick={(e) => e.stopPropagation()}
                     >by {obj.user_sell}</StyledLink>
                 </div>
                 <div className="fw-bold">

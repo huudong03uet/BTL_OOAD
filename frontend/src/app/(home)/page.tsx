@@ -192,8 +192,8 @@ const HomePage = () => {
           <div className="row">
             {curatedCollections.map((object, i) => (
               <div className="col-sm-2" key={i}>
-                <div>
-                  <img src={object.image_path} alt={object.title} className="img-fluid" ></img>
+                <div className='d-flex justify-content-center align-items-center' style={{height: "200px"}}>
+                  <img src={object.image_path} alt={object.title} className="img-fluid" style={{width: "100%", height: "100%", objectFit:"cover"}} ></img>
                 </div>
 
 
