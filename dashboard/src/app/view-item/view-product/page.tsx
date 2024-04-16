@@ -4,8 +4,8 @@ import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import TableProduct from "@/components/ViewItem/TableViewProduct";
-import { ProductDetail } from "@/types/product_detail";
 import { product_all } from "@/service/product";
+import Product from "@/types/product";
 
 
 // export const metadata: Metadata = {
@@ -15,7 +15,7 @@ import { product_all } from "@/service/product";
 // };
 
 interface TableProductProps {
-  packageData: ProductDetail[];
+  packageData: Product[];
 }
 
 const ViewProductPage = () => {
@@ -121,7 +121,7 @@ const ViewProductPage = () => {
   //       provenance: 'Fake Provenance',
   //   }
   // ];
-  const [packageDatafake, setPackageDatafake] = useState<ProductDetail[]>([])
+  const [packageDatafake, setPackageDatafake] = useState<Product[]>([])
 
   useEffect(() => {
     const fetchData = async () => {

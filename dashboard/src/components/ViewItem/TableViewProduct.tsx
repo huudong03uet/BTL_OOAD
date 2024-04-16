@@ -1,34 +1,34 @@
 'use client'
-import { ProductDetail } from "@/types/product_detail"
 import DeleteModal from "@/components/Modal/ModalDeleteProduct";
 import { useState } from "react";
 import { Pagination } from "@nextui-org/react";
+import Product from "@/types/product";
 
 interface IProps {
     showModalCreate: boolean;
     setShowModalCreate: (value: boolean) => void;
-    ProductInformation: ProductDetail;
+    ProductInformation: Product;
 }
 
 interface TableProductProps {
-    packageData: ProductDetail[];
+    packageData: Product[];
 }
 
 const TableProduct: React.FC<TableProductProps> = ({ packageData }) => {
     const [showModalCreate, setShowModalCreate] = useState<boolean>(false);
-    const [selectedPackage, setSelectedPackage] = useState<ProductDetail | null>(null);
+    const [selectedPackage, setSelectedPackage] = useState<Product | null>(null);
 
     const [showModalDelete, setShowModalDelete] = useState<boolean>(false);
-    const [ProductToDelete, setProductToDelete] = useState<ProductDetail | null>(null);
+    const [ProductToDelete, setProductToDelete] = useState<Product | null>(null);
 
-    const [Products, setProducts] = useState<ProductDetail[]>([]);
+    const [Products, setProducts] = useState<Product[]>([]);
 
-    const handleDeleteProduct = (Product: ProductDetail) => {
+    const handleDeleteProduct = (Product: Product) => {
         setProductToDelete(Product);
         setShowModalDelete(true);
     }
 
-    const handleViewProduct = (packageItem: ProductDetail) => {
+    const handleViewProduct = (packageItem: Product) => {
         setSelectedPackage(packageItem);
         setShowModalCreate(true);
         //call api đến font end trang item detail của packageItem.id 
