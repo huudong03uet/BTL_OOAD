@@ -189,7 +189,7 @@ function Header() {
                   <input
                     type="text"
                     placeholder="Search items & sellers"
-                    className="mr-sm-2 ps-5 w-100 border rounded border-dark"
+                    className="mr-sm-2 ps-5 w-100 border rounded border-dark py-1"
                     value={searchText}
                     onChange={handleChange}
                     onKeyPress={handleKeyPress}
