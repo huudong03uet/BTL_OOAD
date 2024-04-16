@@ -1,5 +1,5 @@
 
-import { ProductDetail } from "@/types/product_detail";
+import  Product  from "@/types/product";
 import { useState } from "react";
 import { mutate } from "swr"
 import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
@@ -10,9 +10,9 @@ import { product_delete } from "@/service/product";
 interface IProps {
     showModalDelete: boolean;
     setShowModalDelete: (value: boolean) => void;
-    ProductToDelete: ProductDetail | null;
-    Products: ProductDetail[];
-    setProducts: (Products: ProductDetail[]) => void;
+    ProductToDelete: Product | null;
+    Products: Product[];
+    setProducts: (Products: Product[]) => void;
 }
 
 function DeleteModal(props: IProps) {

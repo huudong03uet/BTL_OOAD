@@ -1,11 +1,11 @@
 'use client'
-import ItemSummary from '@/models/product_summary';
+import Product from '@/models/product';
 import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import Link from 'next/link';
 import styles from '@/styles/auction_house/soldItem.module.css'
 
-function SoldItem({ obj }: { obj: ItemSummary }) {
+function SoldItem({ obj }: { obj: Product }) {
     const [status, setStatus] = useState<number>(0);
 
     function onClickHeart() {
@@ -36,22 +36,22 @@ function SoldItem({ obj }: { obj: ItemSummary }) {
                     </button>
 
                 )}
-                <img src={obj.image_path} alt={obj.title} className="img-thumbnail border-0"></img>
+                <img src={obj.images[0].url} alt={obj.title} className="img-thumbnail border-0"></img>
 
             </div>
             <div >
                 <div>
-                    {obj.time}
+                    {obj.createdAt}
                 </div>
                 <div style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
                     className='my-1'>
                     {obj.title}
                 </div>
                 <div>
-                <Link href={`/auction-house/${obj.seller_id}`}>by {obj.user_sell}</Link>
+                <Link href={`/auction-house/${obj.seller.id}`}>by {obj.seller.name}</Link>
                 </div>
                 <div className="fw-bold">
-                    ${obj.price}
+                    ${obj.winner?.bid_history.amount}
                 </div>
             </div>
 

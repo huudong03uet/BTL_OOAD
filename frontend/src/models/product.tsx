@@ -1,5 +1,8 @@
 
 //  chọn cái anyf
+import BidHistory from './bid_history';
+import Winner from './winner';
+
 interface Image {
     id: number,
     url: string,
@@ -37,7 +40,8 @@ export default interface Product {
     max_bid?: number;
     min_estimate?: number;
     max_estimate?: number;
-    price?:number;
+    winner?:Winner;
+    bid_history?: BidHistory[];
     description: string;
     dimensions: string;
     artist: string;
