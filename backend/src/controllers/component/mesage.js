@@ -30,18 +30,6 @@ let get_message = async (req, res) => {
             ]
         });
 
-        console.log("Messages before sorting:", messages.map(msg => msg.createdAt));
-
-        messages.forEach(msg => {
-            if (typeof msg.createdAt === 'string') {
-                msg.createdAt = new Date(msg.createdAt);
-            }
-        });
-        
-        // messages.sort((a, b) => a.createdAt - b.createdAt);
-
-        console.log("Messages after sorting:", messages.map(msg => msg.createdAt));
-
         let result = []
         for(let mess of messages) {
             let out = {}
