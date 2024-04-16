@@ -14,12 +14,12 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 
 import MyProductTable, { TableActivity } from "@/app/seller/component/product-table";
 import { seller_auction_create_service, seller_auction_show_product, seller_get_auction_info, seller_update_auction } from "@/services/auction/seller";
-import ItemSummary from "@/models/product_summary";
 import Location from "@/models/location";
 import SellerDataService from "@/services/model/seller";
 import { user_get_product_id_of_auction } from "@/services/auction/user";
 import Auction from "@/models/auction";
 import get_location_service from "@/services/component/location";
+import Product from "@/models/product";
 
 enum AuctionVisibility {
     PUBLIC = 0,
@@ -30,7 +30,7 @@ enum AuctionVisibility {
 
 export default function AddAuction() {
     const [showNotificationModal, setShowNotificationModal] = useState(false);
-    const [data, setData] = useState<ItemSummary[]>([])
+    const [data, setData] = useState<Product[]>([])
     const [auctionStates, setAuctionStates] = useState<boolean[]>([]);
     const [timeStartValue, setTimeStartValue] = useState<Dayjs | null>(dayjs('2022-04-17T15:30'));
     const [visibility, setVisibility] = useState(AuctionVisibility.PUBLIC);

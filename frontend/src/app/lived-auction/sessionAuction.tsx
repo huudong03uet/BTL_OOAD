@@ -1,10 +1,6 @@
 'use client'
 import { info } from 'console';
 import React, { useState } from 'react';
-import { Button, Divider, Flex, Radio } from 'antd';
-import type { ConfigProviderProps } from 'antd';
-import { Carousel } from 'react-bootstrap';
-import { image } from '@nextui-org/react';
 import SessionAuctionCost from '@/models/session_auction_cost';
 import WatchChannel from '@/components/live-stream/watch-channel';
 

@@ -2,15 +2,14 @@
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import MyProductTable, { TableActivity } from '../../component/product-table';
-import ItemSummary from '@/models/product_summary';
 import { seller_get_all_products } from '@/services/product/seller';
 import { useRouter, useSearchParams } from 'next/navigation';
-
+import Product from "@/models/product";
 
 //  cứ lấy hết thông tin có của product -> không cần lọc, dư sẽ để vào phần detail hoặc bỏ
 
 export default function MyProduct() {
-    const [data, setData] = useState<ItemSummary[]>([])
+    const [data, setData] = useState<Product[]>([])
     const router = useRouter();
     
     useEffect(() => {

@@ -1,12 +1,12 @@
 import React from 'react';
-import ItemSummary from '@/models/product_summary';
+import Product from '@/models/product';
 
 enum StatusItemAuction {
     SOLD = "0", CURRENT = "1", UP_COMING = "2",
 }
 
 interface ItemLivedAuctionProps {
-    obj: ItemSummary;
+    obj: Product;
     onClick: () => void;
 }
 
@@ -31,7 +31,7 @@ const ItemLivedAuction: React.FC<ItemLivedAuctionProps> = ({ obj, onClick }) => 
                 </div>
 
                 <div className='w-100 h-100 d-flex align-items-center justify-content-center'>
-                    <img src={obj.image_path} alt={obj.title} style={{ width: "auto", height: "100px", maxWidth: "100%" }}></img>
+                    <img src={obj.images[0].url} alt={obj.title} style={{ width: "auto", height: "100px", maxWidth: "100%" }}></img>
                 </div>
             </div>
             <div className='col-7 px-2'>

@@ -7,10 +7,9 @@ import ViewItem from "@/components/shared/viewItem";
 import UserDataService from "@/services/model/user";
 import { user_get_auction_upcoming } from "@/services/auction/user";
 import get_artist_recommend_service from "@/services/component/artist";
-import AuctionSummary from "@/models/auction_summary";
 import { user_get_product_accept, user_get_recently_product } from "@/services/product/user";
-import ItemSummary from "@/models/product_summary";
-
+import Product from "@/models/product";
+import Auction from "@/models/auction";
 
 export default function MyInvaluable() {
     const user_name = UserDataService.getUserData()?.user_name;
@@ -59,7 +58,7 @@ export default function MyInvaluable() {
 
     // ];
 
-    const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionSummary[]>([]);
+    const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<Auction[]>([]);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -123,7 +122,7 @@ export default function MyInvaluable() {
     //     }
     // ]
 
-    const [recommendItemForYou, setRecommendItemForYou] = useState<ItemSummary[]>([]);
+    const [recommendItemForYou, setRecommendItemForYou] = useState<Product[]>([]);
     useEffect(() => {
         const fetchData = async () => {
             try {

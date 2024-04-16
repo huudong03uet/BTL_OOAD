@@ -8,15 +8,14 @@ import './style.css';
 import { Radio } from 'antd';
 import { useRouter } from 'next/navigation'
 import Product from '@/models/product';
-import ItemSummary from '@/models/product_summary';
 import { user_get_detail_product } from '@/services/product/user';
 import { user_get_auction_info } from '@/services/auction/user';
-import AuctionSummary from '@/models/auction_summary';
+import Auction from '@/models/auction';
 
 export default function LivedAuction() {
 
-    const [infoAuction, setInfoAuction] = useState({} as AuctionSummary);
-    const [lotsAuction, setLotsAuction] = useState<ItemSummary[]>([]);
+    const [infoAuction, setInfoAuction] = useState({} as Auction);
+    const [lotsAuction, setLotsAuction] = useState<Product[]>([]);
 
     useEffect(() => {
         const fetchItemData = async () => {
@@ -138,14 +137,18 @@ export default function LivedAuction() {
                         <div style={{ backgroundColor: "white" }} >
                             <div className='p-3'>
                                 <div style={{ marginBottom: "5px", fontWeight: "500", fontSize: "20px" }}>
-                                    {infoAuction.auction_room_name}
+                                    {infoAuction.name}
                                 </div>
                                 <div style={{ marginBottom: "0px", fontWeight: "500", fontSize: "16px" }}>
-                                    by {infoAuction.seller_name}
+                                    by {infoAuction.seller.name}
                                 </div>
                                 <div>
                                     <i className="fa fa-star" aria-hidden="true" style={{ color: "#ffc107" }}></i>
-                                    {' '}{infoAuction.voting_avg_review}{' '}({infoAuction.number_review})
+                                    {/* {' '}{infoAuction.seller.rating}  = averagte of infor.seller.reviews */}
+
+                                    {' '}({infoAuction.seller.reviews.reduce((a, b) => a + b.rating, 0) / infoAuction.seller.reviews.length || 0})
+                                    
+                                    {' '}({infoAuction.seller.reviews.length})
                                 </div>
                                 <div className='d-flex align-items-center'>
                                     <LinearProgress color="warning" variant="determinate" value={23} style={{ height: "2px", width: '100%' }} className="me-3" />
