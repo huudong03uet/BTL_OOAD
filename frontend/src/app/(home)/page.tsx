@@ -53,7 +53,6 @@ const HomePage = () => {
         const data = await user_get_recently_product();
         if (Array.isArray(data)) {
           setRecentlyViewedItems(data);
-          console.log(data);
         } else {
           setRecentlyViewedItems([])
         }
@@ -93,7 +92,15 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         const data = await user_get_category_service();
-        setCuratedCollections(data);
+        // setCuratedCollections(data.slice(0, 6));
+        // get random 6 items
+        if (Array.isArray(data)) {
+          let randomItems = data.sort(() => Math.random() - Math.random()).slice(0, 6);
+          setCuratedCollections(randomItems);
+        } else {
+          setCuratedCollections([])
+        }
+        
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);
       }
@@ -185,8 +192,8 @@ const HomePage = () => {
           <div className="row">
             {curatedCollections.map((object, i) => (
               <div className="col-sm-2" key={i}>
-                <div>
-                  <img src={object.image_path} alt={object.title} className="img-fluid" ></img>
+                <div className='d-flex justify-content-center align-items-center' style={{height: "200px"}}>
+                  <img src={object.image_path} alt={object.title} className="img-fluid" style={{width: "100%", height: "100%", objectFit:"cover"}} ></img>
                 </div>
 
 

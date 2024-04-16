@@ -24,10 +24,10 @@ enum StatusAuction {
 
 
 function openLivedAuction() {
-    let width = window.screen.width - 100;
-    let height = window.screen.height - 200;
-    let left = 50;
-    let top = 50;
+    let width = window.screen.width;
+    let height = window.screen.height;
+    let left = 0;
+    let top = 0;
 
     let windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
     window.open('/lived-auction', '_blank', windowFeatures);
@@ -85,7 +85,6 @@ function UpcomingAuctions({ obj }: { obj: AuctionSummary }) {
 
 
 
-                                {obj.status == StatusAuction.EventOrganizing ? (
                                     <button type="button" className="btn btn-danger w-100">
                                         <div onClick={openLivedAuction}>
                                             Enter Lived Auction
@@ -94,10 +93,7 @@ function UpcomingAuctions({ obj }: { obj: AuctionSummary }) {
 
                                     </button>
 
-                                ) : (
-                                    <button type="button" className="btn btn-dark w-100">View Items</button>
-
-                                )}
+                               
                                 <a className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#">
                                     Register to bid
                                 </a>

@@ -70,7 +70,7 @@ let get_product_detail = async (req, res) => {
                 },
                 {
                     model: Seller,
-                    attributes: ["name"]
+                    attributes: ["name", 'id']
                 }
             ]
         });
@@ -87,6 +87,7 @@ let get_product_detail = async (req, res) => {
         value["max_bid"] = product.dataValues.max_estimate
         value["image_path"] = product.dataValues.images[0].dataValues.url
         value["user_sell"] = product.dataValues.seller.name
+        value["seller_id"] = product.dataValues.seller.id
 
         await update_value_redis(`${req.params.user_id}_1`, `${product.id}`)
         await set_value_redis(`${product.id}`, value)
@@ -112,9 +113,6 @@ let get_product_recently = async (req, res) => {
             let out = await get_value_redis(`${req.params.user_id}_${i}`);
             if (out) {
                 let product = await get_value_redis(`${out}`);
-
-
-                //  get image
 
 
                 if (product) {

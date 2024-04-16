@@ -1,77 +1,18 @@
+'use client'
 import React, { useEffect, useState, useRef } from 'react'
 import styles from './style.module.css'
 import { Avatar, Input, Button, MessageList } from "react-chat-elements"
 import { date } from 'zod'
+import { get_message_service, send_message_service } from '@/services/component/message'
 
 let clearRef = () => { }
-
-// export const textMessageExampleData: any[] = [
-// ]
-
-
-const messageList: any[] = [
-    {
-        position: "left",
-        type: "text",
-        title: "Kursat",
-        text: "Give me a message list example !",
-        // date: new Date(),
-        // set random date-> 2 days ago
-        date: new Date(new Date().setDate(new Date().getDate() - 2)),
-    },
-    {
-        position: "right",
-        type: "text",
-        // title: "Emre",
-        text: "That's all.",
-        // date: new Date(),   
-        // set random date-> 1 day ago
-        date: new Date(new Date().setDate(new Date().getDate() - 1)),
-
-    },
-
-    {
-        position: "left",
-        type: "text",
-        title: "Kursat",
-        text: "Thank you !",
-        // date: new Date(),
-        // set random date-> 1 hour ago
-        date: new Date(new Date().setHours(new Date().getHours() - 1)),
-    },
-    {
-        position: "right",
-        type: "text",
-        // title: "Emre",
-        text: "You're welcome.",
-        // date: new Date(),
-        // set random date-> 30 minutes ago
-        date: new Date(new Date().setMinutes(new Date().getMinutes() - 30)),
-    },
-    {
-        position: "left",
-        type: "text",
-        title: "Kursat",
-        text: "Goodbye !",
-        // date: new Date(),
-        // set random date-> 10 minutes ago
-        date: new Date(new Date().setMinutes(new Date().getMinutes() - 10)),
-    },
-    {
-        position: "right",
-        type: "text",
-        // title: "Emre",
-        text: "Goodbye !",
-        date: new Date(),
-    },
-]
 
 const MessageListComponent = ({ chatInfo, chatType, updateState }: { chatInfo: any, chatType: any, updateState: any }) => {
     const messageInput = useRef(null);
     const [inputValue, setInputValue] = useState("")
 
 
-    const [messageListState, setMessageListState] = useState(messageList)
+    const [messageListState, setMessageListState] = useState<any[]>([])
 
     const clearInput = () => {
         setInputValue(""); // Reset input value to empty string
@@ -80,7 +21,56 @@ const MessageListComponent = ({ chatInfo, chatType, updateState }: { chatInfo: a
         }
     };
 
+    const [messageList, setMessageList] = useState<any[]>([])
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await get_message_service(chatInfo.id);
+                if (Array.isArray(data)) {
+                    setMessageListState(data);
+                } else {
+                    setMessageListState([])
+                }
+            } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
+            }
+        }
+
+        fetchData()
+    }, [chatInfo.id])
+
+    const sendMessage = async () => {
+        if (inputValue.trim() !== "") {
+            const newMessage = {
+                position: "right",
+                type: "text",
+                text: inputValue,
+
+                date: new Date(),
+            };
+            setMessageListState(prevState => [...prevState, newMessage]);
+            await send_message_service(chatInfo.id, inputValue)
+            clearInput();
+            updateState([]);
+        }
+    };
+
+
+    // const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    //     console.log(event)
+    //     if (event.keyCode === 13) {
+    //         event.preventDefault();
+    //         sendMessage();
+    //     }
+    // };
+
+    const handleKeyDown = (event: React.KeyboardEvent) => {
+        if ((event as React.KeyboardEvent<HTMLInputElement>).key == "Enter") {
+            event.preventDefault();
+            sendMessage();
+        }
+    };
 
     return (
         <div className={styles.messageListContainer}>
@@ -117,45 +107,53 @@ const MessageListComponent = ({ chatInfo, chatType, updateState }: { chatInfo: a
                     multiline={false}
                     referance={messageInput}
                     clear={clearInput}
-                    onKeyDown={(event) => {
-                        if (event.keyCode === 13) {
-                            if (inputValue !== "") {
-                                // textMessageExampleData.push(inputValue)
-                                messageListState.push({
-                                    position: "right",
-                                    type: "text",
-                                    // title: "Emre",
-                                    text: inputValue,
-                                })
-                                clearInput();
-                                updateState([]);
-                            }
-                        }
-                    }}
+                    onKeyDown={(event) => handleKeyDown(event)}
+                    // onKeyDown={(event) => {
+                    //     if (event.keyCode === 13) {
+                    //         if (inputValue !== "") {
+                    //             // textMessageExampleData.push(inputValue)
+                    //             messageListState.push({
+                    //                 position: "right",
+                    //                 type: "text",
+                    //                 // title: "Emre",
+                    //                 text: inputValue,
+                    //             })
+                    //             clearInput();
+                    //             updateState([]);
+                    //         }
+                    //     }
+                    // }}
                     onChange={(event: any) => setInputValue(event.target.value)}
                     rightButtons={
-
                         <Button
                             text=">"
                             className="sendButton"
-                            onClick={() => {
-                                if (inputValue !== "") {
-                                    // textMessageExampleData.push(inputValue)
-                                    messageListState.push({
-                                        position: "right",
-                                        type: "text",
-                                        // title: "Emre",
-                                        text: inputValue,
-                                    })
-                                    clearInput();
-                                    updateState([]);
-                                }
-                            }}
+                            onClick={sendMessage}
                         />
-
-
-
                     }
+                    // rightButtons={
+
+                    //     <Button
+                    //         text=">"
+                    //         className="sendButton"
+                    //         onClick={() => {
+                    //             if (inputValue !== "") {
+                    //                 // textMessageExampleData.push(inputValue)
+                    //                 messageListState.push({
+                    //                     position: "right",
+                    //                     type: "text",
+                    //                     // title: "Emre",
+                    //                     text: inputValue,
+                    //                 })
+                    //                 clearInput();
+                    //                 updateState([]);
+                    //             }
+                    //         }}
+                    //     />
+
+
+
+                    // }
                 />
             </div>
         </div>

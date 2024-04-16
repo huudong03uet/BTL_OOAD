@@ -9,7 +9,7 @@ export default interface ItemSummary {
     price?: number,
     artist?: string,
     time?: string,
-    image_path?: string,
-    user_sell?: string,
-    // user_sell?: string;
+    image_path: string,
+    user_sell?: string;
+    seller_id?: number;
 }

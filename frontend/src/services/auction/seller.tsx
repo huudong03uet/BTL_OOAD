@@ -15,14 +15,11 @@ const seller_auction_create_service = async (auctionData: any) => {
     }
 };
 
-const seller_auction_past_service = async () => {
+const seller_auction_past_service = async (seller_id: number) => {
     try {
-        const sellerData = await SellerDataService.getSellerData();
-        if (sellerData !== null) {
-            let url = `${HOST}/auction/seller/past/seller_id=${sellerData.id}`;
-            let response = await axios.get(url);
-            return response.data;
-        }
+        let url = `${HOST}/auction/seller/past/seller_id=${seller_id}`;
+        let response = await axios.get(url);
+        return response.data;
     } catch (error: any) {
         console.error('Error fetching data:', error);
         return error.response.data;

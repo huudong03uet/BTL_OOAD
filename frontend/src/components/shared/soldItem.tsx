@@ -2,6 +2,7 @@
 import ItemSummary from '@/models/product_summary';
 import React, { useState } from 'react'
 import Container from 'react-bootstrap/Container';
+import Link from 'next/link';
 import styles from '@/styles/auction_house/soldItem.module.css'
 
 function SoldItem({ obj }: { obj: ItemSummary }) {
@@ -15,8 +16,8 @@ function SoldItem({ obj }: { obj: ItemSummary }) {
             <div style={{ minHeight: "200px" }} className='position-relative d-flex align-items-center justify-content-center'>
                 <button
                     className='position-absolute p-2 d-flex justify-content-center align-items-center'
-                    style={{ border: "1px solid #797676", backgroundColor: "gray", width: "35px", height: "35px", left: "5%", top: "-3%", borderRadius: "8px"}}>
-                        <span className={styles.span}>Sold</span>
+                    style={{ border: "1px solid #797676", backgroundColor: "gray", width: "35px", height: "35px", left: "5%", top: "-3%", borderRadius: "8px" }}>
+                    <span className={styles.span}>Sold</span>
                 </button>
                 {status == 0 ? (
                     <button
@@ -47,7 +48,7 @@ function SoldItem({ obj }: { obj: ItemSummary }) {
                     {obj.title}
                 </div>
                 <div>
-                    by {obj.user_sell}
+                <Link href={`/auction-house/${obj.seller_id}`}>by {obj.user_sell}</Link>
                 </div>
                 <div className="fw-bold">
                     ${obj.price}

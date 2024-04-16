@@ -58,7 +58,7 @@ export default function Footer() {
                     Price Archive
                   </div>
                   <div className="col-6 col-xs-6 col-sm-6 col-lg-4 mb-3">
-                    Sell on Invaluable
+                    Sell on Auction
                   </div>
                   <div className="col-6 col-xs-6 col-sm-6 col-lg-4 mb-3 ">
                     Help
@@ -77,10 +77,10 @@ export default function Footer() {
           <MDBCol className='mb-4 mb-md-0'>
             <div>
               <div className="">
-                <img className="mb-2" src="/logo.png" height="40px" alt="Invaluable Logo">
+                <img className="mb-2" src="/logo.png" height="40px" alt="Auction Logo">
                 </img>
                 <p>As the world's leading online auction marketplace, thousands of auction
-                  houses use Invaluable to deepen relationships with millions of clients
+                  houses use Auction to deepen relationships with millions of clients
                   around the world. Stay connected to the things you love with curated items
                   and auctions sent to your inbox. </p>
               </div>
@@ -103,7 +103,7 @@ export default function Footer() {
       </MDBContainer>
 
         <div className='text-center p-3' style={{ backgroundColor: 'rgba(0, 0, 0, 0.2)' }}>
-          <p>&copy; 2024 Invaluable, LLC. and participating auction houses. All Rights Reserved.</p>
+          <p>&copy; 2024 Auction, LLC. and participating auction houses. All Rights Reserved.</p>
         </div>
       </MDBFooter ></>
   );

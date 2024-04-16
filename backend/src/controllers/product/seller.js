@@ -227,6 +227,7 @@ let get_product_sold = async (req, res) => {
             out["id"] = product.dataValues.id
             out["price"] = product.winner.dataValues.bid_history.dataValues.amount
             out["time"] = product.dataValues.createdAt
+            out["seller_id"] = req.params.seller_id
             result.push(out)
         }
 

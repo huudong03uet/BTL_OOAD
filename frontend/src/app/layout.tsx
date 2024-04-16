@@ -7,6 +7,10 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import ChatComponent from "@/components/chat/chat_component";
 import 'react-chat-elements/dist/main.css';
 import UserDataService from "@/services/model/user";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import { useEffect } from "react";
+
 
 const inter = Inter({ subsets: ["latin"] });
 // function openNewPage() {
@@ -20,12 +24,15 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+
+
   return (
     <html lang="en" suppressHydrationWarning>
   
       <body className={inter.className} style={{overflowX: "clip"}}>
-
         {children}
+        <ToastContainer />
         <ChatComponent/>
       </body>
 

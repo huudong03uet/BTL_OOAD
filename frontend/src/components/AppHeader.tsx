@@ -11,15 +11,19 @@ import ModalRegister from './ModalRegister';
 import UserDataService from '@/services/model/user';
 import Popover from '@mui/material/Popover';
 import Notifications from './Notification';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
-import TextField from '@mui/material/TextField';
 import Input from '@mui/material/Input';
+import SellerDataService from '@/services/model/seller';
+import ModalConfirm from './ModalConfirm';
+
+import { ToastContainer, toast } from 'react-toastify';
+
+
+
 function Header() {
   // const spanStyle = {
   //   left: '0px',
@@ -129,6 +133,39 @@ function Header() {
     event.preventDefault();
   };
 
+
+  
+  const [showModal, setShowModal] = useState<boolean>(false); // State for modal visibility
+
+
+  const handleConfirmSignout = () => {
+    toast.success('Logout successfully!', {
+      position: "bottom-left",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    setShowModal(false);
+    UserDataService.removeUserData();
+    SellerDataService.removeSellerData();
+
+    
+    
+    // alert('Đăng xuất thành công!');
+
+    // window.location.href = '/';
+    //  reload page
+    window.location.reload();
+
+  };
+
+  const handleCancelSignout = () => {
+    setShowModal(false);
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary py-0">
       <Container className="row w-100" style={{ display: "contents" }}>
@@ -152,7 +189,7 @@ function Header() {
                   <input
                     type="text"
                     placeholder="Search items & sellers"
-                    className="mr-sm-2 ps-5 w-100 border rounded border-dark"
+                    className="mr-sm-2 ps-5 w-100 border rounded border-dark py-1"
                     value={searchText}
                     onChange={handleChange}
                     onKeyPress={handleKeyPress}
@@ -176,7 +213,9 @@ function Header() {
               <FormControl sx={{ m: 1, width: '15ch', color: "black" }}  disabled>
                 {/* <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel> */}
                 <Input
-                  style={{ color: "black" }}
+                  // set color text black
+
+
                   id="outlined-adornment-password"
                   type={showPassword ? 'text' : 'password'}
                   defaultValue="$ 23,132,132"
@@ -283,7 +322,7 @@ function Header() {
 
                   <NavDropdown.Item href="/my-account/payment-options">Payment options</NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item href="/logout">Log out</NavDropdown.Item>
+                  <NavDropdown.Item  onClick={() => setShowModal(true)}>Log out</NavDropdown.Item>
                   {/* <div className="d-flex align-items-center"> */}
 
                   {/* </div> */}
@@ -312,6 +351,15 @@ function Header() {
 
         {/* </Navbar.Collapse> */}
       </Container>
+
+      {showModal && (
+            <ModalConfirm // Pass show prop with state value
+              show={showModal}
+              onConfirm={handleConfirmSignout}
+              onCancel={handleCancelSignout}
+            />
+          )}
+
     </Navbar>
   );
 }

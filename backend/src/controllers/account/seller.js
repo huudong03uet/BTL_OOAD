@@ -117,12 +117,25 @@ let _get_info_seller = async (user_id) => {
 
 let get_info_seller = async (req, res) => {
     try {
-        if (!check_required_field(req.params, ["user_id"])) {
+        if (!check_required_field(req.params, ["seller_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let seller = await _get_info_seller(req.params.user_id)
+        let seller = await Seller.findByPk(req.params.seller_id, {
+            include: [
+                {
+                    model: Location,
+                    attributes: ["x", "y"]
+                },
+                {
+                    model: Review,
+                    attributes: [
+                        [sequelize.fn('AVG', sequelize.col('star')), 'avg_star'],
+                    ],
+                }
+            ]
+        });
 
         if (!seller) {
             logger.info(`${statusCode.HTTP_400_BAD_REQUEST} Không tìm thấy seller`)
@@ -135,10 +148,11 @@ let get_info_seller = async (req, res) => {
         result["auctionHouse_createdTime"] = seller.dataValues.createdAt
         result["auctionHouse_location"] = {"x": seller.dataValues.location.dataValues.x, "y": seller.dataValues.location.dataValues.y}
         if (seller.dataValues.reviews.length > 0) {
-            result["auctionHouse_vote"] = seller.dataValues.reviews[0].avg_star;
+            result["auctionHouse_vote"] = seller.dataValues.reviews[0].dataValues.avg_star;
         } else {
             result["auctionHouse_vote"] = 0;
         }
+        console.log(seller.dataValues.reviews[0])
         
 
         logger.info(`${statusCode.HTTP_200_OK} [seller: ${seller.id}]`)
@@ -156,7 +170,23 @@ let get_seller_by_user_id = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let seller = await _get_info_seller(req.params.user_id)
+        let seller = await Seller.findOne({
+            where: {
+                user_id: req.params.user_id
+            },
+            include: [
+                {
+                    model: Location,
+                    attributes: ["x", "y"]
+                },
+                {
+                    model: Review,
+                    attributes: [
+                        [sequelize.fn('AVG', sequelize.col('star')), 'avg_star'],
+                    ],
+                }
+            ]
+        });
 
         if (!seller) {
             logger.info(`${statusCode.HTTP_400_BAD_REQUEST} Không tìm thấy seller`)

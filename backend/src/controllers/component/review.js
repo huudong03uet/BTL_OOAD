@@ -12,22 +12,18 @@ const User = require('../../models/user');
 
 let get_review = async (req, res) => {
     try {
-        if (!check_required_field(req.params, ["user_id"])) {
+        if (!check_required_field(req.params, ["seller_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        const user_id = req.params.user_id;
+        const seller_id = req.params.seller_id;
 
         const reviews = await Review.findAll({
+            where: {
+                seller_id: seller_id
+            },
             include: [
-                {
-                    model: Seller,
-                    where: {
-                        user_id: user_id
-                    },
-                    attributes: []
-                },
                 {
                     model: User,
                 }
