@@ -1,11 +1,11 @@
 'use client'
-import ItemSummary from '@/models/product_summary';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import dateFormat, { masks } from "dateformat";
 import { check_user_love_product, user_delete_love_product, user_love_product } from '@/services/component/love_product';
 // http://localhost:8080/product/user/detail/product_id=10/user_id=10000
 import styled from 'styled-components';
+import ProductDetail from '@/models/product_detail';
 
 const StyledLink = styled.a`
   text-decoration: none;
@@ -16,7 +16,7 @@ const StyledLink = styled.a`
   }
 `;
 
-function ViewItem({ obj }: { obj: ItemSummary }) {
+function ViewItem({ obj }: { obj: ProductDetail }) {
     const [status, setStatus] = useState<boolean>(false);
 
     useEffect(() => {
@@ -68,7 +68,7 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
                     </button>
 
                 )}
-                <img src={obj.image_path} alt={obj.title} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
+                <img src={obj.images[0].url} alt={obj.title} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
 
             </div>
             {/* <div
@@ -80,16 +80,16 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
             >
 
                 <div>
-                    {dateFormat(obj.time, " mmm dd, yyyy - hh:MM TT")}
+                    {dateFormat(obj.auction.time_auction, " mmm dd, yyyy - hh:MM TT")}
                 </div>
                 <div style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
                     className='my-1 fw-bold'>
                     {obj.title}
                 </div>
                 <div>
-                    <StyledLink href={`/auction-house/${obj.seller_id}`}
+                    <StyledLink href={`/auction-house/${obj.seller.id}`}
                     onClick={(e) => e.stopPropagation()}
-                    >by {obj.user_sell}</StyledLink>
+                    >by {obj.seller.name}</StyledLink>
                 </div>
                 <div className="fw-bold">
                     {/* ${obj.max_bid} */}

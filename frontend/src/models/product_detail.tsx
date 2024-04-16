@@ -14,7 +14,7 @@ interface Inspect {
 
 interface Category {
     id: number;
-    name: string;
+    title: string;
 }
 
 interface Seller {
@@ -25,7 +25,7 @@ interface Seller {
 interface Auction {
     id: number;
     name: string;
-    time: Date;
+    time_auction: Date;
 }
 
 export default interface ProductDetail {

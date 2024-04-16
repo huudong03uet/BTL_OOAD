@@ -2,8 +2,8 @@ import React from 'react'
 
 import '@smastrom/react-rating/style.css'
 import { Rating, ThinStar } from '@smastrom/react-rating'
-import AuctionSummary from '@/models/auction_summary';
 import dateFormat, { masks } from "dateformat";
+import Auction from '@/models/auction';
 // Declare it outside your component so it doesn't get re-created
 const myStyles = {
     itemShapes: ThinStar,
@@ -33,13 +33,13 @@ function openLivedAuction() {
     window.open('/lived-auction', '_blank', windowFeatures);
 }
 
-function UpcomingAuctions({ obj }: { obj: AuctionSummary }) {
+function UpcomingAuctions({ obj }: { obj: Auction }) {
     return (
         <div style={{ borderTop: "2px solid #440a77" }}>
             <div className="container">
                 <div className="row py-4">
                     <div className="col-3 d-flex justify-content-center align-items-center" style={{ border: "1px solid #bac4c9" }}>
-                        <img src={obj.image_path} style={{ width: "auto", height: "300px", maxWidth: "100%" }} />
+                        <img src={obj.products[0].images[0].url} style={{ width: "auto", height: "300px", maxWidth: "100%" }} />
                     </div>
 
 
@@ -49,28 +49,29 @@ function UpcomingAuctions({ obj }: { obj: AuctionSummary }) {
 
                                 <div className='my-1 fw-bold'
                                     style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
-                                >                 {obj.auction_room_name}
+                                >                 {obj.name}
                                 </div>
                                 <div className="text-truncate">
-                                    by {obj.seller_name}
+                                    by {obj.seller.name}
                                 </div>
                                 <div className='d-flex'>
                                     <Rating style={{ maxWidth: 100 }} 
                                     //  set 2 decimal places of object.voting_avg_review
 
-                                    value={obj.voting_avg_review}
+                                    value={obj.seller.reviews.reduce((a, b) => a + b.rating, 0) / obj.seller.reviews.length || 0}
 
                                     readOnly={true} itemStyles={myStyles} />
                                     {/* //  set 2 decimal places of object.voting_avg_review */}
-                                    {'\u00A0'}  {obj.voting_avg_review.toFixed(1)} {'\u00A0\u00A0'}  
-                                     ({obj.number_review} Reviews)
+                                    {'\u00A0'}  {(obj.seller.reviews.reduce((a, b) => a + b.rating, 0) / obj.seller.reviews.length || 0).toFixed(1)}
+                                     {'\u00A0\u00A0'}  
+                                     ({obj.seller.reviews.length} Reviews)
                                 </div>
                                 <div className="my-3">
                                     {/* {obj.time} */}
-                                    {dateFormat(obj.time, " mmm dd, yyyy - hh:MM TT")}
+                                    {dateFormat(obj.time_auction, " mmm dd, yyyy - hh:MM TT")}
                                 </div>
                                 <div>
-                                    {obj.address}
+                                    {obj.location.country}, {obj.location.city}
                                 </div>
                             </div>
 
@@ -100,11 +101,21 @@ function UpcomingAuctions({ obj }: { obj: AuctionSummary }) {
                             </div>
                         </div>
                         <div className="row">
-                            {obj.images && obj.images.length > 0 && obj.images.map((object, i) => (
+                            {/* {obj.products && obj.products[0].images.length > 0 && obj.images.map((object, i) => (
                                 <div className="col-2 mx-2 px-0 " key={i}>
                                     <img src={object} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "150px" }} className='position-relative top-50 start-50 translate-middle' />
                                 </div>
-                            ))}
+                            ))} */}
+
+                            <div className="col-12">
+                                <div className="row">
+                                    {obj.products && obj.products.map((object, i) => (
+                                        <div className="col-3" key={i}>
+                                            <img src={object.images[0].url} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "150px" }} className='position-relative top-50 start-50 translate-middle'/>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
                         </div>
                     </div>
 

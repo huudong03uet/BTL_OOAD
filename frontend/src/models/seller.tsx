@@ -1,3 +1,12 @@
+interface Review {
+    id: number;
+    rating: number;
+    content: string;
+    createdAt: Date;
+    user_evaluate: number;
+}
+
+
 export default interface Seller {
     id: number;
     email: string;
@@ -6,5 +15,6 @@ export default interface Seller {
     phone: string,
     location_id: number,
     user_id: number,
-    status: string
+    status: string,
+    reviews: Review[],
 }

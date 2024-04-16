@@ -1,4 +1,10 @@
 // chọn cái này
+
+import Product from "./product_detail";
+import Seller from "./seller";
+import Location from "./location";
+
+
 export default interface Auction {
     id: number,
     name: string,
@@ -7,6 +13,8 @@ export default interface Auction {
     condition_coin: number,
     description?: string,
     time_register: string,
-    location_id: number,
-    seller_id: number,
+    location: Location,
+    seller: Seller,
+
+    products: Product[],
 }

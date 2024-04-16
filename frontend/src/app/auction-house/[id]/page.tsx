@@ -9,10 +9,7 @@ import styles from '@/styles/customer/auctionHouse.module.css';
 import styles2 from '@/styles/auction_house/soldItem.module.css'
 import AppHeader from '@/components/AppHeader';
 import AppNav from '@/components/AppNav'
-<<<<<<< HEAD:frontend/src/app/auction-house/page.tsx
 // import AppBreadCrumb from '@/components/AppBreadCrumb'
-=======
->>>>>>> ee04a0c8cbc6b743d68652e26baec859527fc0e0:frontend/src/app/auction-house/[id]/page.tsx
 import AppFooter from '@/components/AppFooter';
 import Map from '@/components/auction-house/Map';
 import Tab from '@/components/auction-house/Tab';
@@ -27,11 +24,13 @@ import { seller_info } from '@/services/account/seller';
 import { seller_auction_past_service } from '@/services/auction/seller';
 import { seller_product_sold_service } from '@/services/product/seller';
 import get_review_service from '@/services/component/review';
-import AuctionSummary from '@/models/auction_summary';
+// import AuctionSummary from '@/models/auction_summary';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
-import ItemSummary from '@/models/product_summary';
+import ProductDetail from '@/models/product_detail';
+import Auction from '@/models/auction';
+// import ItemSummary from '@/models/product_summary';
 
 const AuctionHouse = ({ params }: { params: { id: string } }) => {
     const seller_id = Number(params.id);
@@ -115,7 +114,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         fetchData()
     }, [])
 
-    const [upcomingAuctions, setUpcomingAuctions] = useState<AuctionSummary[]>([]);
+    const [upcomingAuctions, setUpcomingAuctions] = useState<Auction[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -156,7 +155,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
       const [hover, setHover] = React.useState(-1);
       
       
-    const [soldAuctions, setSoldAuctions] = useState<ItemSummary[]>([]);
+    const [soldAuctions, setSoldAuctions] = useState<ProductDetail[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -237,11 +236,6 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         <>
             <AppHeader />
             <AppNav />
-<<<<<<< HEAD:frontend/src/app/auction-house/page.tsx
-            {/* <AppBreadCrumb /> */}
-=======
->>>>>>> ee04a0c8cbc6b743d68652e26baec859527fc0e0:frontend/src/app/auction-house/[id]/page.tsx
-            <Container>
                 <div>
                     {auctionHouse && (
                         <div className={` ${styles.ahInformation} ${styles.colMd8}`}>
@@ -422,7 +416,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                     </div>
 
                 </div>
-            </Container>
+            {/* </Container> */}
 
 
             <AppFooter />

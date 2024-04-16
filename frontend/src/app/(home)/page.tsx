@@ -4,15 +4,15 @@ import UpcomingAuctions from '@/components/shared/upcomingAuctions';
 import ViewItem from '@/components/shared/viewItem';
 import { Container } from 'react-bootstrap';
 import styles from './page.module.css';
-import ItemSummary from '@/models/product_summary';
 import Category from '@/models/category';
-import AuctionSummary from '@/models/auction_summary';
 import { useEffect, useState } from 'react';
 import { user_get_auction_promote, user_get_auction_upcoming } from '@/services/auction/user';
 import { user_get_all_product, user_get_category_service, user_get_product_accept, user_get_recently_product } from '@/services/product/user';
 import ChatSupport from '@/components/chat/chat_support';
 import { Fab } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
+import Auction from '@/models/auction';
+import ProductDetail from '@/models/product_detail';
 
 const HomePage = () => {
 
@@ -45,7 +45,7 @@ const HomePage = () => {
   //   }
   // ];
 
-  const [recentlyViewedItems, setRecentlyViewedItems] = useState<any[]>([]);
+  const [recentlyViewedItems, setRecentlyViewedItems] = useState<ProductDetail[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +64,7 @@ const HomePage = () => {
     fetchData()
   }, [])
 
-  const [recommendItemForYou, setRecommendItemForYou] = useState<ItemSummary[]>([]);
+  const [recommendItemForYou, setRecommendItemForYou] = useState<ProductDetail[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -110,7 +110,7 @@ const HomePage = () => {
   }, [])
 
 
-  const [promotedAuctions, setPromotedAuctions] = useState<AuctionSummary[]>([]);
+  const [promotedAuctions, setPromotedAuctions] = useState<Auction[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -129,7 +129,7 @@ const HomePage = () => {
     fetchData()
   }, [])
 
-  const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionSummary[]>([]);
+  const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<Auction[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
