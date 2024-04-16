@@ -46,6 +46,8 @@ const MessageListComponent = ({ chatInfo, chatType, updateState }: { chatInfo: a
                 position: "right",
                 type: "text",
                 text: inputValue,
+
+                date: new Date(),
             };
             setMessageListState(prevState => [...prevState, newMessage]);
             await send_message_service(chatInfo.id, inputValue)

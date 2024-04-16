@@ -8,7 +8,8 @@ import UserDataService from "@/services/model/user";
 import { user_get_auction_upcoming } from "@/services/auction/user";
 import get_artist_recommend_service from "@/services/component/artist";
 import AuctionSummary from "@/models/auction_summary";
-import { user_get_recently_product } from "@/services/product/user";
+import { user_get_product_accept, user_get_recently_product } from "@/services/product/user";
+import ItemSummary from "@/models/product_summary";
 
 
 export default function MyInvaluable() {
@@ -59,7 +60,6 @@ export default function MyInvaluable() {
     // ];
 
     const [upcomingOnlineAuctions, setUpcomingOnlineAuctions] = useState<AuctionSummary[]>([]);
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -123,6 +123,24 @@ export default function MyInvaluable() {
     //     }
     // ]
 
+    const [recommendItemForYou, setRecommendItemForYou] = useState<ItemSummary[]>([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await user_get_product_accept();
+                if (Array.isArray(data)) {
+                    setRecommendItemForYou(data.slice(0, 4));
+                    console.log(data.slice(0, 4));
+                } else {
+                    setRecommendItemForYou([])
+                }
+            } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
+            }
+        }
+
+        fetchData()
+    }, [])
 
 
     return (
@@ -142,7 +160,11 @@ export default function MyInvaluable() {
                     Lots Recommended For You
                 </div>
                 <div className="row">
-
+                    {recommendItemForYou.map((object, i) => (
+                        <div className="col-sm-3" key={i}>
+                            <ViewItem obj={object} />
+                        </div>
+                    ))}
                 </div>
 
             </div>
@@ -198,7 +220,12 @@ export default function MyInvaluable() {
             </div>
 
 
-            <div className={style.div_section}>
+            <div className={style.div_section}
+                // hidden if no recently viewed items
+                style={{ display: recentlyViewedItems.length > 0 ? 'block' : 'none' }}
+
+
+            >
                 <div className={style.div_header_section}>
                     Recently Viewed Items
                 </div>

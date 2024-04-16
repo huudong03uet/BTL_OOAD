@@ -92,7 +92,15 @@ const HomePage = () => {
     const fetchData = async () => {
       try {
         const data = await user_get_category_service();
-        setCuratedCollections(data);
+        // setCuratedCollections(data.slice(0, 6));
+        // get random 6 items
+        if (Array.isArray(data)) {
+          let randomItems = data.sort(() => Math.random() - Math.random()).slice(0, 6);
+          setCuratedCollections(randomItems);
+        } else {
+          setCuratedCollections([])
+        }
+        
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);
       }

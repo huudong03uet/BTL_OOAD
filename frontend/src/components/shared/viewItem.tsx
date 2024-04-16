@@ -5,7 +5,16 @@ import React, { useEffect, useState } from 'react'
 import dateFormat, { masks } from "dateformat";
 import { check_user_love_product, user_delete_love_product, user_love_product } from '@/services/component/love_product';
 // http://localhost:8080/product/user/detail/product_id=10/user_id=10000
+import styled from 'styled-components';
 
+const StyledLink = styled.a`
+  text-decoration: none;
+  color: black;
+
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 function ViewItem({ obj }: { obj: ItemSummary }) {
     const [status, setStatus] = useState<boolean>(false);
@@ -42,7 +51,8 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
                 {/* <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i> */}
                 {status ? (
                     <button onClick={onClickHeart}
-                    className='position-absolute rounded-circle p-2 d-flex justify-content-center align-items-center' style={{ border: "1px solid red", backgroundColor: "white", width: "35px", height: "35px", right: "5%", top: "-3%" }}>
+                    className='position-absolute rounded-circle p-2 d-flex justify-content-center align-items-center' 
+                    style={{ border: "1px solid red", backgroundColor: "white", width: "35px", height: "35px", left: "80%", top: "-0%" }}>
 
                     <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
                 </button>
@@ -51,7 +61,7 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
                 ) : (
                     <button
                         className='position-absolute  rounded-circle p-2 d-flex justify-content-center align-items-center'
-                        style={{ border: "1px solid #797676", backgroundColor: "white", width: "35px", height: "35px", right: "5%", top: "-3%" }}
+                        style={{ border: "1px solid #797676", backgroundColor: "white", width: "35px", height: "35px", left: "80%", top: "-0%" }}
                         onClick={onClickHeart}>
 
                         <i className="fa-regular fa-heart" style={{ color: "#797676" }}></i>
@@ -77,7 +87,9 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
                     {obj.title}
                 </div>
                 <div>
-                    <Link href={`/auction-house/${obj.seller_id}`}>by {obj.user_sell}</Link>
+                    <StyledLink href={`/auction-house/${obj.seller_id}`}
+                    
+                    >by {obj.user_sell}</StyledLink>
                 </div>
                 <div className="fw-bold">
                     {/* ${obj.max_bid} */}

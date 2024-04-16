@@ -41,7 +41,7 @@ function SideBarUser() {
         <div className='ps-4 ms-3 pe-4'>
             <div className={style.div_module}>
                 <Link className={style.div_text} href="/my-account/home" >
-                    My Invaluable
+                    My Auction
                 </Link>
 
             </div>

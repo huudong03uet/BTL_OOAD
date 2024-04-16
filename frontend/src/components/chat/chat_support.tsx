@@ -14,14 +14,14 @@ import { get_user_message_service } from '@/services/component/message';
 
 export default function ChatSupport() {
 
-  const [unreadKursat, setUnreadKursat] = useState(0)
-  const [unreadEmre, setUnreadEmre] = useState(1)
-  const [unreadEsra, setUnreadEsra] = useState(1)
-  const [unreadBensu, setUnreadBensu] = useState(1)
-  const [unreadBurhan, setUnreadBurhan] = useState(1)
-  const [unreadAbdurrahman, setUnreadAbdurrahman] = useState(1)
-  const [unreadAbdurrahim, setUnreadAbdurrahim] = useState(1)
-  const [unreadAhmet, setUnreadAhmet] = useState(1)
+  // const [unreadKursat, setUnreadKursat] = useState(0)
+  // const [unreadEmre, setUnreadEmre] = useState(1)
+  // const [unreadEsra, setUnreadEsra] = useState(1)
+  // const [unreadBensu, setUnreadBensu] = useState(1)
+  // const [unreadBurhan, setUnreadBurhan] = useState(1)
+  // const [unreadAbdurrahman, setUnreadAbdurrahman] = useState(1)
+  // const [unreadAbdurrahim, setUnreadAbdurrahim] = useState(1)
+  // const [unreadAhmet, setUnreadAhmet] = useState(1)
 
 
   const [chatInfo, setChatInfo] = useState({
