@@ -1,5 +1,6 @@
 'use client'
 import ItemSummary from '@/models/product_summary';
+import { Link } from 'react-router-dom';
 import React, { useState } from 'react'
 
 
@@ -44,7 +45,7 @@ function ViewItem({ obj }: { obj: ItemSummary }) {
                     {obj.title}
                 </div>
                 <div>
-                    by {obj.user_sell}
+                <Link to={`/auction-house/${obj.seller_id}`}>by {obj.user_sell}</Link>
                 </div>
                 <div className="fw-bold">
                     ${obj.max_bid}

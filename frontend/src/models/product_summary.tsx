@@ -11,4 +11,5 @@ export default interface ItemSummary {
     time?: string,
     image_path: string,
     user_sell?: string;
+    seller_id?: number;
 }
