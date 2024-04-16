@@ -4,7 +4,7 @@ import CreateModal from "../Modal/ModalProduct";
 import { useEffect, useState } from "react";
 import ReactPaginate from "react-paginate";
 import { Pagination } from "@nextui-org/react";
-import { Product } from "@/types/product";
+import Product from "@/types/product";
 interface IProps {
     showModalCreate: boolean;
     setShowModalCreate: (value: boolean) => void;
@@ -42,7 +42,7 @@ const TableUser: React.FC<TableProductProps> = ({ packageData }) => {
     const handleAcceptReject = (statusProductVerification: StatusProductVerification, packageItem: Product) => {
         const newPackageData = [...packageDataState];
         // Tìm index của packageItem trong mảng
-        const index = newPackageData.findIndex((item) => item.product_id === packageItem.product_id);
+        const index = newPackageData.findIndex((item) => item.id === packageItem.id);
         // Thay đổi status của packageItem
         newPackageData[index].status = statusProductVerification;
         // Cập nhật lại packageDataState
@@ -111,7 +111,7 @@ const TableUser: React.FC<TableProductProps> = ({ packageData }) => {
                                 <tr key={key}>
                                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                         <h5 className="font-medium text-black dark:text-white">
-                                            {packageItem.product_id}
+                                            {packageItem.id}
                                         </h5>
                                     </td>
                                     <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
@@ -122,7 +122,7 @@ const TableUser: React.FC<TableProductProps> = ({ packageData }) => {
                                     </td>
                                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                         <p className="text-black dark:text-white">
-                                            {packageItem.time_create}
+                                            {packageItem.createdAt}
                                         </p>
                                     </td>
                                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
