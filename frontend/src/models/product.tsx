@@ -28,7 +28,7 @@ interface Auction {
     time_auction: Date;
 }
 
-export default interface ProductDetail {
+export default interface Product {
     id: number;
     images: Image[];
     title: string;

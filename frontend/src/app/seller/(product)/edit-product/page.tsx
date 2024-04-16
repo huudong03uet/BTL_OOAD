@@ -2,14 +2,14 @@
 import { Form, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import ProductDetail from "@/models/product_detail";
+import Product from "@/models/product";
 import { user_get_detail_product } from "@/services/product/user";
 import { seller_update_product } from "@/services/product/seller";
 
 
 export default function EditProduct() {
     const [productCategory, setProductCategory] = useState<string>('');
-    const [product, setProduct] = useState({} as ProductDetail)
+    const [product, setProduct] = useState({} as Product)
 
     useEffect(() => {
         const fetchData = async () => {

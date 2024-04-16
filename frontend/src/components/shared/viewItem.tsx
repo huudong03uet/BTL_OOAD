@@ -5,7 +5,7 @@ import dateFormat, { masks } from "dateformat";
 import { check_user_love_product, user_delete_love_product, user_love_product } from '@/services/component/love_product';
 // http://localhost:8080/product/user/detail/product_id=10/user_id=10000
 import styled from 'styled-components';
-import ProductDetail from '@/models/product_detail';
+import Product from '@/models/product';
 
 const StyledLink = styled.a`
   text-decoration: none;
@@ -16,7 +16,7 @@ const StyledLink = styled.a`
   }
 `;
 
-function ViewItem({ obj }: { obj: ProductDetail }) {
+function ViewItem({ obj }: { obj: Product }) {
     const [status, setStatus] = useState<boolean>(false);
 
     useEffect(() => {

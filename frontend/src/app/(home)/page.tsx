@@ -12,7 +12,7 @@ import ChatSupport from '@/components/chat/chat_support';
 import { Fab } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import Auction from '@/models/auction';
-import ProductDetail from '@/models/product_detail';
+import Product from '@/models/product';
 
 const HomePage = () => {
 
@@ -45,7 +45,7 @@ const HomePage = () => {
   //   }
   // ];
 
-  const [recentlyViewedItems, setRecentlyViewedItems] = useState<ProductDetail[]>([]);
+  const [recentlyViewedItems, setRecentlyViewedItems] = useState<Product[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -64,7 +64,7 @@ const HomePage = () => {
     fetchData()
   }, [])
 
-  const [recommendItemForYou, setRecommendItemForYou] = useState<ProductDetail[]>([]);
+  const [recommendItemForYou, setRecommendItemForYou] = useState<Product[]>([]);
   useEffect(() => {
     const fetchData = async () => {
       try {

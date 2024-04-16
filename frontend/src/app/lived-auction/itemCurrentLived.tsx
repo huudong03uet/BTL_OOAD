@@ -10,11 +10,11 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Fade from '@mui/material/Fade';
-import ProductDetail from '@/models/product_detail';
+import Product from '@/models/product';
 
 
 // type SizeType = ConfigProviderProps['componentSize'];
-export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: ProductDetail, handleButtonClick: any }) {
+export default function ItemLivedAuction({ obj, handleButtonClick }: { obj: Product, handleButtonClick: any }) {
 
     const nextIcon = <ArrowForwardIosOutlinedIcon style={{ color: "black" }} />;
     const prevIcon = <ArrowBackIosOutlinedIcon style={{ color: "black" }} />

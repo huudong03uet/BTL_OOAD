@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { HOST } from '@/services/host';
 import UserDataService from '../model/user';
-import ProductDetail from '@/models/product_detail';
+import Product from '@/models/product';
 import SellerDataService from '../model/seller';
 
 
@@ -33,7 +33,7 @@ let seller_product_sold_service = async (seller_id: number) => {
     }
 }
 
-let seller_update_product = async (product: ProductDetail, category: string) => {
+let seller_update_product = async (product: Product, category: string) => {
     try {
         let url = `${HOST}/product/seller/update`;
         const body: any = {};

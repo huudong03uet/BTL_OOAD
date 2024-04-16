@@ -7,7 +7,7 @@ import { LinearProgress } from '@mui/material';
 import './style.css';
 import { Radio } from 'antd';
 import { useRouter } from 'next/navigation'
-import ProductDetail from '@/models/product_detail';
+import Product from '@/models/product';
 import ItemSummary from '@/models/product_summary';
 import { user_get_detail_product } from '@/services/product/user';
 import { user_get_auction_info } from '@/services/auction/user';
@@ -67,7 +67,7 @@ export default function LivedAuction() {
 
     const currentCost = 100;
 
-    const [currentAuction, setCurrentAuction] = useState({} as ProductDetail)
+    const [currentAuction, setCurrentAuction] = useState({} as Product)
 
     useEffect(() => {
         const fetchItemData = async () => {

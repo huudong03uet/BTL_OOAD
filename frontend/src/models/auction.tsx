@@ -1,6 +1,6 @@
 // chọn cái này
 
-import Product from "./product_detail";
+import Product from "./product";
 import Seller from "./seller";
 import Location from "./location";
 

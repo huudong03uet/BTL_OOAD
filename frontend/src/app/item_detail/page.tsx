@@ -7,7 +7,7 @@ import AppHeader from "@/components/AppHeader";
 import VerticalSlide from "@/components/item/VerticalSlide";
 
 import { Modal } from 'react-bootstrap';
-import ProductDetail from "@/models/product_detail";
+import Product from "@/models/product";
 import { user_get_detail_product } from "@/services/product/user";
 import AppNav from "@/components/AppNav";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -18,7 +18,7 @@ export default function Item() {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-  const [itemData, setItemData] = useState({} as ProductDetail);
+  const [itemData, setItemData] = useState({} as Product);
   const [isItemOverviewOpen, setIsItemOverviewOpen] = useState(false);
   const [isPaymentShippingOpen, setIsPaymentShippingOpen] = useState(false);
 

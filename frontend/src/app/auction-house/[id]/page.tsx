@@ -28,7 +28,7 @@ import get_review_service from '@/services/component/review';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
-import ProductDetail from '@/models/product_detail';
+import Product from '@/models/product';
 import Auction from '@/models/auction';
 // import ItemSummary from '@/models/product_summary';
 
@@ -155,7 +155,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
       const [hover, setHover] = React.useState(-1);
       
       
-    const [soldAuctions, setSoldAuctions] = useState<ProductDetail[]>([]);
+    const [soldAuctions, setSoldAuctions] = useState<Product[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
