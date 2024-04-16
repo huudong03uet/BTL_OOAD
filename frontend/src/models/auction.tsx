@@ -1,4 +1,4 @@
-
+// chọn cái này
 export default interface Auction {
     id: number,
     name: string,

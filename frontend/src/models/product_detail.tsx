@@ -1,3 +1,5 @@
+
+//  chọn cái anyf
 interface Image {
     id: number,
     url: string,
