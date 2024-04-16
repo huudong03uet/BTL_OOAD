@@ -16,16 +16,22 @@ const Inspection = sequelize.define('inspection', {
         type: DataTypes.TEXT,
         allowNull: true,
     },
+    status: {
+        type: DataTypes.ENUM,
+        allowNull: false,
+        values: [InspectionType.DENIED, InspectionType.INSPECTED, InspectionType.INSPECTTING, InspectionType.NOT_INSPECT],
+        defaultValue: InspectionType.NOT_INSPECT,
+    },
 },
     {
         tableName: 'inspection',
     }
 )
 
-Inspection.belongsTo(Admin, {foreignKey: 'admin_id'})
-Admin.hasMany(Inspection, {foreignKey: 'admin_id'});
+Inspection.belongsTo(Admin, { foreignKey: 'admin_id' })
+Admin.hasMany(Inspection, { foreignKey: 'admin_id' });
 
-Inspection.belongsTo(Product, {foreignKey: 'product_id'})
-Product.hasMany(Inspection, {foreignKey: 'product_id'});
+Inspection.belongsTo(Product, { foreignKey: 'product_id' })
+Product.hasMany(Inspection, { foreignKey: 'product_id' });
 
 module.exports = Inspection;
