@@ -217,7 +217,7 @@ let get_past_auction = async (req, res) => {
             seller_id: req.params.seller_id
         }
 
-        kwargs = {
+        let kwargs = {
             group: ['auction.id'],
             having: Sequelize.literal(`COUNT(products.id) = COUNT(CASE WHEN products.status = "${AuctionProductStatus.SOLD}" THEN 1 ELSE NULL END)`)
         }
@@ -294,7 +294,7 @@ let get_auction_history = async (req, res) => {
             seller_id: req.params.seller_id
         }
 
-        kwargs = {
+        let kwargs = {
             group: ['auction.id'],
             having: Sequelize.literal(`COUNT(products.id) = COUNT(CASE WHEN products.status = "${AuctionProductStatus.SOLD}" THEN 1 ELSE NULL END)`)
         }
@@ -323,7 +323,7 @@ let get_auction_not_sold = async (req, res) => {
             seller_id: req.params.seller_id
         }
 
-        kwargs = {
+        let kwargs = {
             group: ['auction.id'],
             having: Sequelize.literal(`COUNT(products.id) = COUNT(CASE WHEN products.status = "${AuctionProductStatus.NOT_YET_SOLD}" THEN 1 ELSE NULL END)`)
         }
