@@ -25,6 +25,7 @@ import get_review_service from '@/services/component/review';
 // import AuctionSummary from '@/models/auction_summary';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
+import Seller from '@/models/seller';
 import StarIcon from '@mui/icons-material/Star';
 import Product from '@/models/product';
 import Auction from '@/models/auction';
@@ -53,13 +54,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         }
     };
 
-    const [auctionHouse, setAuctionHouse] = useState<{
-        auctionHouse_id: number,
-        auctionHouse_name: string,
-        auctionHouse_createdTime: string,
-        auctionHouse_location: { "x": number, "y": number },
-        auctionHouse_vote: number,
-    } | undefined>();
+    const [auctionHouse, setAuctionHouse] = useState<Seller | undefined>(undefined);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -247,11 +242,11 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                         <div className={` ${styles.ahInformation} ${styles.colMd8}`}>
                             <div className={styles.ahBioContainer}>
                                 <h1 className={styles.ahName}>
-                                    {auctionHouse && auctionHouse.auctionHouse_name}
+                                    {auctionHouse && auctionHouse.name}
                                 </h1>
-                                <p className={styles.ahTime}>
-                                    Invalua Seller since {auctionHouse && auctionHouse.auctionHouse_createdTime}
-                                </p>
+                                {/* <p className={styles.ahTime}>
+                                    Invalua Seller since {auctionHouse && auctionHouse.createdAt}
+                                </p> */}
                                 <div className={styles.voteContainer}>
                                     <div className={styles.yotpoStars}>
                                         <span className={`${styles.yellowIcon} fas fa-star`}></span>
@@ -259,14 +254,14 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                         <span className={`${styles.yellowIcon} fas fa-star`}></span>
                                         <span className={`${styles.yellowIcon} fas fa-star`}></span>
                                         <span className={`${styles.yellowIcon} fas fa-star`}></span>
-                                        <span className={styles.spanReview}>{auctionHouse && auctionHouse.auctionHouse_vote}</span>
+                                        <span className={styles.spanReview}>{auctionHouse && auctionHouse.reviews.length}</span>
                                         <span className={styles.spanReview}>from {review && review.length} Reviews</span>
                                     </div>
                                 </div>
                             </div>
                             <div className={styles.ahContactContainer}>
                                 <div className={styles.locationMap}>
-                                    <Map location={auctionHouse && auctionHouse.auctionHouse_location}></Map>
+                                    {/* <Map location={auctionHouse && {auctionHouse.location}}></Map> */}
                                 </div>
                                 <div className={styles.button}>
                                     <button type="button" className={`btn btn-primary btn-lg btn-block ${styles['btn-follow']} ${styles['button-style']}`}>+ Follow This Seller</button>
@@ -303,7 +298,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                         <div>
                             <TabContent id="upcoming" active={activeTab === 'upcoming'} ref={tabContentRefs.upcoming}>
                                 {/* Nội dung của tab upcoming */}
-                                <div className={styles2.header_section}>Upcoming Auctions from {auctionHouse && auctionHouse.auctionHouse_name} ({upcomingAuctions?.length})</div>
+                                <div className={styles2.header_section}>Upcoming Auctions from {auctionHouse && auctionHouse.name} ({upcomingAuctions?.length})</div>
                                 <div className='py-3'>
                                     <Container>
                                         {upcomingAuctions && Array.isArray(upcomingAuctions) && upcomingAuctions.length > 0 ? (
@@ -385,7 +380,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                             </TabContent>
                             <TabContent id="past_ac" active={activeTab === 'past_ac'} ref={tabContentRefs.past_ac}>
                                 {/* Nội dung của tab past_ac */}
-                                <div className={styles2.header_section}>Past Auctions from {auctionHouse && auctionHouse.auctionHouse_name}</div>
+                                <div className={styles2.header_section}>Past Auctions from {auctionHouse && auctionHouse.name}</div>
                                 <div >
                                     <Container>
                                         <div>

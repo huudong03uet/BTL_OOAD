@@ -43,9 +43,9 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
         try {
             const productId = Number(id);
             const productData = await user_get_detail_product(productId);
-            console.log('Product detail:', productData);
+            // console.log('Product detail:', productData);
             await setSelectedProduct(productData);
-            console.log(selectedProduct);
+            // console.log(selectedProduct);
         } catch (error) {
             console.error('Error fetching product detail:', error);
         }
@@ -142,7 +142,7 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
                 </Table>
             </TableContainer>
             <Modal
-                open={selectedProduct !== null}
+                open={selectedProduct && Object.keys(selectedProduct).length > 0}
                 onClose={handleCloseModal}
                 aria-labelledby="modal-title"
                 aria-describedby="modal-description"
@@ -160,7 +160,7 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
                                 <span style={{ fontWeight: "bold" }}>Description:</span> {selectedProduct?.description} <br />
                                 <span style={{ fontWeight: "bold" }}>Min Estimate:</span> {selectedProduct?.min_estimate} <br />
                                 <span style={{ fontWeight: "bold" }}>Max Estimate:</span> {selectedProduct?.max_estimate} <br />
-                                <span style={{ fontWeight: "bold" }}>Action Id:</span> {selectedProduct?.auction.id} <br />
+                                <span style={{ fontWeight: "bold" }}>Action Id:</span> {selectedProduct?.auction?.id} <br />
                                 <span style={{ fontWeight: "bold" }}>Status:</span> {selectedProduct?.status} <br />
                                 <span style={{ fontWeight: "bold" }}>Created At:</span> {selectedProduct?.createdAt} <br />
                             </>

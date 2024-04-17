@@ -1,3 +1,5 @@
+import Location from "./location";
+
 interface Review {
     id: number;
     rating: number;
@@ -17,4 +19,5 @@ export default interface Seller {
     user_id: number,
     status: string,
     reviews: Review[],
+    location?: Location,
 }
