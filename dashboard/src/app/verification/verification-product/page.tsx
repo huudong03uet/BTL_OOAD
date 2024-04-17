@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import TableProduct from "@/components/Verification/TableProduct";
-import { product_not_insepct } from "@/service/product";
+import { product_not_inspect } from "@/service/product";
 import Product from "@/types/product";
 
 // export const metadata: Metadata = {
@@ -24,7 +24,7 @@ const VerificationProductPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await product_not_insepct();
+        const data = await product_not_inspect();
         if (Array.isArray(data)) {
           setPackageDatafake(data);
         } else {
