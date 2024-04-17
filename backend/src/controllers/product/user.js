@@ -116,4 +116,6 @@ let get_product_accept = async (req, res) => {
     }
 }
 
+
+
 module.exports = {get_products, get_categories, get_product_detail, get_product_recently, get_product_accept}

@@ -61,7 +61,7 @@ function SideBarUser() {
                     <i className="fa fa-heart space-right-sm"></i>
                     {' '}Saved Items
                 </Link>
-                <div className={style.div_text}>
+                {/* <div className={style.div_text}>
                     Following
                 </div>
                 <div className='ps-4'>
@@ -79,7 +79,7 @@ function SideBarUser() {
                     <div className={style.div_text}>
                         Categories
                     </div>
-                </div>
+                </div> */}
 
             </div>
 
