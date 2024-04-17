@@ -104,7 +104,7 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                 <CreateModal
                     showModalCreate={showModalCreate}
                     setShowModalCreate={setShowModalCreate}
-                    userInfomation={selectedPackage}
+                    userInformation={selectedPackage}
                 />
             )}
         </div>

@@ -2,12 +2,12 @@ import { useState } from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
 import { useSWRConfig } from "swr"
 import { mutate } from "swr"
-import { FormRegisterAuction } from '@/types/auction';
+import  Auction from '@/types/auction';
 
 interface IProps {
   showModalCreate: boolean;
   setShowModalCreate: (value: boolean) => void;
-  auctionInformation: FormRegisterAuction;
+  auctionInformation: Auction;
 }
 
 function CreateModal(props: IProps) {
@@ -16,7 +16,6 @@ function CreateModal(props: IProps) {
   const handleCloseModal = () => setShowModalCreate(false);
   const handleShowModal = () => setShowModalCreate(true);
 
-  let { image_path, time, seller_name, auction_room_name, address, number_watching, number_review, images, status } = auctionInformation;
 
   const handleSubmit = () => {
     status = "complete";
