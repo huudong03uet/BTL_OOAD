@@ -1,7 +1,5 @@
 'use client'
-import { Package } from "@/types/package";
 import { User } from "@/types/user"
-import CreateModal from "../Modal/ModalSeller";
 import DeleteModal from "@/components/Modal/ModalDeleteUser";
 import { useState } from "react";
 

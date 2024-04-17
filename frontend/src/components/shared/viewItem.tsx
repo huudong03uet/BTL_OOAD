@@ -68,7 +68,7 @@ function ViewItem({ obj }: { obj: Product }) {
                     </button>
 
                 )}
-                <img src={obj.images[0].url} alt={obj.title} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
+                <img src={obj.images?.[0]?.url ?? 'defaultImageUrl'}  alt={obj.title} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
 
             </div>
             {/* <div
@@ -87,9 +87,9 @@ function ViewItem({ obj }: { obj: Product }) {
                     {obj.title}
                 </div>
                 <div>
-                    <StyledLink href={`/auction-house/${obj.seller.id}`}
+                    <StyledLink href={`/auction-house/${obj.seller?.id}`}
                     onClick={(e) => e.stopPropagation()}
-                    >by {obj.seller.name}</StyledLink>
+                    >by {obj.seller?.name}</StyledLink>
                 </div>
                 <div className="fw-bold">
                     {/* ${obj.max_bid} */}

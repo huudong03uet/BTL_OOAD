@@ -108,10 +108,10 @@ function UpcomingAuctions({ obj }: { obj: Auction }) {
                             ))} */}
 
                             <div className="col-12">
-                                <div className="row">
-                                    {obj.products && obj.products.map((object, i) => (
-                                        <div className="col-3" key={i}>
-                                            <img src={object.images[0].url} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "150px" }} className='position-relative top-50 start-50 translate-middle'/>
+                                <div className="row pt-3 d-flex justify-content-around">
+                                    {obj.products && obj.products.slice(0, 5).map((object, i) => (
+                                        <div className="col-2 px-0" key={i}>
+                                            <img src={object.images[0].url} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "180px" }} className='position-relative top-50 start-50 translate-middle'/>
                                         </div>
                                     ))}
                                 </div>

@@ -15,11 +15,9 @@ import Map from '@/components/auction-house/Map';
 import Tab from '@/components/auction-house/Tab';
 import TabContent from '@/components/auction-house/TabContent';
 import SoldItem from '@/components/shared/soldItem';
-import User from '@/models/user';
 import Comment from '@/components/auction-house/Comment';
 import PassAuction from '@/components/auction-house/PastAuction';
 import { user_get_auction_upcoming } from '@/services/auction/user';
-import { Data } from '@react-google-maps/api';
 import { seller_info } from '@/services/account/seller';
 import { seller_auction_past_service } from '@/services/auction/seller';
 import { seller_product_sold_service } from '@/services/product/seller';
@@ -236,7 +234,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         <>
             <AppHeader />
             <AppNav />
-                <div>
+                <Container>
                     {auctionHouse && (
                         <div className={` ${styles.ahInformation} ${styles.colMd8}`}>
                             <div className={styles.ahBioContainer}>
@@ -415,7 +413,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                     `}</style>
                     </div>
 
-                </div>
+                </Container>
             {/* </Container> */}
 
 
