@@ -24,11 +24,6 @@ const CoinHistory = sequelize.define('coin_history', {
         values: [CoinHistoryType.BUY, CoinHistoryType.RECHANGE, CoinHistoryType.SELL, CoinHistoryType.WITHDRAW],
         defaultValue: CoinHistoryType.BUY
     },
-    view: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-    }
 },
     {
         tableName: 'coin_history',

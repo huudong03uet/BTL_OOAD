@@ -19,11 +19,6 @@ const InvitationUser = sequelize.define('invitation_user', {
         values: [UserInvitationStatus.ACCEPTED, UserInvitationStatus.DENIED, UserInvitationStatus.NOT_YET],
         defaultValue: UserInvitationStatus.NOT_YET
     },
-    view: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-    }
 },
     {
         tableName: 'invitation_user',

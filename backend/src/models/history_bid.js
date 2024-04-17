@@ -18,11 +18,6 @@ const BidHistory = sequelize.define('bid_history', {
         type: DataTypes.DOUBLE,
         defaultValue: 0.0,
     },
-    view: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-    }
 },
     {
         tableName: 'bid_history',

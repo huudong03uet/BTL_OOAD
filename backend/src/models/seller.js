@@ -1,6 +1,7 @@
 const { DataTypes} = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
+const SellerStatus = require('../../constants/seller_status')
 const User = require('./user');
 const Location = require('./location');
 
@@ -28,10 +29,11 @@ const Seller = sequelize.define('seller', {
         allowNull: true,
     },
     status: {
-        type: DataTypes.STRING,
+        type: DataTypes.ENUM,
         allowNull: false,
-        defaultValue: "processing",
-    }
+        values: [SellerStatus.ACCEPTED, SellerStatus.PROCESSING, SellerStatus.DENIED],
+        defaultValue: SellerStatus.PROCESSING,
+    },
 },
     {
         tableName: 'seller',

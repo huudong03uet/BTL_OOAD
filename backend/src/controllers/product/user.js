@@ -1,17 +1,16 @@
-const sequelize = require('../../../conf/sequelize')
-const statusCode = require('../../../constants/status')
-const logger = require("../../../conf/logger")
+const { Op } = require('sequelize');
 
+const sequelize = require('../../../conf/sequelize')
+const logger = require("../../../conf/logger")
+const statusCode = require('../../../constants/status')
 const AuctionProductStatus = require('../../../constants/auction_product_status')
 const AuctionProductVisibilityStatus = require('../../../constants/product_visibility')
 
-const Product = require('../../models/product')
-const Image = require('../../models/image')
 const Category = require('../../models/category')
+
 const { check_required_field } = require('../util')
 const { update_value_redis, get_value_redis, set_value_redis } = require('../util/redis')
-const Seller = require('../../models/seller')
-const { get } = require('../../routers/product/user')
+const { get_product, get_product_by_pk } = require('./conponent')
 
 let get_categories = async (req, res) => {
     try {
@@ -28,18 +27,14 @@ let get_categories = async (req, res) => {
 
 let get_products = async (req, res) => {
     try {
-        const products = await Product.findAll({
-            where: {
-                status: [AuctionProductStatus.NOT_YET_SOLD, AuctionProductStatus.ON_SALE],
-                visibility: AuctionProductVisibilityStatus.PUBLIC
+        let whereCondition = {
+            status: {
+                [Op.ne]: AuctionProductStatus.SOLD
             },
-            include: [
-                {
-                    model: Image,
-                    attributes: ["id", 'path', "url"]
-                }
-            ]
-        });
+            visibility: AuctionProductVisibilityStatus.PUBLIC
+        };
+
+        const products = await get_product(whereCondition)
 
         logger.info(`${statusCode.HTTP_200_OK} product length: ${products.length}`)
         return res.status(statusCode.HTTP_200_OK).json(products);
@@ -56,41 +51,15 @@ let get_product_detail = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        const product_id = req.params.product_id;
-
-        const product = await Product.findByPk(product_id, {
-            include: [
-                {
-                    model: Image,
-                    attributes: ['id', 'url']
-                },
-                {
-                    model: Category,
-                    attributes: ['id', 'title']
-                },
-                {
-                    model: Seller,
-                    attributes: ["name", 'id']
-                }
-            ]
-        });
+        const product = await get_product_by_pk(req.params.product_id)
 
         if (!product) {
             logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Không tìm thấy product`);
             return res.status(statusCode.HTTP_404_NOT_FOUND).json("Không tìm thấy product");
         }
 
-        let value = {}
-        value["id"] = product.dataValues.id
-        value["time"] = product.dataValues.createdAt
-        value["title"] = product.dataValues.title
-        value["max_bid"] = product.dataValues.max_estimate
-        value["image_path"] = product.dataValues.images[0].dataValues.url
-        value["user_sell"] = product.dataValues.seller.name
-        value["seller_id"] = product.dataValues.seller.id
-
         await update_value_redis(`${req.params.user_id}_1`, `${product.id}`)
-        await set_value_redis(`${product.id}`, value)
+        await set_value_redis(`${product.id}`, product)
 
         logger.info(`${statusCode.HTTP_200_OK} [product:${product.id}]`)
         return res.status(statusCode.HTTP_200_OK).json(product);
@@ -113,8 +82,6 @@ let get_product_recently = async (req, res) => {
             let out = await get_value_redis(`${req.params.user_id}_${i}`);
             if (out) {
                 let product = await get_value_redis(`${out}`);
-
-
                 if (product) {
                     result.push(product);
                 }
@@ -132,38 +99,16 @@ let get_product_recently = async (req, res) => {
 
 let get_product_accept = async (req, res) => {
     try {
-        const products = await Product.findAll({
-            where: {
-                status: [AuctionProductStatus.NOT_YET_SOLD, AuctionProductStatus.ON_SALE],
+
+        let whereCondition = {
+            status: {
+                [Op.ne]: AuctionProductStatus.SOLD
             },
-         
-            include: [
-                {
-                    model: Image,
-                    attributes: ["id", 'path', "url"]
-                },
-                {
-                    model: Seller,
-                    attributes: ["name"]
-                },
-                
-                // seller_name: sequelize.col('seller.name')
+        };
 
-            ],
-            //  add attribute sell_name = seller.name
-            attributes: { include: [
-                [sequelize.literal('seller.name'), 'user_sell'],
-                // image_path: sequelize.col('images.url')
+        const products = await get_product(whereCondition)
 
-                [sequelize.literal('images.url'), 'image_path']
-            
-            ] }
-
-        });
-
-       
-
-        logger.info(`${statusCode.HTTP_200_OK} product length: ${products.length}`)
+        logger.info(`${statusCode.HTTP_200_OK} product accept: ${products.length}`)
         return res.status(statusCode.HTTP_200_OK).json(products);
     } catch (error) {
         logger.error(`Get products error: ${error}`);

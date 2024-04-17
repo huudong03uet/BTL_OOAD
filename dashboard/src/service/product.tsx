@@ -24,7 +24,6 @@ let product_inspect = async (description: string, product_id: number, status: st
             "admin_id": AdminDataService.getAdminData()?.id,
             "status": status
         }
-        console.log(body)
         const response = await axios.post(url, body);
         return;
     } catch (error: any) {

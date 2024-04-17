@@ -80,7 +80,7 @@ function ViewItem({ obj }: { obj: Product }) {
             >
 
                 <div>
-                    {dateFormat(obj.auction.time_auction, " mmm dd, yyyy - hh:MM TT")}
+                    {dateFormat(obj.auction?.time_auction, " mmm dd, yyyy - hh:MM TT")}
                 </div>
                 <div style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
                     className='my-1 fw-bold'>

@@ -25,11 +25,9 @@ interface IProps {
 function CreateModal(props: IProps) {
   const { showModalCreate, setShowModalCreate, productInformation } = props;
   const [textAreaValue, setTextAreaValue] = useState("");
-
   const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextAreaValue(event.target.value);
   };
-
 //   const handleButton = () => {
 //     console.log("Additional Text:", textAreaValue);
 //     // handleCloseModal();
@@ -40,8 +38,6 @@ function CreateModal(props: IProps) {
 
     props.onAcceptReject(action === 'Accept' ? StatusProductVerification.accepted : StatusProductVerification.rejected, productInformation);
 
-
-
     handleCloseModal();
   };
 
@@ -51,7 +47,6 @@ function CreateModal(props: IProps) {
 
   // const handleSubmit = () => {
   //   status = "complete";
-
   //   //call api sửa đổi trạng thái của product thành seller, be trả về với status là complete
   //   fetch("http://localhost:8000/blogs",
   //     {
@@ -67,11 +62,7 @@ function CreateModal(props: IProps) {
   //       mutate("http://localhost:8000/blogs")
   //     })
   //     .catch(function (res) { console.log(res) })
-
   // };
-
-
-
   return (
     <Modal
       isOpen={showModalCreate}
@@ -125,7 +116,6 @@ function CreateModal(props: IProps) {
                 ))}
               </div>
             </div>
-
             <div className="mb-3 ml-3">
               <textarea
                 value={textAreaValue}
@@ -147,8 +137,6 @@ function CreateModal(props: IProps) {
         </>
       </ModalContent>
     </Modal>
-
   );
 }
-
 export default CreateModal;

@@ -19,11 +19,6 @@ const InvitationProduct = sequelize.define('invitation_product', {
         values: [ProductInvitationStatus.ACCEPTED, ProductInvitationStatus.DENIED, ProductInvitationStatus.NOT_YET],
         defaultValue: ProductInvitationStatus.NOT_YET,
     },
-    view: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false,
-    }
 },
     {
         tableName: 'invitation_product',
