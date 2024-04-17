@@ -81,11 +81,14 @@ h1 span.font-italic {
 }
 
 .sharing-btn {
+  margin-top: 25px;
+  margin-bottom: 25px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
 }
 
 .sharing-btn i {
+  margin-right: 25px;
   font-size: 18px;
   border-radius: 50%;
   padding: 10px;
@@ -96,8 +99,6 @@ h1 span.font-italic {
   background-color: gray;
   color: white;
 }
-
-
 
 .aside {
   margin-left: 20px;
@@ -117,7 +118,6 @@ h1 span.font-italic {
   flex-direction: column;
   margin-top: 30px;
 }
-
 
 .bid-status {
   /* Quy tắc CSS cho trạng thái đấu giá */
@@ -259,4 +259,19 @@ h1 span.font-italic {
   max-width: 100%;
   border-radius: 5px;
   /* Các quy tắc khác tùy thuộc vào yêu cầu thiết kế cụ thể */
+}
+
+.slides-thumbnail {
+  max-height: 500px; /* Kích thước cố định cho phần tử thumbnail */
+  overflow-y: auto; /* Kích hoạt thanh cuộn khi cần thiết */
+}
+
+.slides-thumbnail > div {
+  margin-bottom: 10px;
+  overflow: hidden; /* Ẩn phần dư thừa của hình ảnh nếu nó vượt quá kích thước của div cha */
+}
+
+.slides-thumbnail img {
+  max-width: 100px;
+  height: auto;
 }

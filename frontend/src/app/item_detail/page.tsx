@@ -1,16 +1,16 @@
 'use client'
-import { Container } from "react-bootstrap";
-import style from '@/styles/customer/item.module.css';
-import React, { useEffect, useState } from 'react';
 import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
 import VerticalSlide from "@/components/item/VerticalSlide";
+import style from '@/styles/customer/item.module.css';
+import { useEffect, useState } from 'react';
+import { Container } from "react-bootstrap";
 
-import { Modal } from 'react-bootstrap';
-import Product from "@/models/product";
-import { user_get_detail_product } from "@/services/product/user";
 import AppNav from "@/components/AppNav";
-import { useRouter, useSearchParams } from "next/navigation";
+import ProductDetail from "@/models/product_detail";
+import { user_get_detail_product } from "@/services/product/user";
+import { useSearchParams } from "next/navigation";
+import { Modal } from 'react-bootstrap';
 
 // export default function Item(props: ProductDetail) {
 export default function Item() {
@@ -18,7 +18,8 @@ export default function Item() {
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
 
-  const [itemData, setItemData] = useState({} as Product);
+  // const [itemData, setItemData] = useState({} as Product);
+  const [itemData, setItemData] = useState({} as ProductDetail);
   const [isItemOverviewOpen, setIsItemOverviewOpen] = useState(false);
   const [isPaymentShippingOpen, setIsPaymentShippingOpen] = useState(false);
 
@@ -30,7 +31,7 @@ export default function Item() {
     setIsPaymentShippingOpen(!isPaymentShippingOpen);
   };
 // Error: NextRouter was not mounted. https://nextjs.org/docs/messages/next-router-not-mounted
-    const searchParams = useSearchParams();  
+  const searchParams = useSearchParams();  
   
 
   useEffect(() => {
@@ -63,9 +64,9 @@ export default function Item() {
         </div> */}
 
         {/* Selection 2: Title */}
-        <div>
+        <div style={{ backgroundColor: "rgb(222, 222, 222)" }}>
           <Container>
-            <div className={`${style['main-lot-title']} ${style['d-none']} ${style['d-md-block']}`}>
+          <div className={`${style['main-lot-title']} ${style['d-none']} ${style['d-md-block']}`}>
               <div>
                 <div className={style['artist-title']}>
                   <a href="/" target="_blank" rel="noreferrer" className={style['black-link']}><div>{itemData?.artist}</div></a>
@@ -81,11 +82,13 @@ export default function Item() {
           <Container>
             <div className={style['contend-aside-holder']}>
               <div className={style.contend}>
-              <VerticalSlide images={itemData.images ? itemData.images.map(image => image.url) : []}></VerticalSlide>
-                <div className={style['sharing-btn']}>
-                  <i className="fa fa-envelope"></i>
-                  <i className="fa fa-share"></i>
-                  <i className="fa fa-print"></i>
+                <VerticalSlide images={itemData.images ? itemData.images.map(image => image.url) : []}></VerticalSlide>
+                <div className="share-sec">
+                  <div className={style['sharing-btn']}>
+                    <i className="fa fa-envelope"></i>
+                    <i className="fa fa-share"></i>
+                    <i className="fa fa-print"></i>
+                  </div>
                 </div>
                 <div>
                   <div className={style['accordion-holder1']}>
@@ -187,9 +190,9 @@ export default function Item() {
                         ))}
                       </select>
                     </div>
-                        <button type="button" className={`btn btn-primary btn-lg btn-block ${style['btn-place-bid']} ${style['button-style']}`} onClick={handleShowModal}>Place Bid</button>
+                    <button type="button" className={`btn btn-primary btn-lg btn-block ${style['btn-place-bid']} ${style['button-style']}`} onClick={handleShowModal}>Place Bid</button>
                     <div className={style.secure}>
-                      <span className={style['secure-bidding']}><i className="fa fa-lock"></i>Secure Bidding</span>
+                      <span className={style['secure-bidding']}><i className="fa fa-lock pe-2"></i>Secure Bidding</span>
                     </div>
 
                   </form>
@@ -199,112 +202,112 @@ export default function Item() {
             </div>
 
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
-                <Modal.Header closeButton>
-                </Modal.Header>
-                <Modal.Body>
-                  <h2 className="text-center">Review Your Bid</h2>
-                    <p>Select the highest amount you are willing to bid. If you are outbid, we will increase your bid by one increment, up to your max.</p>
-                    <table className="table">
-                        <tbody>
-                            <tr>
-                                <td style={{ border: 'none' }}>Estimate</td>
-                                <td style={{ border: 'none' }}>$0 USD - $0 USD</td>
-                            </tr>
-                            <tr>
-                                <td style={{ border: 'none' }}>Current bid</td>
-                                <td style={{ border: 'none' }}>$1 USD</td>
-                            </tr>
-                            <tr>
-                                <td style={{ border: 'none' }}>Your max bid</td>
-                                <td style={{ border: 'none' }}>
-                                    <select className="form-select">
-                                        <option>$2 USD</option>
-                                        <option>$0.44 USD</option>
-                                        <option>$2.44 USD (+shipping, taxes & fees)</option>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style={{ border: 'none' }}>Buyer's Premium</td>
-                                <td style={{ border: 'none' }}>$0.44 USD</td>
-                            </tr>
-                            <tr>
-                                <td style={{ border: 'none' }}>TOTAL</td>
-                                <td style={{ border: 'none' }}>$2.44 USD (+ shipping, taxes & fees)</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <hr />
-                    <h5>Shipping Address</h5>
-                    <div className="mb-3">
-                        <input type="text" className="form-control" placeholder="First Name" />
-                    </div>
-                    <div className="mb-3">
-                        <input type="text" className="form-control" placeholder="Last Name" />
-                    </div>
-                    <div className="mb-3">
-                        <input type="text" className="form-control" placeholder="Address Line 1" />
-                    </div>
-                    <div className="row mb-3">
-                        <div className="col">
-                            <input type="text" className="form-control" placeholder="City" />
-                        </div>
-                        <div className="col">
-                            <select className="form-select">
-                                <option>Country</option>
-                                {/* Thêm các option cho select country */}
-                            </select>
-                        </div>
-                    </div>
-                    <div className="row mb-3">
-                        <div className="col">
-                            <input type="text" className="form-control" placeholder="Zip/Postal Code" />
-                        </div>
-                        <div className="col">
-                            <input type="text" className="form-control" placeholder="Province" />
-                        </div>
-                    </div>
-                    <div className="mb-3">
-                        <input type="text" className="form-control" placeholder="Phone Number" />
-                    </div>
-                    <hr />
-                    <h5>Credit Card</h5>
-                    <p>You won’t be charged unless you win. If you win, the auction house may auto-charge this card 2 days after the invoice is sent.</p>
-                    <div className="mb-3">
-                        <input type="text" className="form-control" placeholder="Card Number" />
-                    </div>
-                    <p><i className="fa fa-lock" aria-hidden="true"></i><span className='mx-1'>Security server <a rel="noopener noreferrer" target="_blank" style={{color: "#004bd6"}}>Certified by VikingCloud</a></span></p>
-                    <div className="mb-3 d-flex">
-                        <input type="text" className="form-control me-2" placeholder="MM/YY" />
-                        <input type="text" className="form-control" placeholder="CVN" />
-                    </div>
-                    <div className="mb-3">
-                        <input type="text" className="form-control" placeholder="Name on Card" />
-                    </div>
-                    <div className="mb-3 form-check">
-                        <input type="checkbox" className="form-check-input" id="billingAddress" />
-                        <label className="form-check-label" htmlFor="billingAddress">Billing address is same as shipping address</label>
-                    </div>
-                    <hr />
-                    <div className="mb-3 form-check">
-                        <input type="checkbox" className="form-check-input" id="textMe" />
-                        <label className="form-check-label" htmlFor="textMe">Text me if I'm outbid and before the auction starts for my lots</label>
-                    </div>
-                    <div className="row mb-3">
-                        <div className="col">
-                            <select className="form-select">
-                                <option>Country</option>
-                                {/* Thêm các option cho select country */}
-                            </select>
-                        </div>
-                        <div className="col">
-                            <input type="text" className="form-control" placeholder="Phone Number" />
-                        </div>
-                    </div>
-                    <button type="button" className="btn btn-dark w-100">Place Bid</button>
-                    <p className="text-center mt-2">By clicking "Place Bid", you agree to submit a bid for this item for the amount described above, not including shipping, taxes, and fees. All accepted bids are binding. Your address and payment information on file will be encrypted and securely submitted using SSL technology in order to complete your registration for this sale. After the sale, the seller may auto-charge the payment method used during registration.apply.</p>
+              <Modal.Header closeButton>
+              </Modal.Header>
+              <Modal.Body>
+                <h2 className="text-center">Review Your Bid</h2>
+                <p>Select the highest amount you are willing to bid. If you are outbid, we will increase your bid by one increment, up to your max.</p>
+                <table className="table">
+                  <tbody>
+                    <tr>
+                      <td style={{ border: 'none' }}>Estimate</td>
+                      <td style={{ border: 'none' }}>$0 USD - $0 USD</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: 'none' }}>Current bid</td>
+                      <td style={{ border: 'none' }}>$1 USD</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: 'none' }}>Your max bid</td>
+                      <td style={{ border: 'none' }}>
+                        <select className="form-select">
+                          <option>$2 USD</option>
+                          <option>$0.44 USD</option>
+                          <option>$2.44 USD (+shipping, taxes & fees)</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: 'none' }}>Buyer's Premium</td>
+                      <td style={{ border: 'none' }}>$0.44 USD</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: 'none' }}>TOTAL</td>
+                      <td style={{ border: 'none' }}>$2.44 USD (+ shipping, taxes & fees)</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <hr />
+                <h5>Shipping Address</h5>
+                <div className="mb-3">
+                  <input type="text" className="form-control" placeholder="First Name" />
+                </div>
+                <div className="mb-3">
+                  <input type="text" className="form-control" placeholder="Last Name" />
+                </div>
+                <div className="mb-3">
+                  <input type="text" className="form-control" placeholder="Address Line 1" />
+                </div>
+                <div className="row mb-3">
+                  <div className="col">
+                    <input type="text" className="form-control" placeholder="City" />
+                  </div>
+                  <div className="col">
+                    <select className="form-select">
+                      <option>Country</option>
+                      {/* Thêm các option cho select country */}
+                    </select>
+                  </div>
+                </div>
+                <div className="row mb-3">
+                  <div className="col">
+                    <input type="text" className="form-control" placeholder="Zip/Postal Code" />
+                  </div>
+                  <div className="col">
+                    <input type="text" className="form-control" placeholder="Province" />
+                  </div>
+                </div>
+                <div className="mb-3">
+                  <input type="text" className="form-control" placeholder="Phone Number" />
+                </div>
+                <hr />
+                <h5>Credit Card</h5>
+                <p>You won’t be charged unless you win. If you win, the auction house may auto-charge this card 2 days after the invoice is sent.</p>
+                <div className="mb-3">
+                  <input type="text" className="form-control" placeholder="Card Number" />
+                </div>
+                <p><i className="fa fa-lock" aria-hidden="true"></i><span className='mx-1'>Security server <a rel="noopener noreferrer" target="_blank" style={{ color: "#004bd6" }}>Certified by VikingCloud</a></span></p>
+                <div className="mb-3 d-flex">
+                  <input type="text" className="form-control me-2" placeholder="MM/YY" />
+                  <input type="text" className="form-control" placeholder="CVN" />
+                </div>
+                <div className="mb-3">
+                  <input type="text" className="form-control" placeholder="Name on Card" />
+                </div>
+                <div className="mb-3 form-check">
+                  <input type="checkbox" className="form-check-input" id="billingAddress" />
+                  <label className="form-check-label" htmlFor="billingAddress">Billing address is same as shipping address</label>
+                </div>
+                <hr />
+                <div className="mb-3 form-check">
+                  <input type="checkbox" className="form-check-input" id="textMe" />
+                  <label className="form-check-label" htmlFor="textMe">Text me if I'm outbid and before the auction starts for my lots</label>
+                </div>
+                <div className="row mb-3">
+                  <div className="col">
+                    <select className="form-select">
+                      <option>Country</option>
+                      {/* Thêm các option cho select country */}
+                    </select>
+                  </div>
+                  <div className="col">
+                    <input type="text" className="form-control" placeholder="Phone Number" />
+                  </div>
+                </div>
+                <button type="button" className="btn btn-dark w-100">Place Bid</button>
+                <p className="text-center mt-2">By clicking "Place Bid", you agree to submit a bid for this item for the amount described above, not including shipping, taxes, and fees. All accepted bids are binding. Your address and payment information on file will be encrypted and securely submitted using SSL technology in order to complete your registration for this sale. After the sale, the seller may auto-charge the payment method used during registration.apply.</p>
 
-                </Modal.Body>
+              </Modal.Body>
             </Modal>
           </Container >
         </div >
