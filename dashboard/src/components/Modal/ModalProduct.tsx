@@ -3,8 +3,9 @@ import { useState } from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
 import { useSWRConfig } from "swr"
 import { mutate } from "swr"
-import { FormRegisterProduct } from '@/types/form_register_product';
-import { product_insepect } from '@/service/product';
+// import { FormRegisterProduct as Product } from '@/types/form_register_product';
+import Product from '@/types/product';
+import { product_inspect } from '@/service/product';
 import { StatusProductVerification } from '../Verification/TableProduct';
 //     const handleAcceptReject = (statusProductVerification: StatusProductVerification, packageItem: FormRegisterProduct) => {
 //   if (statusProductVerification === StatusProductVerification.accepted) {
@@ -17,8 +18,8 @@ import { StatusProductVerification } from '../Verification/TableProduct';
 interface IProps {
   showModalCreate: boolean;
   setShowModalCreate: (value: boolean) => void;
-  productInformation: FormRegisterProduct;
-  onAcceptReject: (statusProductVerification: StatusProductVerification, packageItem: FormRegisterProduct) => void;
+  productInformation: Product;
+  onAcceptReject: (statusProductVerification: StatusProductVerification, packageItem: Product) => void;
 }
 
 function CreateModal(props: IProps) {
@@ -35,7 +36,7 @@ function CreateModal(props: IProps) {
 // };
 
   const handleButton = async (action: 'Reject' | 'Accept') => {
-    await product_insepect(textAreaValue, productInformation.product_id, action)
+    await product_inspect(textAreaValue, productInformation.id, action)
 
     props.onAcceptReject(action === 'Accept' ? StatusProductVerification.accepted : StatusProductVerification.rejected, productInformation);
 
@@ -46,8 +47,7 @@ function CreateModal(props: IProps) {
 
   const handleCloseModal = () => setShowModalCreate(false);
   const handleShowModal = () => setShowModalCreate(true);
-
-  let { product_id, seller, title, images, estimate_min, estimate_max, description, dimensions, artist, category, condition_report, provenance, time_create, status } = productInformation;
+  // let { product_id, seller, title, images, estimate_min, estimate_max, description, dimensions, artist, category, condition_report, provenance, time_create, status } = productInformation;
 
   // const handleSubmit = () => {
   //   status = "complete";
@@ -84,25 +84,25 @@ function CreateModal(props: IProps) {
           <ModalHeader className="flex flex-col gap-1">Verification Product</ModalHeader>
           <ModalBody style={{ maxHeight: '300px', overflowY: 'auto' }}>
             <div className="mb-0 ml-3">
-              <p><strong>Product Title:</strong> {title}</p>
+              <p><strong>Product Title:</strong> {productInformation.title}</p>
             </div>
             <div className="mb-0 flex-row" style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <p className="ml-3"><strong>Seller:</strong> {seller && seller.name}</p>
-              <p className="mr-20"><strong>Artist:</strong> {artist}</p>
+              <p className="ml-3"><strong>Seller:</strong> {productInformation.seller && productInformation.seller.name}</p>
+              <p className="mr-20"><strong>Artist:</strong> {productInformation.artist}</p>
             </div>
             <div className="mb-0 ml-3">
-              <p><strong>Description:</strong> {description}</p>
+              <p><strong>Description:</strong> {productInformation.description}</p>
             </div>
             <div className="mb-0 ml-3">
-              <p><strong>Dimensions:</strong> {dimensions}</p>
+              <p><strong>Dimensions:</strong> {productInformation.dimensions}</p>
             </div>
             <div className="mb-0 flex-row" style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <p className='ml-3'><strong>Estimate: </strong> {estimate_min} - {estimate_max}</p>
+              <p className='ml-3'><strong>Estimate: </strong> {productInformation.min_estimate} - {productInformation.max_estimate}</p>
             </div>
             <div className="mb-0 ml-3">
               <p><strong>Category:</strong></p>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                {category && category.map((obj, index) => (
+                {productInformation.categories && productInformation.categories.map((obj, index) => (
                   <div key={index}>
                     <p>{obj.title}</p>
                   </div>
@@ -110,15 +110,15 @@ function CreateModal(props: IProps) {
               </div>
             </div>
             <div className="mb-0 ml-3">
-              <p><strong>Condition:</strong> {condition_report}</p>
+              <p><strong>Condition:</strong> {productInformation.condition_report}</p>
             </div>
             <div className="mb-0 ml-3">
-              <p><strong>Provenance:</strong> {provenance}</p>
+              <p><strong>Provenance:</strong> {productInformation.provenance}</p>
             </div>
             <div className="mb-0 ml-3">
               <p><strong>Image:</strong></p>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                {images && images.map((image, index) => (
+                {productInformation.images && productInformation.images.map((image, index) => (
                   <div key={index}>
                     <img src={image.url} alt="" style={{ width: '30px', height: 'auto' }} />
                   </div>
