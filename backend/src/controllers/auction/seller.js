@@ -224,18 +224,7 @@ let get_past_auction = async (req, res) => {
 
         let auctions = await get_auction(whereCondition, AUCTION_INCLUDE, kwargs)
 
-        // let auctions = await _get_auction_by_status(req.params.seller_id, AuctionProductStatus.SOLD)
-
-
-        // let result = []
-
-        // for (let auction of auctions) {
-        //     let out = {}
-        //     out["date"] = auction.dataValues.time_auction
-        //     out["title"] = auction.dataValues.name
-        //     out["location"] = auction.dataValues.location.dataValues.location
-        //     result.push(out)
-        // }
+        auctions = auctions.filter(auction => auction.products.length > 0)
 
         logger.info(`${statusCode.HTTP_200_OK} auction past length ${auctions.length}`)
         return res.status(statusCode.HTTP_200_OK).json(auctions);

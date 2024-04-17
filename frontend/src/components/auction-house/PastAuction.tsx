@@ -3,11 +3,12 @@
 import React from 'react'
 import { Container } from 'react-bootstrap';
 import styles from '@/styles/auction_house/passAuction.module.css'
+import Location from '@/models/location';
 
 interface PastAuctionProps {
     dateString: string;
     title: string;
-    location: string;
+    location: Location;
 }
 
 const PastAuction: React.FC<PastAuctionProps> = ({ dateString, title, location }) => {
@@ -32,7 +33,7 @@ const PastAuction: React.FC<PastAuctionProps> = ({ dateString, title, location }
                         {title}
                     </div>
                     <div className={styles.location}>
-                        {location}
+                        {location?.country} + {location?.city}
                     </div>
           
             </div>

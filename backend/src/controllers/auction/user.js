@@ -28,8 +28,6 @@ let get_auction_upcomming = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        console.log("abc__________________________")
-
         let whereCondition = {
             time_auction: {
                 [Op.gt]: new Date()
