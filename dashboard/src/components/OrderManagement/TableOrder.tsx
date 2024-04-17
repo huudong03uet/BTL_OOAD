@@ -1,9 +1,6 @@
 'use client'
 import { Package } from "@/types/package";
-import { FormRegisterSeller } from "@/types/form_register_seller";
-import CreateModal from "../Modal/ModalUser";
-import { useState } from "react";
-import { User } from "@/types/user";
+// import { FormRegisterSeller as Seller } from "@/types/form_register_seller";
 import { Order } from "@/types/order";
 
 

@@ -15,11 +15,9 @@ import Map from '@/components/auction-house/Map';
 import Tab from '@/components/auction-house/Tab';
 import TabContent from '@/components/auction-house/TabContent';
 import SoldItem from '@/components/shared/soldItem';
-import User from '@/models/user';
 import Comment from '@/components/auction-house/Comment';
 import PassAuction from '@/components/auction-house/PastAuction';
 import { user_get_auction_upcoming } from '@/services/auction/user';
-import { Data } from '@react-google-maps/api';
 import { seller_info } from '@/services/account/seller';
 import { seller_auction_past_service } from '@/services/auction/seller';
 import { seller_product_sold_service } from '@/services/product/seller';
@@ -244,173 +242,162 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         <>
             <AppHeader />
             <AppNav />
-            <div>
-                {auctionHouse && (
-                    <div className={` ${styles.ahInformation} ${styles.colMd8}`}>
-                        <div className={styles.ahBioContainer}>
-                            <h1 className={styles.ahName}>
-                                {auctionHouse && auctionHouse.auctionHouse_name}
-                            </h1>
-                            <p className={styles.ahTime}>
-                                Invalua Seller since {auctionHouse && auctionHouse.auctionHouse_createdTime}
-                            </p>
-                            <div className={styles.voteContainer}>
-                                <div className={styles.yotpoStars}>
-                                    <span className={`${styles.yellowIcon} fas fa-star`}></span>
-                                    <span className={`${styles.yellowIcon} fas fa-star`}></span>
-                                    <span className={`${styles.yellowIcon} fas fa-star`}></span>
-                                    <span className={`${styles.yellowIcon} fas fa-star`}></span>
-                                    <span className={`${styles.yellowIcon} fas fa-star`}></span>
-                                    <span className={styles.spanReview}>{auctionHouse && auctionHouse.auctionHouse_vote}</span>
-                                    <span className={styles.spanReview}>from {review && review.length} Reviews</span>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div className={styles.ahContactContainer}>
-                            <div className={styles.locationMap}>
-                                <Map location={auctionHouse && auctionHouse.auctionHouse_location}></Map>
-
-                            </div>
-                            <div className={styles.button}>
-                                <button type="button" className={`btn btn-primary btn-lg btn-block ${styles['btn-follow']} ${styles['button-style']}`}>+ Follow This Seller</button>
-                                <button type="button" className={`btn btn-primary btn-lg btn-block ${styles['btn-contact']} ${styles['button-style']}`}>Contact</button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-                <div>
-                    <Container>
-                        <div className={styles.tabs}>
-                            <Tab
-                                id="upcoming"
-                                title="Upcoming Auctions"
-                                active={activeTab === 'upcoming'}
-                                onClick={() => handleTabClick('upcoming')}
-                            />
-                            <Tab
-                                id="review"
-                                title="Buyer Reviews"
-                                active={activeTab === 'review'}
-                                onClick={() => handleTabClick('review')}
-                            />
-                            <Tab
-                                id="past_ac"
-                                title="Past Auctions"
-                                active={activeTab === 'past_ac'}
-                                onClick={() => handleTabClick('past_ac')}
-                            />
-                        </div>
-                    </Container>
-
-                    <div>
-                        <TabContent id="upcoming" active={activeTab === 'upcoming'} ref={tabContentRefs.upcoming}>
-                            {/* Nội dung của tab upcoming */}
-                            <div className={styles2.header_section}>Upcoming Auctions from {auctionHouse && auctionHouse.auctionHouse_name} ({upcomingAuctions?.length})</div>
-                            <div className='py-3'>
-                                <Container>
-                                    {upcomingAuctions && Array.isArray(upcomingAuctions) && upcomingAuctions.length > 0 ? (
-                                        upcomingAuctions.map((obj, index) => (
-                                            <div className="row" key={index}>
-                                                <UpcomingAuctions obj={obj} />
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <div className="row">
-                                            <div className="col">
-                                                No upcoming auctions found.
-                                            </div>
-                                        </div>
-                                    )}
-                                </Container>
-                            </div>
-                        </TabContent>
-
-                        <TabContent id="review" active={activeTab === 'review'} ref={tabContentRefs.review}>
-                            {/* Nội dung của tab review */}
-                            <div className={styles2.header_section}>Reviews ({review && review?.length})</div>
-
-                            {/* give review */}
-                            <div>
-                                <div>
-                                    Give a review
-                                </div>
-                                <div className='d-flex'>
-                                    <Rating
-                                        name="hover-feedback"
-                                        value={value}
-                                        precision={0.5}
-                                        getLabelText={getLabelText}
-                                        onChange={(event, newValue) => {
-                                            setValue(newValue);
-                                        }}
-                                        onChangeActive={(event, newHover) => {
-                                            setHover(newHover);
-                                        }}
-                                        emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
-                                    />
-                                    {value !== null && (
-                                        <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
-                                    )}
-                                </div>
-                                <div>
-                                    <input type="text" className="form-control" placeholder="Write a review" />
-                                </div>
-                                <div>
-                                    <button type="button" className="btn btn-primary">Submit</button>
-                                </div>
-                            </div>
-                            <div className='py-3'>
-                                <Container>
-                                    {review && review.length > 0 && review.map((obj, index) => {
-                                        return (
-                                            <div className="row" key={index}>
-                                                <Comment user={obj.user} vote={obj.vote} comment={obj.comment} dateString={obj.time_create}></Comment>
-                                            </div>
-                                        );
-                                    })}
-
-                                </Container>
-                            </div>
-
-                        </TabContent>
-
-                        <TabContent id="sold" active={activeTab === 'sold'} ref={tabContentRefs.sold}>
-                            {/* Nội dung của tab sold */}
-                            <div className={styles2.header_section}>Notable Past Lots Sold at Auction</div>
-                            <div className='py-3'>
-                                <Container>
-                                    <div className="row">
-                                        {soldAuctions && soldAuctions.map((obj, index) => (
-                                            <div className="col-sm-3" key={index}>
-                                                <SoldItem obj={obj} />
-                                            </div>
-                                            // <>{obj.id}</>
-                                        ))}
+                <Container>
+                    {auctionHouse && (
+                        <div className={` ${styles.ahInformation} ${styles.colMd8}`}>
+                            <div className={styles.ahBioContainer}>
+                                <h1 className={styles.ahName}>
+                                    {auctionHouse && auctionHouse.auctionHouse_name}
+                                </h1>
+                                <p className={styles.ahTime}>
+                                    Invalua Seller since {auctionHouse && auctionHouse.auctionHouse_createdTime}
+                                </p>
+                                <div className={styles.voteContainer}>
+                                    <div className={styles.yotpoStars}>
+                                        <span className={`${styles.yellowIcon} fas fa-star`}></span>
+                                        <span className={`${styles.yellowIcon} fas fa-star`}></span>
+                                        <span className={`${styles.yellowIcon} fas fa-star`}></span>
+                                        <span className={`${styles.yellowIcon} fas fa-star`}></span>
+                                        <span className={`${styles.yellowIcon} fas fa-star`}></span>
+                                        <span className={styles.spanReview}>{auctionHouse && auctionHouse.auctionHouse_vote}</span>
+                                        <span className={styles.spanReview}>from {review && review.length} Reviews</span>
                                     </div>
-                                </Container>
+                                </div>
                             </div>
-
-                        </TabContent>
-
-                        <TabContent id="past_ac" active={activeTab === 'past_ac'} ref={tabContentRefs.past_ac}>
-                            {/* Nội dung của tab past_ac */}
-                            <div className={styles2.header_section}>Past Auctions from {auctionHouse && auctionHouse.auctionHouse_name}</div>
-                            <div >
-                                <Container>
+                            <div className={styles.ahContactContainer}>
+                                <div className={styles.locationMap}>
+                                    <Map location={auctionHouse && auctionHouse.auctionHouse_location}></Map>
+                                </div>
+                                <div className={styles.button}>
+                                    <button type="button" className={`btn btn-primary btn-lg btn-block ${styles['btn-follow']} ${styles['button-style']}`}>+ Follow This Seller</button>
+                                    <button type="button" className={`btn btn-primary btn-lg btn-block ${styles['btn-contact']} ${styles['button-style']}`}>Contact</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                    <div>
+                        <Container>
+                            <div className={styles.tabs}>
+                                <Tab
+                                    id="upcoming"
+                                    title="Upcoming Auctions"
+                                    active={activeTab === 'upcoming'}
+                                    onClick={() => handleTabClick('upcoming')}
+                                />
+                                <Tab
+                                    id="review"
+                                    title="Buyer Reviews"
+                                    active={activeTab === 'review'}
+                                    onClick={() => handleTabClick('review')}
+                                />
+                                <Tab
+                                    id="past_ac"
+                                    title="Past Auctions"
+                                    active={activeTab === 'past_ac'}
+                                    onClick={() => handleTabClick('past_ac')}
+                                />
+                            </div>
+                        </Container>
+                        <div>
+                            <TabContent id="upcoming" active={activeTab === 'upcoming'} ref={tabContentRefs.upcoming}>
+                                {/* Nội dung của tab upcoming */}
+                                <div className={styles2.header_section}>Upcoming Auctions from {auctionHouse && auctionHouse.auctionHouse_name} ({upcomingAuctions?.length})</div>
+                                <div className='py-3'>
+                                    <Container>
+                                        {upcomingAuctions && Array.isArray(upcomingAuctions) && upcomingAuctions.length > 0 ? (
+                                            upcomingAuctions.map((obj, index) => (
+                                                <div className="row" key={index}>
+                                                    <UpcomingAuctions obj={obj} />
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className="row">
+                                                <div className="col">
+                                                    No upcoming auctions found.
+                                                </div>
+                                            </div>
+                                        )}
+                                    </Container>
+                                </div>
+                            </TabContent>
+                            <TabContent id="review" active={activeTab === 'review'} ref={tabContentRefs.review}>
+                                {/* Nội dung của tab review */}
+                                <div className={styles2.header_section}>Reviews ({review && review?.length})</div>
+                                {/* give review */}
+                                <div>
                                     <div>
-                                        {pastAuctions && pastAuctions.map((obj, index) => {
+                                        Give a review
+                                    </div>
+                                    <div className='d-flex'>
+                                        <Rating
+                                            name="hover-feedback"
+                                            value={value}
+                                            precision={0.5}
+                                            getLabelText={getLabelText}
+                                            onChange={(event, newValue) => {
+                                                setValue(newValue);
+                                            }}
+                                            onChangeActive={(event, newHover) => {
+                                                setHover(newHover);
+                                            }}
+                                            emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
+                                        />
+                                        {value !== null && (
+                                            <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
+                                        )}
+                                    </div>
+                                    <div>
+                                        <input type="text" className="form-control" placeholder="Write a review" />
+                                    </div>
+                                    <div>
+                                        <button type="button" className="btn btn-primary">Submit</button>
+                                        </div>
+                                </div>
+                                <div className='py-3'>
+                                    <Container>
+                                        {review && review.length > 0 && review.map((obj, index) => {
                                             return (
-                                                <PassAuction dateString={obj.date} title={obj.title} location={obj.location}></PassAuction>
+                                                <div className="row" key={index}>
+                                                    <Comment user={obj.user} vote={obj.vote} comment={obj.comment} dateString={obj.time_create}></Comment>
+                                                </div>
                                             );
                                         })}
-                                    </div>
-                                </Container>
-                            </div>
-                        </TabContent>
-                    </div>
-
-                    <style jsx>{`
+                                    </Container>
+                                </div>
+                            </TabContent>
+                            <TabContent id="sold" active={activeTab === 'sold'} ref={tabContentRefs.sold}>
+                                {/* Nội dung của tab sold */}
+                                <div className={styles2.header_section}>Notable Past Lots Sold at Auction</div>
+                                <div className='py-3'>
+                                    <Container>
+                                        <div className="row">
+                                            {soldAuctions && soldAuctions.map((obj, index) => (
+                                                <div className="col-sm-3" key={index}>
+                                                    <SoldItem obj={obj} />
+                                                </div>
+                                                // <>{obj.id}</>
+                                            ))}
+                                        </div>
+                                    </Container>
+                                </div>
+                            </TabContent>
+                            <TabContent id="past_ac" active={activeTab === 'past_ac'} ref={tabContentRefs.past_ac}>
+                                {/* Nội dung của tab past_ac */}
+                                <div className={styles2.header_section}>Past Auctions from {auctionHouse && auctionHouse.auctionHouse_name}</div>
+                                <div >
+                                    <Container>
+                                        <div>
+                                            {pastAuctions && pastAuctions.map((obj, index) => {
+                                                return (
+                                                    <PassAuction dateString={obj.date} title={obj.title} location={obj.location}></PassAuction>
+                                                );
+                                            })}
+                                        </div>
+                                    </Container>
+                                </div>
+                            </TabContent>
+                        </div>
+                        <style jsx>{`
                         .tabs {
                         margin-bottom: 20px;
                         }
@@ -421,9 +408,9 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                         display: block;
                         }
                     `}</style>
-                </div>
+                    </div>
 
-            </div>
+                </Container>
             {/* </Container> */}
 
 
