@@ -50,7 +50,7 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                             <tr key={key}>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <h5 className="font-medium text-black dark:text-white">
-                                        {packageItem.user_id}
+                                        {packageItem.id}
                                     </h5>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
@@ -61,7 +61,7 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <p className="text-black dark:text-white">
-                                        {packageItem.phone_number}
+                                        {packageItem.phone}
                                     </p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
@@ -104,7 +104,7 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                 <CreateModal
                     showModalCreate={showModalCreate}
                     setShowModalCreate={setShowModalCreate}
-                    userInfomation={selectedPackage}
+                    userInformation={selectedPackage}
                 />
             )}
         </div>

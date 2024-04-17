@@ -3,7 +3,6 @@
 import Category from "@/types/category"
 import ModalAddCategory from "../Modal/ModalAddCategory";
 import { Pagination } from "@nextui-org/react";
-import { product_delete } from "@/service/product";
 import DeleteModal from "@/components/Modal/ModalDeleteCategory";
 import { useEffect, useState } from "react";
 interface IProps {

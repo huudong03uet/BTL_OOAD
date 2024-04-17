@@ -1,23 +1,21 @@
 import { useState } from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
-import { FormRegisterSeller } from '@/types/form_register_seller';
 import { useSWRConfig } from "swr"
 import { mutate } from "swr"
 import { User } from '@/types/user';
-
+import Seller from '@/types/seller';
 interface IProps {
   showModalCreate: boolean;
   setShowModalCreate: (value: boolean) => void;
-  userInfomation: User;
+  userInformation: User;
 }
 
 function CreateModal(props: IProps) {
-  const { showModalCreate, setShowModalCreate, userInfomation } = props;
+  const { showModalCreate, setShowModalCreate, userInformation } = props;
 
   const handleCloseModal = () => setShowModalCreate(false);
   const handleShowModal = () => setShowModalCreate(true);
 
-  let { user_id, user_name, email, phone_number,} = userInfomation;
 
   const handleSubmit = () => {
     status = "complete";
@@ -55,11 +53,11 @@ return (
             <strong>Seller Information:</strong>
           </div>
           <div className="mb-0 ml-3">
-            <p><strong>Seller Name:</strong> {user_name}</p>
+            <p><strong>Seller Name:</strong> {userInformation.first_name + " " + userInformation.last_name}</p>
           </div>
           <div className="mb-0 flex-row" style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <p className="ml-3"><strong>Email:</strong> {email}</p>
-            <p className="mr-20"><strong>Phone Number:</strong> {phone_number}</p>
+            <p className="ml-3"><strong>Email:</strong> {userInformation.email}</p>
+            <p className="mr-20"><strong>Phone Number:</strong> {userInformation.phone}</p>
           </div>
           <div className="mb-1 ml-3">
             <p><strong>Description:</strong> {}</p>
