@@ -283,12 +283,14 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                     title="Buyer Reviews"
                                     active={activeTab === 'review'}
                                     onClick={() => handleTabClick('review')}
+                                
                                 />
                                 <Tab
                                     id="past_ac"
                                     title="Past Auctions"
                                     active={activeTab === 'past_ac'}
                                     onClick={() => handleTabClick('past_ac')}
+                                
                                 />
                             </div>
                         </Container>
