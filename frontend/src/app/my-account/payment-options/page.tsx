@@ -6,6 +6,7 @@ import { PaymentElement } from '@stripe/react-stripe-js';
 import { Elements } from '@stripe/react-stripe-js';
 import { StripeElementsOptions, loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from './checkoutFrom';
+import QRModal from './qrModal';
 
 export default function PaymentOptions() {
     const [showModal, setShowModal] = useState(false);
@@ -128,26 +129,11 @@ export default function PaymentOptions() {
                 </Modal.Footer>
 
             </Modal>
+            <div>
+                <QRModal showModalQRScan={showModalQRScan} handleCloseModalQRScan={handleCloseModalQRScan} />
+            </div>
 
 
-            <Modal show={showModalQRScan} onHide={handleCloseModalQRScan} size="lg">
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        Scan QR Code
-
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-
-                </Modal.Body>
-                <Modal.Footer className="justify-content-start">
-                    <button type="button" className="btn btn-dark" disabled>
-                        Waiting for scan
-                    </button>
-                    <p className="mx-3" onClick={handleCloseModalQRScan}>Cancel</p>
-                </Modal.Footer>
-
-            </Modal>
         </div>
     );
 }

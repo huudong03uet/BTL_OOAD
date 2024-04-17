@@ -206,6 +206,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
 
 
     const [pastAuctions, setPastAuctions] = useState<{
+        id: number
         date: string,
         title: string,
         location: string,
@@ -393,7 +394,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                         <div>
                                             {pastAuctions && pastAuctions.map((obj, index) => {
                                                 return (
-                                                    <PassAuction dateString={obj.date} title={obj.title} location={obj.location}></PassAuction>
+                                                    <PassAuction key={obj.id.toString()} dateString={obj.date} title={obj.title} location={obj.location}></PassAuction>
                                                 );
                                             })}
                                         </div>
