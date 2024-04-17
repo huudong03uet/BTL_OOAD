@@ -128,7 +128,7 @@ export default function AddAuction() {
                 <div className="row">
 
                     <div className="col-12">
-                        <Form.Label>Auction name</Form.Label>
+                        <Form.Label>Auction name<span style={{ color: 'red' }}>*</span></Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Auction name"
@@ -136,13 +136,14 @@ export default function AddAuction() {
                             value={name}
                             name="name"
                             onChange={handleInputChange}
+                            required
                         />
                     </div>
                 </div>
 
                 <div className="row">
                     <div className="col-12">
-                        <Form.Label>Description</Form.Label>
+                        <Form.Label>Description<span style={{ color: 'red' }}>*</span></Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Description"
@@ -150,13 +151,14 @@ export default function AddAuction() {
                             value={description}
                             name="description"
                             onChange={handleInputChange}
+                            required
                         />
                     </div>
                 </div>
 
                 <div className="row mb-3">
                     <div className="col-3">
-                        <Form.Label>Condition Coin</Form.Label>
+                        <Form.Label>Condition Coin<span style={{ color: 'red' }}>*</span></Form.Label>
                         <Form.Control
                             type="number"
                             placeholder="Condition Coin"
@@ -164,12 +166,13 @@ export default function AddAuction() {
                             value={conditionCoin}
                             name="conditionCoin"
                             onChange={handleInputChange}
+                            required
                         />
                     </div>
 
 
                     <div className="col-3">
-                        <Form.Label>Date start</Form.Label>
+                        <Form.Label>Date start<span style={{ color: 'red' }}>*</span></Form.Label>
                         <div className='w-100'>
                             <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <DesktopDatePicker 
@@ -181,7 +184,7 @@ export default function AddAuction() {
                     </div>
 
                     <div className="col-3">
-                        <Form.Label>Time start</Form.Label>
+                        <Form.Label>Time start<span style={{ color: 'red' }}>*</span></Form.Label>
                         <div className='w-100'>
                             <LocalizationProvider dateAdapter={AdapterDayjs} >
                                 <TimePicker
@@ -193,7 +196,7 @@ export default function AddAuction() {
                     </div>
 
                     <div className='col-3'>
-                        <Form.Label>Visibility </Form.Label>
+                        <Form.Label>Visibility<span style={{ color: 'red' }}>*</span></Form.Label>
                         <FormControl fullWidth>
                             <Select
                                 labelId="demo-simple-select-label"
@@ -216,6 +219,7 @@ export default function AddAuction() {
                                 className={style.custom_form_control}
                                 defaultValue={accountInfo.country ? accountInfo.country: ""}
                             /> */}
+                        <Form.Label>Location<span style={{ color: 'red' }}>*</span></Form.Label>
                         <CountryDropdown
                             value={location.country}
                             onChange={(val) => selectCountry(val)}
@@ -224,6 +228,7 @@ export default function AddAuction() {
                     </div>
 
                     <div className="col-6">
+                        <Form.Label>City<span style={{ color: 'red' }}>*</span></Form.Label>
                         <RegionDropdown
                             country={location.country}
                             value={location.city}
@@ -238,6 +243,7 @@ export default function AddAuction() {
 
                 <div className="row">
                     <div className="col-6">
+                        <Form.Label>Address<span style={{ color: 'red' }}>*</span></Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Address"
@@ -245,10 +251,12 @@ export default function AddAuction() {
                             name="address"
                             value={location.address}
                             onChange={handleChangeLocation}
+                            required
                         />
                     </div>
 
                     <div className="col-6">
+                        <Form.Label>State<span style={{ color: 'red' }}>*</span></Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="State"
@@ -256,6 +264,7 @@ export default function AddAuction() {
                             name="state"
                             value={location.state}
                             onChange={handleChangeLocation}
+                            required
                         />
                     </div>
                 </div>

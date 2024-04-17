@@ -45,15 +45,21 @@ let add_product = async (req, res) => {
         }
 
         const productData = {
-            title,
-            description,
-            seller_id: seller.id,
-            artist,
-            dimension,
-            min_estimate,
-            max_estimate,
-            startBid,
-            provenance
+            "title": title,
+            "description": description,
+            "seller_id": seller.id,
+            // artist,
+            "artist": artist,
+            // dimension,
+            "dimension": dimension,
+            // min_estimate,
+            "min_estimate": min_estimate,
+            // max_estimate,
+            "max_estimate": max_estimate,
+            // startBid,
+            "startBid": startBid,
+            // provenance
+            "provenance": provenance
         };
 
         Object.keys(productData).forEach(key => productData[key] === undefined && delete productData[key]);
