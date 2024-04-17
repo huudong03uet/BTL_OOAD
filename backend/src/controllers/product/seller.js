@@ -1,4 +1,5 @@
 const Sequelize = require('sequelize');
+const { Op } = require('sequelize');
 
 const sequelize = require('../../../conf/sequelize')
 const logger = require('../../../conf/logger')
@@ -9,13 +10,11 @@ const Product = require('../../models/product');
 const Image = require('../../models/image')
 const Category = require('../../models/category');
 const Seller = require('../../models/seller');
-const Winner = require('../../models/winner');
-const BidHistory = require('../../models/history_bid');
 
 const { upload_image, delete_image, check_required_field } = require('../util');
-const { convert_result_item_summary } = require('../util/convert');
 const { delete_key_redis, set_value_redis, get_notifies } = require('../util/redis');
-const Admin = require('../../models/admin');
+const Winner = require('../../models/winner');
+const { PRODUCT_INCLUDE, get_product } = require('./conponent');
 
 
 let add_product = async (req, res) => {
@@ -59,8 +58,8 @@ let add_product = async (req, res) => {
 
         Object.keys(productData).forEach(key => productData[key] === undefined && delete productData[key]);
 
-        const product = await Product.create( productData , { transaction: t })
-        const arr_categories = JSON.parse(categories); 
+        const product = await Product.create(productData, { transaction: t })
+        const arr_categories = JSON.parse(categories);
         for (const category of arr_categories) {
             const category_id = category.id;
             const categoryInstance = await Category.findByPk(category_id);
@@ -78,24 +77,15 @@ let add_product = async (req, res) => {
             product_id: product.id
         })), { transaction: t });
 
-        let admin = await Admin.findAll({
-            attributes: ["id"]
-        })
-
-        const notifyKey = `admin:product:${product.id}`;
+        const notifyKey = `notify:product:${product.id}`;
         const notifyValue = {
             "message": `Seller ${seller.name} has created a new product ${title}`,
             "date": Date.now(),
             "header": "Product",
             "image": images[0].url,
+            "product": product
         };
         set_value_redis(notifyKey, notifyValue);
-
-        for(let admin_id of admin) {
-            const timestamp = Date.now();
-            const notifyKeyForAdmin = `admin:${admin_id}:${timestamp}`;
-            set_value_redis(notifyKeyForAdmin, notifyKey);
-        }
 
         await t.commit();
 
@@ -124,8 +114,8 @@ let update_product = async (req, res) => {
         }
 
         const { id, title, description, artist, category_name, dimension, min_estimate, max_estimate, provenance } = req.body;
-        
-        const product = await Product.findByPk(id,{
+
+        const product = await Product.findByPk(id, {
             where: {
                 seller_id: req.body.seller_id
             }
@@ -167,47 +157,6 @@ let update_product = async (req, res) => {
     }
 }
 
-let _get_product_by_status = async (seller_id, status) => {
-    try {
-        let require = false;
-        if (status.length == 1 && status[0] == AuctionProductStatus.SOLD) {
-            require = true;
-        }
-
-        let products = await Product.findAll({
-            where: {
-                status: status,
-                seller_id: seller_id
-            },
-            include: [
-                {
-                    model: Seller,
-                    attributes: ["name"]
-                },
-                {
-                    model: Image,
-                    attributes: ["url"],
-                    limit: 1,
-                },
-                {
-                    model: Winner,
-                    include: [
-                        {
-                            model: BidHistory,
-                            attributes: ["amount"],
-                        }
-                    ],
-                    required: require,
-                }
-            ]
-        })
-
-        return products
-    } catch (error) {
-        throw error
-    }
-}
-
 let get_product_sold = async (req, res) => {
     try {
         if (!check_required_field(req.params, ["seller_id"])) {
@@ -215,24 +164,25 @@ let get_product_sold = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let products = await _get_product_by_status(req.params.seller_id, [AuctionProductStatus.SOLD])
+        let whereCondition = {
+            seller_id: req.params.seller_id,
+            status: AuctionProductStatus.SOLD,
+        };
 
-        let result = []
+        let productIncludes = PRODUCT_INCLUDE.map(include => {
+            if (include.model === Winner) {
+                return {
+                    ...include,
+                    required: true
+                };
+            }
+            return include;
+        })
 
-        for (let product of products) {
-            let out = {}
-            out["image_path"] = product.images[0].dataValues.url
-            out["title"] = product.dataValues.title
-            out["user_sell"] = product.dataValues.seller.dataValues.name
-            out["id"] = product.dataValues.id
-            out["price"] = product.winner.dataValues.bid_history.dataValues.amount
-            out["time"] = product.dataValues.createdAt
-            out["seller_id"] = req.params.seller_id
-            result.push(out)
-        }
+        const products = await get_product(whereCondition, productIncludes)
 
         logger.info(`${statusCode.HTTP_200_OK} products sold length ${products.length}`)
-        return res.status(statusCode.HTTP_200_OK).json(result);
+        return res.status(statusCode.HTTP_200_OK).json(products);
     } catch (error) {
         logger.error(`Sold product: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
@@ -246,31 +196,46 @@ let get_products = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let products = await _get_product_by_status(req.params.seller_id, [AuctionProductStatus.SOLD, AuctionProductStatus.NOT_YET_SOLD, AuctionProductStatus.ON_SALE])
+        let whereCondition = {
+            seller_id: req.params.seller_id
+        };
 
-        let reesult = convert_result_item_summary(products)
+        let products = await get_product(whereCondition)
 
         logger.info(`${statusCode.HTTP_200_OK} products length ${products.length}`)
-        return res.status(statusCode.HTTP_200_OK).json(reesult);
+        return res.status(statusCode.HTTP_200_OK).json(products);
     } catch (error) {
         logger.error(`Get product: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 }
 
-let get_product_history = async(req, res) => {
+let get_product_history = async (req, res) => {
     try {
         if (!check_required_field(req.params, ["seller_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let products = await _get_product_by_status(req.params.seller_id, [AuctionProductStatus.SOLD])
+        let whereCondition = {
+            status: AuctionProductStatus.SOLD,
+            seller_id: req.params.seller_id
+        };
 
-        let result = convert_result_item_summary(products)
+        let productIncludes = PRODUCT_INCLUDE.map(include => {
+            if (include.model === Winner) {
+                return {
+                    ...include,
+                    required: true
+                };
+            }
+            return include;
+        })
+
+        let products = await get_product(whereCondition, productIncludes)
 
         logger.info(`${statusCode.HTTP_200_OK} products history length ${products.length}`)
-        return res.status(statusCode.HTTP_200_OK).json(result);
+        return res.status(statusCode.HTTP_200_OK).json(products);
     } catch (error) {
         logger.error(`Sold product: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
@@ -287,9 +252,6 @@ let notify = async (req, res) => {
 
         const notifies = await get_notifies(`seller:${req.params.seller_id}:*`);
 
-        // console.log("abc")
-
-        // logger.info(`${statusCode.HTTP_200_OK} notifies length ${notifies.length}`);
         res.status(statusCode.HTTP_200_OK).json(notifies);
     } catch (error) {
         logger.error(`Add product: ${error}`)

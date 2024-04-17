@@ -7,59 +7,23 @@ const statusCode = require('../../../constants/status')
 const InspectionType = require("../../../constants/inspection")
 
 const Product = require('../../models/product');
-const { check_required_field, delete_image, upload_image } = require('../util');
-const Seller = require('../../models/seller');
 const Category = require('../../models/category');
 const Image = require('../../models/image');
 const Inspection = require('../../models/inspection');
-const status = require('../../../constants/status');
+
+const { check_required_field, delete_image, upload_image } = require('../util');
 const { get_notifies, set_value_redis, get_value_redis, delete_key_redis } = require('../util/redis');
+const { get_product, PRODUCT_INCLUDE } = require('./conponent');
 
 
 let get_all_product_not_inspect = async (req, res) => {
     try {
-        let products = await Product.findAll({
-            where: {
-                inspect_status: InspectionType.NOT_INSPECT
-            },
-            include: [
-                {
-                    model: Seller,
-                    attributes: ["name", "id"]
-                },
-                {
-                    model: Category,
-                    attributes: ["title", "id"]
-                },
-                {
-                    model: Image,
-                    attributes: ["url", "id"]
-                }
-            ]
-        })
+        let products = await get_product()
 
-        let result = []
-        for (let product of products) {
-            let out = {}
-            out["product_id"] = product.id
-            out["title"] = product.title
-            out["time_create"] = product.createdAt
-            out["status"] = "pendding"
-            out["seller"] = product.seller
-            out["estimate_min"] = product.min_estimate
-            out["estimate_max"] = product.max_estimate
-            out["description"] = product.description
-            out["dimensions"] = product.dimension
-            out["artist"] = product.artist
-            out["category"] = product.categories
-            out["condition_report"] = product.condition_report
-            out["provenance"] = product.provenance
-            out["images"] = product.images
-            result.push(out)
-        }
+        products = products.filter(product => !product.inspection);
 
         logger.info(`${statusCode.HTTP_200_OK} products length ${products.length}`)
-        return res.status(statusCode.HTTP_200_OK).json(result);
+        return res.status(statusCode.HTTP_200_OK).json(products);
     } catch (error) {
         logger.error(`Sold product: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
@@ -77,22 +41,48 @@ let product_inspect = async (req, res) => {
 
         const { admin_id, product_id } = req.body;
 
-        const existingInspection = await Inspection.findOne({
-            where: { admin_id: admin_id, product_id: product_id }
+        let existingInspection = await Inspection.findOne({
+            where: { product_id: product_id }
         });
 
+        let status = InspectionType.DENIED
+
+        if (req.body.status === "Accept") {
+            status = InspectionType.INSPECTED
+        } 
+    
         if (existingInspection) {
-            await Inspection.update(req.body, {
-                where: { admin_id: admin_id, product_id: product_id },
+            await existingInspection.update({
+                description: req.body.description,
+                status: status,
+                admin_id: admin_id,
+                product_id: product_id
+            }, {
                 transaction: t
             });
         } else {
-            await Inspection.create(req.body, { transaction: t });
+            existingInspection = await Inspection.create({
+                description: req.body.description,
+                status: status,
+                admin_id: admin_id,
+                product_id: product_id,
+            }, {
+                transaction: t
+            });
+        }
+    
+        const product = await Product.findByPk(product_id, { transaction: t });
+        if (product) {
+            await product.update({
+                inspect_id: existingInspection.id
+            }, {
+                transaction: t
+            });
+        } else {
+            throw new Error('Product not found');
         }
 
-        const product = await Product.findByPk(product_id);
-
-        let notifyValue = await get_value_redis(`admin:product:${product_id}`)
+        let notifyValue = await get_value_redis(`notify:product:${product_id}`)
         if (notifyValue) {
             notifyValue.message = `New product ${product.title} has been ${req.body.status}`
         } else {
@@ -101,30 +91,10 @@ let product_inspect = async (req, res) => {
                 "date": Date.now(),
                 "header": "Product",
                 "image": 'https://via.placeholder.com/200',
+                "product": product
             };
         }
-        set_value_redis(`admin:product:${product.id}`, notifyValue)
         set_value_redis(`seller:${product.seller_id}:product:${product.id}`, notifyValue)
-
-        if (req.body.status == 'Accept') {
-            await Product.update({
-                inspect_status: InspectionType.INSPECTED
-            }, {
-                where: {
-                    id: req.body.product_id
-                },
-                transaction: t
-            });
-        } else if (req.body.status == 'Reject') {
-            await Product.update({
-                inspect_status: InspectionType.DENIED
-            }, {
-                where: {
-                    id: req.body.product_id
-                },
-                transaction: t
-            });
-        }
 
         await t.commit();
 
@@ -140,14 +110,7 @@ let product_inspect = async (req, res) => {
 
 let get_all_product = async(req, res) => {
     try {
-        let products = await Product.findAll({
-            include: [
-                {
-                    model: Image,
-                    attributes: ["url", "id"]
-                },
-            ]
-        })
+        let products = await get_product()
 
         logger.info(`${statusCode.HTTP_200_OK} products length ${products.length}`)
         return res.status(statusCode.HTTP_200_OK).json(products);

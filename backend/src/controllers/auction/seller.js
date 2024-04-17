@@ -17,6 +17,8 @@ const Location = require('../../models/location');
 const { convert_result_item_summary } = require('../util/convert');
 const { set_value_redis } = require('../util/redis');
 const Admin = require('../../models/admin');
+const { get_auction, AUCTION_INCLUDE, get_auction_by_pk } = require('./conponent');
+const { get_product_by_pk } = require('../product/conponent');
 
 
 let create_auction = async (req, res) => {
@@ -211,21 +213,32 @@ let get_past_auction = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let auctions = await _get_auction_by_status(req.params.seller_id, AuctionProductStatus.SOLD)
-
-
-        let result = []
-
-        for (let auction of auctions) {
-            let out = {}
-            out["date"] = auction.dataValues.time_auction
-            out["title"] = auction.dataValues.name
-            out["location"] = auction.dataValues.location.dataValues.location
-            result.push(out)
+        let whereCondition = {
+            seller_id: req.params.seller_id
         }
 
-        logger.info(`${statusCode.HTTP_200_OK} auction past length ${result.length}`)
-        return res.status(statusCode.HTTP_200_OK).json(result);
+        let kwargs = {
+            group: ['auction.id'],
+            having: Sequelize.literal(`COUNT(products.id) = COUNT(CASE WHEN products.status = "${AuctionProductStatus.SOLD}" THEN 1 ELSE NULL END)`)
+        }
+
+        let auctions = await get_auction(whereCondition, AUCTION_INCLUDE, kwargs)
+
+        // let auctions = await _get_auction_by_status(req.params.seller_id, AuctionProductStatus.SOLD)
+
+
+        // let result = []
+
+        // for (let auction of auctions) {
+        //     let out = {}
+        //     out["date"] = auction.dataValues.time_auction
+        //     out["title"] = auction.dataValues.name
+        //     out["location"] = auction.dataValues.location.dataValues.location
+        //     result.push(out)
+        // }
+
+        logger.info(`${statusCode.HTTP_200_OK} auction past length ${auctions.length}`)
+        return res.status(statusCode.HTTP_200_OK).json(auctions);
     } catch (error) {
         logger.error(`Auction get passt: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
@@ -259,14 +272,10 @@ let get_product = async (req, res) => {
             whereClause[Op.and].push({ auction_id: null });
         }
 
-        const products = await Product.findAll({
-            where: whereClause
-        });
-
-        let reesult = convert_result_item_summary(products)
+        const products = await get_product(whereClause)
 
         logger.info(`${statusCode.HTTP_200_OK} products length ${products.length}`)
-        return res.status(statusCode.HTTP_200_OK).json(reesult);
+        return res.status(statusCode.HTTP_200_OK).json(products);
     } catch (error) {
         logger.error(`Auction get product: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
@@ -281,7 +290,18 @@ let get_auction_history = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let auctions = await _get_auction_by_status(req.params.seller_id, AuctionProductStatus.SOLD)
+        let whereCondition = {
+            seller_id: req.params.seller_id
+        }
+
+        let kwargs = {
+            group: ['auction.id'],
+            having: Sequelize.literal(`COUNT(products.id) = COUNT(CASE WHEN products.status = "${AuctionProductStatus.SOLD}" THEN 1 ELSE NULL END)`)
+        }
+
+        let auctions = await get_auction(whereCondition, AUCTION_INCLUDE, kwargs)
+
+        // let auctions = await _get_auction_by_status(req.params.seller_id, AuctionProductStatus.SOLD)
 
         logger.info(`${statusCode.HTTP_200_OK} auction history length ${auctions.length}`)
         return res.status(statusCode.HTTP_200_OK).json(auctions);
@@ -299,7 +319,18 @@ let get_auction_not_sold = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let auctions = await _get_auction_by_status(req.params.seller_id, AuctionProductStatus.NOT_YET_SOLD)
+        let whereCondition = {
+            seller_id: req.params.seller_id
+        }
+
+        let kwargs = {
+            group: ['auction.id'],
+            having: Sequelize.literal(`COUNT(products.id) = COUNT(CASE WHEN products.status = "${AuctionProductStatus.NOT_YET_SOLD}" THEN 1 ELSE NULL END)`)
+        }
+
+        let auctions = await get_auction(whereCondition, AUCTION_INCLUDE, kwargs)
+
+        // let auctions = await _get_auction_by_status(req.params.seller_id, AuctionProductStatus.NOT_YET_SOLD)
 
         logger.info(`${statusCode.HTTP_200_OK} auction history length ${auctions.length}`)
         return res.status(statusCode.HTTP_200_OK).json(auctions);
@@ -317,11 +348,11 @@ let get_auction_info = async(req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let auction = await Auction.findByPk(req.params.auction_id, {
-            where: {
-                seller_id: req.params.seller_id
-            }
-        })
+        let whereCondition = {
+            seller_id: req.params.seller_id
+        }
+
+        let auction = await get_auction_by_pk(req.params.auction_id, whereCondition)
 
         logger.info(`${statusCode.HTTP_200_OK} [auction: ${auction.id}]`)
         return res.status(statusCode.HTTP_200_OK).json(auction);

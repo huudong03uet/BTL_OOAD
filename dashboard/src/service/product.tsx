@@ -4,7 +4,7 @@ import axios from 'axios';
 import { HOST } from './host';
 import AdminDataService from './admin_service';
 
-let product_not_insepct = async () => {
+let product_not_inspect = async () => {
     try {
         let url = `${HOST}/product/admin/not-inspect`;
         const response = await axios.get(url);
@@ -15,7 +15,7 @@ let product_not_insepct = async () => {
     }
 }
 
-let product_insepect = async (description: string, product_id: number, status: string) => {
+let product_inspect = async (description: string, product_id: number, status: string) => {
     try {
         let url = `${HOST}/product/admin/inspect`;
         let body = {
@@ -24,7 +24,6 @@ let product_insepect = async (description: string, product_id: number, status: s
             "admin_id": AdminDataService.getAdminData()?.id,
             "status": status
         }
-        console.log(body)
         const response = await axios.post(url, body);
         return;
     } catch (error: any) {
@@ -87,8 +86,8 @@ let product_delete = async (product_id: number) => {
 
 
 export {
-    product_not_insepct,
-    product_insepect,
+    product_not_inspect,
+    product_inspect,
     product_all,
     category_all,
     category_create,

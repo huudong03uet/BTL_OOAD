@@ -2,7 +2,7 @@
 import { Package } from "@/types/package";
 import CreateModal from "../Modal/ModalProduct";
 import { useEffect, useState } from "react";
-import ReactPaginate from "react-paginate";
+// import ReactPaginate from "react-paginate";
 import { Pagination } from "@nextui-org/react";
 import Product from "@/types/product";
 interface IProps {

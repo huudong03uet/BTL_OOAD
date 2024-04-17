@@ -18,6 +18,7 @@ const Review = require('../../models/review');
 const User = require('../../models/user');
 const LoveProduct = require('../../models/product_love');
 const { convert_result_auction_summary } = require('../util/convert');
+const { get_auction } = require('./conponent');
 
 
 let get_auction_upcomming = async (req, res) => {
@@ -27,73 +28,32 @@ let get_auction_upcomming = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        const auctions = await Auction.findAll({
-            where: {
-                time_auction: {
-                    [Op.gt]: new Date()
-                },
-                [Op.or]: [
-                    {
-                        status: AuctionStatus.PUBLIC
-                    },
-                    {
-                        status: AuctionStatus.PRIVATE,
-                        '$users.id$': req.params.user_id
-                    }
-                ]
+        console.log("abc__________________________")
+
+        let whereCondition = {
+            time_auction: {
+                [Op.gt]: new Date()
             },
-            include: [
+            [Op.or]: [
                 {
-                    model: Product,
-                    where: {
-                        visibility: AuctionProductVisibilityStatus.PUBLIC
-                    },
-                    limit: 6,
-                    attributes: ['id'],
-                    include: [
-                        {
-                            model: Image,
-                            attributes: ['id', "url"],
-                            limit: 1
-                        }
-                    ]
+                    status: AuctionStatus.PUBLIC
                 },
                 {
-                    model: Location,
-                    attributes: [
-                        [Sequelize.literal("CONCAT(country, ', ', city)"), "location"]
-                    ]
-                },
-                {
-                    model: Seller,
-                    include: [
-                        {
-                            model: Review,
-                            attributes: [],
-                            required: true
-                        }
-                    ],
-                    group: ['Seller.id'],
-                    having: sequelize.where(sequelize.col('Seller.id'), '=', sequelize.col('Auction.seller_id')),
-                    attributes: [
-                        'name',
-                        [sequelize.fn('AVG', sequelize.col('star')), 'avg_star'],
-                        [sequelize.fn('COUNT', sequelize.col('comment')), 'count']
-                    ],
-                },
-                {
-                    model: User,
-                    attributes: [],
-                    through: { attributes: [] },
-                    required: false
+                    status: AuctionStatus.PRIVATE,
+                    '$users.id$': req.params.user_id
                 }
             ]
-        });
+        }
 
-        let result = convert_result_auction_summary(auctions)
+        
 
-        logger.info(`${statusCode.HTTP_200_OK} auction uppcomming ${result.length}`)
-        return res.status(statusCode.HTTP_200_OK).json(result);
+        const auctions = await get_auction(whereCondition)
+            
+
+        // let result = convert_result_auction_summary(auctions)
+
+        logger.info(`${statusCode.HTTP_200_OK} auction uppcomming ${auctions.length}`)
+        return res.status(statusCode.HTTP_200_OK).json(auctions);
     } catch (error) {
         logger.error(`Get auction upcomming: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");

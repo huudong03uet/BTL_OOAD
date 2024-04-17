@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import ItemSummary from '@/models/product_summary';
+import Product from '@/models/product';
 import { user_get_detail_product } from "@/services/product/user";
 
 export enum TableActivity {
@@ -25,7 +25,7 @@ export enum TableActivity {
 
 interface MyProductTableProps {
     activity: TableActivity;
-    data: ItemSummary[];
+    data: Product[];
     auctionStates?: boolean[];
     setAuctionStates?: (newStates: boolean[]) => void;
 }
@@ -38,8 +38,8 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
 }) => {
     const [open, setOpen] = useState<number | null>(null);
     const [selectedRow, setSelectedRow] = useState<number | null>(null);
-    const [selectedProduct, setSelectedProduct] = useState(null);
-    const handleRowClick = async (id) => {
+    const [selectedProduct, setSelectedProduct] = useState({} as Product);
+    const handleRowClick = async (id: number) => {
         try {
             const productId = Number(id);
             const productData = await user_get_detail_product(productId);
@@ -51,7 +51,7 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
         }
     };
     const handleCloseModal = () => {
-        setSelectedProduct(null);
+        setSelectedProduct({} as Product);
     };
     const handleAction = (index: number) => {
         if (activity === TableActivity.VIEW_MY_PRODUCT) {
@@ -146,7 +146,7 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
                 onClose={handleCloseModal}
                 aria-labelledby="modal-title"
                 aria-describedby="modal-description"
-                size="lg"
+                // size="lg"
             >
 
                 <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: 400, bgcolor: 'background.paper', boxShadow: 24, p: 4 }}>
@@ -156,13 +156,13 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
                     <Typography id="modal-description" sx={{ mt: 2 }}>
                         {selectedProduct && (
                             <>
-                                <span style={{ fontWeight: "bold" }}>Name:</span> {selectedProduct.title} <br />
-                                <span style={{ fontWeight: "bold" }}>Description:</span> {selectedProduct.description} <br />
-                                <span style={{ fontWeight: "bold" }}>Min Estimate:</span> {selectedProduct.min_estimate} <br />
-                                <span style={{ fontWeight: "bold" }}>Max Estimate:</span> {selectedProduct.max_estimate} <br />
-                                <span style={{ fontWeight: "bold" }}>Action Id:</span> {selectedProduct.auction_id} <br />
-                                <span style={{ fontWeight: "bold" }}>Status:</span> {selectedProduct.status} <br />
-                                <span style={{ fontWeight: "bold" }}>Created At:</span> {selectedProduct.createdAt} <br />
+                                <span style={{ fontWeight: "bold" }}>Name:</span> {selectedProduct?.title} <br />
+                                <span style={{ fontWeight: "bold" }}>Description:</span> {selectedProduct?.description} <br />
+                                <span style={{ fontWeight: "bold" }}>Min Estimate:</span> {selectedProduct?.min_estimate} <br />
+                                <span style={{ fontWeight: "bold" }}>Max Estimate:</span> {selectedProduct?.max_estimate} <br />
+                                <span style={{ fontWeight: "bold" }}>Action Id:</span> {selectedProduct?.auction.id} <br />
+                                <span style={{ fontWeight: "bold" }}>Status:</span> {selectedProduct?.status} <br />
+                                <span style={{ fontWeight: "bold" }}>Created At:</span> {selectedProduct?.createdAt} <br />
                             </>
                         )}
                     </Typography>

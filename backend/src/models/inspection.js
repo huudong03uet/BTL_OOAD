@@ -31,7 +31,8 @@ const Inspection = sequelize.define('inspection', {
 Inspection.belongsTo(Admin, { foreignKey: 'admin_id' })
 Admin.hasMany(Inspection, { foreignKey: 'admin_id' });
 
-Inspection.belongsTo(Product, { foreignKey: 'product_id' })
-Product.hasMany(Inspection, { foreignKey: 'product_id' });
+
+Inspection.hasOne(Product, {foreignKey: "inspect_id"})
+Product.hasOne(Inspection, {foreignKey: "product_id"});
 
 module.exports = Inspection;
