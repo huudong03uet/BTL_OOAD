@@ -54,6 +54,7 @@ const ImageEffect: React.FC<ImageEffectProps> = ({ imageUrl }) => {
             >
                 <Image
                     className='object-cover border z-10'
+                    // style={{width: '100%', height: '100%', maxHeight: "400px"}}
                     alt=""
                     src={imageUrl}
                     width={imageSize.width}
@@ -69,8 +70,8 @@ const ImageEffect: React.FC<ImageEffectProps> = ({ imageUrl }) => {
                         backgroundSize: `${imageSize.width * ZOOM_LEVEL}px ${imageSize.height * ZOOM_LEVEL}px`,
                         backgroundRepeat: 'no-repeat',
                         display: zoomable ? 'block' : 'none',
-                        top: `${position.mouseY + 150}px`,
-                        left: `${position.mouseX}px`,
+                        top: `${position.mouseY + 100}px`,
+                        left: `${position.mouseX + 100}px`,
                         width: `${MAGNIFIER_SIZE}px`,
                         height: `${MAGNIFIER_SIZE}px`,
                     }}

@@ -140,7 +140,7 @@ export default function LivedAuction() {
                                     {infoAuction.name}
                                 </div>
                                 <div style={{ marginBottom: "0px", fontWeight: "500", fontSize: "16px" }}>
-                                    by {infoAuction.seller.name}
+                                    by {infoAuction.seller?.name}
                                 </div>
                                 <div>
                                     <i className="fa fa-star" aria-hidden="true" style={{ color: "#ffc107" }}></i>
