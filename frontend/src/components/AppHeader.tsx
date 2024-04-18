@@ -308,6 +308,7 @@ function Header() {
                 {/* <div> */}
                 {/* </div> */}
                 <NavDropdown title={UserDataService.getUserData()?.user_name || "Name user"} id="basic-nav-dropdown" className="d-flex align-items-center"
+
                   align={{ lg: 'end' }}
                 >
 

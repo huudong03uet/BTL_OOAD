@@ -1,0 +1,13 @@
+.active-radio {
+    font-weight: bold;
+    border-bottom: black 2px solid !important;
+    border-color: black !important;
+    color: black !important;
+    outline: none !important;
+}
+
+.radio-not-active {
+    color: black !important;
+    border-color: black !important;
+    outline: none !important;
+}
