@@ -1,5 +1,5 @@
 'use client'
-import { Form, Modal, } from "react-bootstrap";
+import {  Modal} from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent } from 'react';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
@@ -17,6 +17,10 @@ import Location from "@/models/location";
 import SellerDataService from "@/services/model/seller";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import Product from "@/models/product";
+import { Dropdown, DropdownButton, Form, InputGroup, } from "react-bootstrap";
+import User from "@/models/user";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { Button } from "@mui/material";
 
 enum AuctionVisibility {
     PUBLIC = 0,
@@ -36,7 +40,14 @@ export default function AddAuction() {
     const [description, setDescription] = useState('');
     const [conditionCoin, setConditionCoin] = useState('');
     const [location, setLocation] = useState<Location>({} as Location)
-    
+    const [invitedUsers, setInvitedUsers] = useState<User[]>([]);
+
+
+
+
+    const [openModalInvitedUsers, setOpenModalInvitedUser] = React.useState(false);
+    const handleOpenModalInvitedUsers = () => setOpenModalInvitedUser(true);
+    const handleCloseModalInvitedUsers = () => setOpenModalInvitedUser(false);
 
     const handleChange = (event: SelectChangeEvent) => {
         setVisibility(event.target.value as unknown as AuctionVisibility);
@@ -113,6 +124,12 @@ export default function AddAuction() {
 
         await seller_auction_create_service(auction_data)
     };
+
+
+    
+    function removeUserFromListInvited(user: User) {
+        setInvitedUsers(invitedUsers.filter((u) => u.user_id !== user.user_id));
+    }
     
 
     return (
@@ -212,6 +229,58 @@ export default function AddAuction() {
                     </div>
                 </div>
 
+                <div className='row'>
+                        <div className="col-12">
+                            <Form.Label>Invite users to bid on your auction</Form.Label>
+                            {/* <Form.Control
+                                type="text"
+                                placeholder="Category"
+                                className={style.custom_form_control}
+                                value={productCategory}
+                                onChange={(e) => setProductCategory(e.target.value)}
+                            /> */}
+                            <InputGroup className="mb-3">
+                                <Button onClick={handleOpenModalInvitedUsers}>Invite users</Button>
+                                <div className="selected-categories">
+                                    {invitedUsers.map((user) => (
+                                        <span
+                                            key={user.user_id}
+                                            className="selected-category"
+                                            style={{
+                                                display: 'inline-block',
+                                                padding: '5px 10px',
+                                                margin: '5px',
+                                                borderRadius: '15px',
+                                                backgroundColor: '#f8f9fa',
+                                                color: '#333',
+                                            }}
+                                        >
+                                            {user.user_name}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeUserFromListInvited(user)}
+                                                style={{
+                                                    marginLeft: '5px',
+                                                    color: 'black',
+                                                    border: 'none',
+                                                    backgroundColor: 'transparent',
+                                                    borderRadius: '50%',
+                                                    padding: '2px 5px',
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
+                                                {/* Xóa */}
+                                                <HighlightOffIcon />
+                                            </button>
+                                        </span>
+                                    ))}
+                                </div>
+                            </InputGroup>
+                        </div>
+                    </div>
+
+
+
                 <div className="row">
                     <div className="col-6">
                         {/* <Form.Control
@@ -295,6 +364,75 @@ export default function AddAuction() {
                     <MyProductTable activity={TableActivity.ADD_TO_AUCTION} data={data} auctionStates={auctionStates} setAuctionStates={setAuctionStates}></MyProductTable>
                 </Modal.Body>
             </Modal>
+
+
+            {/* modal invited user */}
+            <Modal size="xl" show={openModalInvitedUsers} onHide={handleCloseModalInvitedUsers}>
+                <Modal.Header>
+                    <Modal.Title>Invite users</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="row">
+                        <div className="col-12">
+                            <Form.Label>Search for users</Form.Label>
+                            <Form.Control
+                                type="text"
+                                placeholder="Search for users"
+                                className={style.custom_form_control}
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12">
+                            <Form.Label>Users</Form.Label>
+                            <div className="row">
+                                <div className="col-3">
+                                    <div className="d-flex justify-content-center">
+                                        <img src="https://via.placeholder.com/150" alt="user" className="rounded-circle" style={{ width: '100px', height: '100px' }} />
+                                    </div>
+                                    <div className="d-flex justify-content-center">
+                                        <p>User name</p>
+                                    </div>
+                                    <div className="d-flex justify-content-center">
+                                        <Button onClick={() => {
+                                            setInvitedUsers([...invitedUsers, {
+                                                user_id: 1,
+                                                user_name: 'User name' 
+                                                
+                                            }]);
+                                        }}>Invite</Button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-12">
+                            <Form.Label>Invited users</Form.Label>
+                            <div className="row">
+                                {invitedUsers.map((user) => (
+                                    <div className="col-3">
+                                        <div className="d-flex justify-content-center">
+                                            <img src="https://via.placeholder.com/150" alt="user" className="rounded-circle" style={{ width: '100px', height: '100px' }} />
+                                        </div>
+                                        <div className="d-flex justify-content-center">
+                                            <p>{user.user_name}</p>
+                                        </div>
+                                        <div className="d-flex justify-content-center">
+                                            <Button onClick={() => removeUserFromListInvited(user)}>Remove</Button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button onClick={handleCloseModalInvitedUsers}>Close</Button>
+                </Modal.Footer>
+            </Modal>
+
 
         </div >
     );
