@@ -48,6 +48,7 @@ export default function AddAuction() {
                 const data = await seller_auction_show_product(null);
                 setData(data);
                 setAuctionStates(Array(data.length).fill(false));
+
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
