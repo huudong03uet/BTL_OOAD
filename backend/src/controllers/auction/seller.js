@@ -32,6 +32,9 @@ let create_auction = async (req, res) => {
         const { seller_id, time_auction } = req.body;
         const { country, address, city, state, postal_code } = req.body.location;
         const products = req.body.products;
+        const users = req.body.users;
+
+        console.log(users)
 
         let location = await find_or_create_location(country, address, city, state, postal_code, t)
 
@@ -49,9 +52,20 @@ let create_auction = async (req, res) => {
 
         const newAuction = await Auction.create(auctionData, { transaction: t });
 
+        let index = 1;
         for (let product_id of products) {
-            await Product.update({ auction_id: newAuction.id }, { where: { id: product_id }, transaction: t });
+            await Product.update({ auction_id: newAuction.id, numerical_order: index }, { where: { id: product_id }, transaction: t });
+            index = index + 1;
         }
+
+        const promises = users.map(async (user) => {
+            const foundUser = await User.findByPk(user.id);
+            if (foundUser) {
+                await newAuction.addUser(foundUser, { transaction: t });
+            }
+        });
+        
+        await Promise.all(promises);
 
         await t.commit();
 
