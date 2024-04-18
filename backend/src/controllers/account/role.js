@@ -5,20 +5,32 @@ const send_email = require('../../../conf/email');
 
 const User = require('../../models/user');
 
-const { hash_password, compare_password, random_password, find_or_create_location, check_required_field } = require('../util')
+const { hash_password, compare_password, random_password, find_or_create_location, check_required_field, upload_image, delete_image } = require('../util')
 
 
 const role_edit_profile = async (req, res, Model) => {
     const t = await sequelize.transaction();
     try {
+        console.log(req.body)
         if (!check_required_field(req.body, [`${Model.name.toLowerCase()}`, "location"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        if (!check_required_field(req.body[Model.name.toLowerCase()], [`${Model.name.toLowerCase()}_id`, "first_name", "last_name", "email"])) {
+        if (!check_required_field(req.body[Model.name.toLowerCase()], [`id`, "first_name", "last_name", "email"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let imageToDelete = null;
+
+        if (Model.name.toLowerCase() != "seller") {
+            const file = req.file;
+
+            if (file) {
+                const result = await upload_image(file.path.replace(/\\/g, '/'), `${Model.name.toLowerCase()}_avatar`);
+                imageToDelete = result.url;
+            }
         }
 
         let role_data = {}
@@ -35,9 +47,10 @@ const role_edit_profile = async (req, res, Model) => {
                 "email": req.body[Model.name.toLowerCase()].email,
                 "last_name": req.body[Model.name.toLowerCase()].last_name,
                 "first_name": req.body[Model.name.toLowerCase()].first_name,
+                "avatar_path": imageToDelete || "https://via.placeholder.com/150",
             }
         }
-        const role_id = req.body[Model.name.toLowerCase()][`${Model.name.toLowerCase()}_id`]
+        const role_id = req.body[Model.name.toLowerCase()].id
         const { country, address, city, state, postal_code } = req.body.location;
 
         const role = await Model.findByPk(role_id);
@@ -65,6 +78,11 @@ const role_edit_profile = async (req, res, Model) => {
         return res.status(statusCode.HTTP_202_ACCEPTED).json( role )
     } catch (error) {
         await t.rollback();
+        try {
+            await delete_image(imageToDelete.split('/').slice(-2).join('/'));
+        } catch (deleteError) {
+            logger.error(`Error deleting image from Cloudinary: ${deleteError}`);
+        }
         logger.error(`Edit profile error: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
