@@ -6,7 +6,7 @@ import UserDataService from '../model/user';
 
 const get_user_message_service = async () => {
     try {
-        let url = `${HOST}/message/all-user/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/message/all-user/user_id=${UserDataService.getUserData()?.id}`;
         let response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -18,7 +18,7 @@ const get_user_message_service = async () => {
 
 const get_message_service = async (user_2_id:number) => {
     try {
-        let url = `${HOST}/message/user_id=${UserDataService.getUserData()?.user_id}/user_2_id=${user_2_id}`;
+        let url = `${HOST}/message/user_id=${UserDataService.getUserData()?.id}/user_2_id=${user_2_id}`;
         let response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -31,7 +31,7 @@ const send_message_service = async (user_2_id: NumberConstructor, content: strin
     try {
         let url = `${HOST}/message/send-message`;
         let body = {
-            "user_id": UserDataService.getUserData()?.user_id,
+            "user_id": UserDataService.getUserData()?.id,
             "user_2_id": user_2_id,
             "content": content,
         }

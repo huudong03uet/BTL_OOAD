@@ -6,7 +6,7 @@ import UserDataService from '@/services/model/user';
 
 let get_auction_upcoming = async () => {
     try {
-        let url = `${HOST}/user/auction/upcomming/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/user/auction/upcomming/user_id=${UserDataService.getUserData()?.id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {

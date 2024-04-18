@@ -45,12 +45,12 @@ const QRModal: React.FC<Props> = ({ showModalQRScan, handleCloseModalQRScan }) =
                         console.log(history.txnRemark.includes(secretCode))
                         console.log(secretCode);
                         let url = `http://localhost:8080/account/user/qr_payment`;
-                        console.log(UserDataService.getUserData()?.user_id);
+                        console.log(UserDataService.getUserData()?.id);
                         try {
-                          const response = await axios.post(url, {user_id: UserDataService.getUserData()?.user_id, amount: history.amount});
+                          const response = await axios.post(url, {user_id: UserDataService.getUserData()?.id, amount: history.amount});
                           if(response.status === 200) {
                               let user: User = {
-                                user_id: response.data.user.id,
+                                id: response.data.user.id,
                                 email: response.data.user.email,
                                 first_name: response.data.user.first_name,
                                 last_name: response.data.user.last_name,

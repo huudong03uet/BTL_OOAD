@@ -15,7 +15,7 @@ const user_login_service = async (
         const response = await axios.post(url, body);
 
         let user: User = {
-            user_id: response.data.id,
+            id: response.data.id,
             email: response.data.email,
             first_name: response.data.first_name,
             last_name: response.data.last_name,
@@ -42,7 +42,7 @@ const admin_login_service = async (
         const response = await axios.post(url, body);
 
         let user: User = {
-            user_id: response.data.id,
+            id: response.data.id,
             email: response.data.email,
             first_name: response.data.first_name,
             last_name: response.data.last_name,

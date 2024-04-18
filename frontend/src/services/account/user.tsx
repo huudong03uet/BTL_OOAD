@@ -10,7 +10,7 @@ const user_change_password_service = async (old_password: string, new_password: 
     try {
         let url = `${HOST}/account/user/change-password`;
         let body = {
-            user_id: UserDataService.getUserData()?.user_id,
+            user_id: UserDataService.getUserData()?.id,
             old_password: old_password,
             new_password: new_password,
         }
@@ -32,7 +32,7 @@ const user_edit_account_service = async (user: User, location: Location) => {
         const response = await axios.put(url, body);
 
         let user_edit: User = {
-            user_id: response.data.id,
+            id: response.data.id,
             email: response.data.email,
             first_name: response.data.first_name,
             last_name: response.data.last_name,

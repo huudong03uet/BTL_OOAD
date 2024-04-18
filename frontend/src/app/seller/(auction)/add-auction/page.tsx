@@ -142,7 +142,10 @@ export default function AddAuction() {
 
     
     function removeUserFromListInvited(user: User) {
-        setInvitedUsers(invitedUsers.filter((u) => u.user_id !== user.user_id));
+        // console.log(user);
+        // console.log(invitedUsers);
+        // console.log(invitedUsers.filter((u) => u.id !== user.user_id));
+        setInvitedUsers(invitedUsers.filter((u) => u.id !== user.id));
     }
     
 
@@ -266,7 +269,7 @@ export default function AddAuction() {
                                 <div className="selected-categories">
                                     {invitedUsers.map((user) => (
                                         <span
-                                            key={user.user_id}
+                                            key={user.id}
                                             className="selected-category"
                                             style={{
                                                 display: 'inline-block',
@@ -418,7 +421,7 @@ export default function AddAuction() {
                                     <div className="d-flex justify-content-center">
                                         <Button onClick={() => {
                                             setInvitedUsers([...invitedUsers, {
-                                                user_id: 1,
+                                                id: 1,
                                                 user_name: 'User name' 
                                                 
                                             }]);

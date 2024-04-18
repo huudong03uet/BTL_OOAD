@@ -6,7 +6,7 @@ import UserDataService from '../model/user';
 
 const check_user_love_product = async (product_id: number) => {
     try {
-        let url = `${HOST}/love-product/user_id=${UserDataService.getUserData()?.user_id}/product_id=${product_id}`;
+        let url = `${HOST}/love-product/user_id=${UserDataService.getUserData()?.id}/product_id=${product_id}`;
         let response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -20,7 +20,7 @@ const user_love_product = async (product_id: number) => {
     try {
         let url = `${HOST}/love-product/create`;
         let body = {
-            "user_id": UserDataService.getUserData()?.user_id,
+            "user_id": UserDataService.getUserData()?.id,
             "product_id": product_id
         }
         console.log(body)
@@ -35,7 +35,7 @@ const user_love_product = async (product_id: number) => {
 
 const user_delete_love_product = async (product_id: number) => {
     try {
-        let url = `${HOST}/love-product/delete/user_id=${UserDataService.getUserData()?.user_id}/product_id=${product_id}`;
+        let url = `${HOST}/love-product/delete/user_id=${UserDataService.getUserData()?.id}/product_id=${product_id}`;
         let response = await axios.delete(url);
         return response.data;
     } catch (error: any) {

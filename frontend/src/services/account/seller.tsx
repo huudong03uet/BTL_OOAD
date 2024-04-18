@@ -9,7 +9,7 @@ let seller_register = async (seller_info: any, card_info: any, location_info: an
     try {
         let url = `${HOST}/account/seller/register`;
         let body = {
-            user_id: UserDataService.getUserData()?.user_id,
+            user_id: UserDataService.getUserData()?.id,
             card_info: card_info,
             seller_info: seller_info,
             location_info: location_info,
