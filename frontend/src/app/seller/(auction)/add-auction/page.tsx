@@ -491,7 +491,7 @@ export default function AddAuction() {
 
                                         <div>
                                             <div className="d-flex justify-content-center">
-                                                <img src="https://via.placeholder.com/150" alt="user" className="rounded-circle" style={{ width: '100px', height: '100px' }} />
+                                                <img src={user.avatar_path || "https://via.placeholder.com/150"} alt="user" className="rounded-circle" style={{ width: '100px', height: '100px' }} />
                                             </div>
                                             <div className="d-flex justify-content-center">
                                                 <p>{user.user_name}</p>
@@ -529,7 +529,7 @@ export default function AddAuction() {
                                 {invitedUsers.map((user) => (
                                     <div className="col-3">
                                         <div className="d-flex justify-content-center">
-                                            <img src="https://via.placeholder.com/150" alt="user" className="rounded-circle" style={{ width: '100px', height: '100px' }} />
+                                            <img src={user.avatar_path || "https://via.placeholder.com/150"} alt="user" className="rounded-circle" style={{ width: '100px', height: '100px' }} />
                                         </div>
                                         <div className="d-flex justify-content-center">
                                             <p>{user.user_name}</p>

@@ -17,7 +17,7 @@ export default function EditProfile() {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
+    const [image, setImage] = useState<File | null>(null);
 
     const [updateEmail, setUpdateEmail] = useState(false);
     const [changePassword, setChangePassword] = useState(false);
@@ -33,6 +33,7 @@ export default function EditProfile() {
                 first_name: userData.first_name,
                 last_name: userData.last_name,
                 location_id: userData.location_id,
+                avatar_path: userData.avatar_path,
             }));
         }
     }, []);
@@ -101,9 +102,15 @@ export default function EditProfile() {
         }));
     };
 
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            setImage(files[0]);
+        }
+    };
+
     const handleClick = async () => {
-        // console.log(user)
-        await user_edit_account_service(user, location);
+        await user_edit_account_service(user, location, image);
         setUpdateEmail(false)
     }
 
@@ -177,7 +184,7 @@ export default function EditProfile() {
                                             value={user.email}
                                             onChange={handleChangeUser}
                                         />
-                                        <div className='d-flex align-items-center' style={{ marginTop: "-15px", marginBottom: "15px"}}>
+                                        <div className='d-flex align-items-center' style={{ marginTop: "-15px", marginBottom: "15px" }}>
                                             <button type="button" onClick={() => handleClick()} className="btn btn-danger me-3">Update</button>
                                             <a onClick={() => setUpdateEmail(false)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
                                                 Cancel
@@ -193,7 +200,7 @@ export default function EditProfile() {
                                             className={style.custom_form_control}
                                             disabled
                                         />
-                                        <div style={{ marginTop: "-15px", marginBottom: "15px"}}>
+                                        <div style={{ marginTop: "-15px", marginBottom: "15px" }}>
                                             <a onClick={() => setUpdateEmail(true)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 " style={{ cursor: "pointer" }}>
                                                 Update Email Address
                                             </a>
@@ -235,7 +242,7 @@ export default function EditProfile() {
                                             onChange={handleChangePassword}
                                             className={style.custom_form_control}
                                         />
-                                        <div className='d-flex align-items-center' style={{ marginTop: "-15px", marginBottom: "15px"}}>
+                                        <div className='d-flex align-items-center' style={{ marginTop: "-15px", marginBottom: "15px" }}>
                                             <button type="button" className="btn btn-danger me-3" onClick={handleClickChangePassword}>Update</button>
                                             <a onClick={() => setChangePassword(false)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
                                                 Cancel
@@ -250,12 +257,12 @@ export default function EditProfile() {
                                             className={style.custom_form_control}
                                             disabled
                                         />
-                                        <div style={{ marginTop: "-15px", marginBottom: "15px"}}>
-                                        <a onClick={() => setChangePassword(true)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
-                                            Change Password
-                                        </a>
+                                        <div style={{ marginTop: "-15px", marginBottom: "15px" }}>
+                                            <a onClick={() => setChangePassword(true)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
+                                                Change Password
+                                            </a>
                                         </div>
-                                     
+
                                     </div>
                                 )
 
@@ -272,19 +279,15 @@ export default function EditProfile() {
                         <div className="row">
                             <div className="col-12">
                                 <div style={{ display: "flex", justifyContent: "center" }}>
-                                    <img src="https://via.placeholder.com/150" alt="avatar" style={{ width: "200px", height: "200px", borderRadius: "50%", margin: '20px' }} />
+                                    <img src={user.avatar_path || "https://via.placeholder.com/150"} alt="avatar" style={{ width: "200px", height: "200px", borderRadius: "50%", margin: '20px' }} />
                                 </div>
                             </div>
                             <div className="col-12 d-flex justify-content-center">
                                 <input
                                     type="file"
                                     id="fileInput"
-                                    style={{ display: 'none' }}
-                                    onChange={(event) => {
-                                        // Handle file selection here
-                                        const file = event.target?.files?.[0];
-                                        console.log(file);
-                                    }}
+                                    style={{ display: 'none' }} 
+                                    onChange={handleImageChange}
                                 />
                                 <button
                                     type="button"

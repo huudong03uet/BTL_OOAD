@@ -23,6 +23,7 @@ const user_login_service = async (
             coin: response.data.coin,
             phone: response.data.phone,
             location_id: response.data.location_id,
+            avatar_path: response.data.avatar_path,
         }
         UserDataService.setUserData(user);
         return;
@@ -50,6 +51,7 @@ const admin_login_service = async (
             coin: response.data.coin,
             phone: response.data.phone,
             location_id: response.data.location_id,
+            avatar_path: response.data.avatar_path,
         }
         UserDataService.setUserData(user);
         return;
