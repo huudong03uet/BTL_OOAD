@@ -95,6 +95,7 @@ let product_inspect = async (req, res) => {
             };
         }
         set_value_redis(`seller:${product.seller_id}:product:${product.id}`, notifyValue)
+        await delete_key_redis(`notify:product:${product_id}`)
 
         await t.commit();
 

@@ -18,7 +18,7 @@ const { convert_result_item_summary } = require('../util/convert');
 const { set_value_redis } = require('../util/redis');
 const Admin = require('../../models/admin');
 const { get_auction, AUCTION_INCLUDE, get_auction_by_pk } = require('./conponent');
-const { get_product_by_pk } = require('../product/conponent');
+const { get_product_by_pk, get_product } = require('../product/conponent');
 
 
 let create_auction = async (req, res) => {
@@ -175,37 +175,6 @@ let add_product = async (req, res) => {
     }
 }
 
-let _get_auction_by_status = async(seller_id, status) => {
-    try {
-        let auctions = await Auction.findAll({
-            where: {
-                seller_id: seller_id
-            },
-            include: [
-                {
-                    model: Product,
-                    attributes: [],
-                    where: {
-                        status: status
-                    }
-                },
-                {
-                    model: Location,
-                    attributes: [
-                        [Sequelize.literal("CONCAT(country, ', ', city)"), "location"]
-                    ]
-                }
-            ],
-            group: ['auction.id'],
-            having: Sequelize.literal(`COUNT(products.id) = COUNT(CASE WHEN products.status = "${status}" THEN 1 ELSE NULL END)`)
-        });
-
-        return auctions
-    } catch (error) {
-        throw error;
-    }
-}
-
 let get_past_auction = async (req, res) => {
     try {
         if (!check_required_field(req.params, ["seller_id"])) {
@@ -234,7 +203,7 @@ let get_past_auction = async (req, res) => {
     }
 }
 
-let get_product = async (req, res) => {
+let get_products = async (req, res) => {
     try {
         if (!check_required_field(req.params, ["seller_id"])) {
             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
@@ -244,12 +213,7 @@ let get_product = async (req, res) => {
         const whereClause = {
             [Op.and]: [
                 { status: AuctionProductStatus.NOT_YET_SOLD },
-                {
-                    [Op.or]: [
-                        { seller_id: req.params.seller_id },
-                        { visibility: AuctionProductVisibilityStatus.PUBLIC }
-                    ]
-                }
+                { seller_id: req.params.seller_id }
             ]
         };
 
@@ -356,7 +320,7 @@ module.exports = {
     add_user,
     add_product,
     get_past_auction,
-    get_product,
+    get_products,
     get_auction_history,
     get_auction_not_sold,
     update_auction,

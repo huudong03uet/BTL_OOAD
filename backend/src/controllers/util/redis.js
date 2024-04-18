@@ -3,8 +3,8 @@ const client = require('../../../conf/redis');
 let set_value_redis = async (key, jsonValue, ttl = 60 * 60 * 24 * 7) => {
     const stringValue = JSON.stringify(jsonValue);
     await client.set(key, stringValue);
-    const expireTime = Date.now() + ttl;
-    await client.expireAt(key, Math.floor(expireTime));
+    // const expireTime = Date.now() + ttl;
+    // await client.expireAt(key, Math.floor(expireTime));
 };
 
 let update_value_redis = async (key, value) => {
