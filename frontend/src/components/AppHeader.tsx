@@ -218,7 +218,7 @@ function Header() {
 
                   id="outlined-adornment-password"
                   type={showPassword ? 'text' : 'password'}
-                  defaultValue="$ 23,132,132"
+                  defaultValue={UserDataService.getUserData()?.coin}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -307,7 +307,7 @@ function Header() {
                 </div>
                 {/* <div> */}
                 {/* </div> */}
-                <NavDropdown title="Name user" id="basic-nav-dropdown" className="d-flex align-items-center"
+                <NavDropdown title={UserDataService.getUserData()?.user_name || "Name user"} id="basic-nav-dropdown" className="d-flex align-items-center"
                   align={{ lg: 'end' }}
                 >
 

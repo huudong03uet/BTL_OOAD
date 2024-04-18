@@ -33,5 +33,16 @@ let seller_info = async (seller_id: number) => {
     }
 }
 
+let seller_inviter_user = async () => {
+    try {
+        let url = `${HOST}/account/admin/user-manager`;
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
 
-export { seller_register, seller_info } ;
+
+export { seller_register, seller_info, seller_inviter_user } ;

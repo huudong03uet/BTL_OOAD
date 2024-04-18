@@ -21,6 +21,7 @@ import { Dropdown, DropdownButton, Form, InputGroup, } from "react-bootstrap";
 import User from "@/models/user";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Button } from "@mui/material";
+import { seller_inviter_user } from "@/services/account/seller";
 
 enum AuctionVisibility {
     PUBLIC = 0,
@@ -60,6 +61,19 @@ export default function AddAuction() {
                 setData(data);
                 setAuctionStates(Array(data.length).fill(false));
 
+            } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
+            }
+        };
+
+        fetchData()
+    }, [])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await seller_inviter_user();
+                setInvitedUsers(data);
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
