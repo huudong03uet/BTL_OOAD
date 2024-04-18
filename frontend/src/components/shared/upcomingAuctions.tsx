@@ -4,6 +4,7 @@ import '@smastrom/react-rating/style.css'
 import { Rating, ThinStar } from '@smastrom/react-rating'
 import dateFormat, { masks } from "dateformat";
 import Auction from '@/models/auction';
+import styled from 'styled-components';
 // Declare it outside your component so it doesn't get re-created
 const myStyles = {
     itemShapes: ThinStar,
@@ -21,7 +22,13 @@ enum StatusAuction {
 
 }
 
-
+const StyledLink = styled.a`
+  text-decoration: none;
+  color: black;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 function openLivedAuction() {
     let width = window.screen.width;
@@ -51,20 +58,21 @@ function UpcomingAuctions({ obj }: { obj: Auction }) {
                                     style={{ display: "-webkit-box", WebkitBoxOrient: "vertical", WebkitLineClamp: 2, overflow: "hidden" }}
                                 >                 {obj.name}
                                 </div>
-                                <div className="text-truncate">
-                                    by {obj.seller.name}
-                                </div>
+
+                                <StyledLink href={`/auction-house/${obj.seller?.id}`}
+                                    onClick={(e) => e.stopPropagation()}
+                                >by {obj.seller?.name}</StyledLink>
                                 <div className='d-flex'>
-                                    <Rating style={{ maxWidth: 100 }} 
-                                    //  set 2 decimal places of object.voting_avg_review
+                                    <Rating style={{ maxWidth: 100 }}
+                                        //  set 2 decimal places of object.voting_avg_review
 
-                                    value={obj.seller.reviews.reduce((a, b) => a + b.rating, 0) / obj.seller.reviews.length || 0}
+                                        value={obj.seller.reviews.reduce((a, b) => a + b.rating, 0) / obj.seller.reviews.length || 0}
 
-                                    readOnly={true} itemStyles={myStyles} />
+                                        readOnly={true} itemStyles={myStyles} />
                                     {/* //  set 2 decimal places of object.voting_avg_review */}
                                     {'\u00A0'}  {(obj.seller.reviews.reduce((a, b) => a + b.rating, 0) / obj.seller.reviews.length || 0).toFixed(1)}
-                                     {'\u00A0\u00A0'}  
-                                     ({obj.seller.reviews.length} Reviews)
+                                    {'\u00A0\u00A0'}
+                                    ({obj.seller.reviews.length} Reviews)
                                 </div>
                                 <div className="my-3">
                                     {/* {obj.time} */}
@@ -86,15 +94,15 @@ function UpcomingAuctions({ obj }: { obj: Auction }) {
 
 
 
-                                    <button type="button" className="btn btn-danger w-100">
-                                        <div onClick={openLivedAuction}>
-                                            Enter Lived Auction
-                                        </div>
+                                <button type="button" className="btn btn-danger w-100">
+                                    <div onClick={openLivedAuction}>
+                                        Enter Lived Auction
+                                    </div>
 
 
-                                    </button>
+                                </button>
 
-                               
+
                                 <a className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="#">
                                     Register to bid
                                 </a>
@@ -111,7 +119,7 @@ function UpcomingAuctions({ obj }: { obj: Auction }) {
                                 <div className="row pt-3 d-flex justify-content-around">
                                     {obj.products && obj.products.slice(1, 6).map((object, i) => (
                                         <div className="col-2 px-0" key={i}>
-                                            <img src={object.images[0].url} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "180px" }} className='position-relative top-50 start-50 translate-middle'/>
+                                            <img src={object.images[0].url} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "180px" }} className='position-relative top-50 start-50 translate-middle' />
                                         </div>
                                     ))}
                                 </div>

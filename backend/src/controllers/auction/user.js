@@ -18,7 +18,8 @@ const Review = require('../../models/review');
 const User = require('../../models/user');
 const LoveProduct = require('../../models/product_love');
 const { convert_result_auction_summary } = require('../util/convert');
-const { get_auction } = require('./conponent');
+const { get_auction, AUCTION_INCLUDE, get_auction_by_pk } = require('./conponent');
+const BidHistory = require('../../models/history_bid');
 
 
 let get_auction_upcomming = async (req, res) => {
@@ -32,6 +33,7 @@ let get_auction_upcomming = async (req, res) => {
             time_auction: {
                 [Op.gt]: new Date()
             },
+            is_delete: false,
             [Op.or]: [
                 {
                     status: AuctionStatus.PUBLIC
@@ -66,54 +68,42 @@ let get_auction_promote = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        const auctions = await Auction.findAll({
-            where: {
-                time_auction: {
-                    [Op.gt]: new Date()
-                },
-                [Op.or]: [
-                    {
-                        status: AuctionStatus.PUBLIC
-                    },
-                    {
-                        status: AuctionStatus.PRIVATE,
-                        '$users.id$': req.params.user_id
-                    }
-                ]
+        let whereCondition = {
+            time_auction: {
+                [Op.gt]: new Date()
             },
-            include: [
+            is_delete: false,
+            [Op.or]: [
                 {
-                    model: Product,
+                    status: AuctionStatus.PUBLIC
+                },
+                {
+                    status: AuctionStatus.PRIVATE,
+                    '$users.id$': req.params.user_id
+                }
+            ]
+        }
+
+        let auctionIncludes = AUCTION_INCLUDE.map(include => {
+            if (include.model === Product) {
+                return {
+                    ...include,
                     where: {
                         visibility: AuctionProductVisibilityStatus.PUBLIC
                     },
                     limit: 1,
                     attributes: ['id'],
-                    include: [
-                        {
-                            model: Image,
-                            attributes: ['id', "url"],
-                            limit: 1
-                        }
-                    ]
-                },
-                {
-                    model: Seller,
-                    attributes: ["name"],
-                },
-                {
-                    model: User,
-                    attributes: [],
-                    through: { attributes: [] },
-                    required: false
-                }
-            ]
-        });
+                };
+            }
+            return include;
+        })
 
-        let result = convert_result_auction_summary(auctions)
+        const auctions = await get_auction(whereCondition, auctionIncludes)
 
-        logger.info(`${statusCode.HTTP_200_OK} auction promote ${result.length}`)
-        return res.status(statusCode.HTTP_200_OK).json(result);
+        // let result = convert_result_auction_summary(auctions)
+
+        logger.info(`${statusCode.HTTP_200_OK} auction promote ${auctions.length}`)
+        return res.status(statusCode.HTTP_200_OK).json(auctions);
     } catch (error) {
         logger.error(`Get auction promote: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
@@ -128,19 +118,17 @@ let get_auction_info = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        let auction = await Auction.findByPk(req.params.auction_id, {
-            where: {
-                [Op.or]: [
-                    { status: AuctionStatus.PUBLIC },
-                    { '$users.id$': req.params.user_id, status: AuctionStatus.PRIVATE }
-                ]
-            },
-            include: [
-                {
+        let whereCondition = {
+            [Op.or]: [
+                { status: AuctionStatus.PUBLIC },
+                { '$users.id$': req.params.user_id, status: AuctionStatus.PRIVATE }
+            ]
+        }
+
+        let auctionIncludes = AUCTION_INCLUDE.map(include => {
+            if (include.model === Product) {
+                return {
                     model: Product,
-                    where: {
-                        visibility: AuctionProductVisibilityStatus.PUBLIC
-                    },
                     include: [
                         {
                             model: Image,
@@ -151,38 +139,25 @@ let get_auction_info = async (req, res) => {
                             model: LoveProduct,
                             attributes: ['id'],
                         }
-                    ]
-                },
-                {
-                    model: Seller,
-                    include: [
-                        {
-                            model: Review,
-                            attributes: [],
-                            required: true
-                        }
                     ],
-                    group: ['Seller.id'],
-                    having: sequelize.where(sequelize.col('Seller.id'), '=', sequelize.col('Auction.seller_id')),
-                    attributes: [
-                        'name',
-                        [sequelize.fn('AVG', sequelize.col('star')), 'avg_star'],
-                        [sequelize.fn('COUNT', sequelize.col('comment')), 'count']
-                    ],
-                },
-                {
-                    model: Location,
-                    attributes: [[Sequelize.literal("CONCAT(country, ', ', city)"), "location"]],
-                },
-                {
-                    model: User,
-                    attributes: ['id'],
+                };
+            } else if (include.model == User) {
+                return {
+                    ...include,
                     through: { attributes: [] },
+                    attributes: ['id'],
                     required: false,
                     where: { id: req.params.user_id }
                 }
-            ]
-        });
+            }
+            return include;
+        })
+
+        let auction = await get_auction_by_pk(req.params.auction_id, whereCondition, auctionIncludes)
+
+        if (auction && auction.products) {
+            auction.products.sort((a, b) => a.numerical_order - b.numerical_order);
+        }
 
         if (!auction) {
             logger.error(`${statusCode.HTTP_404_NOT_FOUND} Auction not found.`)
@@ -204,60 +179,16 @@ let get_auction_info = async (req, res) => {
             }
         }
 
-        let infoAuction = {};
-        infoAuction["time"] = auction.dataValues.time_auction;
-        infoAuction["auction_room_name"] = auction.dataValues.name;
-        if (auction.seller.dataValues) {
-            infoAuction["number_review"] = auction.seller.dataValues.count;
-            infoAuction["voting_avg_review"] = auction.seller.dataValues.avg_star;
-        } else {
-            infoAuction["number_review"] = 0;
-            infoAuction["voting_avg_review"] = 0;
-        }
-        let images = [];
-        for (let product of auction.products) {
-            images.push(product.images[0].url);
-        }
-        let firstImage = images.shift();
-        infoAuction["images"] = images;
-        infoAuction["image_path"] = firstImage;
-        infoAuction["seller_name"] = auction.seller.name;
-        infoAuction["status"] = auction.status;
-        infoAuction['address'] = auction.location.location
-
-        let lotsAuction = []
-        for (let product of auction.products) {
-            let out = {}
-            out["status"] = product.status
-            out["title"] = product.title
-            out["id"] = product.id
-            out["max_bid"] = product.max_estimate
-            out["estimate_min"] = product.min_estimate
-            out["image_path"] = product.images[0].url
-            out["love"] = product.love_products.length
-            lotsAuction.push(out)
-        }
-
         logger.info(`${statusCode.HTTP_200_OK} [Auction: ${req.params.auction_id}].`)
         return res.status(statusCode.HTTP_200_OK).json({
-            "infoAuction": infoAuction,
-            "lotsAuction": lotsAuction
+            "infoAuction": auction,
+            "lotsAuction": auction.products
         });
     } catch (error) {
         logger.error(`Auction add product: ${error}`)
         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
     }
 }
-
-
-// let get_auction_sold = async (req, res) => {
-//     try {
-
-//     } catch (error) {
-//         logger.error(`Auction add product: ${error}`)
-//         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
-//     }
-// }
 
 
 let get_product_in_auction = async (req, res) => {
@@ -303,9 +234,60 @@ let get_product_in_auction = async (req, res) => {
     }
 }
 
+
+let get_auction_bid = async (req, res) => {
+    try {
+        if (!check_required_field(req.params, ["product_id"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        let bib_histories = await BidHistory.findAll({
+            where: {
+                product_id: req.params.product_id
+            },
+            attributes: ["amount"]
+        })
+
+        let product = await Product.findByPk(req.params.product_id)
+
+        let result = {}
+        result["id"] = req.params.product_id
+        result['cost_auction'] = bib_histories.map(x => x.amount)
+        result["status"] = product.status == AuctionProductStatus.SOLD ? 1 : 0;
+
+        logger.info(`${statusCode.HTTP_200_OK} bib_histories ${bib_histories.length}.`)
+        return res.status(statusCode.HTTP_200_OK).json(result);
+    } catch (error) {
+        logger.error(`Auction add product: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+
+let add_auction_bid = async (req, res) => {
+    try {
+        if (!check_required_field(req.body, ["product_id", "user_id", "amount"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        await BidHistory.create(req.body)
+
+        logger.info(`${statusCode.HTTP_200_OK} done.`)
+        return res.status(statusCode.HTTP_200_OK).json("done");
+    } catch (error) {
+        logger.error(`Auction add product: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+
 module.exports = { 
     get_auction_upcomming, 
     get_auction_promote, 
     get_auction_info,
     get_product_in_auction,
+    get_auction_bid,
+    add_auction_bid,
 }

@@ -57,9 +57,10 @@ function SideBarUser() {
                 </div>
             </div>
             <div className={style.div_module}>
-                <Link className={style.div_text} href="/my-account/saved-items">
+                <Link className={style.div_text} style={{alignItems: 'center'}} href="/my-account/saved-items">
                     <i className="fa fa-heart space-right-sm"></i>
-                    {' '}Saved Items
+                    {" "}
+                    Saved Items
                 </Link>
                 {/* <div className={style.div_text}>
                     Following

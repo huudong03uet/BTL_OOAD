@@ -5,6 +5,16 @@ import dateFormat, { masks } from "dateformat";
 import { check_user_love_product, user_delete_love_product, user_love_product } from '@/services/component/love_product';
 // http://localhost:8080/product/user/detail/product_id=10/user_id=10000
 import Product from '@/models/product';
+import styled from 'styled-components';
+
+
+const StyledLink = styled.a`
+  text-decoration: none;
+  color: black;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 
 function ViewItem({ obj }: { obj: Product }) {
@@ -77,11 +87,11 @@ function ViewItem({ obj }: { obj: Product }) {
                     className='my-1 fw-bold'>
                     {obj.title}
                 </div>
-                {/* <div>
+                <div>
                     <StyledLink href={`/auction-house/${obj.seller?.id}`}
                     onClick={(e) => e.stopPropagation()}
                     >by {obj.seller?.name}</StyledLink>
-                </div> */}
+                </div>
                 <div className="fw-bold">
                     {/* ${obj.max_bid} */}
                     ${

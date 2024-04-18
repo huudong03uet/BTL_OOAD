@@ -13,21 +13,21 @@ function ResSearchItem({ searchResults }: { searchResults: Product[] }) {
                     {item.status === 'sold' ? (
                         <div className="sold-card">
                             {/* Render sold card */}
-                            <img src={item.images[0].url} alt={item.title} />
+                            <img src={item?.images?.[0]?.url} alt={item.title} />
                             <h2>{item.title}</h2>
                             <p>Artist: {item.artist}</p>
                             <p>Status: {item.status}</p>
-                            <p>Time: {item.auction.time_auction.toString()}</p>
+                            <p>Time: {item.auction?.time_auction.toString()}</p>
                             <p>Cost: {item.max_bid}</p>
                         </div>
                     ) : item.status === 'live now' ? (
                         <div className="live-now-card">
                             {/* Render live now card */}
-                            <img src={item.images[0].url} alt={item.title} />
+                            <img src={item?.images?.[0]?.url} alt={item.title} />
                             <h2>{item.title}</h2>
                             <p>Artist: {item.artist}</p>
                             <p>Status: {item.status}</p>
-                            <p>Time: {item.auction.time_auction.toString()}</p>
+                            <p>Time: {item.auction?.time_auction.toString()}</p>
                             <p>Cost: {item.max_bid}</p>
                         </div>
                     ) : (
