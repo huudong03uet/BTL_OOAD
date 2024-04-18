@@ -19,7 +19,7 @@ let user_get_category_service = async () => {
 
 let user_get_detail_product = async (product_id: number) => {
     try {
-        let url = `${HOST}/product/user/detail/product_id=${product_id}/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/product/user/detail/product_id=${product_id}/user_id=${UserDataService.getUserData()?.id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -34,7 +34,7 @@ let user_get_detail_product = async (product_id: number) => {
 
 let user_get_recently_product = async () => {
     try {
-        let url = `${HOST}/product/user/recently/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/product/user/recently/user_id=${UserDataService.getUserData()?.id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {

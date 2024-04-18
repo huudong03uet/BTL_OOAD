@@ -47,7 +47,7 @@ export default class SellerDataService {
 
     private static async _get_seller_by_user() {
         try {
-            let url = `${HOST}/account/seller/user_id=${UserDataService.getUserData()?.user_id}`;
+            let url = `${HOST}/account/seller/user_id=${UserDataService.getUserData()?.id}`;
             const response = await axios.get(url);
             return response.data;
         } catch (error: any) {

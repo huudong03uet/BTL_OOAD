@@ -7,7 +7,7 @@ import UserDataService from './model/user';
 
 let get_notification = async () => {
     try {
-        let url = `${HOST}/notification/role_id=${UserDataService.getUserData()?.user_id}/role_type=user`;
+        let url = `${HOST}/notification/role_id=${UserDataService.getUserData()?.id}/role_type=user`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {

@@ -50,7 +50,7 @@ function Header() {
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
 
-  const isLogin = UserDataService.getUserData()?.user_id == null ? false : true;
+  const isLogin = UserDataService.getUserData()?.id == null ? false : true;
   //  UserDataService.getUserData()?.user_id == null ? false : true;
 
 

@@ -6,7 +6,7 @@ import UserDataService from '@/services/model/user';
 
 let user_get_auction_upcoming = async () => {
     try {
-        let url = `${HOST}/auction/user/upcomming/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/auction/user/upcomming/user_id=${UserDataService.getUserData()?.id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -18,7 +18,7 @@ let user_get_auction_upcoming = async () => {
 
 let user_get_auction_promote = async () => {
     try {
-        let url = `${HOST}/auction/user/promote/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/auction/user/promote/user_id=${UserDataService.getUserData()?.id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -29,7 +29,7 @@ let user_get_auction_promote = async () => {
 
 let user_get_auction_info = async (auction_id: any) => {
     try {
-        let url = `${HOST}/auction/user/info/auction_id=${auction_id}/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/auction/user/info/auction_id=${auction_id}/user_id=${UserDataService.getUserData()?.id}`;
         console.log(url)
         const response = await axios.get(url);
         return response.data;
@@ -41,7 +41,7 @@ let user_get_auction_info = async (auction_id: any) => {
 
 let user_get_product_id_of_auction = async (auction_id: number) => {
     try {
-        let url = `${HOST}/auction/user/id-of-auction/auction_id=${auction_id}/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/auction/user/id-of-auction/auction_id=${auction_id}/user_id=${UserDataService.getUserData()?.id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -67,7 +67,7 @@ let user_add_bid = async (product_id: number, amount: number) => {
         let body = {
             "product_id": product_id,
             "amount": amount,
-            "user_id": UserDataService.getUserData()?.user_id,
+            "user_id": UserDataService.getUserData()?.id,
         }
         const response = await axios.post(url, body);
         return response.data;
