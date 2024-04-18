@@ -15,11 +15,9 @@ import Map from '@/components/auction-house/Map';
 import Tab from '@/components/auction-house/Tab';
 import TabContent from '@/components/auction-house/TabContent';
 import SoldItem from '@/components/shared/soldItem';
-import User from '@/models/user';
 import Comment from '@/components/auction-house/Comment';
 import PassAuction from '@/components/auction-house/PastAuction';
 import { user_get_auction_upcoming } from '@/services/auction/user';
-import { Data } from '@react-google-maps/api';
 import { seller_info } from '@/services/account/seller';
 import { seller_auction_past_service } from '@/services/auction/seller';
 import { seller_product_sold_service } from '@/services/product/seller';
@@ -30,6 +28,7 @@ import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
 import Product from '@/models/product';
 import Auction from '@/models/auction';
+import Location from '@/models/location';
 // import ItemSummary from '@/models/product_summary';
 
 const AuctionHouse = ({ params }: { params: { id: string } }) => {
@@ -68,8 +67,8 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                 const data = await seller_info(seller_id);
                 if (data) {
                     setAuctionHouse(data);
-                } 
-                
+                }
+
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
@@ -100,7 +99,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         const fetchData = async () => {
             try {
                 const data = await get_review_service(seller_id);
-                
+
                 if (Array.isArray(data)) {
                     setReview(data);
                 } else {
@@ -144,17 +143,17 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         4: 'Good+',
         4.5: 'Excellent',
         5: 'Excellent+',
-      };
-      
-      function getLabelText(value: number) {
+    };
+
+    function getLabelText(value: number) {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
-      }
+    }
 
 
-      const [value, setValue] = React.useState<number | null>(2);
-      const [hover, setHover] = React.useState(-1);
-      
-      
+    const [value, setValue] = React.useState<number | null>(2);
+    const [hover, setHover] = React.useState(-1);
+
+
     const [soldAuctions, setSoldAuctions] = useState<Product[]>([]);
 
     useEffect(() => {
@@ -209,7 +208,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         id: number
         date: string,
         title: string,
-        location: string,
+        location: Location,
     }[] | undefined>([]);
 
     useEffect(() => {
@@ -217,7 +216,14 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
             try {
                 const data = await seller_auction_past_service(seller_id);
                 if (Array.isArray(data)) {
-                    setPastAuctions(data);
+
+                    const transformedData = data.map(item => ({
+                        date: item.time_auction,
+                        title: item.name,
+                        location: item.location
+                    }));
+
+                    setPastAuctions(transformedData);
                 } else {
                     setPastAuctions([])
                 }
@@ -237,7 +243,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         <>
             <AppHeader />
             <AppNav />
-                <div>
+                <Container>
                     {auctionHouse && (
                         <div className={` ${styles.ahInformation} ${styles.colMd8}`}>
                             <div className={styles.ahBioContainer}>
@@ -258,12 +264,10 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                         <span className={styles.spanReview}>from {review && review.length} Reviews</span>
                                     </div>
                                 </div>
-
                             </div>
                             <div className={styles.ahContactContainer}>
                                 <div className={styles.locationMap}>
                                     <Map location={auctionHouse && auctionHouse.auctionHouse_location}></Map>
-
                                 </div>
                                 <div className={styles.button}>
                                     <button type="button" className={`btn btn-primary btn-lg btn-block ${styles['btn-follow']} ${styles['button-style']}`}>+ Follow This Seller</button>
@@ -286,16 +290,17 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                     title="Buyer Reviews"
                                     active={activeTab === 'review'}
                                     onClick={() => handleTabClick('review')}
+                                
                                 />
                                 <Tab
                                     id="past_ac"
                                     title="Past Auctions"
                                     active={activeTab === 'past_ac'}
                                     onClick={() => handleTabClick('past_ac')}
+                                
                                 />
                             </div>
                         </Container>
-
                         <div>
                             <TabContent id="upcoming" active={activeTab === 'upcoming'} ref={tabContentRefs.upcoming}>
                                 {/* Nội dung của tab upcoming */}
@@ -318,11 +323,9 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                     </Container>
                                 </div>
                             </TabContent>
-
                             <TabContent id="review" active={activeTab === 'review'} ref={tabContentRefs.review}>
                                 {/* Nội dung của tab review */}
                                 <div className={styles2.header_section}>Reviews ({review && review?.length})</div>
-
                                 {/* give review */}
                                 <div>
                                     <div>
@@ -362,12 +365,9 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                                 </div>
                                             );
                                         })}
-
                                     </Container>
                                 </div>
-
                             </TabContent>
-
                             <TabContent id="sold" active={activeTab === 'sold'} ref={tabContentRefs.sold}>
                                 {/* Nội dung của tab sold */}
                                 <div className={styles2.header_section}>Notable Past Lots Sold at Auction</div>
@@ -383,9 +383,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                         </div>
                                     </Container>
                                 </div>
-
                             </TabContent>
-
                             <TabContent id="past_ac" active={activeTab === 'past_ac'} ref={tabContentRefs.past_ac}>
                                 {/* Nội dung của tab past_ac */}
                                 <div className={styles2.header_section}>Past Auctions from {auctionHouse && auctionHouse.auctionHouse_name}</div>
@@ -402,7 +400,6 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                 </div>
                             </TabContent>
                         </div>
-
                         <style jsx>{`
                         .tabs {
                         margin-bottom: 20px;
@@ -416,7 +413,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                     `}</style>
                     </div>
 
-                </div>
+                </Container>
             {/* </Container> */}
 
 

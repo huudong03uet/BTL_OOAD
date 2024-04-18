@@ -4,17 +4,8 @@ import React, { useEffect, useState } from 'react'
 import dateFormat, { masks } from "dateformat";
 import { check_user_love_product, user_delete_love_product, user_love_product } from '@/services/component/love_product';
 // http://localhost:8080/product/user/detail/product_id=10/user_id=10000
-import styled from 'styled-components';
 import Product from '@/models/product';
 
-const StyledLink = styled.a`
-  text-decoration: none;
-  color: black;
-
-  &:hover {
-    text-decoration: underline;
-  }
-`;
 
 function ViewItem({ obj }: { obj: Product }) {
     const [status, setStatus] = useState<boolean>(false);
@@ -68,7 +59,7 @@ function ViewItem({ obj }: { obj: Product }) {
                     </button>
 
                 )}
-                <img src={obj.images[0].url} alt={obj.title} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
+                <img src={obj.images?.[0]?.url ?? 'defaultImageUrl'}  alt={obj.title} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
 
             </div>
             {/* <div
@@ -86,11 +77,11 @@ function ViewItem({ obj }: { obj: Product }) {
                     className='my-1 fw-bold'>
                     {obj.title}
                 </div>
-                <div>
-                    <StyledLink href={`/auction-house/${obj.seller.id}`}
+                {/* <div>
+                    <StyledLink href={`/auction-house/${obj.seller?.id}`}
                     onClick={(e) => e.stopPropagation()}
-                    >by {obj.seller.name}</StyledLink>
-                </div>
+                    >by {obj.seller?.name}</StyledLink>
+                </div> */}
                 <div className="fw-bold">
                     {/* ${obj.max_bid} */}
                     ${

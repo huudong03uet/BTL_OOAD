@@ -1,6 +1,5 @@
 import User from "@/models/user";
 import SellerDataService from "./seller";
-
 export default class UserDataService {
     private static userData: User | null = null;
 
@@ -26,11 +25,10 @@ export default class UserDataService {
     }
 
     static getUserData(): User | null {
-        // if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') {
+      
+        // if (typeof window === 'undefined') {
         //     return null;
         // }
-
-
 
         const data_user = window.localStorage.getItem('dataUser');
 

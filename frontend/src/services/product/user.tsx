@@ -29,6 +29,9 @@ let user_get_detail_product = async (product_id: number) => {
 }
 
 
+
+
+
 let user_get_recently_product = async () => {
     try {
         let url = `${HOST}/product/user/recently/user_id=${UserDataService.getUserData()?.user_id}`;
