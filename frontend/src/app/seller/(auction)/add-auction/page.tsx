@@ -240,7 +240,15 @@ export default function AddAuction() {
                                 onChange={(e) => setProductCategory(e.target.value)}
                             /> */}
                             <InputGroup className="mb-3">
-                                <Button onClick={handleOpenModalInvitedUsers}>Invite users</Button>
+                                <Button 
+                                    style={{
+                                        backgroundColor: '#000', // Thay đổi màu nền
+                                        color: 'white', // Thay đổi màu chữ
+                                        border: '0px solid white', // Thêm viền
+                                        borderRadius: '4px', // Bo góc
+                                    }}
+                                
+                                onClick={handleOpenModalInvitedUsers}>Invite users</Button>
                                 <div className="selected-categories">
                                     {invitedUsers.map((user) => (
                                         <span
