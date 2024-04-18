@@ -6,7 +6,6 @@ import AppFilter from '@/components/search/AppFilter'
 import internal from "stream";
 import AppHeader from "@/components/AppHeader";
 import AppNav from "@/components/AppNav";
-// import AppBreadCrumb from "@/components/AppBreadCrumb";
 import AppFooter from "@/components/AppFooter";
 
 interface SearchItem {
@@ -46,7 +45,6 @@ export default function Search(props: SearchItem) {
         <>
             <AppHeader />
             <AppNav />
-            {/* <AppBreadCrumb /> */}
 
             <AppFilter></AppFilter>
 

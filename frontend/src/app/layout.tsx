@@ -9,7 +9,8 @@ import 'react-chat-elements/dist/main.css';
 import UserDataService from "@/services/model/user";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { CircularProgress } from "@mui/material";
 
 
 const inter = Inter({ subsets: ["latin"] });
@@ -25,15 +26,30 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
 
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 500);
+  }, []);
+
 
 
   return (
     <html lang="en" suppressHydrationWarning>
-  
-      <body className={inter.className} style={{overflowX: "clip"}}>
-        {children}
+
+      <body className={inter.className} style={{ overflowX: "clip" }}>
+        {/* {children} */}
+        {loading ? (
+          <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+          }}>
+            <CircularProgress size={80} />
+          </div>
+        ) : children}
         <ToastContainer />
-        <ChatComponent/>
+        <ChatComponent />
       </body>
 
     </html>
