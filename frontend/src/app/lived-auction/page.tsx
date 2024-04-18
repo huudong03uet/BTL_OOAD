@@ -9,77 +9,80 @@ import { Radio } from 'antd';
 import { useRouter } from 'next/navigation'
 import Product from '@/models/product';
 import { user_get_detail_product } from '@/services/product/user';
-import { user_get_auction_info } from '@/services/auction/user';
+import { user_add_bid, user_get_auction_info } from '@/services/auction/user';
 import Auction from '@/models/auction';
+import WatchChannel from '@/components/live-stream/watch-channel';
 
 export default function LivedAuction() {
 
     const [infoAuction, setInfoAuction] = useState({} as Auction);
     const [lotsAuction, setLotsAuction] = useState<Product[]>([]);
+    const [selectedLotId, setSelectedLotId] = useState<number>(1);
+    const [lastBid, setLastBid] = useState<number>(0);
 
     useEffect(() => {
         const fetchItemData = async () => {
-          try {
-            const data = await user_get_auction_info(1);
-            setInfoAuction(data.infoAuction);
-            if (Array.isArray(data.lotsAuction)) {
-                setLotsAuction(data.lotsAuction);
-            } else {
-                setLotsAuction([])
+            try {
+                const data = await user_get_auction_info(4);
+                setInfoAuction(data.infoAuction);
+                if (Array.isArray(data.lotsAuction)) {
+                    setLotsAuction(data.lotsAuction);
+                } else {
+                    setLotsAuction([])
+                }
+            } catch (error) {
+                console.error("Error fetching item data:", error);
             }
-          } catch (error) {
-            console.error("Error fetching item data:", error);
-          }
         };
-    
+
         fetchItemData();
-      }, []);
+    }, []);
 
-    function nextCostAuction(currentCost: number) {
-        if (currentCost < 200) {
-            return currentCost + 10;
-        } else if (currentCost < 500) {
-            return currentCost + 20;
-        } else if (currentCost < 1000) {
-            return currentCost + 50;
-        } else if (currentCost < 2000) {
-            return currentCost + 100;
-        } else if (currentCost < 5000) {
-            return currentCost + 200;
-        } else if (currentCost < 10000) {
-            return currentCost + 500;
-        } else if (currentCost < 20000) {
-            return currentCost + 1000;
-        } else if (currentCost < 50000) {
-            return currentCost + 2000;
-        } else if (currentCost < 100000) {
-            return currentCost + 5000;
-        } else if (currentCost < 200000) {
-            return currentCost + 10000;
-        } else if (currentCost < 500000) {
-            return currentCost + 20000;
-        } else {
-            return currentCost + 50;
-        }
-    }
+    // function nextCostAuction(currentCost: number) {
+    //     if (currentCost < 200) {
+    //         return currentCost + 10;
+    //     } else if (currentCost < 500) {
+    //         return currentCost + 20;
+    //     } else if (currentCost < 1000) {
+    //         return currentCost + 50;
+    //     } else if (currentCost < 2000) {
+    //         return currentCost + 100;
+    //     } else if (currentCost < 5000) {
+    //         return currentCost + 200;
+    //     } else if (currentCost < 10000) {
+    //         return currentCost + 500;
+    //     } else if (currentCost < 20000) {
+    //         return currentCost + 1000;
+    //     } else if (currentCost < 50000) {
+    //         return currentCost + 2000;
+    //     } else if (currentCost < 100000) {
+    //         return currentCost + 5000;
+    //     } else if (currentCost < 200000) {
+    //         return currentCost + 10000;
+    //     } else if (currentCost < 500000) {
+    //         return currentCost + 20000;
+    //     } else {
+    //         return currentCost + 50;
+    //     }
+    // }
 
 
-    const currentCost = 100;
+    // const currentCost = 100;
 
     const [currentAuction, setCurrentAuction] = useState({} as Product)
 
     useEffect(() => {
         const fetchItemData = async () => {
-          try {
-            const data = await user_get_detail_product(1);
-            setCurrentAuction(data);
-          } catch (error) {
-            console.error("Error fetching item data:", error);
-          }
+            try {
+                const data = await user_get_detail_product(1);
+                setCurrentAuction(data);
+            } catch (error) {
+                console.error("Error fetching item data:", error);
+            }
         };
-    
+
         fetchItemData();
-      }, []);
+    }, []);
 
     const [size, setSize] = useState<String>('button_1');
 
@@ -108,14 +111,24 @@ export default function LivedAuction() {
         }
     };
 
+    function getSlugChannel() {
+        return "exampleSlug"
+    }
+
     const handleLotClick = async (productId: number) => {
         try {
             const data = await user_get_detail_product(productId);
             setCurrentAuction(data);
+            setSelectedLotId(productId);
         } catch (error) {
             console.error("Error fetching item data:", error);
         }
     };
+
+    const Register2Bid = async () => {
+        // console.log(user)
+        await user_add_bid(selectedLotId, lastBid + 1)
+    }
 
     return (
         <>
@@ -146,9 +159,9 @@ export default function LivedAuction() {
                                     <i className="fa fa-star" aria-hidden="true" style={{ color: "#ffc107" }}></i>
                                     {/* {' '}{infoAuction.seller.rating}  = averagte of infor.seller.reviews */}
 
-                                    {' '}({infoAuction.seller.reviews.reduce((a, b) => a + b.rating, 0) / infoAuction.seller.reviews.length || 0})
+                                    {/* {' '}({infoAuction.seller.reviews.length > 0 && infoAuction.seller.reviews.reduce((a, b) => a + b.rating, 0) / infoAuction.seller.reviews.length || 0})
                                     
-                                    {' '}({infoAuction.seller.reviews.length})
+                                    {' '}({infoAuction.seller.reviews.length}) */}
                                 </div>
                                 <div className='d-flex align-items-center'>
                                     <LinearProgress color="warning" variant="determinate" value={23} style={{ height: "2px", width: '100%' }} className="me-3" />
@@ -172,7 +185,7 @@ export default function LivedAuction() {
                                 <div style={{ overflowY: 'scroll', height: "calc(100vh - 270px)", position: "relative" }}>
                                     {lotsAuction.map((object, index) => (
                                         <div key={index} className='p-3' style={{ backgroundColor: object.status === "1" ? '#FDF3F5' : 'white' }}>
-                                            <ItemLivedAuction obj={object} onClick={() => handleLotClick(object.id)}/>
+                                            <ItemLivedAuction obj={object} onClick={() => handleLotClick(object.id)} />
                                         </div>
                                     ))}
                                 </div>
@@ -186,18 +199,26 @@ export default function LivedAuction() {
                             <div ref={containerRef} className='col-7 border' style={{ padding: "24px 24px 16px", overflowY: "scroll", height: "100%" }}>
                                 <ItemCurrentLived obj={currentAuction} handleButtonClick={handleViewLotDetailsClick}></ItemCurrentLived>
                             </div>
-                            <div className='col-5 border p-0'>
+                            {/* <div className='col-5 border p-0'>
                                 <SessionAuction></SessionAuction>
+                            </div> */}
+                            <div className='col-5 border p-0'>
+                                <div>
+                                    <div style={{ height: "230px" }}>
+                                        <WatchChannel slug={getSlugChannel()} />
+                                    </div>
+                                </div>
+                                <SessionAuction key={selectedLotId} id={selectedLotId} setLastBid={setLastBid}/>
                             </div>
                         </div>
                         <div style={{ height: "170px", backgroundColor: "#F4F5F6" }}>
                             <div className='h-100 px-5 py-3'>
                                 <div className='h-50 d-flex justify-content-center align-items-center'>
 
-                                    <div className="border border-secondary h-75 btn btn-light w-100 rounded-pill d-flex justify-content-end align-items-center pe-4" style={{ fontWeight: "500", fontSize: "32px" }}>{nextCostAuction(currentCost)}$</div>
+                                    <div className="border border-secondary h-75 btn btn-light w-100 rounded-pill d-flex justify-content-end align-items-center pe-4" style={{ fontWeight: "500", fontSize: "32px" }}>{lastBid + 1}$</div>
                                 </div >
                                 <div className='h-50 d-flex justify-content-center align-items-center'>
-                                    <button type="button" className="btn btn-dark w-100 h-75 rounded-pill" style={{ fontWeight: "500", fontSize: "20px" }}>Register to Bid</button>
+                                    <button type="button" onClick={Register2Bid} className="btn btn-dark w-100 h-75 rounded-pill" style={{ fontWeight: "500", fontSize: "20px" }}>Register to Bid</button>
                                 </div>
                             </div>
                         </div>

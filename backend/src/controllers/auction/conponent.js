@@ -15,7 +15,7 @@ const Location = require('../../models/location');
 const Admin = require('../../models/admin');
 const Review = require('../../models/review');
 
-const { PRODUCT_INCLUDE } = require('../product/conponent');
+const Image = require('../../models/image');
 
 
 const AUCTION_INCLUDE = [
@@ -30,7 +30,13 @@ const AUCTION_INCLUDE = [
     },
     {
         model: Product,
-        include: PRODUCT_INCLUDE
+        include: [
+            {
+                model: Image,
+                attributes: ["id", "url"],
+                limit: 1,
+            }
+        ]
     },
     {
         model: Location

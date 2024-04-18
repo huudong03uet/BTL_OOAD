@@ -12,7 +12,7 @@ const BidHistory = sequelize.define('bid_history', {
     },
     description: {
         type: DataTypes.TEXT,
-        allowNull: false,
+        allowNull: true,
     },
     amount: {
         type: DataTypes.DOUBLE,
