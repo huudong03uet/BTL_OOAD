@@ -61,7 +61,7 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <p className="text-black dark:text-white">
-                                        {packageItem.createdAt.toString()}
+                                    {packageItem.createdAt ? packageItem.createdAt.toString() : ''}
                                     </p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
