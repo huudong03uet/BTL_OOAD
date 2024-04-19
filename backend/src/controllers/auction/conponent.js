@@ -46,43 +46,112 @@ const AUCTION_INCLUDE = [
     }
 ];
 
+class AuctionService {
+    constructor () {
+        this.where_case = {}
+        this.include = [
+            {
+                model: Seller,
+                attributes: ['id', 'name'],
+                include: [
+                    {
+                        model: Review
+                    }
+                ]
+            },
+            {
+                model: Product,
+                include: [
+                    {
+                        model: Image,
+                        attributes: ["id", "url"],
+                        limit: 1,
+                    }
+                ]
+            },
+            {
+                model: Location
+            },
+            {
+                model: User,
+            }
+        ];
+        this.kwargs = {}
+    }
 
-let get_auction = async (whereCondition, auctionIncludes = AUCTION_INCLUDE, kwargs = {}) => {
-    try {
-        let auctions = await Auction.findAll({
-            where: whereCondition,
-            include: auctionIncludes,
-            ...kwargs,
-        });
+    get_auction = async (where_cause = this.where_case, include = this.include, kwargs = this.kwargs) => {
+        try {
+            let auctions = await Auction.findAll({
+                where: where_cause,
+                include: include,
+                ...kwargs
+            });
+    
+            logger.info(`Product length: ${auctions.length}`)
+            return auctions;
+        } catch (error) {
+            logger.error(`Get product: ${error}`)
+            throw new Error('Request timeout');
+        }
+    }
 
-        logger.info(`Product length: ${auctions.length}`)
-        return auctions;
-    } catch (error) {
-        logger.error(`Get product: ${error}`)
-        throw new Error('Request timeout');
+    get_auction_by_pk = async (auction_id, where_cause = this.where_case, include = this.include, kwargs = this.kwargs) => {
+        try {
+            let auctions = await Auction.findByPk(auction_id, {
+                where: where_cause,
+                include: include,
+                ...kwargs
+            });
+    
+            logger.info(`Product length: ${auctions.length}`)
+            return auctions;
+        } catch (error) {
+            logger.error(`Get product: ${error}`)
+            throw new Error('Request timeout');
+        }
     }
 }
 
 
-let get_auction_by_pk = async (auction_id, whereCondition, auctionIncludes = AUCTION_INCLUDE, kwargs = {}) => {
-    try {
-        let auctions = await Auction.findByPk(auction_id, {
-            where: whereCondition,
-            include: auctionIncludes,
-            ...kwargs,
-        });
 
-        logger.info(`Product length: ${auctions.length}`)
-        return auctions;
-    } catch (error) {
-        logger.error(`Get product: ${error}`)
-        throw new Error('Request timeout');
-    }
-}
+module.exports = AuctionService;
+
+// let get_auction = async (whereCondition, auctionIncludes = AUCTION_INCLUDE, kwargs = {}) => {
+//     try {
+//         let auctions = await Auction.findAll({
+//             where: whereCondition,
+//             include: auctionIncludes,
+//             ...kwargs,
+//         });
+
+//         logger.info(`Product length: ${auctions.length}`)
+//         return auctions;
+//     } catch (error) {
+//         logger.error(`Get product: ${error}`)
+//         throw new Error('Request timeout');
+//     }
+// }
 
 
-module.exports = {
-    AUCTION_INCLUDE,
-    get_auction,
-    get_auction_by_pk
-}
+// let get_auction_by_pk = async (auction_id, whereCondition, auctionIncludes = AUCTION_INCLUDE, kwargs = {}) => {
+//     try {
+//         let auctions = await Auction.findByPk(auction_id, {
+//             where: whereCondition,
+//             include: auctionIncludes,
+//             ...kwargs,
+//         });
+
+//         logger.info(`Product length: ${auctions.length}`)
+//         return auctions;
+//     } catch (error) {
+//         logger.error(`Get product: ${error}`)
+//         throw new Error('Request timeout');
+//     }
+// }
+
+
+// module.exports = {
+//     AUCTION_INCLUDE,
+//     get_auction,
+//     get_auction_by_pk
+// }

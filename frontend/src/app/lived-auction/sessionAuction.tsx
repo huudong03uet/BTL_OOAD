@@ -3,7 +3,6 @@ import { info } from 'console';
 import React, { useEffect, useState } from 'react';
 import SessionAuctionCost from '@/models/session_auction_cost';
 import WatchChannel from '@/components/live-stream/watch-channel';
-import { message } from 'antd';
 import { user_get_bid_history } from '@/services/auction/user';
 
 interface SessionAuctionProps {

@@ -8,25 +8,25 @@ import Location from "@/models/location";
 import get_location_service from "@/services/component/location";
 import { user_change_password_service, user_edit_account_service } from "@/services/account/user";
 import { UserContext } from "@/services/context/UserContext";
+import { error } from "console";
 
 
 export default function EditProfile() {
-    let {user, setUser} = useContext(UserContext)
+    const {user, setUser} = useContext(UserContext)
     const [location, setLocation] = useState<Location>({} as Location)
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-
+    const [image, setImage] = useState<File | null>(null);
 
     const [updateEmail, setUpdateEmail] = useState(false);
     const [changePassword, setChangePassword] = useState(false);
 
 
-
     useEffect(() => {
         const fetchData = async () => {
-            if (user && user.position_id) {
-                const locationData = await get_location_service(user.location_id);
+            if (user && user?.location_id) {
+                const locationData = await get_location_service(user?.location_id);
                 if (locationData) {
                     setLocation(prevLocation => ({
                         ...prevLocation,
@@ -58,10 +58,13 @@ export default function EditProfile() {
 
     const handleChangeUser = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUser(({
-            ...user,
-            [name]: value
-        }));
+        let newUser;
+        if(user) {
+            newUser = {...user, [name]: value};
+        } else {
+            newUser = null
+        }
+        setUser(newUser);
     };
 
     const handleChangeLocation = (e: ChangeEvent<HTMLInputElement>) => {
@@ -86,21 +89,22 @@ export default function EditProfile() {
         }));
     };
 
+    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const files = event.target.files;
+        if (files && files.length > 0) {
+            setImage(files[0]);
+        }
+    };
+
     const handleClick = async () => {
         // console.log(user)
-        const data = await user_edit_account_service(user, location);
-        let user_edit: User = {
-            id: data.id,
-            email: data.email,
-            first_name: data.first_name,
-            last_name: data.last_name,
-            user_name: data.user_name,
-            coin: data.coin,
-            phone: data.phone,
-            location_id: data.location_id,
+        try {
+            const data = await user_edit_account_service(user, location, null);
+            setUser(data);
+            setUpdateEmail(false)
+        } catch {
+            console.log(error);
         }
-        setUser(user_edit);
-        setUpdateEmail(false)
     }
 
 
@@ -110,7 +114,7 @@ export default function EditProfile() {
             return;
         }
         try {
-            await user_change_password_service(user.id, oldPassword, newPassword);
+            await user_change_password_service(user?.id, oldPassword, newPassword);
             setOldPassword('');
             setNewPassword('');
             setConfirmPassword('');
@@ -132,116 +136,175 @@ export default function EditProfile() {
                     Account Info
                 </div>
                 <div className="row">
-                    <div className="col-3">
-                        <Form.Control
-                            type="text"
-                            placeholder="First name"
-                            className={style.custom_form_control}
-                            name="first_name"
-                            value={user.first_name}
-                            onChange={handleChangeUser}
-                        />
-                    </div>
-                    <div className="col-3">
-                        <Form.Control
-                            type="text"
-                            placeholder="Last name"
-                            className={style.custom_form_control}
-                            name="last_name"
-                            value={user.last_name}
-                            onChange={handleChangeUser}
-                        />
-                    </div>
-                </div>
-                <div className="row">
-                    {
-                        updateEmail ? (
+                    <div className="col-6">
+                        <div className='row'>
                             <div className='col-6'>
+
+                                <Form.Label className={style.custom_form_label}>First name</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    placeholder="New Email Address"
+                                    placeholder="First name"
                                     className={style.custom_form_control}
-                                    name="email"
-                                    value={user.email}
+                                    name="first_name"
+                                    value={user?.first_name}
                                     onChange={handleChangeUser}
                                 />
-                                <div className='d-flex align-items-center'>
-                                    <button type="button" onClick={() => handleClick()} className="btn btn-danger">Update</button>
-                                    <a onClick={() => setUpdateEmail(false)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
-                                        Cancel
-                                    </a>
-                                </div>
+
+
                             </div>
-                        ) : (
                             <div className="col-6">
+                                <Form.Label className={style.custom_form_label}>Last Name</Form.Label>
                                 <Form.Control
                                     type="text"
-                                    defaultValue={user.email}
+                                    placeholder="Last name"
                                     className={style.custom_form_control}
-                                    disabled
+                                    name="last_name"
+                                    value={user?.last_name}
+                                    onChange={handleChangeUser}
                                 />
-
-                                <a onClick={() => setUpdateEmail(true)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 " style={{ cursor: "pointer" }}>
-                                    Update Email Address
-                                </a>
                             </div>
-                        )
-                    }
+                        </div>
+                        <div className="row">
+                            {
+                                updateEmail ? (
+                                    <div className='col-12'>
+                                        <Form.Label className={style.custom_form_label}>Email Address</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="New Email Address"
+                                            className={style.custom_form_control}
+                                            name="email"
+                                            value={user?.email}
+                                            onChange={handleChangeUser}
+                                        />
+                                        <div className='d-flex align-items-center' style={{ marginTop: "-15px", marginBottom: "15px" }}>
+                                            <button type="button" onClick={() => handleClick()} className="btn btn-danger me-3">Update</button>
+                                            <a onClick={() => setUpdateEmail(false)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
+                                                Cancel
+                                            </a>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="col-12">
+                                        <Form.Label className={style.custom_form_label}>Email Address</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            defaultValue={user?.email}
+                                            className={style.custom_form_control}
+                                            disabled
+                                        />
+                                        <div style={{ marginTop: "-15px", marginBottom: "15px" }}>
+                                            <a onClick={() => setUpdateEmail(true)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 " style={{ cursor: "pointer" }}>
+                                                Update Email Address
+                                            </a>
+                                        </div>
 
-                </div>
+                                    </div>
+                                )
+                            }
 
-                <div className="row">
-                    {
-                        changePassword ? (
-                            <div className='col-6'>
-                                <Form.Control
-                                    type="password"
-                                    placeholder="Current Password"
-                                    name="old_password"
-                                    value={oldPassword}
-                                    onChange={handleChangePassword}
-                                    className={style.custom_form_control}
-                                />
-                                <Form.Control
-                                    type="password"
-                                    placeholder="New Password"
-                                    name="new_password"
-                                    value={newPassword}
-                                    onChange={handleChangePassword}
-                                    className={style.custom_form_control}
-                                />
-                                <Form.Control
-                                    type="password"
-                                    placeholder="Confirm New Password"
-                                    name="confirm_password"
-                                    value={confirmPassword}
-                                    onChange={handleChangePassword}
-                                    className={style.custom_form_control}
-                                />
-                                <div className='d-flex align-items-center'>
-                                    <button type="button" className="btn btn-danger" onClick={handleClickChangePassword}>Update</button>
-                                    <a onClick={() => setChangePassword(false)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
-                                        Cancel
-                                    </a>
+                        </div>
+                        <div className="row">
+                            {
+                                changePassword ? (
+                                    <div className='col-12'>
+                                        <Form.Label className={style.custom_form_label}>Password</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Current Password"
+                                            name="old_password"
+                                            value={oldPassword}
+                                            onChange={handleChangePassword}
+                                            className={style.custom_form_control}
+                                        />
+
+
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="New Password"
+                                            name="new_password"
+                                            value={newPassword}
+                                            onChange={handleChangePassword}
+                                            className={style.custom_form_control}
+                                        />
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Confirm New Password"
+                                            name="confirm_password"
+                                            value={confirmPassword}
+                                            onChange={handleChangePassword}
+                                            className={style.custom_form_control}
+                                        />
+                                        <div className='d-flex align-items-center' style={{ marginTop: "-15px", marginBottom: "15px" }}>
+                                            <button type="button" className="btn btn-danger me-3" onClick={handleClickChangePassword}>Update</button>
+                                            <a onClick={() => setChangePassword(false)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
+                                                Cancel
+                                            </a>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="col-12">
+                                        <Form.Label className={style.custom_form_label}>Password</Form.Label>
+                                        <Form.Control type="text"
+                                            value={'********'}
+                                            className={style.custom_form_control}
+                                            disabled
+                                        />
+                                        <div style={{ marginTop: "-15px", marginBottom: "15px" }}>
+                                            <a onClick={() => setChangePassword(true)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
+                                                Change Password
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                )
+
+                            }
+                        </div>
+
+                    </div>
+
+                    {/* change avatar of user */}
+                    <div className="col-6">
+                        <div className={style.div_header} style={{ justifyContent: 'center', display: 'flex', margin: "0" }}>
+                            User avatar
+                        </div>
+                        <div className="row">
+                            <div className="col-12">
+                                <div style={{ display: "flex", justifyContent: "center" }}>
+                                    <img src={user?.avatar_path || "https://via.placeholder.com/150"} alt="avatar" style={{ width: "200px", height: "200px", borderRadius: "50%", margin: '20px' }} />
                                 </div>
                             </div>
-                        ) : (
-                            <div className="col-6">
-                                <Form.Control type="text"
-                                    value={'********'}
-                                    className={style.custom_form_control}
-                                    disabled
+                            <div className="col-12 d-flex justify-content-center">
+                                <input
+                                    type="file"
+                                    id="fileInput"
+                                    style={{ display: 'none' }} 
+                                    onChange={handleImageChange}
                                 />
-                                <a onClick={() => setChangePassword(true)} className="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0" style={{ cursor: "pointer" }}>
-                                    Change Password
-                                </a>
+                                <button
+                                    type="button"
+                                    className="btn btn-dark"
+                                    onClick={() => {
+                                        // Trigger file selection
+                                        document?.getElementById('fileInput')?.click();
+                                    }}
+                                >
+                                    Change Avatar
+                                </button>
                             </div>
-                        )
+                        </div>
 
-                    }
-
+                    </div>
 
                 </div>
+
+
+                {/* <div className="row">
+                 
+
+
+                </div> */}
             </div>
 
 
@@ -252,23 +315,17 @@ export default function EditProfile() {
                 </div>
                 <div className="row">
                     <div className="col-6">
-                        {/* <Form.Control
-                                type="text"
-                                placeholder="Selected Country"
-                                className={style.custom_form_control}
-                                defaultValue={accountInfo.country ? accountInfo.country: ""}
-                            /> */}
+                        <Form.Label className={style.custom_form_label}>Country</Form.Label>
+
                         <CountryDropdown
                             value={location.country}
                             onChange={(val) => selectCountry(val)}
                             classes={style.custom_form_control_selected}
                         />
                     </div>
-
-                </div>
-
-                <div className="row">
                     <div className="col-6">
+
+                        <Form.Label className={style.custom_form_label}>City</Form.Label>
                         <RegionDropdown
                             country={location.country}
                             value={location.city}
@@ -278,6 +335,10 @@ export default function EditProfile() {
                             classes={style.custom_form_control_selected}
                         />
                     </div>
+                </div>
+
+                <div className="row">
+
                     {/* <div className="col-6">
                             <Form.Control type="text"
                                 placeholder="City"
@@ -288,7 +349,8 @@ export default function EditProfile() {
                 </div>
 
                 <div className="row">
-                    <div className="col-6">
+                    <div className="col-12">
+                        <Form.Label className={style.custom_form_label}>Address</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Address"
@@ -304,6 +366,7 @@ export default function EditProfile() {
                 <div className="row">
 
                     <div className="col-3">
+                        <Form.Label className={style.custom_form_label}>State</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="State"
@@ -314,6 +377,8 @@ export default function EditProfile() {
                         />
                     </div>
                     <div className="col-3">
+                        <Form.Label className={style.custom_form_label}>Postal code</Form.Label>
+
                         <Form.Control
                             type="text"
                             placeholder="Postal code"
@@ -323,19 +388,22 @@ export default function EditProfile() {
                             onChange={handleChangeLocation}
                         />
                     </div>
-                </div>
-                <div className="row">
 
                     <div className="col-6">
+                        <Form.Label className={style.custom_form_label}>Phone Number</Form.Label>
                         <Form.Control
                             type="text"
                             placeholder="Phone Number"
                             className={style.custom_form_control}
                             name="phone"
-                            value={user.phone}
+                            value={user?.phone}
                             onChange={handleChangeUser}
                         />
                     </div>
+                </div>
+                <div className="row">
+
+
                 </div>
             </div>
             {

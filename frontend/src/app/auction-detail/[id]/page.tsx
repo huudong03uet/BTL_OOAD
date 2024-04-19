@@ -426,7 +426,7 @@ const auctionDetail = ({ params }: { params: { id: string } }) => {
                                                 borderRadius: '0.25rem',
                                             }}>
                                                 <option className="ais-SortBy-option" value="price_low_to_high">Price: Low to High</option>
-                                                <option className="ais-SortBy-option" value="price_high_to_low">Price: High to Low</option>
+                                                <option className="ais-SortBy-option" value="upcoming_lots_currentBid_desc_prod">Price: High to Low</option>
                                             
                                             </select>
                                         </div>
@@ -455,7 +455,7 @@ const auctionDetail = ({ params }: { params: { id: string } }) => {
                                         {
                                             auctionDetail.products.map((obj, index) => {
                                                 return (
-                                                    <div className={styles.item} key={index}>
+                                                    <div  className="col-sm-3"  key={index}>
                                                         <ProductAuction obj={obj}></ProductAuction>
                                                     </div>
                                                 )

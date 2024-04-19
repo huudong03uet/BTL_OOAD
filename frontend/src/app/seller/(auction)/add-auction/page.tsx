@@ -1,5 +1,5 @@
 'use client'
-import {  Modal} from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, useContext } from 'react';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
@@ -21,10 +21,37 @@ import User from "@/models/user";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Button } from "@mui/material";
 import { SellerContext } from "@/services/context/SellerContext";
+import { seller_inviter_user } from "@/services/account/seller";
 
 enum AuctionVisibility {
     PUBLIC = 0,
     PRIVATE = 1,
+}
+
+
+function levenshteinDistance(a: string, b: string): number {
+    const dp: number[][] = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+
+    for (let i = 0; i <= a.length; i++) {
+        dp[i][0] = i;
+    }
+
+    for (let j = 0; j <= b.length; j++) {
+        dp[0][j] = j;
+    }
+
+    for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+            const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+            dp[i][j] = Math.min(
+                dp[i - 1][j] + 1,
+                dp[i][j - 1] + 1,
+                dp[i - 1][j - 1] + cost
+            );
+        }
+    }
+
+    return dp[a.length][b.length];
 }
 
 
@@ -42,7 +69,9 @@ export default function AddAuction() {
     const [conditionCoin, setConditionCoin] = useState('');
     const [location, setLocation] = useState<Location>({} as Location)
     const [invitedUsers, setInvitedUsers] = useState<User[]>([]);
-
+    const [users, setUsers] = useState<User[]>([]);
+    const [searchUsers, setSearchUsers] = useState<User[]>([]);
+    const [search, setSearch] = useState('');
 
 
 
@@ -61,6 +90,20 @@ export default function AddAuction() {
                 setData(data);
                 setAuctionStates(Array(data.length).fill(false));
 
+            } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
+            }
+        };
+
+        fetchData()
+    }, [])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await seller_inviter_user();
+                setUsers(data);
+                setSearchUsers(data)
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
@@ -104,7 +147,7 @@ export default function AddAuction() {
 
     const handleCreateAuction = async () => {
         let products: number[] = [];
-        data.forEach((product, index) => {
+        Array.isArray(data) && data.forEach((product, index) => {
             if (auctionStates[index]) {
                 products.push(product.id)
             }
@@ -119,18 +162,59 @@ export default function AddAuction() {
             "location": location,
             "seller_id": seller?.id,
             "status": visibility === AuctionVisibility.PUBLIC ? "public" : "private",
-            "products": products
+            "products": products,
+            "users": invitedUsers
         }
 
         await seller_auction_create_service(auction_data)
     };
 
 
-    
+
     function removeUserFromListInvited(user: User) {
-        setInvitedUsers(invitedUsers.filter((u) => u.id !== user?.id));
+
+        setUsers(prevUsers => [
+            ...prevUsers,
+            user
+        ]);
+        setSearchUsers(prevUsers => [
+            ...prevUsers,
+            user
+        ]);
+        setInvitedUsers(invitedUsers.filter((u) => u.id !== user.id));
     }
-    
+
+    const handleKeyPress = (event: any) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+
+            if (search == '') {
+                setSearchUsers(users)
+                return;
+            }
+
+            const searchLower = search.toLowerCase();
+
+            const matchedUsers = users.map((user: User) => {
+                const distance = levenshteinDistance(user.user_name.toLowerCase(), searchLower);
+                return { ...user, distance };
+            });
+
+            const sortedUsers = matchedUsers.sort((a, b) => a.distance - b.distance).slice(0, 5);
+
+            setSearchUsers(sortedUsers);
+        }
+    };
+
+    const handleSelectSuggestion = (user: User) => {
+        setInvitedUsers(prevUsers => [
+            ...prevUsers,
+            user
+        ]);
+        setUsers(users.filter((u) => u.id !== user.id));
+        setSearchUsers(searchUsers.filter((u) => u.id !== user.id))
+    };
+
 
     return (
         <div className='row mx-5'>
@@ -193,7 +277,7 @@ export default function AddAuction() {
                         <Form.Label>Date start<span style={{ color: 'red' }}>*</span></Form.Label>
                         <div className='w-100'>
                             <LocalizationProvider dateAdapter={AdapterDayjs} >
-                                <DesktopDatePicker 
+                                <DesktopDatePicker
                                     value={dateStartValue}
                                     onChange={(newValue) => setDateStartValue(newValue)}
                                 />
@@ -230,54 +314,61 @@ export default function AddAuction() {
                 </div>
 
                 <div className='row'>
-                        <div className="col-12">
-                            <Form.Label>Invite users to bid on your auction</Form.Label>
-                            {/* <Form.Control
+                    <div className="col-12">
+                        <Form.Label>Invite users to bid on your auction</Form.Label>
+                        {/* <Form.Control
                                 type="text"
                                 placeholder="Category"
                                 className={style.custom_form_control}
                                 value={productCategory}
                                 onChange={(e) => setProductCategory(e.target.value)}
                             /> */}
-                            <InputGroup className="mb-3">
-                                <Button onClick={handleOpenModalInvitedUsers}>Invite users</Button>
-                                <div className="selected-categories">
-                                    {invitedUsers.map((user) => (
-                                        <span
-                                            key={user.id}
-                                            className="selected-category"
+                        <InputGroup className="mb-3">
+                            <Button
+                                style={{
+                                    backgroundColor: '#000', // Thay đổi màu nền
+                                    color: 'white', // Thay đổi màu chữ
+                                    border: '0px solid white', // Thêm viền
+                                    borderRadius: '4px', // Bo góc
+                                }}
+                                onClick={handleOpenModalInvitedUsers}>Invite users</Button>
+                            <div className="selected-categories">
+                                {invitedUsers.map((user) => (
+                                    <span
+                                        key={user.id}
+                                        className="selected-category"
+                                        style={{
+                                            display: 'inline-block',
+                                            padding: '5px 10px',
+                                            margin: '5px',
+                                            borderRadius: '15px',
+                                            backgroundColor: '#f8f9fa',
+                                            color: '#333',
+                                        }}
+                                    >
+                                        {user.user_name}
+                                        <button
+                                            type="button"
+                                            onClick={() => removeUserFromListInvited(user)}
                                             style={{
-                                                display: 'inline-block',
-                                                padding: '5px 10px',
-                                                margin: '5px',
-                                                borderRadius: '15px',
-                                                backgroundColor: '#f8f9fa',
-                                                color: '#333',
+                                                marginLeft: '5px',
+                                                color: 'black',
+                                                border: 'none',
+                                                backgroundColor: 'transparent',
+                                                borderRadius: '50%',
+                                                padding: '2px 5px',
+                                                cursor: 'pointer',
                                             }}
                                         >
-                                            {user.user_name}
-                                            <button
-                                                type="button"
-                                                onClick={() => removeUserFromListInvited(user)}
-                                                style={{
-                                                    marginLeft: '5px',
-                                                    color: 'black',
-                                                    border: 'none',
-                                                    backgroundColor: 'transparent',
-                                                    borderRadius: '50%',
-                                                    padding: '2px 5px',
-                                                    cursor: 'pointer',
-                                                }}
-                                            >
-                                                {/* Xóa */}
-                                                <HighlightOffIcon />
-                                            </button>
-                                        </span>
-                                    ))}
-                                </div>
-                            </InputGroup>
-                        </div>
+                                            {/* Xóa */}
+                                            <HighlightOffIcon />
+                                        </button>
+                                    </span>
+                                ))}
+                            </div>
+                        </InputGroup>
                     </div>
+                </div>
 
 
 
@@ -345,7 +436,7 @@ export default function AddAuction() {
                 <div className='d-flex justify-content-center'>
                     <button type="button" className="btn btn-dark mx-1 px-3" onClick={() => setShowNotificationModal(true)}
                     >Add Product</button>
-                    </div>
+                </div>
             </div>
 
             <div>
@@ -379,15 +470,40 @@ export default function AddAuction() {
                                 type="text"
                                 placeholder="Search for users"
                                 className={style.custom_form_control}
+                                name="search"
+                                value={search}
+                                onChange={(e: any) => setSearch(e.target.value)}
+                                onKeyPress={handleKeyPress}
                             />
                         </div>
                     </div>
                     <div className="row">
                         <div className="col-12">
                             <Form.Label>Users</Form.Label>
-                            <div className="row">
+                            <div className="col">
                                 <div className="col-3">
-                                    <div className="d-flex justify-content-center">
+                                    {searchUsers.map((user) => (
+                                        // <div 
+                                        //     key={user.id} 
+                                        //     onClick={() => handleSelectSuggestion(user)}  // Xử lý sự kiện click
+                                        // >
+                                        //     {user.user_name} - {user.email}
+                                        // </div>
+
+                                        <div key={user.id}>
+                                            <div className="d-flex justify-content-center">
+                                                <img src={user.avatar_path || "https://via.placeholder.com/150"} alt="user" className="rounded-circle" style={{ width: '100px', height: '100px' }} />
+                                            </div>
+                                            <div className="d-flex justify-content-center">
+                                                <p>{user.user_name}</p>
+                                            </div>
+                                            <div className="d-flex justify-content-center">
+                                                <Button onClick={() => handleSelectSuggestion(user)}>Invite</Button>
+                                            </div>
+                                        </div>
+
+                                    ))}
+                                    {/* <div className="d-flex justify-content-center">
                                         <img src="https://via.placeholder.com/150" alt="user" className="rounded-circle" style={{ width: '100px', height: '100px' }} />
                                     </div>
                                     <div className="d-flex justify-content-center">
@@ -395,14 +511,11 @@ export default function AddAuction() {
                                     </div>
                                     <div className="d-flex justify-content-center">
                                         <Button onClick={() => {
-                                            setInvitedUsers([...invitedUsers, {
-                                                id: 1,
-                                                user_name: 'User name' 
-                                                
                                             }]);
                                         }}>Invite</Button>
-                                    </div>
-                                </div>
+                                        
+                                    </div> */}
+                                </div >
                             </div>
                         </div>
                     </div>
@@ -413,7 +526,7 @@ export default function AddAuction() {
                                 {invitedUsers.map((user) => (
                                     <div className="col-3" key={user.id}>
                                         <div className="d-flex justify-content-center">
-                                            <img src="https://via.placeholder.com/150" alt="user" className="rounded-circle" style={{ width: '100px', height: '100px' }} />
+                                            <img src={user.avatar_path || "https://via.placeholder.com/150"} alt="user" className="rounded-circle" style={{ width: '100px', height: '100px' }} />
                                         </div>
                                         <div className="d-flex justify-content-center">
                                             <p>{user.user_name}</p>

@@ -12,14 +12,14 @@ const Category = require('../../models/category')
 const Seller = require('../../models/seller')
 const Inspection = require('../../models/inspection')
 const Auction = require('../../models/auction')
-const BidHistory = require('../../models/history_bid')
-const Winner = require('../../models/winner')
+const BidHistory = require('../../models/history_bid');
+const { check_required_field } = require('../util');
 
 
 const PRODUCT_INCLUDE = [
     {
         model: Image,
-        attributes: ["url", "url"],
+        attributes: ["id", "url"],
     },
     {
         model: BidHistory
@@ -39,51 +39,108 @@ const PRODUCT_INCLUDE = [
         model: Auction,
         attributes: ['id', 'name', 'time_auction']
     },
-    {
-        model: Winner,
-        include: [
-            {
-                model: BidHistory
-            },
-        ]
-    }
 ];
 
 
-let get_product = async (whereCondition, productIncludes = PRODUCT_INCLUDE) => {
-    try {
-        let products = await Product.findAll({
-            where: whereCondition,
-            include: productIncludes
-        });
+class ProductService {
+    constructor () {
+        this.where_case = {}
+        this.include = [
+            {
+                model: Image,
+                attributes: ["id", "url"],
+            },
+            // {
+            //     model: BidHistory
+            // },
+            // {
+            //     model: Inspection
+            // },
+            {
+                model: Category,
+                attributes: ["id", 'title']
+            },
+            {
+                model: Seller,
+            },
+            {
+                model: Auction,
+            },
+        ]
+        this.kwargs = {}
+    }
 
-        logger.info(`Product length: ${products.length}`)
-        return products;
-    } catch (error) {
-        logger.error(`Get product: ${error}`)
-        throw new Error('Request timeout');
+    async get_product(where_cause = this.where_case, include = this.include, kwargs = this.kwargs) {
+        try {
+            let products = await Product.findAll({
+                where: where_cause,
+                include: include,
+                ...kwargs
+            });
+
+            logger.info(`Product length: ${products.length}`);
+            return products;
+        } catch (error) {
+            logger.error(`Get product: ${error}`);
+            throw new Error('Request timeout');
+        }
+    }
+
+    async get_product_by_pk(product_id, where_cause = this.where_case, include = this.include, kwargs = this.kwargs) {
+        try {
+            let product = await Product.findByPk(product_id, {
+                where: where_cause,
+                include: include,
+                ...kwargs
+            });
+
+            logger.info(`[product: ${product_id}]`);
+            return product;
+        } catch (error) {
+            logger.error(`Product: ${error}`);
+            throw new Error('Request timeout');
+        }
     }
 }
 
 
-let get_product_by_pk = async (product_id, whereCondition = {}, productIncludes = PRODUCT_INCLUDE) => {
-    try {
-        let product = await Product.findByPk(product_id, {
-            where: whereCondition,
-            include: productIncludes
-        });
-
-        logger.info(`[product: ${product_id}]`)
-        return product;
-    } catch (error) {
-        logger.error(`Product: ${error}`)
-        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
-    }
-}
+module.exports = ProductService;
 
 
-module.exports = {
-    PRODUCT_INCLUDE,
-    get_product,
-    get_product_by_pk
-}
+// let get_product = async (whereCondition, productIncludes = PRODUCT_INCLUDE) => {
+//     try {
+//         let products = await Product.findAll({
+//             where: whereCondition,
+//             include: productIncludes
+//         });
+
+//         logger.info(`Product length: ${products.length}`)
+//         return products;
+//     } catch (error) {
+//         logger.error(`Get product: ${error}`)
+//         throw new Error('Request timeout');
+//     }
+// }
+
+
+// let get_product_by_pk = async (product_id, whereCondition = {}, productIncludes = PRODUCT_INCLUDE) => {
+//     try {
+//         let product = await Product.findByPk(product_id, {
+//             where: whereCondition,
+//             include: productIncludes
+//         });
+
+//         logger.info(`[product: ${product_id}]`)
+//         return product;
+//     } catch (error) {
+//         logger.error(`Product: ${error}`)
+//         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+//     }
+// }
+
+
+// module.exports = {
+//     PRODUCT_INCLUDE,
+//     get_product,
+//     get_product_by_pk
+// }

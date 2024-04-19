@@ -34,7 +34,7 @@ const ViewCategoryPage = () => {
   }, [])
   return (
     <DefaultLayout>
-      <Breadcrumb pageName="View Category"></Breadcrumb>
+      <Breadcrumb pageName="Manager Category"></Breadcrumb>
       <TableCategory packageData={packageDatafake}></TableCategory>
     </DefaultLayout>
   );

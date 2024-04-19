@@ -40,8 +40,7 @@ export default interface Product {
     max_bid?: number;
     min_estimate?: number;
     max_estimate?: number;
-    winner?:Winner;
-    bid_history?: BidHistory[];
+    bid_histories?: BidHistory[];
     description: string;
     dimensions: string;
     artist: string;

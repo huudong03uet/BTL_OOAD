@@ -34,6 +34,7 @@ const seller_auction_show_product = async (auction_id: number|null, id: any) => 
             } else {
                 url+=`/auction_id=${auction_id}`
             }
+            console.log(url)
             let response = await axios.get(url);
             return response.data;
         }

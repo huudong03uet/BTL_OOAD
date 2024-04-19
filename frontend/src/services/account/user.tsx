@@ -21,14 +21,19 @@ const user_change_password_service = async (user_id: any, old_password: string, 
     }
 };
 
-const user_edit_account_service = async (user: User, location: Location) => {
+const user_edit_account_service = async (user: User | null, location: Location, image: File|null) => {
     try {
         let url = `${HOST}/account/user/edit-profile`;
         let body = {
-            user: user,
-            location: location,
+            "user": user,
+            "location": location,
+            "image": image
         }
-        const response = await axios.put(url, body);
+        const response = await axios.post(url, body,  {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
 
         let user_edit: User = {
             id: response.data.id,
@@ -39,9 +44,10 @@ const user_edit_account_service = async (user: User, location: Location) => {
             coin: response.data.coin,
             phone: response.data.phone,
             location_id: response.data.location_id,
+            avatar_path: response.data.avatar_path,
         }
 
-        return response.data
+        return user_edit;
     } catch (error: any) {
         console.error('Error fetching data:', error);
         return error.response.data.message;

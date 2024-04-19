@@ -7,4 +7,5 @@ export default interface User {
     coin?: number,
     phone?: string,
     location_id?: number,
+    avatar_path: string,
 }

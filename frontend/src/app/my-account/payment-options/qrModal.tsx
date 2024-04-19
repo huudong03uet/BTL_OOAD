@@ -47,7 +47,7 @@ const QRModal: React.FC<Props> = ({ showModalQRScan, handleCloseModalQRScan }) =
                         console.log(secretCode);
                         let url = `http://localhost:8080/account/user/qr_payment`;
                         try {
-                          const response = await axios.post(url, {user_id: user?.user_id, amount: history.amount});
+                          const response = await axios.post(url, {user_id: user?.id, amount: history.amount});
                           if(response.status === 200) {
                               let user: User = {
                                 id: response.data.user.id,
@@ -58,6 +58,7 @@ const QRModal: React.FC<Props> = ({ showModalQRScan, handleCloseModalQRScan }) =
                                 coin: response.data.user.coin,
                                 phone: response.data.user.phone,
                                 location_id: response.data.user.location_id,
+                                avatar_path: response.data.user.avatar_path
                             }
                             setUser(user);
                             alert("Nạp tiền thành công");
@@ -80,14 +81,20 @@ const QRModal: React.FC<Props> = ({ showModalQRScan, handleCloseModalQRScan }) =
   
 
   return (
-    <Modal show={showModalQRScan} onHide={handleCloseModalQRScan} size="lg">
+    <Modal show={showModalQRScan} onHide={handleCloseModalQRScan} fullscreen='xxl-down'>
       <Modal.Header closeButton>
         <Modal.Title>Scan QR Code</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Image src="/qr.jpg" alt="Descriptive alt text for the QR Code" width={200} height={200}/>
-        <div>Hãy nhập mã code và chuyển khoản. Sau khi chuyển khoản hay đợi một chút.</div>
-        <div>Mã code: {secretCode}</div>
+        <div className='d-flex justify-content-center'>
+        <Image src="/qr.jpg" alt="Descriptive alt text for the QR Code" width={300} height={300}/>
+
+        </div>
+
+        <div>Enter the code and transfer the money and wait a bit.</div>
+      
+        <div>Code: {secretCode} (Please enter the correct code)
+        </div>
       </Modal.Body>
       <Modal.Footer className="justify-content-start">
         <button type="button" className="btn btn-dark" disabled>

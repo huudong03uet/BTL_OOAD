@@ -7,31 +7,22 @@ import User from "@/models/user";
 import Location from "@/models/location";
 import get_location_service from "@/services/component/location";
 import { user_edit_account_service } from "@/services/account/user";
+import { seller_edit_profile } from "@/services/account/seller";
 import { UserContext } from "@/services/context/UserContext";
+import { SellerContext } from "@/services/context/SellerContext";
+import { error } from "console";
 
 
 export default function EditProfileSeller() {
     const {user, setUser} = useContext(UserContext)
+    const {seller, setSeller} = useContext(SellerContext);
     const initialLocation = {} as Location;
     const [location, setLocation] = useState<Location>(initialLocation)
-
 
     const [updateEmail, setUpdateEmail] = useState(false);
     const [changePassword, setChangePassword] = useState(false);
 
-
-    useEffect(() => {
-        if (user) {
-            setUser({
-                ...user,
-                email: user.email,
-                phone: user.phone,
-                first_name: user.first_name,
-                last_name: user.last_name,
-                location_id: user.location_id,
-            });
-        }
-    }, []);
+    
 
     useEffect(() => {
         const fetchData = async () => {
@@ -57,10 +48,15 @@ export default function EditProfileSeller() {
 
     const handleChangeUser = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUser({
-            ...user,
-            [name]: value
-        });
+        let newSeller;
+        if(seller) {
+            newSeller = {...seller, [name]: value};
+        } else {
+            newSeller = null;
+        }
+
+        setSeller(newSeller);
+
     };
 
     const handleChangeLocation = (e: ChangeEvent<HTMLInputElement>) => {
@@ -86,7 +82,12 @@ export default function EditProfileSeller() {
     };
 
     const handleClick = async () => {
-        const data = await user_edit_account_service(user, location);
+        try {
+            const newSeller = await seller_edit_profile(seller, location);
+            setSeller(newSeller);
+        } catch {
+            console.log(error);
+        }
     }
 
 
@@ -108,9 +109,10 @@ export default function EditProfileSeller() {
                     <div className="col-3">
                         <Form.Control
                             type="text"
-                            placeholder="First name"
+                            placeholder="Name"
                             className={style.custom_form_control}
                             name="name"
+                            value={seller?.name}
                             onChange={handleChangeUser}
                         />
                     </div>
@@ -123,7 +125,7 @@ export default function EditProfileSeller() {
                                     type="text"
                                     placeholder="New Email Address"
                                     className={style.custom_form_control}
-                                    value={user.email}
+                                    value={seller?.email}
                                     name="email"
                                     onChange={handleChangeUser}
                                 />
@@ -138,7 +140,7 @@ export default function EditProfileSeller() {
                             <div className="col-6">
                                 <Form.Control
                                     type="text"
-                                    defaultValue={user.email}
+                                    defaultValue={seller?.email}
                                     className={style.custom_form_control}
                                     disabled
                                 />
@@ -286,7 +288,7 @@ export default function EditProfileSeller() {
                             placeholder="Phone Number"
                             className={style.custom_form_control}
                             name="phone"
-                            value={user.phone}
+                            value={seller?.phone}
                             onChange={handleChangeUser}
                         />
                     </div>

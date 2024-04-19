@@ -6,7 +6,6 @@ import { HOST } from '@/services/host';
 
 let get_notification = async (user_id: any) => {
     try {
-
         let url = `${HOST}/notification/role_id=${user_id}/role_type=user`;
         const response = await axios.get(url);
         return response.data;

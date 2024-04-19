@@ -22,6 +22,7 @@ const user_login_service = async (
             coin: response.data.coin,
             phone: response.data.phone,
             location_id: response.data.location_id,
+            avatar_path: response.data.avatar_path,
         }
         return {ok: true, user, error: null};
     } catch (error: any) {
@@ -48,6 +49,7 @@ const admin_login_service = async (
             coin: response.data.coin,
             phone: response.data.phone,
             location_id: response.data.location_id,
+            avatar_path: response.data.avatar_path,
         }
 
         return {ok: true, user, error: null};

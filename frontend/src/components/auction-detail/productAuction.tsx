@@ -3,7 +3,6 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import dateFormat, { masks } from "dateformat";
 import { check_user_love_product, user_delete_love_product, user_love_product } from '@/services/component/love_product';
-// http://localhost:8080/product/user/detail/product_id=10/user_id=10000
 import Product from '@/models/product';
 
 

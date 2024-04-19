@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 
 const sequelize = require('../../conf/sequelize');
 const ReceiptConfirmStatus = require("../../constants/receipt_confirm")
-const Winner = require('./winner');
+const Product = require('./product');
 
 
 const ReceiptConfirmation = sequelize.define('receipt_confirm', {
@@ -27,7 +27,7 @@ const ReceiptConfirmation = sequelize.define('receipt_confirm', {
     }
 );
 
-ReceiptConfirmation.hasOne(Winner, {foreignKey: "receipt_confirm_id"})
-Winner.hasOne(ReceiptConfirmation, {foreignKey: "winner_id"})
+ReceiptConfirmation.hasOne(Product, {foreignKey: "receipt_confirm_id"})
+Product.hasOne(ReceiptConfirmation, {foreignKey: "product_id"})
 
 module.exports = ReceiptConfirmation;

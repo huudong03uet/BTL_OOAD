@@ -257,7 +257,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                         <span className={`${styles.yellowIcon} fas fa-star`}></span>
                                         <span className={`${styles.yellowIcon} fas fa-star`}></span>
                                         <span className={`${styles.yellowIcon} fas fa-star`}></span>
-                                        <span className={styles.spanReview}>{auctionHouse && auctionHouse.reviews.length}</span>
+                                        <span className={styles.spanReview}>{auctionHouse && auctionHouse.reviews && auctionHouse.reviews.length}</span>
                                         <span className={styles.spanReview}>from {review && review.length} Reviews</span>
                                     </div>
                                 </div>

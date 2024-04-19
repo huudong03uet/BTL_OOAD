@@ -59,7 +59,6 @@ function Header() {
   const { setUser, user } = useContext(UserContext); // Lấy user và setUser từ UserContext
 
 
-
   const handleLoginModalClose = () => setShowLoginModal(false);
   const handleRegisterModalClose = () => setShowRegisterModal(false);
 
@@ -308,7 +307,7 @@ function Header() {
                 </div>
                 {/* <div> */}
                 {/* </div> */}
-                <NavDropdown title={user?.user_name} id="basic-nav-dropdown" className="d-flex align-items-center"
+                <NavDropdown title={user?.user_name || "user_name" } id="basic-nav-dropdown" className="d-flex align-items-center"
                   align={{ lg: 'end' }}
                 >
 
