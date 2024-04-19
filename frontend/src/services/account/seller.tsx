@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import { HOST } from '@/services/host';
 import UserDataService from '../model/user';
+import Seller from '@/models/seller';
+import Location from '@/models/location';
 
 
 let seller_register = async (seller_info: any, card_info: any, location_info: any) => {
@@ -33,6 +35,21 @@ let seller_info = async (seller_id: number) => {
     }
 }
 
+let seller_edit_profile = async (seller: Seller, location: Location) => {
+    try {
+        let url = `${HOST}/account/seller/edit-profile`;
+        let body = {
+            "seller": seller,
+            "location": location,
+        }
+        const response = await axios.put(url, body);
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
+
 let seller_inviter_user = async () => {
     try {
         let url = `${HOST}/account/admin/user-manager`;
@@ -45,4 +62,4 @@ let seller_inviter_user = async () => {
 }
 
 
-export { seller_register, seller_info, seller_inviter_user } ;
+export { seller_register, seller_info, seller_inviter_user, seller_edit_profile } ;

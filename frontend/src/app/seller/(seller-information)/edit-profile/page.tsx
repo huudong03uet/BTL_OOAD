@@ -8,50 +8,35 @@ import UserDataService from "@/services/model/user";
 import Location from "@/models/location";
 import get_location_service from "@/services/component/location";
 import { user_edit_account_service } from "@/services/account/user";
+import SellerDataService from "@/services/model/seller";
+import Seller from "@/models/seller";
+import { seller_edit_profile } from "@/services/account/seller";
 
 
 export default function EditProfileSeller() {
-    const initialUserData = UserDataService.getUserData() || {} as User;
-    const [user, setUser] = useState<User>(initialUserData);
-    const initialLocation = {} as Location;
-    const [location, setLocation] = useState<Location>(initialLocation)
-
+    const [seller, setSeller] = useState<Seller>({} as Seller);
+    const [location, setLocation] = useState<Location>({} as Location)
 
     const [updateEmail, setUpdateEmail] = useState(false);
     const [changePassword, setChangePassword] = useState(false);
 
 
     useEffect(() => {
-        const userData = UserDataService.getUserData();
-        if (userData) {
-            setUser(prevUser => ({
-                ...prevUser,
-                email: userData.email,
-                phone: userData.phone,
-                first_name: userData.first_name,
-                last_name: userData.last_name,
-                location_id: userData.location_id,
-            }));
-        }
-    }, []);
-
-    useEffect(() => {
         const fetchData = async () => {
-            const userData = UserDataService.getUserData();
-            if (userData && userData.location_id) {
-                const locationData = await get_location_service(userData.location_id);
-                if (locationData) {
-                    setLocation(prevLocation => ({
-                        ...prevLocation,
-                        country: locationData.country,
-                        address: locationData.address,
-                        city: locationData.city,
-                        state: locationData.state,
-                        postal_code: locationData.postal_code,
-                        x: locationData.x,
-                        y: locationData.y,
-                    }));
-                }
+            let userData = await SellerDataService.getSellerData();
+            if (userData) {
+                setSeller(userData)
+
+                setLocation(userData.location ?? {
+                    id: 0,
+                    country: '',
+                    address: '',
+                    city: '',
+                    state: '',
+                    postal_code: 0,
+                    x: '',
+                    y: 0,
+                });
             }
         };
 
@@ -60,7 +45,7 @@ export default function EditProfileSeller() {
 
     const handleChangeUser = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUser(prevUser => ({
+        setSeller(prevUser => ({
             ...prevUser,
             [name]: value
         }));
@@ -89,7 +74,9 @@ export default function EditProfileSeller() {
     };
 
     const handleClick = async () => {
-        await user_edit_account_service(user, location);
+        await seller_edit_profile(seller, location);
+        SellerDataService.removeSellerData()
+        await SellerDataService.getSellerData()
     }
 
 
@@ -111,9 +98,10 @@ export default function EditProfileSeller() {
                     <div className="col-3">
                         <Form.Control
                             type="text"
-                            placeholder="First name"
+                            placeholder="Name"
                             className={style.custom_form_control}
                             name="name"
+                            value={seller.name}
                             onChange={handleChangeUser}
                         />
                     </div>
@@ -126,7 +114,7 @@ export default function EditProfileSeller() {
                                     type="text"
                                     placeholder="New Email Address"
                                     className={style.custom_form_control}
-                                    value={user.email}
+                                    value={seller.email}
                                     name="email"
                                     onChange={handleChangeUser}
                                 />
@@ -141,7 +129,7 @@ export default function EditProfileSeller() {
                             <div className="col-6">
                                 <Form.Control
                                     type="text"
-                                    defaultValue={user.email}
+                                    defaultValue={seller.email}
                                     className={style.custom_form_control}
                                     disabled
                                 />
@@ -289,7 +277,7 @@ export default function EditProfileSeller() {
                             placeholder="Phone Number"
                             className={style.custom_form_control}
                             name="phone"
-                            value={user.phone}
+                            value={seller.phone}
                             onChange={handleChangeUser}
                         />
                     </div>
