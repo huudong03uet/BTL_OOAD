@@ -81,7 +81,7 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data.map((row, index) => (
+                        {Array.isArray(data) && data.map((row, index) => (
                             <React.Fragment key={row.id}>
                                 <TableRow>
                                     <TableCell align="center">{index + 1}</TableCell>

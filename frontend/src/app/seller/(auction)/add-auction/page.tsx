@@ -146,7 +146,7 @@ export default function AddAuction() {
 
     const handleCreateAuction = async () => {
         let products: number[] = [];
-        data.forEach((product, index) => {
+        Array.isArray(data) && data.forEach((product, index) => {
             if (auctionStates[index]) {
                 products.push(product.id)
             }
