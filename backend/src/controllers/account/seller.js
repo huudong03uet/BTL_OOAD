@@ -380,9 +380,6 @@ class ProfileController extends ProfileService {
                     },
                     {
                         model: Review,
-                        attributes: [
-                            [sequelize.fn('AVG', sequelize.col('star')), 'avg_star'],
-                        ],
                     }
                 ]
             });
@@ -415,13 +412,9 @@ class ProfileController extends ProfileService {
                 include: [
                     {
                         model: Location,
-                        attributes: ["x", "y"]
                     },
                     {
                         model: Review,
-                        attributes: [
-                            [sequelize.fn('AVG', sequelize.col('star')), 'avg_star'],
-                        ],
                     }
                 ]
             });

@@ -102,7 +102,6 @@ const { hash_password, compare_password, check_required_field } = require('../ut
 class Authentification {
     constructor(model) {
         this.model = model
-        console.log(this.model.name.toLowerCase());
     }
 
     login = async (req, res) => {

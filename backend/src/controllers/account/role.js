@@ -188,9 +188,16 @@ class ProfileService {
                 return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
             }
     
-            if (!check_required_field(req.body[this.model.name.toLowerCase()], [`id`, "first_name", "last_name", "email"])) {
-                logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
-                return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+            if (this.model.name.toLowerCase() != "seller") {
+                if (!check_required_field(req.body[this.model.name.toLowerCase()], [`id`, "first_name", "last_name", "email"])) {
+                    logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+                    return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+                }
+            } else {
+                if (!check_required_field(req.body[this.model.name.toLowerCase()], [`id`, "name", "email"])) {
+                    logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+                    return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+                }
             }
     
             // let imageToDelete = null;

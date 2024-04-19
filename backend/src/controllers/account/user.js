@@ -2,6 +2,7 @@ const { DOUBLE } = require('sequelize');
 const User = require('../../models/user');
 const { role_edit_profile, role_change_password, role_forgot_password } = require('./role');
 const ProfileService = require('./role');
+const { check_required_field } = require('../util');
 
 
 // const edit_profile = async (req, res) => {
@@ -54,6 +55,20 @@ class ProfileController extends ProfileService {
             "first_name": dict.user.first_name,
             "avatar_path": this.imageToDelete || "https://via.placeholder.com/150",
         }
+    }
+
+    edit_profile = async (req, res) => {
+        if (!check_required_field(req.body, ["user", "location"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        if (!check_required_field(req.body.user, [`id`, "first_name", "last_name", "email"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        return await super.edit_profile(req, res)
     }
 
     qr_payment = async (req, res) => {
