@@ -102,10 +102,12 @@ const { hash_password, compare_password, check_required_field } = require('../ut
 class Authentification {
     constructor(model) {
         this.model = model
+        console.log(this.model.name.toLowerCase());
     }
 
-    async login(req, res) {
+    login = async (req, res) => {
         try {
+            console.log(this);
             if (!check_required_field(req.body, [`${this.model.name.toLowerCase()}_name`, "password"])) {
                 logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
                 return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
@@ -143,7 +145,7 @@ class Authentification {
         }
     }
 
-    async sign_up(req, res) {
+    sign_up = async (req, res) => {
         try {
             if (!check_required_field(req.body, ["first_name", "last_name", `${this.model.name.toLowerCase()}_name`, "email", "password"])) {
                 logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);

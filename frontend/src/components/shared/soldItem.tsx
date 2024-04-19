@@ -51,7 +51,7 @@ function SoldItem({ obj }: { obj: Product }) {
                 <Link href={`/auction-house/${obj.seller.id}`}>by {obj.seller.name}</Link>
                 </div>
                 <div className="fw-bold">
-                    ${obj.winner?.bid_history.amount}
+                    ${obj?.bid_histories?.slice(-1)[0]?.amount}
                 </div>
             </div>
 

@@ -254,7 +254,7 @@ class ProductController extends ProductService {
         }
     }
 
-    async product_inspect (req, res) {
+    product_inspect = async (req, res) => {
         const t = await sequelize.transaction();
         try {
             if (!check_required_field(req.body, ["admin_id", "description", "product_id", "status"])) {
@@ -331,7 +331,7 @@ class ProductController extends ProductService {
         }
     }
 
-    async service_all_product (req, res) {
+    service_all_product = async (req, res) => {
         try {
             let products = await this.get_product()
     
@@ -343,7 +343,7 @@ class ProductController extends ProductService {
         }
     }
 
-    async add_category (req, res) {
+    add_category = async (req, res) => {
         const t = await sequelize.transaction();
         let imageToDelete = "";
         try {
@@ -383,7 +383,7 @@ class ProductController extends ProductService {
         }
     }
 
-    async notify (req, res) {
+    notify = async (req, res) => {
         try {
             if (!check_required_field(req.params, ["admin_id"])) {
                 logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
@@ -399,7 +399,7 @@ class ProductController extends ProductService {
         }
     }
 
-    async delete_product (req, res) {
+    delete_product = async (req, res) => {
         try {
             if (!check_required_field(req.params, ["product_id"])) {
                 logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
@@ -424,7 +424,7 @@ class ProductController extends ProductService {
         }
     }
 
-    async delete_category (req, res) {
+    delete_category = async (req, res) => {
         try {
             const { category_id } = req.body;
     

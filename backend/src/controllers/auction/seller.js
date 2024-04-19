@@ -489,7 +489,7 @@ class AuctionController extends AuctionService {
                 where_case[Op.and].push({ auction_id: null });
             }
     
-            const products = await get_product(where_case)
+            const products = await this.get_product(where_case)
     
             logger.info(`${statusCode.HTTP_200_OK} products length ${products.length}`)
             return res.status(statusCode.HTTP_200_OK).json(products);
@@ -545,7 +545,7 @@ class AuctionController extends AuctionService {
                 having: Sequelize.literal(`COUNT(products.id) = COUNT(CASE WHEN products.status = "${AuctionProductStatus.NOT_YET_SOLD}" THEN 1 ELSE NULL END)`)
             }
     
-            let auctions = await get_auction(where_case, this.include, kwargs)
+            let auctions = await this.get_auction(where_case, this.include, kwargs)
     
             logger.info(`${statusCode.HTTP_200_OK} auction history length ${auctions.length}`)
             return res.status(statusCode.HTTP_200_OK).json(auctions);
@@ -567,7 +567,7 @@ class AuctionController extends AuctionService {
                 seller_id: req.params.seller_id
             };
     
-            let auction = await get_auction_by_pk(req.params.auction_id, where_case)
+            let auction = await this.get_auction_by_pk(req.params.auction_id, where_case)
     
             logger.info(`${statusCode.HTTP_200_OK} [auction: ${auction.id}]`)
             return res.status(statusCode.HTTP_200_OK).json(auction);

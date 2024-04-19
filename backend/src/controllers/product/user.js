@@ -14,7 +14,7 @@ const { update_value_redis, get_value_redis, set_value_redis } = require('../uti
 
 
 class ProductController extends ProductService {
-    async get_categories (req, res) {
+    get_categories = async (req, res) => {
         try {
             const categories = await Category.findAll();
     
@@ -26,7 +26,7 @@ class ProductController extends ProductService {
         }
     }
 
-    async service_product_detail (req, res) {
+    service_product_detail = async (req, res) => {
         try {
             if (!check_required_field(req.params, ["product_id", "user_id"])) {
                 logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
@@ -51,7 +51,7 @@ class ProductController extends ProductService {
         }
     }
 
-    async service_products (req, res) {
+    service_products = async (req, res) => {
         try {
             let where_case = {
                 ...this.where_case,
@@ -71,7 +71,7 @@ class ProductController extends ProductService {
         }
     }
 
-    async service_product_recently (req, res) {
+    service_product_recently = async (req, res) => {
         try {
             if (!check_required_field(req.params, ["user_id"])) {
                 logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
@@ -97,7 +97,7 @@ class ProductController extends ProductService {
         }
     }
 
-    async service_product_accept (req, res) {
+    service_product_accept = async (req, res) => {
         try {
             let where_case = {
                 ...this.where_case,
