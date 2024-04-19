@@ -1,11 +1,12 @@
 import { Modal } from 'react-bootstrap';
 import style from '../style.module.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios'; 
 import Image from 'next/image';
-import UserDataService from '@/services/model/user';
 import User from '@/models/user';
 import router from 'next/router';
+import { UserContext } from '@/services/context/UserContext';
+import { userAgent } from 'next/server';
 
 interface Props {
     showModalQRScan: boolean;
@@ -15,7 +16,7 @@ interface Props {
 const QRModal: React.FC<Props> = ({ showModalQRScan, handleCloseModalQRScan }) => {
   const [currency, setCurrency] = useState(0);
   const [secretCode, setSecretCode] = useState('');
-
+  const {user, setUser} = useContext(UserContext);
   
   useEffect(() => {
     let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -45,12 +46,11 @@ const QRModal: React.FC<Props> = ({ showModalQRScan, handleCloseModalQRScan }) =
                         console.log(history.txnRemark.includes(secretCode))
                         console.log(secretCode);
                         let url = `http://localhost:8080/account/user/qr_payment`;
-                        console.log(UserDataService.getUserData()?.user_id);
                         try {
-                          const response = await axios.post(url, {user_id: UserDataService.getUserData()?.user_id, amount: history.amount});
+                          const response = await axios.post(url, {user_id: user?.user_id, amount: history.amount});
                           if(response.status === 200) {
                               let user: User = {
-                                user_id: response.data.user.id,
+                                id: response.data.user.id,
                                 email: response.data.user.email,
                                 first_name: response.data.user.first_name,
                                 last_name: response.data.user.last_name,
@@ -59,9 +59,8 @@ const QRModal: React.FC<Props> = ({ showModalQRScan, handleCloseModalQRScan }) =
                                 phone: response.data.user.phone,
                                 location_id: response.data.user.location_id,
                             }
-                            UserDataService.setUserData(user);
+                            setUser(user);
                             alert("Nạp tiền thành công");
-                            // window.location.reload();
                           }
                         }
                         catch (err) {

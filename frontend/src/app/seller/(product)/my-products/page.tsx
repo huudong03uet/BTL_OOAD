@@ -1,21 +1,23 @@
 'use client'
 import style from '../../../my-account/style.module.css'
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent, useContext } from 'react';
 import MyProductTable, { TableActivity } from '../../component/product-table';
 import { seller_get_all_products } from '@/services/product/seller';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Product from "@/models/product";
+import { SellerContext } from '@/services/context/SellerContext';
 
 //  cứ lấy hết thông tin có của product -> không cần lọc, dư sẽ để vào phần detail hoặc bỏ
 
 export default function MyProduct() {
     const [data, setData] = useState<Product[]>([])
+    const {seller, setSeller} = useContext(SellerContext);
     const router = useRouter();
     
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await seller_get_all_products();
+                const data = await seller_get_all_products(seller?.id);
                 setData(data);
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);

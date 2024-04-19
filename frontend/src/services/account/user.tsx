@@ -1,16 +1,15 @@
 "use client"
 import axios from 'axios';
 
-import UserDataService from '../model/user';
 import { HOST } from '@/services/host';
 import User from '@/models/user';
 import Location from '@/models/location';
 
-const user_change_password_service = async (old_password: string, new_password: string) => {
+const user_change_password_service = async (user_id: any, old_password: string, new_password: string) => {
     try {
         let url = `${HOST}/account/user/change-password`;
         let body = {
-            user_id: UserDataService.getUserData()?.user_id,
+            user_id: user_id,
             old_password: old_password,
             new_password: new_password,
         }
@@ -32,7 +31,7 @@ const user_edit_account_service = async (user: User, location: Location) => {
         const response = await axios.put(url, body);
 
         let user_edit: User = {
-            user_id: response.data.id,
+            id: response.data.id,
             email: response.data.email,
             first_name: response.data.first_name,
             last_name: response.data.last_name,
@@ -41,7 +40,6 @@ const user_edit_account_service = async (user: User, location: Location) => {
             phone: response.data.phone,
             location_id: response.data.location_id,
         }
-        UserDataService.setUserData(user_edit);
 
         return response.data
     } catch (error: any) {

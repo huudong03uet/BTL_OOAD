@@ -1,7 +1,7 @@
 'use client'
 import {  Modal} from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, useContext } from 'react';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -14,13 +14,13 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MyProductTable, { TableActivity } from "@/app/seller/component/product-table";
 import { seller_auction_create_service, seller_auction_show_product } from "@/services/auction/seller";
 import Location from "@/models/location";
-import SellerDataService from "@/services/model/seller";
 import { DesktopDatePicker } from "@mui/x-date-pickers";
 import Product from "@/models/product";
 import { Dropdown, DropdownButton, Form, InputGroup, } from "react-bootstrap";
 import User from "@/models/user";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Button } from "@mui/material";
+import { SellerContext } from "@/services/context/SellerContext";
 
 enum AuctionVisibility {
     PUBLIC = 0,
@@ -30,6 +30,7 @@ enum AuctionVisibility {
 
 
 export default function AddAuction() {
+    const {seller} = useContext(SellerContext);
     const [showNotificationModal, setShowNotificationModal] = useState(false);
     const [data, setData] = useState<Product[]>([])
     const [auctionStates, setAuctionStates] = useState<boolean[]>([]);
@@ -56,7 +57,7 @@ export default function AddAuction() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await seller_auction_show_product(null);
+                const data = await seller_auction_show_product(null, seller?.id);
                 setData(data);
                 setAuctionStates(Array(data.length).fill(false));
 
@@ -109,7 +110,6 @@ export default function AddAuction() {
             }
         });
 
-        let seller_data = await SellerDataService.getSellerData()
 
         let auction_data = {
             "name": name,
@@ -117,7 +117,7 @@ export default function AddAuction() {
             "description": description,
             "time_auction": timeStartValue?.format("YYYY-MM-DD HH:mm"),
             "location": location,
-            "seller_id": seller_data?.id,
+            "seller_id": seller?.id,
             "status": visibility === AuctionVisibility.PUBLIC ? "public" : "private",
             "products": products
         }
@@ -128,7 +128,7 @@ export default function AddAuction() {
 
     
     function removeUserFromListInvited(user: User) {
-        setInvitedUsers(invitedUsers.filter((u) => u.user_id !== user.user_id));
+        setInvitedUsers(invitedUsers.filter((u) => u.id !== user?.id));
     }
     
 
@@ -244,7 +244,7 @@ export default function AddAuction() {
                                 <div className="selected-categories">
                                     {invitedUsers.map((user) => (
                                         <span
-                                            key={user.user_id}
+                                            key={user.id}
                                             className="selected-category"
                                             style={{
                                                 display: 'inline-block',
@@ -396,7 +396,7 @@ export default function AddAuction() {
                                     <div className="d-flex justify-content-center">
                                         <Button onClick={() => {
                                             setInvitedUsers([...invitedUsers, {
-                                                user_id: 1,
+                                                id: 1,
                                                 user_name: 'User name' 
                                                 
                                             }]);
@@ -411,7 +411,7 @@ export default function AddAuction() {
                             <Form.Label>Invited users</Form.Label>
                             <div className="row">
                                 {invitedUsers.map((user) => (
-                                    <div className="col-3">
+                                    <div className="col-3" key={user.id}>
                                         <div className="d-flex justify-content-center">
                                             <img src="https://via.placeholder.com/150" alt="user" className="rounded-circle" style={{ width: '100px', height: '100px' }} />
                                         </div>

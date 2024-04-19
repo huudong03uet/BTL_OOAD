@@ -5,7 +5,7 @@ import ViewItem from '@/components/shared/viewItem';
 import { Container } from 'react-bootstrap';
 import styles from './page.module.css';
 import Category from '@/models/category';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { user_get_auction_promote, user_get_auction_upcoming } from '@/services/auction/user';
 import { user_get_all_product, user_get_category_service, user_get_product_accept, user_get_recently_product } from '@/services/product/user';
 import ChatSupport from '@/components/chat/chat_support';
@@ -13,6 +13,7 @@ import { Fab } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
 import Auction from '@/models/auction';
 import Product from '@/models/product';
+import { UserContext } from '@/services/context/UserContext';
 
 const HomePage = () => {
 
@@ -46,11 +47,11 @@ const HomePage = () => {
   // ];
 
   const [recentlyViewedItems, setRecentlyViewedItems] = useState<Product[]>([]);
-
+  const {user} = useContext(UserContext);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await user_get_recently_product();
+        const data = await user_get_recently_product(user?.id);
         if (Array.isArray(data)) {
           setRecentlyViewedItems(data);
         } else {
@@ -115,7 +116,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await user_get_auction_promote();
+        const data = await user_get_auction_promote(user?.id);
         if (Array.isArray(data)) {
           setPromotedAuctions(data);
         } else {
@@ -134,7 +135,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await user_get_auction_upcoming();
+        const data = await user_get_auction_upcoming(user?.id);
         if (Array.isArray(data)) {
           setUpcomingOnlineAuctions(data);
         } else {

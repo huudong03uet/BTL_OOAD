@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ItemLivedAuction from './itemLivedAuction';
 import ItemCurrentLived from './itemCurrentLived';
 import SessionAuction from './sessionAuction';
@@ -12,8 +12,10 @@ import { user_get_detail_product } from '@/services/product/user';
 import { user_add_bid, user_get_auction_info } from '@/services/auction/user';
 import Auction from '@/models/auction';
 import WatchChannel from '@/components/live-stream/watch-channel';
+import { UserContext } from '@/services/context/UserContext';
 
 export default function LivedAuction() {
+    const {user, setUser} = useContext(UserContext);
 
     const [infoAuction, setInfoAuction] = useState({} as Auction);
     const [lotsAuction, setLotsAuction] = useState<Product[]>([]);
@@ -23,7 +25,7 @@ export default function LivedAuction() {
     useEffect(() => {
         const fetchItemData = async () => {
             try {
-                const data = await user_get_auction_info(4);
+                const data = await user_get_auction_info(4, user?.id);
                 setInfoAuction(data.infoAuction);
                 if (Array.isArray(data.lotsAuction)) {
                     setLotsAuction(data.lotsAuction);
@@ -74,7 +76,7 @@ export default function LivedAuction() {
     useEffect(() => {
         const fetchItemData = async () => {
             try {
-                const data = await user_get_detail_product(1);
+                const data = await user_get_detail_product(1, user?.id);
                 setCurrentAuction(data);
             } catch (error) {
                 console.error("Error fetching item data:", error);
@@ -117,7 +119,7 @@ export default function LivedAuction() {
 
     const handleLotClick = async (productId: number) => {
         try {
-            const data = await user_get_detail_product(productId);
+            const data = await user_get_detail_product(productId, user?.id);
             setCurrentAuction(data);
             setSelectedLotId(productId);
         } catch (error) {
@@ -127,7 +129,7 @@ export default function LivedAuction() {
 
     const Register2Bid = async () => {
         // console.log(user)
-        await user_add_bid(selectedLotId, lastBid + 1)
+        await user_add_bid(selectedLotId, lastBid + 1, user?.id)
     }
 
     return (

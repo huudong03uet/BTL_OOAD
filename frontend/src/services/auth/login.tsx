@@ -2,7 +2,6 @@
 import axios from 'axios';
 
 import User from '@/models/user';
-import UserDataService from '../model/user';
 import { HOST } from '@/services/host';
 
 const user_login_service = async (
@@ -15,7 +14,7 @@ const user_login_service = async (
         const response = await axios.post(url, body);
 
         let user: User = {
-            user_id: response.data.id,
+            id: response.data.id,
             email: response.data.email,
             first_name: response.data.first_name,
             last_name: response.data.last_name,
@@ -24,11 +23,10 @@ const user_login_service = async (
             phone: response.data.phone,
             location_id: response.data.location_id,
         }
-        UserDataService.setUserData(user);
-        return;
+        return {ok: true, user, error: null};
     } catch (error: any) {
         console.error('Error fetching data:', error);
-        return error.response.data;
+        return {ok: false, error, user: null};
     }
 };
 
@@ -42,7 +40,7 @@ const admin_login_service = async (
         const response = await axios.post(url, body);
 
         let user: User = {
-            user_id: response.data.id,
+            id: response.data.id,
             email: response.data.email,
             first_name: response.data.first_name,
             last_name: response.data.last_name,
@@ -51,11 +49,11 @@ const admin_login_service = async (
             phone: response.data.phone,
             location_id: response.data.location_id,
         }
-        UserDataService.setUserData(user);
-        return;
+
+        return {ok: true, user, error: null};
     } catch (error: any) {
         console.error('Error fetching data:', error);
-        return error.response.data;
+        return {ok: false, error, user: null};
     }
 };
 

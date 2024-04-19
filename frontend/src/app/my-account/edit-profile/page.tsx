@@ -1,18 +1,17 @@
 'use client'
 import { Form, } from "react-bootstrap";
 import style from '../style.module.css';
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, useContext } from 'react';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import User from "@/models/user";
-import UserDataService from "@/services/model/user";
 import Location from "@/models/location";
 import get_location_service from "@/services/component/location";
 import { user_change_password_service, user_edit_account_service } from "@/services/account/user";
+import { UserContext } from "@/services/context/UserContext";
 
 
 export default function EditProfile() {
-    const initialUserData = UserDataService.getUserData() || {} as User;
-    const [user, setUser] = useState<User>(initialUserData);
+    let {user, setUser} = useContext(UserContext)
     const [location, setLocation] = useState<Location>({} as Location)
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -23,25 +22,11 @@ export default function EditProfile() {
     const [changePassword, setChangePassword] = useState(false);
 
 
-    useEffect(() => {
-        const userData = UserDataService.getUserData();
-        if (userData) {
-            setUser(prevUser => ({
-                ...prevUser,
-                email: userData.email,
-                phone: userData.phone,
-                first_name: userData.first_name,
-                last_name: userData.last_name,
-                location_id: userData.location_id,
-            }));
-        }
-    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
-            const userData = UserDataService.getUserData();
-            if (userData && userData.location_id) {
-                const locationData = await get_location_service(userData.location_id);
+            if (user && user.position_id) {
+                const locationData = await get_location_service(user.location_id);
                 if (locationData) {
                     setLocation(prevLocation => ({
                         ...prevLocation,
@@ -73,8 +58,8 @@ export default function EditProfile() {
 
     const handleChangeUser = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUser(prevUser => ({
-            ...prevUser,
+        setUser(({
+            ...user,
             [name]: value
         }));
     };
@@ -103,7 +88,18 @@ export default function EditProfile() {
 
     const handleClick = async () => {
         // console.log(user)
-        await user_edit_account_service(user, location);
+        const data = await user_edit_account_service(user, location);
+        let user_edit: User = {
+            id: data.id,
+            email: data.email,
+            first_name: data.first_name,
+            last_name: data.last_name,
+            user_name: data.user_name,
+            coin: data.coin,
+            phone: data.phone,
+            location_id: data.location_id,
+        }
+        setUser(user_edit);
         setUpdateEmail(false)
     }
 
@@ -114,7 +110,7 @@ export default function EditProfile() {
             return;
         }
         try {
-            await user_change_password_service(oldPassword, newPassword);
+            await user_change_password_service(user.id, oldPassword, newPassword);
             setOldPassword('');
             setNewPassword('');
             setConfirmPassword('');

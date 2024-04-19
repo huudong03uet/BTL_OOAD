@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ItemLivedAuction from './itemLivedAuction';
 import ItemCurrentLived from './itemCurrentLived';
 import SessionAuction from './sessionAuction';
@@ -11,8 +11,10 @@ import Product from '@/models/product';
 import { user_get_detail_product } from '@/services/product/user';
 import { user_get_auction_info } from '@/services/auction/user';
 import Auction from '@/models/auction';
+import { UserContext } from '@/services/context/UserContext';
 
 export default function LivedAuction({ params }: { params: { id: string } }) {
+    const {user, setUser} = useContext(UserContext);
     const auction_id = Number(params.id);
     const [infoAuction, setInfoAuction] = useState({} as Auction);
     const [lotsAuction, setLotsAuction] = useState<Product[]>([]);
@@ -22,7 +24,7 @@ export default function LivedAuction({ params }: { params: { id: string } }) {
     useEffect(() => {
         const fetchItemData = async () => {
           try {
-            const data = await user_get_auction_info(auction_id);
+            const data = await user_get_auction_info(auction_id, user?.id);
             if(data) {
                 setInfoAuction(data.infoAuction);
                 if (Array.isArray(data.lotsAuction)) {
@@ -78,7 +80,7 @@ export default function LivedAuction({ params }: { params: { id: string } }) {
     useEffect(() => {
         const fetchItemData = async () => {
           try {
-            const data = await user_get_detail_product(1);
+            const data = await user_get_detail_product(1, user?.id);
             setCurrentAuction(data);
           } catch (error) {
             console.error("Error fetching item data:", error);
@@ -117,7 +119,7 @@ export default function LivedAuction({ params }: { params: { id: string } }) {
 
     const handleLotClick = async (productId: number) => {
         try {
-            const data = await user_get_detail_product(productId);
+            const data = await user_get_detail_product(productId, user?.id);
             setCurrentAuction(data);
         } catch (error) {
             console.error("Error fetching item data:", error);

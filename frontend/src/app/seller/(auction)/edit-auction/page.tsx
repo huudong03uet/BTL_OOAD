@@ -1,7 +1,7 @@
 'use client'
 import { Form, Modal, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent, useContext } from 'react';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider/LocalizationProvider";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -15,11 +15,12 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MyProductTable, { TableActivity } from "@/app/seller/component/product-table";
 import { seller_auction_create_service, seller_auction_show_product, seller_get_auction_info, seller_update_auction } from "@/services/auction/seller";
 import Location from "@/models/location";
-import SellerDataService from "@/services/model/seller";
 import { user_get_product_id_of_auction } from "@/services/auction/user";
 import Auction from "@/models/auction";
 import get_location_service from "@/services/component/location";
 import Product from "@/models/product";
+import { SellerContext } from "@/services/context/SellerContext";
+import { UserContext } from "@/services/context/UserContext";
 
 enum AuctionVisibility {
     PUBLIC = 0,
@@ -29,6 +30,8 @@ enum AuctionVisibility {
 
 
 export default function AddAuction() {
+    const {seller} = useContext(SellerContext)
+    const {user} = useContext(UserContext);
     const [showNotificationModal, setShowNotificationModal] = useState(false);
     const [data, setData] = useState<Product[]>([])
     const [auctionStates, setAuctionStates] = useState<boolean[]>([]);
@@ -51,7 +54,7 @@ export default function AddAuction() {
                 const idParam = url.searchParams.get("id");
                 if (idParam !== null) {
                     const id = parseInt(idParam, 10);
-                    let dataaa = await seller_get_auction_info(id);
+                    let dataaa = await seller_get_auction_info(id, seller?.id);
                     setTimeStartValue(dayjs(dataaa.time_auction))
                     if (dataaa.status == "public") {
                         setVisibility(1)
@@ -76,10 +79,10 @@ export default function AddAuction() {
                         "y": dataaa.y,
                     })
                     
-                    dataaa = await seller_auction_show_product(id);
+                    dataaa = await seller_auction_show_product(id, seller?.id);
                     setData(dataaa);
                     setAuctionStates(Array(data.length).fill(false));
-                    const products = await user_get_product_id_of_auction(id);
+                    const products = await user_get_product_id_of_auction(id, user?.id);
                     let updateProduct = [];
 
                     for (let item of dataaa) {
@@ -140,7 +143,6 @@ export default function AddAuction() {
             }
         });
 
-        let seller_data = await SellerDataService.getSellerData()
         let url = new URL(window.location.href)
         const idParam = url.searchParams.get("id");
         const id = idParam ? parseInt(idParam, 10) : null;
@@ -152,7 +154,7 @@ export default function AddAuction() {
             "description": description,
             "time_auction": timeStartValue?.format("YYYY-MM-DD HH:mm"),
             "location": location,
-            "seller_id": seller_data?.id,
+            "seller_id": seller?.id,
             "status": visibility === AuctionVisibility.PUBLIC ? "public" : "private",
             "products": products
         }

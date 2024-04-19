@@ -4,7 +4,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '@smastrom/react-rating/style.css'
 import { Container, } from "react-bootstrap";
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import styles from '@/styles/customer/auctionHouse.module.css';
 import styles2 from '@/styles/auction_house/soldItem.module.css'
 import AppHeader from '@/components/AppHeader';
@@ -30,10 +30,12 @@ import StarIcon from '@mui/icons-material/Star';
 import Product from '@/models/product';
 import Auction from '@/models/auction';
 import Location from '@/models/location';
+import { UserContext } from '@/services/context/UserContext';
 // import ItemSummary from '@/models/product_summary';
 
 const AuctionHouse = ({ params }: { params: { id: string } }) => {
     const seller_id = Number(params.id);
+    const {user, setUser} = useContext(UserContext)
     const [activeTab, setActiveTab] = useState<'upcoming' | 'review' | 'sold' | 'past_ac'>('upcoming');
     const tabContentRefs = {
         upcoming: useRef<HTMLDivElement>(null),
@@ -76,7 +78,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
     const [review, setReview] = useState<{
         id: number,
         user: {
-            user_id: number,
+            id: number,
             email: string,
             first_name: string,
             last_name: string,
@@ -113,7 +115,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await user_get_auction_upcoming();
+                const data = await user_get_auction_upcoming(user?.id);
                 if (Array.isArray(data)) {
                     setUpcomingAuctions(data);
                 } else {

@@ -2,11 +2,10 @@
 import axios from 'axios';
 
 import { HOST } from '@/services/host';
-import UserDataService from '@/services/model/user';
 
-let user_get_auction_upcoming = async () => {
+let user_get_auction_upcoming = async (user_id: any) => {
     try {
-        let url = `${HOST}/auction/user/upcomming/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/auction/user/upcomming/user_id=${user_id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -16,9 +15,9 @@ let user_get_auction_upcoming = async () => {
 }
 
 
-let user_get_auction_promote = async () => {
+let user_get_auction_promote = async (user_id: any) => {
     try {
-        let url = `${HOST}/auction/user/promote/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/auction/user/promote/user_id=${user_id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -27,9 +26,9 @@ let user_get_auction_promote = async () => {
     }
 }
 
-let user_get_auction_info = async (auction_id: any) => {
+let user_get_auction_info = async (auction_id: any, user_id: any) => {
     try {
-        let url = `${HOST}/auction/user/info/auction_id=${auction_id}/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/auction/user/info/auction_id=${auction_id}/user_id=${user_id}`;
         console.log(url)
         const response = await axios.get(url);
         return response.data;
@@ -39,9 +38,9 @@ let user_get_auction_info = async (auction_id: any) => {
     }
 }
 
-let user_get_product_id_of_auction = async (auction_id: number) => {
+let user_get_product_id_of_auction = async (auction_id: number, user_id: any) => {
     try {
-        let url = `${HOST}/auction/user/id-of-auction/auction_id=${auction_id}/user_id=${UserDataService.getUserData()?.user_id}`;
+        let url = `${HOST}/auction/user/id-of-auction/auction_id=${auction_id}/user_id=${user_id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -61,13 +60,13 @@ let user_get_bid_history = async (product_id: number) => {
     }
 }
 
-let user_add_bid = async (product_id: number, amount: number) => {
+let user_add_bid = async (product_id: number, amount: number, user_id: any): Promise<any> => {
     try {
         let url = `${HOST}/auction/user/create-bid`;
         let body = {
             "product_id": product_id,
             "amount": amount,
-            "user_id": UserDataService.getUserData()?.user_id,
+            "user_id": user_id,
         }
         const response = await axios.post(url, body);
         return response.data;

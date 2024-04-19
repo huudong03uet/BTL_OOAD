@@ -1,18 +1,17 @@
 'use client'
 import { Form, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, useContext } from 'react';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import User from "@/models/user";
-import UserDataService from "@/services/model/user";
 import Location from "@/models/location";
 import get_location_service from "@/services/component/location";
 import { user_edit_account_service } from "@/services/account/user";
+import { UserContext } from "@/services/context/UserContext";
 
 
 export default function EditProfileSeller() {
-    const initialUserData = UserDataService.getUserData() || {} as User;
-    const [user, setUser] = useState<User>(initialUserData);
+    const {user, setUser} = useContext(UserContext)
     const initialLocation = {} as Location;
     const [location, setLocation] = useState<Location>(initialLocation)
 
@@ -22,24 +21,22 @@ export default function EditProfileSeller() {
 
 
     useEffect(() => {
-        const userData = UserDataService.getUserData();
-        if (userData) {
-            setUser(prevUser => ({
-                ...prevUser,
-                email: userData.email,
-                phone: userData.phone,
-                first_name: userData.first_name,
-                last_name: userData.last_name,
-                location_id: userData.location_id,
-            }));
+        if (user) {
+            setUser({
+                ...user,
+                email: user.email,
+                phone: user.phone,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                location_id: user.location_id,
+            });
         }
     }, []);
 
     useEffect(() => {
         const fetchData = async () => {
-            const userData = UserDataService.getUserData();
-            if (userData && userData.location_id) {
-                const locationData = await get_location_service(userData.location_id);
+            if (user && user.location_id) {
+                const locationData = await get_location_service(user.location_id);
                 if (locationData) {
                     setLocation(prevLocation => ({
                         ...prevLocation,
@@ -60,10 +57,10 @@ export default function EditProfileSeller() {
 
     const handleChangeUser = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUser(prevUser => ({
-            ...prevUser,
+        setUser({
+            ...user,
             [name]: value
-        }));
+        });
     };
 
     const handleChangeLocation = (e: ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +86,7 @@ export default function EditProfileSeller() {
     };
 
     const handleClick = async () => {
-        await user_edit_account_service(user, location);
+        const data = await user_edit_account_service(user, location);
     }
 
 

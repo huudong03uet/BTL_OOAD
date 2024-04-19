@@ -1,15 +1,16 @@
 import style from './style.module.css';
 import Link from 'next/link';
-import UserDataService from "@/services/model/user";
 import ModalConfirm from "@/components/ModalConfirm";
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import SellerDataService from '@/services/model/seller';
 import { toast } from 'react-toastify';
+import { UserContext } from '@/services/context/UserContext';
+import { SellerContext } from '@/services/context/SellerContext';
 
 function SideBarUser() {
     // const router = useRouter();
-
+    const {user, setUser} = useContext(UserContext);
+    const {seller, setSeller} = useContext(SellerContext);
     const acceptRegister: boolean = true;
 
     const [showModal, setShowModal] = useState<boolean>(false); // State for modal visibility
@@ -25,8 +26,8 @@ function SideBarUser() {
             progress: undefined,
           });
       setShowModal(false);
-      UserDataService.removeUserData();
-      SellerDataService.removeSellerData();
+      setUser(null);
+      setSeller(null);
       
       window.location.href = '/';
 

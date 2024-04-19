@@ -3,7 +3,7 @@ import AppFooter from "@/components/AppFooter";
 import AppHeader from "@/components/AppHeader";
 import VerticalSlide from "@/components/item/VerticalSlide";
 import style from '@/styles/customer/item.module.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Container } from "react-bootstrap";
 import { useTimer } from 'react-timer-hook';
 import styles from '@/styles/customer/auctionHouse.module.css';
@@ -18,7 +18,10 @@ import { Rating, ThinStar } from '@smastrom/react-rating'
 import { Link } from "@mui/material";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import { UserContext } from "@/services/context/UserContext";
 function MyTimer({ expiryTimestamp }: { expiryTimestamp: number }) {
+
+
   const {
     totalSeconds,
     seconds,
@@ -60,6 +63,8 @@ export default function Item() {
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);
+  const {user, setUser} = useContext(UserContext);
+
 
   // const [itemData, setItemData] = useState({} as Product);
   const [itemData, setItemData] = useState({} as Product);
@@ -90,7 +95,7 @@ export default function Item() {
     const fetchData = async () => {
       try {
         const productId = Number(searchParams.get('product_id'));
-        const data = await user_get_detail_product(productId);
+        const data = await user_get_detail_product(productId, user?.id);
         setItemData(data);
         // console.log('time_remain_auction:', time_remain_auction)
         const sellerData = await seller_info(data.seller.id);
