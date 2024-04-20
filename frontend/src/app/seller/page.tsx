@@ -1,19 +1,15 @@
 'use client'
 
-import { useEffect } from 'react';
-import SellerDataService from "@/services/model/seller";
+import { SellerContext } from '@/services/context/SellerContext';
+import { useContext, useEffect } from 'react';
 
 export default function MyAccount() {
+    const {seller, setSeller} = useContext(SellerContext);
     useEffect(() => {
-        async function fetchData() {
-            const data = await SellerDataService.getSellerData();
-            if (data?.id == null) {
-                window.location.href = '/my-account/register-seller';
-            }
+        if (seller?.id == null) {
+            window.location.href = '/my-account/register-seller';
         }
-
-        fetchData();
-    }, []);
+    }, [seller]);
 
     return (
         <div className='row'>

@@ -1,10 +1,14 @@
 "use client"
 import { user_login_service } from '@/services/auth/login';
-import React, { useState } from 'react';
+import { UserContext } from '@/services/context/UserContext';
+import React, { useContext, useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import { ToastContainer, toast } from 'react-toastify';
-
+import { get_seller_by_user } from '@/services/account/seller';
+import { SellerContext } from '@/services/context/SellerContext';
 function ModalLogin(props: any) {
+  const {user, setUser} = useContext(UserContext);
+  const {seller, setSeller} = useContext(SellerContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   // const [error, setError] = useState('');
@@ -33,10 +37,11 @@ function ModalLogin(props: any) {
       setError('Please enter your password.');
       return;
     }
-    let err = await user_login_service(password, username)
+    let data = await user_login_service(password, username)
 
-    if (typeof err === 'string') {
-      setError(err);
+    if (!data.ok) {
+      console.log(data);
+      setError(data?.error?.response?.data);
     } else {
       toast.success('Login successfully!', {
         position: "bottom-left",
@@ -47,14 +52,21 @@ function ModalLogin(props: any) {
         draggable: true,
         progress: undefined,
       });
+      setUser(data?.user)
+      try {
+        let data = await get_seller_by_user(user?.id);
+        if(data) {
+          setSeller(data);
+        }
+      } catch (err) {
+        console.log(err)
+      }
 
       setError(null);
-      // alert("login successfully!!")
       
       props.onHide();
       // window.location.href = '/';
       // reload page
-      window.location.reload();
     }
   };
 

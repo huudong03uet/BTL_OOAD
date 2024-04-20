@@ -1,16 +1,15 @@
 "use client"
 import axios from 'axios';
 
-import UserDataService from '../model/user';
 import { HOST } from '@/services/host';
 import User from '@/models/user';
 import Location from '@/models/location';
 
-const user_change_password_service = async (old_password: string, new_password: string) => {
+const user_change_password_service = async (user_id: any, old_password: string, new_password: string) => {
     try {
         let url = `${HOST}/account/user/change-password`;
         let body = {
-            user_id: UserDataService.getUserData()?.id,
+            user_id: user_id,
             old_password: old_password,
             new_password: new_password,
         }
@@ -22,7 +21,7 @@ const user_change_password_service = async (old_password: string, new_password: 
     }
 };
 
-const user_edit_account_service = async (user: User, location: Location, image: File|null) => {
+const user_edit_account_service = async (user: User | null, location: Location, image: File|null) => {
     try {
         let url = `${HOST}/account/user/edit-profile`;
         let body = {
@@ -47,9 +46,8 @@ const user_edit_account_service = async (user: User, location: Location, image: 
             location_id: response.data.location_id,
             avatar_path: response.data.avatar_path,
         }
-        UserDataService.setUserData(user_edit);
 
-        return response.data
+        return user_edit;
     } catch (error: any) {
         console.error('Error fetching data:', error);
         return error.response.data.message;

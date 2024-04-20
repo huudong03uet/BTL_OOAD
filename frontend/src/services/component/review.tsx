@@ -2,7 +2,6 @@
 import axios from 'axios';
 
 import { HOST } from '@/services/host';
-import UserDataService from '../model/user';
 
 const get_review_service = async (seller_id: number) => {
     try {

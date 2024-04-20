@@ -1,6 +1,5 @@
 import Seller from "@/models/seller";
 import { HOST } from "../host";
-import UserDataService from "./user";
 import axios from "axios";
 
 export default class SellerDataService {
@@ -16,23 +15,23 @@ export default class SellerDataService {
         SellerDataService.sellerData = null;
     }
 
-    static async getSellerData(): Promise<Seller | null> {
+    static async getSellerData(id: any): Promise<Seller | null> {
         const data_seller = window.localStorage.getItem('dataSeller');
 
         if (typeof data_seller === 'string') {
             SellerDataService.sellerData = JSON.parse(data_seller);
             if (SellerDataService.sellerData?.id == null) {
-                return SellerDataService.fetchSellerData();
+                return SellerDataService.fetchSellerData(id);
             }
             return SellerDataService.sellerData;
         } else {
-            return SellerDataService.fetchSellerData();
+            return SellerDataService.fetchSellerData(id);
         }
     }
 
-    private static async fetchSellerData(): Promise<Seller | null> {
+    private static async fetchSellerData(id: any): Promise<Seller | null> {
         try {
-            const data = await SellerDataService._get_seller_by_user();
+            const data = await SellerDataService._get_seller_by_user(id);
             if (data) {
                 SellerDataService.setSellerData(data);
                 return data;
@@ -45,9 +44,9 @@ export default class SellerDataService {
         }
     }
 
-    private static async _get_seller_by_user() {
+    private static async _get_seller_by_user(id: any) {
         try {
-            let url = `${HOST}/account/seller/user_id=${UserDataService.getUserData()?.id}`;
+            let url = `${HOST}/account/seller/user_id=${id}`;
             const response = await axios.get(url);
             return response.data;
         } catch (error: any) {

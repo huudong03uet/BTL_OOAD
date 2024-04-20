@@ -1,13 +1,17 @@
 'use client'
 import { Form, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent, useContext } from 'react';
 import Product from "@/models/product";
 import { user_get_detail_product } from "@/services/product/user";
 import { seller_update_product } from "@/services/product/seller";
+import { UserContext } from "@/services/context/UserContext";
+import { SellerContext } from "@/services/context/SellerContext";
 
 
 export default function EditProduct() {
+    const {user, setUser} = useContext(UserContext);
+    const {seller, setSeller} = useContext(SellerContext);;
     const [productCategory, setProductCategory] = useState<string>('');
     const [product, setProduct] = useState({} as Product)
 
@@ -18,7 +22,7 @@ export default function EditProduct() {
                 const idParam = url.searchParams.get("id");
                 if (idParam !== null) {
                     const id = parseInt(idParam, 10);
-                    const data = await user_get_detail_product(id);
+                    const data = await user_get_detail_product(id, user?.id);
                     setProduct(data);
                     if (data.categories != null) {
                         setProductCategory(data.categories[0].title);
@@ -42,7 +46,7 @@ export default function EditProduct() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await seller_update_product(product, productCategory);
+            await seller_update_product(product, productCategory, seller.id);
         } catch (error) {
             console.error('Failed to update product:', error);
         }

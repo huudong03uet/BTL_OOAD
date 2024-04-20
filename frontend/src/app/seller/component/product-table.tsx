@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import IconButton from '@mui/material/IconButton';
@@ -15,6 +15,7 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Product from '@/models/product';
 import { user_get_detail_product } from "@/services/product/user";
+import { UserContext } from '@/services/context/UserContext';
 
 export enum TableActivity {
     VIEW_MY_PRODUCT = 0,
@@ -35,13 +36,14 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
     auctionStates = [],
     setAuctionStates = () => { },
 }) => {
+    const {user, setUser} = useContext(UserContext);
     const [open, setOpen] = useState<number | null>(null);
     const [selectedRow, setSelectedRow] = useState<number | null>(null);
     const [selectedProduct, setSelectedProduct] = useState({} as Product);
     const handleRowClick = async (id: number) => {
         try {
             const productId = Number(id);
-            const productData = await user_get_detail_product(productId);
+            const productData = await user_get_detail_product(productId, user?.id);
             // console.log('Product detail:', productData);
             await setSelectedProduct(productData);
             // console.log(selectedProduct);

@@ -7,6 +7,11 @@ import AppHeader from "@/components/AppHeader";
 import AppFooter from "@/components/AppFooter";
 import AppNav from "@/components/AppNav";
 import SideBarShop from "@/components/my-account/sideBarShop";
+import { useContext, useEffect } from "react";
+import { loginFromToken } from "@/services/auth/login";
+import { UserContext } from "@/services/context/UserContext";
+import { get_seller_by_user } from "@/services/account/seller";
+import { SellerContext } from "@/services/context/SellerContext";
 
 const inter = Inter({ subsets: ["latin"] });
 

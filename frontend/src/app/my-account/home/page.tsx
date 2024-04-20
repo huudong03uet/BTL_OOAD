@@ -1,24 +1,25 @@
 'use client'
 import { Container, } from "react-bootstrap";
 import style from '../style.module.css';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import UpcomingAuctions from "@/components/shared/upcomingAuctions";
 import ViewItem from "@/components/shared/viewItem";
-import UserDataService from "@/services/model/user";
 import { user_get_auction_upcoming } from "@/services/auction/user";
 import get_artist_recommend_service from "@/services/component/artist";
 import { user_get_product_accept, user_get_recently_product } from "@/services/product/user";
 import Product from "@/models/product";
 import Auction from "@/models/auction";
+import { UserContext } from "@/services/context/UserContext";
 
 export default function MyInvaluable() {
-    const user_name = UserDataService.getUserData()?.user_name;
+    const {user} = useContext(UserContext);
+    const user_name = user?.user_name;
     const [recentlyViewedItems, setRecentlyViewedItems] = useState<any[]>([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await user_get_recently_product();
+                const data = await user_get_recently_product(user?.id);
                 if (Array.isArray(data)) {
                     setRecentlyViewedItems(data);
                 } else {
@@ -62,7 +63,7 @@ export default function MyInvaluable() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await user_get_auction_upcoming();
+                const data = await user_get_auction_upcoming(user?.id);
                 if (Array.isArray(data)) {
                     setUpcomingOnlineAuctions(data);
                 } else {
