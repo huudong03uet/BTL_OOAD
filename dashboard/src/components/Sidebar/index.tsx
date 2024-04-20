@@ -70,7 +70,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           <Image
             width={176}
             height={32}
-            src={"/images/logo/logo.svg"}
+            src={"/images/logo.png"}
             alt="Logo"
             priority
           />
@@ -210,8 +210,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li> */}
                           <li>
                             <Link
-                              href="/"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/" && "text-white"
+                              href="/analytics"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/analytics" && "text-white"
                                 }`}
                             >
                               Analytics
