@@ -2,7 +2,10 @@ const { Op } = require('sequelize');
 const statusCode = require('../../../constants/status');
 const logger = require("../../../conf/logger");
 const { hash_password, compare_password, check_required_field } = require('../util');
+import jwt from "jsonwebtoken";
 
+
+const SECRET_CODE = "btl_ooad";
 // async function role_login(req, res, Model) {
 //     try {
 //         if (!check_required_field(req.body, [`${Model.name.toLowerCase()}_name`, "password"])) {
@@ -128,12 +131,17 @@ class Authentification {
                 logger.warn(`${statusCode.HTTP_404_NOT_FOUND} Account not found.`);
                 return res.status(statusCode.HTTP_404_NOT_FOUND).json("Account not found.");
             }
-            
+            let payload = account.toJSON()
+            const token = jwt.sign(payload, SECRET_CODE, {
+                expiresIn: "30d",
+            });
+    
             const result = await compare_password(password, account.password);
     
             if (result) {
+
                 logger.info(`${statusCode.HTTP_200_OK} [${this.model.name.toLowerCase()}:${account.id}]`);
-                return res.status(statusCode.HTTP_200_OK).json(account);
+                return res.status(statusCode.HTTP_200_OK).json({account, token});
             }
     
             logger.warn(`${statusCode.HTTP_401_UNAUTHORIZED} Incorrect password.`);
@@ -199,7 +207,35 @@ class Authentification {
             return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
         }
     }
+
+    geInfoFromToken = async (req, res) => {
+        try {
+          const token = req.body.token || req.headers['authorization'];
+    
+          if (!token) {
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Token is missing.");
+          }
+    
+          const decodedToken = jwt.verify(token, SECRET_CODE);
+    
+          const id = decodedToken.id;
+    
+          const account = await this.model.findOne({
+            where: { id: id},
+          });
+    
+          if (!account) {
+            return res.status(statusCode.HTTP_404_NOT_FOUND).json("User not found.");
+          }
+    
+          return res.status(statusCode.HTTP_200_OK).json(account);
+        } catch (error) {
+          return res.status(statusCode.HTTP_500_INTERNAL_SERVER_ERROR).json("Internal Server Error");
+        }
+      }
+    
 }
+
 
 module.exports = Authentification;
 
