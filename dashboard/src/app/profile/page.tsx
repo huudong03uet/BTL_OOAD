@@ -17,6 +17,8 @@ import AdminDataService from "@/service/admin_service";
 const Profile = () => {
   const admin = AdminDataService.getAdminData() || {} as Admin
 
+  console.log(admin.admin_name)
+
   return (
     <DefaultLayout>
       <div className="mx-auto max-w-242.5">

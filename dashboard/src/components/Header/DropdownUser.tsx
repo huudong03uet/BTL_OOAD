@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import AdminDataService from "@/service/admin_service";
+
 
 const DropdownUser = () => {
+
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
@@ -34,6 +38,9 @@ const DropdownUser = () => {
     return () => document.removeEventListener("keydown", keyHandler);
   });
 
+  const handleLogout = () => {
+    AdminDataService.removeAdminData();
+  }
   return (
     <div className="relative">
       <Link
@@ -44,22 +51,26 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {AdminDataService?.getAdminData()?.admin_name}
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">Admin</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          <Image
-            width={112}
-            height={112}
-            src={"/images/user/user-01.png"}
-            style={{
-              width: "auto",
-              height: "auto",
-            }}
-            alt="User"
-          />
+          {AdminDataService != null && (
+            <Image
+              width={112}
+              height={112}
+              src={"/images/user/user-01.png"}
+              style={{
+                width: "auto",
+                height: "auto",
+              }}
+              alt="User"
+            />
+
+          )
+          }
         </span>
 
         <svg
@@ -84,9 +95,8 @@ const DropdownUser = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
-          dropdownOpen === true ? "block" : "hidden"
-        }`}
+        className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${dropdownOpen === true ? "block" : "hidden"
+          }`}
       >
         <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
           <li>
@@ -114,7 +124,7 @@ const DropdownUser = () => {
               My Profile
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               href="#"
               className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
@@ -134,7 +144,7 @@ const DropdownUser = () => {
               </svg>
               My Contacts
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               href="/settings"
@@ -161,7 +171,11 @@ const DropdownUser = () => {
             </Link>
           </li>
         </ul>
-        <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <Link
+          onClick={() => handleLogout()}
+          href={'/auth/signin'}
+          className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+        >
           <svg
             className="fill-current"
             width="22"
@@ -180,7 +194,7 @@ const DropdownUser = () => {
             />
           </svg>
           Log Out
-        </button>
+        </Link>
       </div>
       {/* <!-- Dropdown End --> */}
     </div>
