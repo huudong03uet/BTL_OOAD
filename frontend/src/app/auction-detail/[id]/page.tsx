@@ -1,5 +1,4 @@
 'use client'
-
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '@smastrom/react-rating/style.css'
@@ -10,12 +9,13 @@ import AppHeader from '@/components/AppHeader';
 import AppNav from '@/components/AppNav'
 import AppFooter from '@/components/AppFooter';
 import ProductAuction from '@/components/auction-detail/productAuction';
+import { useRouter } from 'next/navigation';
 
 
-const auctionDetail = ({ params }: { params: { id: string } }) => {
+const AuctionDetail = ({ params }: { params: { id: string } }) => {
     const auction_id = Number(params.id);
     const [statusAuction, setStatusAuction] = useState<'upcoming_ac' | 'ongoing_ac' | 'pass_ac'>('upcoming_ac');
-
+    const router = useRouter();
     const auctionDetailFake = {
         id: 1,
         name: "Asian Art including Two Distinguished Collections",
@@ -303,22 +303,25 @@ const auctionDetail = ({ params }: { params: { id: string } }) => {
     // Gán dữ liệu giả cho auctionDetail
     const auctionDetail = auctionDetailFake
 
-    const currentTime = new Date();
-    const auctionTimeStart = new Date(auctionDetail.time_auction);
-    const auctionTimeEnd = new Date(auctionTimeStart);
-    auctionTimeEnd.setMinutes(auctionTimeEnd.getMinutes() + auctionDetail.products.length * 10);
+    useEffect(() => {
+        const currentTime = new Date();
+        const auctionTimeStart = new Date(auctionDetail.time_auction);
+        const auctionTimeEnd = new Date(auctionTimeStart);
+        auctionTimeEnd.setMinutes(auctionTimeEnd.getMinutes() + auctionDetail.products.length * 10);
+    
+    
+        if (currentTime < auctionTimeStart) {
+            setStatusAuction('upcoming_ac');
+        } else if (currentTime >= auctionTimeStart && currentTime <= auctionTimeEnd) {
+            setStatusAuction('ongoing_ac');
+        } else {
+            setStatusAuction('pass_ac');
+        }
+    
+        //fake
+        setStatusAuction('ongoing_ac');    
 
-
-    if (currentTime < auctionTimeStart) {
-        setStatusAuction('upcoming_ac');
-    } else if (currentTime >= auctionTimeStart && currentTime <= auctionTimeEnd) {
-        setStatusAuction('ongoing_ac');
-    } else {
-        setStatusAuction('pass_ac');
-    }
-
-    //fake
-    setStatusAuction('ongoing_ac');
+    }, [auctionDetail])
 
 
     return (
@@ -347,11 +350,11 @@ const auctionDetail = ({ params }: { params: { id: string } }) => {
                                     <i className="fa fa-rss" style={{ marginRight: '5px' }}></i>
                                     <span className="">
                                         <span className="localized-date">April  17, 2024 1:00 PM GMT+7</span>
-                                    </span> • {auctionDetail.location.city}, {auctionDetail.location.state}, {auctionDetail.location.country} •<a role="button" className={styles.a}>Auction Details</a>
+                                    </span> • {auctionDetail?.location?.city}, {auctionDetail?.location?.state}, {auctionDetail?.location?.country} •<a role="button" className={styles.a}>Auction Details</a>
                                 </div>
                                 <h1 style={{ fontSize: '28px' }}>{auctionDetail.name}</h1>
                                 <div style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', columnGap: '10px' }}>
-                                    <div>by <a id="sellerName" href={`/auction-house/${auctionDetail.seller.id}`} className={styles.a}>{auctionDetail.seller.name}</a></div>
+                                    <div>by <div id="sellerName" onClick={() => {router.push(`/auction-house/${auctionDetail.seller.id}`)}} className={styles.a}>{auctionDetail.seller.name}</div></div>
                                 </div>
                             </div>
 
@@ -473,6 +476,6 @@ const auctionDetail = ({ params }: { params: { id: string } }) => {
     );
 }
 
-export default auctionDetail;
+export default AuctionDetail;
 
 // function body goes here

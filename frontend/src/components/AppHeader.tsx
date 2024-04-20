@@ -25,6 +25,8 @@ import { useRouter } from 'next/navigation'; // Import useRouter
 import { ToastContainer, toast } from 'react-toastify';
 import { UserContext } from '@/services/context/UserContext';
 import { SellerContext } from '@/services/context/SellerContext';
+import { loginFromToken } from '@/services/auth/login';
+import { get_seller_by_user } from '@/services/account/seller';
 
 
 
@@ -33,7 +35,26 @@ function Header() {
   //   left: '0px',
   //   marginLeft: '0px'
   // };
+  const {user, setUser} = useContext(UserContext);
   const {seller, setSeller} = useContext(SellerContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userData = await loginFromToken();
+      console.log(setUser);
+      setUser(userData);
+      try {
+        let data = await get_seller_by_user(user?.id);
+        if(data) {
+          setSeller(data);
+        }
+      } catch (err) {
+        console.log(err)
+      }
+
+    };
+    fetchData(); 
+  }, [setUser, setSeller]); 
 
   const router = useRouter(); // Get router instance
 
@@ -56,7 +77,6 @@ function Header() {
 
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-  const { setUser, user } = useContext(UserContext); // Lấy user và setUser từ UserContext
 
 
   const handleLoginModalClose = () => setShowLoginModal(false);
@@ -218,7 +238,7 @@ function Header() {
 
                   id="outlined-adornment-password"
                   type={showPassword ? 'text' : 'password'}
-                  defaultValue= {user?.coin}
+                  defaultValue= { user?.coin }
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton

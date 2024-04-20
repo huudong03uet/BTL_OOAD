@@ -11,7 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState, createContext, useContext } from "react";
 import { CircularProgress } from "@mui/material";
 import UserProvider from "@/services/context/UserProvider";
-import { UserContext } from "@/services/context/UserContext";
 import SellerProvider from "@/services/context/SellerProvider";
 const inter = Inter({ subsets: ["latin"] });
 // function openNewPage() {
@@ -32,6 +31,7 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <title>AUCTION</title>
       <body className={inter.className} style={{ overflowX: "clip" }}>
         <UserProvider>
           <SellerProvider>
