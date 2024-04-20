@@ -21,7 +21,7 @@ import { user_get_auction_upcoming } from '@/services/auction/user';
 import { seller_info } from '@/services/account/seller';
 import { seller_auction_past_service } from '@/services/auction/seller';
 import { seller_product_sold_service } from '@/services/product/seller';
-import get_review_service from '@/services/component/review';
+import { set_review_service, get_review_service } from '@/services/component/review';
 // import AuctionSummary from '@/models/auction_summary';
 import Rating from '@mui/material/Rating';
 import Box from '@mui/material/Box';
@@ -146,9 +146,11 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         return `${value} Star${value !== 1 ? 's' : ''}, ${labels[value]}`;
     }
 
-
-    const [value, setValue] = React.useState<number | null>(2);
+    const [comment, setComment] = useState('');
+    const [value, setValue] = React.useState<number>(0);
     const [hover, setHover] = React.useState(-1);
+
+
 
 
     const [soldAuctions, setSoldAuctions] = useState<Product[]>([]);
@@ -215,6 +217,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                 if (Array.isArray(data)) {
 
                     const transformedData = data.map(item => ({
+                        id: item.id,
                         date: item.time_auction,
                         title: item.name,
                         location: item.location
@@ -234,6 +237,13 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
 
     // auctionHouse = auctionHouse;
     // const YOUR_API_KEY = 'AIzaSyCcTwD5Ct7hXkxHRrs8kcyaw1lvAedFEGs';
+
+    const handleSubmit = async () => {
+        console.log(`Comment: ${comment}`);
+        console.log(`Rating: ${value}`);
+
+        await set_review_service(seller_id, user?.id, value, comment)
+    };
 
 
     return (
@@ -335,7 +345,9 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                             precision={0.5}
                                             getLabelText={getLabelText}
                                             onChange={(event, newValue) => {
-                                                setValue(newValue);
+                                                if (newValue) {
+                                                    setValue(newValue);
+                                                }
                                             }}
                                             onChangeActive={(event, newHover) => {
                                                 setHover(newHover);
@@ -347,10 +359,11 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                         )}
                                     </div>
                                     <div>
-                                        <input type="text" className="form-control" placeholder="Write a review" />
+                                        <input type="text" className="form-control" placeholder="Write a review" value={comment}
+                                        onChange={(e) => setComment(e.target.value)} />
                                     </div>
                                     <div>
-                                        <button type="button" className="btn btn-primary">Submit</button>
+                                        <button type="button" className="btn btn-primary" onClick={handleSubmit}>Submit</button>
                                         </div>
                                 </div>
                                 <div className='py-3'>
