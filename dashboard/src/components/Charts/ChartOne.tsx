@@ -1,5 +1,6 @@
+import { get_filter_analyst } from "@/service/component";
 import { ApexOptions } from "apexcharts";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 
 
@@ -10,106 +11,108 @@ interface ChartOneState {
   }[];
 }
 
-interface ChartOneProps {
-  totalProductYear: {
-    totalJan: {
-      productNew: number;
-      productSell: number;
-    }
-    totalFeb: {
-      productNew: number;
-      productSell: number;
-    }
-    totalMar: {
-      productNew: number;
-      productSell: number;
-    }
-    totalApr: {
-      productNew: number;
-      productSell: number;
-    }
-    totalMay: {
-      productNew: number;
-      productSell: number;
-    }
-    totalJun: {
-      productNew: number;
-      productSell: number;
-    }
-    totalJul: {
-      productNew: number;
-      productSell: number;
-    }
-    totalAug: {
-      productNew: number;
-      productSell: number;
-    }
-    totalSep: {
-      productNew: number;
-      productSell: number;
-    }
-    totalOct: {
-      productNew: number;
-      productSell: number;
-    }
-    totalNov: {
-      productNew: number;
-      productSell: number;
-    }
-    totalDec: {
-      productNew: number;
-      productSell: number;
-    }
+interface totalProductYear {
+  totalJan: {
+   productNew: number;
+   productSell: number;
   }
-  totalProductMonth: {
-    totalWeek1: {
-      productNew: number;
-      productSell: number;
-    }
-    totalWeek2: {
-      productNew: number;
-      productSell: number;
-    }
-    totalWeek3: {
-      productNew: number;
-      productSell: number;
-    }
-    totalWeek4: {
-      productNew: number;
-      productSell: number;
-    }
+  totalFeb: {
+   productNew: number;
+   productSell: number;
   }
-  totalProductWeek: {
-    totalMonday: {
-      productNew: number;
-      productSell: number;
-    }
-    totalTuesday: {
-      productNew: number;
-      productSell: number;
-    }
-    totalWednesday: {
-      productNew: number;
-      productSell: number;
-    }
-    totalThursday: {
-      productNew: number;
-      productSell: number;
-    }
-    totalFriday: {
-      productNew: number;
-      productSell: number;
-    }
-    totalSaturday: {
-      productNew: number;
-      productSell: number;
-    }
-    totalSunday: {
-      productNew: number;
-      productSell: number;
-    }
+  totalMar: {
+   productNew: number;
+   productSell: number;
+  }
+  totalApr: {
+   productNew: number;
+   productSell: number;
+  }
+  totalMay: {
+   productNew: number;
+   productSell: number;
+  }
+  totalJun: {
+   productNew: number;
+   productSell: number;
+  }
+  totalJul: {
+   productNew: number;
+   productSell: number;
+  }
+  totalAug: {
+   productNew: number;
+   productSell: number;
+  }
+  totalSep: {
+   productNew: number;
+   productSell: number;
+  }
+  totalOct: {
+   productNew: number;
+   productSell: number;
+  }
+  totalNov: {
+   productNew: number;
+   productSell: number;
+  }
+  totalDec: {
+   productNew: number;
+   productSell: number;
   }
 }
+
+interface totalProductMonth {
+  totalWeek1: {
+   productNew: number;
+   productSell: number;
+  }
+  totalWeek2: {
+   productNew: number;
+   productSell: number;
+  }
+  totalWeek3: {
+   productNew: number;
+   productSell: number;
+  }
+  totalWeek4: {
+   productNew: number;
+   productSell: number;
+  }
+}
+
+
+interface totalProductWeek {
+  totalMonday: {
+   productNew: number;
+   productSell: number;
+  }
+  totalTuesday: {
+   productNew: number;
+   productSell: number;
+  }
+  totalWednesday: {
+   productNew: number;
+   productSell: number;
+  }
+  totalThursday: {
+   productNew: number;
+   productSell: number;
+  }
+  totalFriday: {
+   productNew: number;
+   productSell: number;
+  }
+  totalSaturday: {
+   productNew: number;
+   productSell: number;
+  }
+  totalSunday: {
+   productNew: number;
+   productSell: number;
+  }
+}
+
 
 const ChartOne: React.FC = () => {
 
@@ -119,117 +122,132 @@ const ChartOne: React.FC = () => {
   const month = time.getMonth() + 1;
   const week = time.getDay();
 
+  const [totalProductYear, setTotalProductYear] = useState<totalProductYear>({} as totalProductYear)
+  const [totalProductMonth, setTotalProductMonth] = useState<totalProductMonth>({} as totalProductMonth)
+  const [totalProductWeek, setTotalProductWeek] = useState<totalProductWeek>({} as totalProductWeek)
 
-  const totalProductYear = {
-    totalJan: {
-      productNew: 45,
-      productSell: 30,
-    },
-    totalFeb: {
-      productNew: 30,
-      productSell: 25,
-    },
-    totalMar: {
-      productNew: 35,
-      productSell: 36,
-    },
-    totalApr: {
-      productNew: 40,
-      productSell: 30,
-    },
-    totalMay: {
-      productNew: 50,
-      productSell: 45,
-    },
-    totalJun: {
-      productNew: 45,
-      productSell: 35,
-    },
-    totalJul: {
-      productNew: 55,
-      productSell: 64,
-    },
-    totalAug: {
-      productNew: 65,
-      productSell: 52,
-    },
-    totalSep: {
-      productNew: 45,
-      productSell: 59,
-    },
-    totalOct: {
-      productNew: 30,
-      productSell: 36,
-    },
-    totalNov: {
-      productNew: 35,
-      productSell: 39,
-    },
-    totalDec: {
-      productNew: 40,
-      productSell: 51,
+
+  // const totalProductYear = {
+  //   totalJan: {
+  //    productNew: 45,
+  //    productSell: 30,
+  //   },
+  //   totalFeb: {
+  //    productNew: 30,
+  //    productSell: 25,
+  //   },
+  //   totalMar: {
+  //    productNew: 35,
+  //    productSell: 36,
+  //   },
+  //   totalApr: {
+  //    productNew: 40,
+  //    productSell: 30,
+  //   },
+  //   totalMay: {
+  //    productNew: 50,
+  //    productSell: 45,
+  //   },
+  //   totalJun: {
+  //    productNew: 45,
+  //    productSell: 35,
+  //   },
+  //   totalJul: {
+  //    productNew: 55,
+  //    productSell: 64,
+  //   },
+  //   totalAug: {
+  //    productNew: 65,
+  //    productSell: 52,
+  //   },
+  //   totalSep: {
+  //    productNew: 45,
+  //    productSell: 59,
+  //   },
+  //   totalOct: {
+  //    productNew: 30,
+  //    productSell: 36,
+  //   },
+  //   totalNov: {
+  //    productNew: 35,
+  //    productSell: 39,
+  //   },
+  //   totalDec: {
+  //    productNew: 40,
+  //    productSell: 51,
+  //   }
+
+  // };
+  // const totalProductMonth = {
+  //   totalWeek1: {
+  //    productNew: 23,
+  //    productSell: 30,
+  //   },
+  //   totalWeek2: {
+  //    productNew: 11,
+  //    productSell: 25,
+  //   },
+  //   totalWeek3: {
+  //    productNew: 22,
+  //    productSell: 36,
+  //   },
+  //   totalWeek4: {
+  //    productNew: 27,
+  //    productSell: 30,
+  //   }
+  // };
+  // const totalProductWeek = {
+  //   totalMonday: {
+  //    productNew: 23,
+  //    productSell: 30,
+  //   },
+  //   totalTuesday: {
+  //    productNew: 11,
+  //    productSell: 25,
+  //   },
+  //   totalWednesday: {
+  //    productNew: 22,
+  //    productSell: 36,
+  //   },
+  //   totalThursday: {
+  //    productNew: 27,
+  //    productSell: 30,
+  //   },
+  //   totalFriday: {
+  //    productNew: 13,
+  //    productSell: 45,
+  //   },
+  //   totalSaturday: {
+  //    productNew: 22,
+  //    productSell: 35,
+  //   },
+  //   totalSunday: {
+  //    productNew: 37,
+  //    productSell: 64,
+  //   }
+  // };
+
+  useEffect(() => {
+    const feet = async () => {
+      const data = await get_filter_analyst();
+      setTotalProductMonth(data.totalProductMonth)
+      setTotalProductWeek(data.totalProductWeek)
+      setTotalProductYear(data.totalProductYear)
     }
 
-  };
-  const totalProductMonth = {
-    totalWeek1: {
-      productNew: 23,
-      productSell: 30,
-    },
-    totalWeek2: {
-      productNew: 11,
-      productSell: 25,
-    },
-    totalWeek3: {
-      productNew: 22,
-      productSell: 36,
-    },
-    totalWeek4: {
-      productNew: 27,
-      productSell: 30,
-    }
-  };
-  const totalProductWeek = {
-    totalMonday: {
-      productNew: 23,
-      productSell: 30,
-    },
-    totalTuesday: {
-      productNew: 11,
-      productSell: 25,
-    },
-    totalWednesday: {
-      productNew: 22,
-      productSell: 36,
-    },
-    totalThursday: {
-      productNew: 27,
-      productSell: 30,
-    },
-    totalFriday: {
-      productNew: 13,
-      productSell: 45,
-    },
-    totalSaturday: {
-      productNew: 22,
-      productSell: 35,
-    },
-    totalSunday: {
-      productNew: 37,
-      productSell: 64,
-    }
-  };
+    feet()
+  }, [])
 
   const [state, setState] = useState<ChartOneState>({
     series: [
       {
         name: "Product New",
-        data: [totalProductYear.totalJan.productNew, totalProductYear.totalFeb.productNew, totalProductYear.totalMar.productNew, totalProductYear.totalApr.productNew, totalProductYear.totalMay.productNew, totalProductYear.totalJun.productNew, totalProductYear.totalJul.productNew, totalProductYear.totalAug.productNew, totalProductYear.totalSep.productNew, totalProductYear.totalOct.productNew, totalProductYear.totalNov.productNew, totalProductYear.totalDec.productNew],
+        data: [totalProductYear.totalJan?.productNew, totalProductYear.totalFeb?.productNew, totalProductYear.totalMar?.productNew, totalProductYear.totalApr?.productNew, totalProductYear.totalMay?.productNew, totalProductYear.totalJun?.productNew, totalProductYear.totalJul?.productNew, totalProductYear.totalAug?.productNew, totalProductYear.totalSep?.productNew, totalProductYear.totalOct?.productNew, totalProductYear.totalNov?.productNew, totalProductYear.totalDec?.productNew],
       },
 
       {
         name: "Product Sell",
-        data: [totalProductYear.totalJan.productSell, totalProductYear.totalFeb.productSell, totalProductYear.totalMar.productSell, totalProductYear.totalApr.productSell, totalProductYear.totalMay.productSell, totalProductYear.totalJun.productSell, totalProductYear.totalJul.productSell, totalProductYear.totalAug.productSell, totalProductYear.totalSep.productSell, totalProductYear.totalOct.productSell, totalProductYear.totalNov.productSell, totalProductYear.totalDec.productSell],
+        data: [totalProductYear.totalJan?.productSell, totalProductYear.totalFeb?.productSell, totalProductYear.totalMar?.productSell, totalProductYear.totalApr?.productSell, totalProductYear.totalMay?.productSell, totalProductYear.totalJun?.productSell, totalProductYear.totalJul?.productSell, totalProductYear.totalAug?.productSell, totalProductYear.totalSep?.productSell, totalProductYear.totalOct?.productSell, totalProductYear.totalNov?.productSell, totalProductYear.totalDec?.productSell],
       },
     ],
   });
@@ -353,12 +371,12 @@ const ChartOne: React.FC = () => {
       series: [
         {
           name: "Product New",
-          data: [totalProductYear.totalJan.productNew, totalProductYear.totalFeb.productNew, totalProductYear.totalMar.productNew, totalProductYear.totalApr.productNew, totalProductYear.totalMay.productNew, totalProductYear.totalJun.productNew, totalProductYear.totalJul.productNew, totalProductYear.totalAug.productNew, totalProductYear.totalSep.productNew, totalProductYear.totalOct.productNew, totalProductYear.totalNov.productNew, totalProductYear.totalDec.productNew],
+          data: [totalProductYear.totalJan?.productNew, totalProductYear.totalFeb?.productNew, totalProductYear.totalMar?.productNew, totalProductYear.totalApr?.productNew, totalProductYear.totalMay?.productNew, totalProductYear.totalJun?.productNew, totalProductYear.totalJul?.productNew, totalProductYear.totalAug?.productNew, totalProductYear.totalSep?.productNew, totalProductYear.totalOct?.productNew, totalProductYear.totalNov?.productNew, totalProductYear.totalDec?.productNew],
         },
 
         {
           name: "Product Sell",
-          data: [totalProductYear.totalJan.productSell, totalProductYear.totalFeb.productSell, totalProductYear.totalMar.productSell, totalProductYear.totalApr.productSell, totalProductYear.totalMay.productSell, totalProductYear.totalJun.productSell, totalProductYear.totalJul.productSell, totalProductYear.totalAug.productSell, totalProductYear.totalSep.productSell, totalProductYear.totalOct.productSell, totalProductYear.totalNov.productSell, totalProductYear.totalDec.productSell],
+          data: [totalProductYear.totalJan?.productSell, totalProductYear.totalFeb?.productSell, totalProductYear.totalMar?.productSell, totalProductYear.totalApr?.productSell, totalProductYear.totalMay?.productSell, totalProductYear.totalJun?.productSell, totalProductYear.totalJul?.productSell, totalProductYear.totalAug?.productSell, totalProductYear.totalSep?.productSell, totalProductYear.totalOct?.productSell, totalProductYear.totalNov?.productSell, totalProductYear.totalDec?.productSell],
         },
       ],
     }));
@@ -391,12 +409,12 @@ const ChartOne: React.FC = () => {
       series: [
         {
           name: "Product New",
-          data: [totalProductMonth.totalWeek1.productNew, totalProductMonth.totalWeek2.productNew, totalProductMonth.totalWeek3.productNew, totalProductMonth.totalWeek4.productNew,],
+          data: [totalProductMonth.totalWeek1?.productNew, totalProductMonth.totalWeek2?.productNew, totalProductMonth.totalWeek3?.productNew, totalProductMonth.totalWeek4?.productNew,],
         },
 
         {
           name: "Product Sell",
-          data: [totalProductMonth.totalWeek1.productSell, totalProductMonth.totalWeek2.productSell, totalProductMonth.totalWeek3.productSell, totalProductMonth.totalWeek4.productSell,],
+          data: [totalProductMonth.totalWeek1?.productSell, totalProductMonth.totalWeek2?.productSell, totalProductMonth.totalWeek3?.productSell, totalProductMonth.totalWeek4?.productSell,],
         },
       ],
     }));
@@ -420,12 +438,12 @@ const ChartOne: React.FC = () => {
       series: [
         {
           name: "Product New",
-          data: [totalProductWeek.totalMonday.productNew, totalProductWeek.totalTuesday.productNew, totalProductWeek.totalWednesday.productNew, totalProductWeek.totalThursday.productNew, totalProductWeek.totalFriday.productNew, totalProductWeek.totalSaturday.productNew, totalProductWeek.totalSunday.productNew],
+          data: [totalProductWeek.totalMonday?.productNew, totalProductWeek.totalTuesday?.productNew, totalProductWeek.totalWednesday?.productNew, totalProductWeek.totalThursday?.productNew, totalProductWeek.totalFriday?.productNew, totalProductWeek.totalSaturday?.productNew, totalProductWeek.totalSunday?.productNew],
         },
 
         {
           name: "Product Sell",
-          data: [totalProductWeek.totalMonday.productSell, totalProductWeek.totalTuesday.productSell, totalProductWeek.totalWednesday.productSell, totalProductWeek.totalThursday.productSell, totalProductWeek.totalFriday.productSell, totalProductWeek.totalSaturday.productSell, totalProductWeek.totalSunday.productSell],
+          data: [totalProductWeek.totalMonday?.productSell, totalProductWeek.totalTuesday?.productSell, totalProductWeek.totalWednesday?.productSell, totalProductWeek.totalThursday?.productSell, totalProductWeek.totalFriday?.productSell, totalProductWeek.totalSaturday?.productSell, totalProductWeek.totalSunday?.productSell],
         },
       ],
     }));

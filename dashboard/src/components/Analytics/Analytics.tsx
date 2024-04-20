@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ChartOne from "../Charts/ChartOne";
 import ChartThree from "../Charts/ChartThree";
 import ChartTwo from "../Charts/ChartTwo";
@@ -7,6 +7,7 @@ import ChatCard from "../Chat/ChatCard";
 import TableOne from "../Tables/TableOne";
 import CardDataStats from "../CardDataStats";
 import MapOne from "../Maps/MapOne";
+import { get_total_analyst } from "@/service/component";
 
 interface AnalyticTotalProps {
     totalProduct: number;
@@ -17,12 +18,22 @@ interface AnalyticTotalProps {
 
 const AnalyticChart = () => {
 
-    const analyticsTotalData: AnalyticTotalProps = {
-        totalProduct: 2450,
-        totalAuction: 4502,
-        totalUsers: 3456,
-        totalSeller: 3456,
-    };
+    // const analyticsTotalData: AnalyticTotalProps = {
+    //     totalProduct: 2450,
+    //     totalAuction: 4502,
+    //     totalUsers: 3456,
+    //     totalSeller: 3456,
+    // };
+
+    const [analyticsTotalData, setanalyticsTotalData] = useState<AnalyticTotalProps>({} as AnalyticTotalProps)
+    useEffect(() => {
+      const feet = async () => {
+        const data = await get_total_analyst();
+        setanalyticsTotalData(data)
+      }
+
+      feet();
+    }, [])
 
   return (
     <>
