@@ -197,7 +197,7 @@ const Notifications: React.FC<NotificationProps> = ({ onMarkAllAsRead, onDeleteA
             </div>
             <div style={{ marginTop: '20px' }}>
                 {notifications && notifications.length > 0 ? (
-                    notifications.map(notification => (
+                    Array.isArray(notifications) && notifications.map(notification => (
                         <NotificationElement notificationElement={notification} />
                     ))
                 ) : (

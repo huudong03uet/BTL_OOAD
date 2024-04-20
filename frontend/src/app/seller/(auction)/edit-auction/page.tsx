@@ -165,7 +165,7 @@ export default function AddAuction() {
         <div className='row mx-5'>
 
             <div className={style.div_title}>
-                Add auction
+                Edit auction
             </div>
             <div className={style.div_section}>
                 <div className={style.div_header}>
