@@ -1,14 +1,16 @@
 'use client'
-import React from 'react';
+import React, { useContext } from 'react';
 import { Modal } from 'react-bootstrap';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import style from '../style.module.css';
 import { useState } from 'react';
 import { seller_register } from '@/services/account/seller';
+import { UserContext } from '@/services/context/UserContext';
 
 
 const ModalComponent = () => {
 
+    const {user, setUser} = useContext(UserContext);
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
 
@@ -54,7 +56,7 @@ const ModalComponent = () => {
                 state: state, 
                 postal: postalCode
             }
-            await seller_register(seller_info, card_info, location_info);
+            await seller_register(user?.id, seller_info, card_info, location_info);
             setShowModal(false);
         }
     
