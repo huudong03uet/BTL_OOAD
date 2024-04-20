@@ -278,6 +278,9 @@ class ProductController extends ProductService {
             if (!product) {
                 logger.error(`${statusCode.HTTP_403_FORBIDDEN} Product not appect.`);
                 return res.status(statusCode.HTTP_403_FORBIDDEN).json("Product not appect.");
+            } else if (!product.inspect_id) {
+                logger.error(`${statusCode.HTTP_406_NOT_ACCEPTABLE} Product edit not accept.`);
+                return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json("Product edit not accept.");
             }
     
             product.title = title;

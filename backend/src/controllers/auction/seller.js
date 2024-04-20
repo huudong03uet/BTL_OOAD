@@ -477,7 +477,8 @@ class AuctionController extends AuctionService {
                 ...this.where_case,
                 [Op.and]: [
                     { status: AuctionProductStatus.NOT_YET_SOLD },
-                    { seller_id: req.params.seller_id }
+                    { seller_id: req.params.seller_id },
+                    { inspect_id: { [Op.ne]: null } }
                 ]
             };
     
