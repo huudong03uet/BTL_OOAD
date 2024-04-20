@@ -8,6 +8,7 @@ import { StripeElementsOptions, loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from './checkoutFrom';
 import QRModal from './qrModal';
 import axios from 'axios';
+import { HOST } from '@/services/host';
 
 export default function PaymentOptions() {
     const [showModal, setShowModal] = useState(false);
@@ -38,6 +39,16 @@ export default function PaymentOptions() {
     
     }
 
+    const makePayment = async() => {
+        const url = `${HOST}/account/user/cardPayment`;
+        axios.post(url).then((res) => {
+            if(res.data.url) {
+                window.location.href = res.data.url;
+            }
+        }). catch((err) => {
+            console.log(err);
+        })
+    }
     return (
 
 
@@ -69,11 +80,7 @@ export default function PaymentOptions() {
                     Using your credit card to make bidding fast and easy.
                 </p>
                 <button
-                    onClick={() => {
-                        window.open("https://buy.stripe.com/test_fZe9AZ7Q61ScgXS8wx", "_blank")
-
-
-                    }}
+                    onClick={makePayment}
 
 
                     // onClick={handleShowModal}

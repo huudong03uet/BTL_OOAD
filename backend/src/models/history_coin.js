@@ -21,7 +21,7 @@ const CoinHistory = sequelize.define('coin_history', {
     type: {
         type: DataTypes.ENUM,
         allowNull: false,
-        values: [CoinHistoryType.BUY, CoinHistoryType.RECHANGE, CoinHistoryType.SELL, CoinHistoryType.WITHDRAW],
+        values: [CoinHistoryType.BUY, CoinHistoryType.DEPOSIT, CoinHistoryType.SELL, CoinHistoryType.WITHDRAW],
         defaultValue: CoinHistoryType.BUY
     },
 },

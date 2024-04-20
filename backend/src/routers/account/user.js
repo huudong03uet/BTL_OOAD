@@ -8,4 +8,6 @@ router.post("/edit-profile", UPLOAD.UPLAOD_AVATAR.single('image'), accountContro
 router.post("/change-password", accountController.change_password);
 router.post("/forgot-password", accountController.forgot_password);
 router.post("/qr_payment", accountController.qr_payment);
+router.post("/cardPayment", accountController.cardPayment);
+router.post("/handleCardPayment", accountController.handleCardPayment);  
 module.exports = router;

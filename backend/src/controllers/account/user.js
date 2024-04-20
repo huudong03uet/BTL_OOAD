@@ -2,9 +2,12 @@ const { DOUBLE } = require('sequelize');
 const User = require('../../models/user');
 const { role_edit_profile, role_change_password, role_forgot_password } = require('./role');
 const ProfileService = require('./role');
+import CoinHistory from '../../models/history_coin';
 const { check_required_field } = require('../util');
+const CoinHistoryType = require("../../../constants/coin_history")
 
 
+const stripe = require('stripe')('sk_test_51P7bjf05CJZ8qs7kDcGSebDhXZPJ7VpPLceToyYQ7PQzfzYrwZqI8wuvfqBNDZeZ8wwlW07NFRO1CGza2softbc500Fz4T8jv6');
 // const edit_profile = async (req, res) => {
 //     return await role_edit_profile(req, res, User)
 // }
@@ -81,8 +84,16 @@ class ProfileController extends ProfileService {
                 return res.status(404).json({ message: 'User not found' });
             }
     
-            user.coin += parseFloat(amount);
+            // Tạo một bản ghi mới trong bảng coin_history
+            await CoinHistory.create({
+                user_id,
+                description: 'QR payment', // Mô tả thanh toán
+                amount: parseFloat(amount),
+                type: CoinHistoryType.DEPOSIT // Loại thanh toán (nạp tiền)
+            });
     
+            // Cập nhật số tiền của người dùng
+            user.coin += parseFloat(amount);
             await user.save();
     
             return res.status(200).json({ message: 'Payment successful', user });
@@ -91,7 +102,83 @@ class ProfileController extends ProfileService {
             return res.status(500).json({ message: 'Internal server error' });
         }
     };
-}
+    
+
+
+    cardPayment = async (req, res) => {
+        const product = await stripe.products.create({
+            name: 'Hãy nhập số tiền bạn muốn nạp vào tài khoản',
+          });
+          
+        const price = await stripe.prices.create({
+            currency: 'vnd',
+            custom_unit_amount: {
+              enabled: true,
+              preset: 20000,
+              minimum: 20000,
+            },
+            product: product.id,
+          });
+        const session = await stripe.checkout.sessions.create({
+            submit_type: 'pay', // Set submit type to 'donate' for custom amounts
+            payment_method_types: ['card'],
+            // business: {name: 'Auction'},
+            line_items: [
+                {
+                  price: price.id,
+                  quantity: 1,
+                },
+              ],            
+            mode: 'payment', 
+            success_url: `http://localhost:3000/my-account/payment-options/success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `http://localhost:3000`,
+        })
+        res.send({url: session.url});
+    }
+
+    handleCardPayment = async (req, res) => {
+        const { sessionId, user_id } = req.body;
+        const session = await stripe.checkout.sessions.retrieve(sessionId);
+        try {
+            const user = await User.findByPk(user_id);
+    
+            if (!user) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+    
+            // Kiểm tra xem có thông tin thanh toán của session trước đó hay không
+            const previousPayment = await CoinHistory.findOne({
+                where: {
+                    user_id,
+                    description: sessionId // Kiểm tra sessionId trong trường description
+                }
+            });
+            let previous = false;
+            // Nếu không tìm thấy thông tin thanh toán trước đó, tiến hành lưu thông tin thanh toán
+            if (!previousPayment) {
+                // Lưu thông tin thanh toán vào bảng CoinHistory
+                await CoinHistory.create({
+                    user_id,
+                    description: sessionId,
+                    amount: session.amount_total,
+                    type: CoinHistoryType.DEPOSIT,
+                });
+    
+                // Cập nhật số tiền của người dùng
+                user.coin += session.amount_total;
+                await user.save();
+            } else {
+                previous = true;
+            }
+    
+            return res.status(200).json({ message: 'Payment successful', user, amount: session.amount_total, previous});
+        } catch (error) {
+            console.error('Error while processing payment:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+    }
+}    
+
 
 module.exports = new ProfileController()
 
