@@ -1,29 +1,31 @@
 'use client'
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import dateFormat, { masks } from "dateformat";
 import { check_user_love_product, user_delete_love_product, user_love_product } from '@/services/component/love_product';
 // http://localhost:8080/product/user/detail/product_id=10/user_id=10000
 import Product from '@/models/product';
 import styled from 'styled-components';
+import { UserContext } from '@/services/context/UserContext';
+import {useRouter} from "next/navigation";
 
-
-const StyledLink = styled.a`
-  text-decoration: none;
-  color: black;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
+// const StylStyledLinkedLink = styled.a`
+//   text-decoration: none;
+//   color: black;
+//   &:hover {
+//     text-decoration: underline;
+//   }
+// `;
 
 
 function ViewItem({ obj }: { obj: Product }) {
     const [status, setStatus] = useState<boolean>(false);
-
+    const {user, setUser} = useContext(UserContext);
+    const router = useRouter();
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const data = await check_user_love_product(obj.id);
+            const data = await check_user_love_product(obj.id, user?.id);
             if (data) {
                 setStatus(true);
             } else {
@@ -40,10 +42,10 @@ function ViewItem({ obj }: { obj: Product }) {
     let onClickHeart = async () => {
         if (status) {
             setStatus(false);
-            await user_delete_love_product(obj.id)
+            await user_delete_love_product(obj.id, user?.id)
         } else {
             setStatus(true);
-            await user_love_product(obj.id)
+            await user_love_product(obj.id, user?.id)
         }
     }
     return (
@@ -87,10 +89,10 @@ function ViewItem({ obj }: { obj: Product }) {
                     className='my-1 fw-bold'>
                     {obj.title}
                 </div>
-                <div>
-                    <StyledLink href={`/auction-house/${obj.seller?.id}`}
-                    onClick={(e) => e.stopPropagation()}
-                    >by {obj.seller?.name}</StyledLink>
+                <div
+                    onClick= {() => {router.push(`/auction-house/${obj.seller?.id}`)}}
+                    >
+                    by {obj.seller?.name}
                 </div>
                 <div className="fw-bold">
                     {/* ${obj.max_bid} */}

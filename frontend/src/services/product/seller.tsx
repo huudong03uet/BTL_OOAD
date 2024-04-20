@@ -2,9 +2,7 @@
 import axios from 'axios';
 
 import { HOST } from '@/services/host';
-import UserDataService from '../model/user';
 import Product from '@/models/product';
-import SellerDataService from '../model/seller';
 
 
 let seller_add_product = async (formData: FormData) => {
@@ -33,7 +31,7 @@ let seller_product_sold_service = async (seller_id: number) => {
     }
 }
 
-let seller_update_product = async (product: Product, category: string) => {
+let seller_update_product = async (product: Product, category: string, id: any) => {
     try {
         let url = `${HOST}/product/seller/update`;
         const body: any = {};
@@ -42,9 +40,8 @@ let seller_update_product = async (product: Product, category: string) => {
         }
         body["category_name"] = category
 
-        const sellerData = await SellerDataService.getSellerData();
-        if (sellerData !== null) {
-            body["seller_id"] = sellerData.id;
+        if (id !== null) {
+            body["seller_id"] = id;
 
             const response = await axios.post(url, body);
             return;
@@ -55,11 +52,10 @@ let seller_update_product = async (product: Product, category: string) => {
     }
 }
 
-let seller_get_all_products = async () => {
+let seller_get_all_products = async (id: any) => {
     try {
-        const sellerData = await SellerDataService.getSellerData();
-        if (sellerData !== null) {
-            let url = `${HOST}/product/seller/all/seller_id=${sellerData.id}`;
+        if (id !== null) {
+            let url = `${HOST}/product/seller/all/seller_id=${id}`;
             let response = await axios.get(url);
             return response.data;
         }
@@ -72,11 +68,10 @@ let seller_get_all_products = async () => {
 }
 
 
-let seller_get_product_history = async () => {
+let seller_get_product_history = async (id: any) => {
     try {
-        const sellerData = await SellerDataService.getSellerData();
-        if (sellerData !== null) {
-            let url = `${HOST}/product/seller/history/seller_id=${sellerData.id}`;
+        if (id !== null) {
+            let url = `${HOST}/product/seller/history/seller_id=${id}`;
             let response = await axios.get(url);
             return response.data;
         }
@@ -88,11 +83,10 @@ let seller_get_product_history = async () => {
     }
 }
 
-let seller_notify = async () => {
+let seller_notify = async (id: any) => {
     try {
-        const sellerData = await SellerDataService.getSellerData();
-        if (sellerData !== null) {
-            let url = `${HOST}/product/seller/notify/seller_id=${sellerData.id}`;
+        if (id !== null) {
+            let url = `${HOST}/product/seller/notify/seller_id=${id}`;
             let response = await axios.get(url);
             return response.data;
         }

@@ -2,7 +2,6 @@
 import axios from 'axios';
 
 import { HOST } from '@/services/host';
-import UserDataService from '../model/user';
 
 let user_get_category_service = async () => {
     try {
@@ -17,9 +16,9 @@ let user_get_category_service = async () => {
     }
 }
 
-let user_get_detail_product = async (product_id: number) => {
+let user_get_detail_product = async (product_id: number, id: any) => {
     try {
-        let url = `${HOST}/product/user/detail/product_id=${product_id}/user_id=${UserDataService.getUserData()?.id}`;
+        let url = `${HOST}/product/user/detail/product_id=${product_id}/user_id=${id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -32,9 +31,10 @@ let user_get_detail_product = async (product_id: number) => {
 
 
 
-let user_get_recently_product = async () => {
+let user_get_recently_product = async (id: any) => {
     try {
-        let url = `${HOST}/product/user/recently/user_id=${UserDataService.getUserData()?.id}`;
+        let url = `${HOST}/product/user/recently/user_id=${id}`;
+        console.log(url);
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {

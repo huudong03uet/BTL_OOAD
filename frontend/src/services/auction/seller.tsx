@@ -2,7 +2,6 @@
 import axios from 'axios';
 
 import { HOST } from '@/services/host';
-import SellerDataService from '../model/seller';
 
 const seller_auction_create_service = async (auctionData: any) => {
     try {
@@ -26,11 +25,10 @@ const seller_auction_past_service = async (seller_id: number) => {
     }
 }
 
-const seller_auction_show_product = async (auction_id: number|null) => {
+const seller_auction_show_product = async (auction_id: number|null, id: any) => {
     try {
-        const sellerData = await SellerDataService.getSellerData();
-        if (sellerData !== null) {
-            let url = `${HOST}/auction/seller/show-product/seller_id=${sellerData.id}`;
+        if (id !== null) {
+            let url = `${HOST}/auction/seller/show-product/seller_id=${id}`;
             if(auction_id == null) {
                 url+="/auction_id=null"
             } else {
@@ -46,11 +44,10 @@ const seller_auction_show_product = async (auction_id: number|null) => {
     }
 }
 
-const seller_auction_history_service = async () => {
+const seller_auction_history_service = async (id: any) => {
     try {
-        const sellerData = await SellerDataService.getSellerData();
-        if (sellerData !== null) {
-            let url = `${HOST}/auction/seller/history/seller_id=${sellerData.id}`;
+        if (id !== null) {
+            let url = `${HOST}/auction/seller/history/seller_id=${id}`;
             let response = await axios.get(url);
             return response.data;
         }
@@ -61,11 +58,10 @@ const seller_auction_history_service = async () => {
 }
 
 
-const seller_auction_not_sold_service = async () => {
+const seller_auction_not_sold_service = async (id: any) => {
     try {
-        const sellerData = await SellerDataService.getSellerData();
-        if (sellerData !== null) {
-            let url = `${HOST}/auction/seller/not-sold/seller_id=${sellerData.id}`;
+        if (id !== null) {
+            let url = `${HOST}/auction/seller/not-sold/seller_id=${id}`;
             let response = await axios.get(url);
             return response.data;
         }
@@ -75,11 +71,10 @@ const seller_auction_not_sold_service = async () => {
     }
 }
 
-let seller_get_auction_info = async (auction_id: number) => {
+let seller_get_auction_info = async (auction_id: number, id: any) => {
     try {
-        const sellerData = await SellerDataService.getSellerData();
-        if (sellerData !== null) {
-            let url = `${HOST}/auction/seller/info/seller_id=${sellerData.user_id}/auction_id=${auction_id}`;
+        if (id !== null) {
+            let url = `${HOST}/auction/seller/info/seller_id=${id}/auction_id=${auction_id}`;
             let response = await axios.get(url);
             return response.data;
         }

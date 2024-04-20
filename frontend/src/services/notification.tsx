@@ -2,12 +2,11 @@
 import axios from 'axios';
 
 import { HOST } from '@/services/host';
-import UserDataService from './model/user';
 
 
-let get_notification = async () => {
+let get_notification = async (user_id: any) => {
     try {
-        let url = `${HOST}/notification/role_id=${UserDataService.getUserData()?.id}/role_type=user`;
+        let url = `${HOST}/notification/role_id=${user_id}/role_type=user`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {

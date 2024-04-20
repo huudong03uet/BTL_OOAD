@@ -1,14 +1,15 @@
 'use client'
 import { Dropdown, DropdownButton, Form, InputGroup, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent, useContext } from 'react';
 import { seller_add_product } from "@/services/product/seller";
-import SellerDataService from "@/services/model/seller";
 import { user_get_category_service } from '@/services/product/user';
 import Category from "@/models/category";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { SellerContext } from "@/services/context/SellerContext";
 
 export default function AddProduct() {
+    const {seller} = useContext(SellerContext);
     const [productTitle, setProductTitle] = useState<string>('');
     const [productDescription, setProductDescription] = useState<string>('');
     const [productArtist, setProductArtist] = useState<string>('');
@@ -70,9 +71,8 @@ export default function AddProduct() {
 
     useEffect(() => {
         async function fetchData() {
-            const sellerData = await SellerDataService.getSellerData();
-            if (sellerData !== null) {
-                setSellerID(sellerData.id.toString());
+            if (seller !== null) {
+                setSellerID(seller.id.toString());
             }
         }
 

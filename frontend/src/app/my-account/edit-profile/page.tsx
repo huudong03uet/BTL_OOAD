@@ -1,18 +1,18 @@
 'use client'
 import { Form, } from "react-bootstrap";
 import style from '../style.module.css';
-import React, { useState, useEffect, ChangeEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, useContext } from 'react';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import User from "@/models/user";
-import UserDataService from "@/services/model/user";
 import Location from "@/models/location";
 import get_location_service from "@/services/component/location";
 import { user_change_password_service, user_edit_account_service } from "@/services/account/user";
+import { UserContext } from "@/services/context/UserContext";
+import { error } from "console";
 
 
 export default function EditProfile() {
-    const initialUserData = UserDataService.getUserData() || {} as User;
-    const [user, setUser] = useState<User>(initialUserData);
+    const {user, setUser} = useContext(UserContext)
     const [location, setLocation] = useState<Location>({} as Location)
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
@@ -24,25 +24,9 @@ export default function EditProfile() {
 
 
     useEffect(() => {
-        const userData = UserDataService.getUserData();
-        if (userData) {
-            setUser(prevUser => ({
-                ...prevUser,
-                email: userData.email,
-                phone: userData.phone,
-                first_name: userData.first_name,
-                last_name: userData.last_name,
-                location_id: userData.location_id,
-                avatar_path: userData.avatar_path,
-            }));
-        }
-    }, []);
-
-    useEffect(() => {
         const fetchData = async () => {
-            const userData = UserDataService.getUserData();
-            if (userData && userData.location_id) {
-                const locationData = await get_location_service(userData.location_id);
+            if (user && user?.location_id) {
+                const locationData = await get_location_service(user?.location_id);
                 if (locationData) {
                     setLocation(prevLocation => ({
                         ...prevLocation,
@@ -74,10 +58,13 @@ export default function EditProfile() {
 
     const handleChangeUser = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        setUser(prevUser => ({
-            ...prevUser,
-            [name]: value
-        }));
+        let newUser;
+        if(user) {
+            newUser = {...user, [name]: value};
+        } else {
+            newUser = null
+        }
+        setUser(newUser);
     };
 
     const handleChangeLocation = (e: ChangeEvent<HTMLInputElement>) => {
@@ -110,8 +97,14 @@ export default function EditProfile() {
     };
 
     const handleClick = async () => {
-        await user_edit_account_service(user, location, image);
-        setUpdateEmail(false)
+        // console.log(user)
+        try {
+            const data = await user_edit_account_service(user, location, null);
+            setUser(data);
+            setUpdateEmail(false)
+        } catch {
+            console.log(error);
+        }
     }
 
 
@@ -121,7 +114,7 @@ export default function EditProfile() {
             return;
         }
         try {
-            await user_change_password_service(oldPassword, newPassword);
+            await user_change_password_service(user?.id, oldPassword, newPassword);
             setOldPassword('');
             setNewPassword('');
             setConfirmPassword('');
@@ -153,7 +146,7 @@ export default function EditProfile() {
                                     placeholder="First name"
                                     className={style.custom_form_control}
                                     name="first_name"
-                                    value={user.first_name}
+                                    value={user?.first_name}
                                     onChange={handleChangeUser}
                                 />
 
@@ -166,7 +159,7 @@ export default function EditProfile() {
                                     placeholder="Last name"
                                     className={style.custom_form_control}
                                     name="last_name"
-                                    value={user.last_name}
+                                    value={user?.last_name}
                                     onChange={handleChangeUser}
                                 />
                             </div>
@@ -181,7 +174,7 @@ export default function EditProfile() {
                                             placeholder="New Email Address"
                                             className={style.custom_form_control}
                                             name="email"
-                                            value={user.email}
+                                            value={user?.email}
                                             onChange={handleChangeUser}
                                         />
                                         <div className='d-flex align-items-center' style={{ marginTop: "-15px", marginBottom: "15px" }}>
@@ -196,7 +189,7 @@ export default function EditProfile() {
                                         <Form.Label className={style.custom_form_label}>Email Address</Form.Label>
                                         <Form.Control
                                             type="text"
-                                            defaultValue={user.email}
+                                            defaultValue={user?.email}
                                             className={style.custom_form_control}
                                             disabled
                                         />
@@ -279,7 +272,7 @@ export default function EditProfile() {
                         <div className="row">
                             <div className="col-12">
                                 <div style={{ display: "flex", justifyContent: "center" }}>
-                                    <img src={user.avatar_path || "https://via.placeholder.com/150"} alt="avatar" style={{ width: "200px", height: "200px", borderRadius: "50%", margin: '20px' }} />
+                                    <img src={user?.avatar_path || "https://via.placeholder.com/150"} alt="avatar" style={{ width: "200px", height: "200px", borderRadius: "50%", margin: '20px' }} />
                                 </div>
                             </div>
                             <div className="col-12 d-flex justify-content-center">
@@ -403,7 +396,7 @@ export default function EditProfile() {
                             placeholder="Phone Number"
                             className={style.custom_form_control}
                             name="phone"
-                            value={user.phone}
+                            value={user?.phone}
                             onChange={handleChangeUser}
                         />
                     </div>

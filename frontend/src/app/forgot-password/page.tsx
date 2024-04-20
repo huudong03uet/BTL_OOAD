@@ -1,10 +1,11 @@
 'use client'
 import { user_forgot_password_service } from "@/services/account/user";
 import React, { useState } from "react";
-
+import {useRouter} from "next/navigation";
 
 export default function Item() {
     const [email, setEmail] = useState('');
+    const router = useRouter();
 
     const handleRequestInfo = async () => {
         if (email.trim() === '') {
@@ -42,7 +43,7 @@ export default function Item() {
 
                     <div className='d-flex align-items-center my-4'>
                         <button type="button" className="btn btn-dark px-5" onClick={handleRequestInfo}>Request Info</button>
-                        <a href="/" className="px-5" style={{ textDecoration: "none" }}>Cancel</a>
+                        <div onClick = {() => {router.push('/')}} className="px-5" style={{ textDecoration: "none" }}>Cancel</div>
                     </div>
 
                 </div>

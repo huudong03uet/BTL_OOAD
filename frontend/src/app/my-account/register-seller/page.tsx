@@ -2,12 +2,15 @@
 import { Modal } from 'react-bootstrap';
 import { CountryDropdown, RegionDropdown } from "react-country-region-selector";
 import style from '../style.module.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { seller_register } from '@/services/account/seller';
-import SellerDataService from '@/services/model/seller';
 import { boolean } from 'zod';
+import { UserContext } from '@/services/context/UserContext';
+import { SellerContext } from '@/services/context/SellerContext';
 
 export default function PaymentOptions() {
+    const {user} = useContext(UserContext)
+    const {seller} = useContext(SellerContext);
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
@@ -49,31 +52,22 @@ export default function PaymentOptions() {
             postal: postalCode
         }
 
-        const response = await seller_register(seller_info, card_info, location_info)
+        const response = await seller_register(user?.id, seller_info, card_info, location_info)
         console.log(response)
         
     };
 
 
     useEffect(()=>{
-        const fetchData = async () => {
-            try {
-              const data = await SellerDataService.getSellerData();
-              console.log(data);
-              if (data?.id && data?.status == "accept") {
-                window.location.href = '/seller';
-              }
-              if (data?.id && ! (data?.status == "accept")) {
-                setIsRequested(true);
-              }
+        if (seller?.id && seller?.status == "accept") {
+            window.location.href = '/seller';
+        }
+        if (seller?.id && ! (seller?.status == "accept")) {
+            setIsRequested(true);
+        }
+    
+    },[seller]);
       
-            } catch (error) {
-              console.error('Error fetching upcoming online auctions:', error);
-            }
-          };
-      
-          fetchData()
-    }, [])
 
     return (
         <div className='row mx-0'>

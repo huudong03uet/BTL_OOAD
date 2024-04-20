@@ -2,11 +2,10 @@
 import axios from 'axios';
 
 import { HOST } from '@/services/host';
-import UserDataService from '@/services/model/user';
 
-let get_auction_upcoming = async () => {
+let get_auction_upcoming = async (id: any) => {
     try {
-        let url = `${HOST}/user/auction/upcomming/user_id=${UserDataService.getUserData()?.id}`;
+        let url = `${HOST}/user/auction/upcomming/user_id=${id}`;
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {

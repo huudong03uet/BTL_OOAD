@@ -5,14 +5,16 @@ import ViewItem from '@/components/shared/viewItem';
 import { Container } from 'react-bootstrap';
 import styles from './page.module.css';
 import Category from '@/models/category';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { user_get_auction_promote, user_get_auction_upcoming } from '@/services/auction/user';
 import { user_get_all_product, user_get_category_service, user_get_product_accept, user_get_recently_product } from '@/services/product/user';
 import ChatSupport from '@/components/chat/chat_support';
 import { Fab } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
+import socketIOClient from 'socket.io-client';
 import Auction from '@/models/auction';
 import Product from '@/models/product';
+import { UserContext } from '@/services/context/UserContext';
 
 const HomePage = () => {
 
@@ -46,11 +48,11 @@ const HomePage = () => {
   // ];
 
   const [recentlyViewedItems, setRecentlyViewedItems] = useState<Product[]>([]);
-
+  const {user} = useContext(UserContext);
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await user_get_recently_product();
+        const data = await user_get_recently_product(user?.id);
         if (Array.isArray(data)) {
           setRecentlyViewedItems(data);
         } else {
@@ -70,8 +72,7 @@ const HomePage = () => {
       try {
         const data = await user_get_product_accept();
         if (Array.isArray(data)) {
-          setRecommendItemForYou(data.slice(0, 4) );
-          console.log(data.slice(0, 4));
+          setRecommendItemForYou(data.slice(0, 4));
         } else {
           setRecommendItemForYou([])
         }
@@ -100,7 +101,7 @@ const HomePage = () => {
         } else {
           setCuratedCollections([])
         }
-        
+
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);
       }
@@ -115,7 +116,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await user_get_auction_promote();
+        const data = await user_get_auction_promote(user?.id);
         if (Array.isArray(data)) {
           setPromotedAuctions(data);
         } else {
@@ -134,7 +135,7 @@ const HomePage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const data = await user_get_auction_upcoming();
+        const data = await user_get_auction_upcoming(user?.id);
         if (Array.isArray(data)) {
           setUpcomingOnlineAuctions(data);
         } else {
@@ -148,6 +149,22 @@ const HomePage = () => {
 
     fetchData()
   }, [])
+
+  const ws = new WebSocket('ws://localhost:8000');
+
+  ws.addEventListener('open', () => {
+    console.log('Connected to WebSocket server');
+  });
+
+  ws.addEventListener('message', (event) => {
+    const data = JSON.parse(event.data);
+
+    console.log(data)
+
+    if (data.event === 'update_product') {
+      console.log("abc")
+    }
+  });
 
 
 
@@ -192,8 +209,8 @@ const HomePage = () => {
           <div className="row">
             {curatedCollections.map((object, i) => (
               <div className="col-sm-2" key={i}>
-                <div className='d-flex justify-content-center align-items-center' style={{height: "200px"}}>
-                  <img src={object.image_path} alt={object.title} className="img-fluid" style={{width: "100%", height: "100%", objectFit:"cover"}} ></img>
+                <div className='d-flex justify-content-center align-items-center' style={{ height: "200px" }}>
+                  <img src={object.image_path} alt={object.title} className="img-fluid" style={{ width: "100%", height: "100%", objectFit: "cover" }} ></img>
                 </div>
 
 

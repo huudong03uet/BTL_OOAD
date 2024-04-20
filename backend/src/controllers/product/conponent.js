@@ -1,4 +1,5 @@
 const { Op } = require('sequelize');
+const WebSocket = require('ws');
 
 const sequelize = require('../../../conf/sequelize')
 const statusCode = require('../../../constants/status')
@@ -14,6 +15,7 @@ const Inspection = require('../../models/inspection')
 const Auction = require('../../models/auction')
 const BidHistory = require('../../models/history_bid');
 const { check_required_field } = require('../util');
+const websocket = require('../../../conf/web_socket');
 
 
 const PRODUCT_INCLUDE = [
@@ -44,6 +46,7 @@ const PRODUCT_INCLUDE = [
 
 class ProductService {
     constructor () {
+        this.websocket = websocket
         this.where_case = {}
         this.include = [
             {
@@ -68,6 +71,14 @@ class ProductService {
             },
         ]
         this.kwargs = {}
+    }
+
+    socket_product = async (req, res) => {
+        this.websocket.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ event: 'update_product' }));
+            }
+        });
     }
 
     async get_product(where_cause = this.where_case, include = this.include, kwargs = this.kwargs) {

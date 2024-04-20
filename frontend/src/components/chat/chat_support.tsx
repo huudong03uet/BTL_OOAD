@@ -1,7 +1,7 @@
 'use client'
 
 import { MDBCard, MDBCardBody, MDBCardHeader, MDBCol, MDBContainer, MDBIcon, MDBRow, MDBTextArea } from 'mdb-react-ui-kit';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import styles from './style.module.css';
 
 import { ChatList } from "react-chat-elements"
@@ -9,6 +9,7 @@ import MessageListComponent from './message_list';
 import { message } from 'antd';
 import { date } from 'zod';
 import { get_user_message_service } from '@/services/component/message';
+import { UserContext } from '@/services/context/UserContext';
 
 
 
@@ -44,12 +45,13 @@ export default function ChatSupport() {
 
   const [, updateState] = React.useState();
 
+  const {user, setUser} = useContext(UserContext)
   const [dataSourceUser, setDataSourceUser] = useState<any[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
         try {
-            const data = await get_user_message_service();
+            const data = await get_user_message_service(user?.id);
             if (Array.isArray(data)) {
               setDataSourceUser(data);
             } else {

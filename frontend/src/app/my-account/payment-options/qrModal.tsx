@@ -1,11 +1,12 @@
 import { Modal } from 'react-bootstrap';
 import style from '../style.module.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios'; 
 import Image from 'next/image';
-import UserDataService from '@/services/model/user';
 import User from '@/models/user';
 import router from 'next/router';
+import { UserContext } from '@/services/context/UserContext';
+import { userAgent } from 'next/server';
 
 interface Props {
     showModalQRScan: boolean;
@@ -15,7 +16,7 @@ interface Props {
 const QRModal: React.FC<Props> = ({ showModalQRScan, handleCloseModalQRScan }) => {
   const [currency, setCurrency] = useState(0);
   const [secretCode, setSecretCode] = useState('');
-
+  const {user, setUser} = useContext(UserContext);
   
   useEffect(() => {
     let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -45,9 +46,8 @@ const QRModal: React.FC<Props> = ({ showModalQRScan, handleCloseModalQRScan }) =
                         console.log(history.txnRemark.includes(secretCode))
                         console.log(secretCode);
                         let url = `http://localhost:8080/account/user/qr_payment`;
-                        console.log(UserDataService.getUserData()?.id);
                         try {
-                          const response = await axios.post(url, {user_id: UserDataService.getUserData()?.id, amount: history.amount});
+                          const response = await axios.post(url, {user_id: user?.id, amount: history.amount});
                           if(response.status === 200) {
                               let user: User = {
                                 id: response.data.user.id,
@@ -58,10 +58,10 @@ const QRModal: React.FC<Props> = ({ showModalQRScan, handleCloseModalQRScan }) =
                                 coin: response.data.user.coin,
                                 phone: response.data.user.phone,
                                 location_id: response.data.user.location_id,
+                                avatar_path: response.data.user.avatar_path
                             }
-                            UserDataService.setUserData(user);
+                            setUser(user);
                             alert("Nạp tiền thành công");
-                            // window.location.reload();
                           }
                         }
                         catch (err) {

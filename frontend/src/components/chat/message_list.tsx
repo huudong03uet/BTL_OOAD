@@ -1,9 +1,10 @@
 'use client'
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useContext } from 'react'
 import styles from './style.module.css'
 import { Avatar, Input, Button, MessageList } from "react-chat-elements"
 import { date } from 'zod'
 import { get_message_service, send_message_service } from '@/services/component/message'
+import { UserContext } from '@/services/context/UserContext'
 
 let clearRef = () => { }
 
@@ -11,7 +12,7 @@ const MessageListComponent = ({ chatInfo, chatType, updateState }: { chatInfo: a
     const messageInput = useRef(null);
     const [inputValue, setInputValue] = useState("")
 
-
+    const {user, setUser} = useContext(UserContext)
     const [messageListState, setMessageListState] = useState<any[]>([])
 
     const clearInput = () => {
@@ -26,7 +27,7 @@ const MessageListComponent = ({ chatInfo, chatType, updateState }: { chatInfo: a
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await get_message_service(chatInfo.id);
+                const data = await get_message_service(chatInfo.id, user?.id);
                 if (Array.isArray(data)) {
                     setMessageListState(data);
                 } else {
@@ -50,7 +51,7 @@ const MessageListComponent = ({ chatInfo, chatType, updateState }: { chatInfo: a
                 date: new Date(),
             };
             setMessageListState(prevState => [...prevState, newMessage]);
-            await send_message_service(chatInfo.id, inputValue)
+            await send_message_service(chatInfo.id, inputValue, user?.id)
             clearInput();
             updateState([]);
         }

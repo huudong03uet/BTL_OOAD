@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -8,7 +8,6 @@ import Navbar from 'react-bootstrap/Navbar';
 import Row from 'react-bootstrap/Row';
 import ModalLogin from './ModalLogin';
 import ModalRegister from './ModalRegister';
-import UserDataService from '@/services/model/user';
 import Popover from '@mui/material/Popover';
 import Notifications from './Notification';
 import FormControl from '@mui/material/FormControl';
@@ -17,10 +16,17 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import IconButton from '@mui/material/IconButton';
 import InputAdornment from '@mui/material/InputAdornment';
 import Input from '@mui/material/Input';
-import SellerDataService from '@/services/model/seller';
 import ModalConfirm from './ModalConfirm';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation'; // Import useRouter
+
+
 
 import { ToastContainer, toast } from 'react-toastify';
+import { UserContext } from '@/services/context/UserContext';
+import { SellerContext } from '@/services/context/SellerContext';
+import { loginFromToken } from '@/services/auth/login';
+import { get_seller_by_user } from '@/services/account/seller';
 
 
 
@@ -29,6 +35,28 @@ function Header() {
   //   left: '0px',
   //   marginLeft: '0px'
   // };
+  const {user, setUser} = useContext(UserContext);
+  const {seller, setSeller} = useContext(SellerContext);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userData = await loginFromToken();
+      console.log(setUser);
+      setUser(userData);
+      try {
+        let data = await get_seller_by_user(user?.id);
+        if(data) {
+          setSeller(data);
+        }
+      } catch (err) {
+        console.log(err)
+      }
+
+    };
+    fetchData(); 
+  }, [setUser, setSeller]); 
+
+  const router = useRouter(); // Get router instance
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
 
@@ -49,10 +77,6 @@ function Header() {
 
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showRegisterModal, setShowRegisterModal] = useState(false);
-
-  const isLogin = UserDataService.getUserData()?.id == null ? false : true;
-  //  UserDataService.getUserData()?.user_id == null ? false : true;
-
 
 
   const handleLoginModalClose = () => setShowLoginModal(false);
@@ -149,16 +173,12 @@ function Header() {
       progress: undefined,
     });
     setShowModal(false);
-    UserDataService.removeUserData();
-    SellerDataService.removeSellerData();
+    setSeller(null);
+    setUser(null);
 
     
     
     // alert('Đăng xuất thành công!');
-
-    // window.location.href = '/';
-    //  reload page
-    window.location.reload();
 
   };
 
@@ -170,7 +190,7 @@ function Header() {
     <Navbar expand="lg" className="bg-body-tertiary py-0">
       <Container className="row w-100" style={{ display: "contents" }}>
         <div className="col-3 d-flex justify-content-center ">
-          <Navbar.Brand href="/" className='py-1'>
+          <Navbar.Brand onClick={() => router.push("/")} className='py-1'>
             <img src="/logo.png"
               alt="test" width={"200px"}></img>
           </Navbar.Brand>
@@ -203,7 +223,7 @@ function Header() {
 
         <div className="col-5 justify-content-center">
           <Nav className="me-auto justify-content-center">
-            {/* <Nav.Link href="/my-account/saved-items">
+            {/* <Nav.Link onClick={() => router.push("/my-account/saved-items")}>
               <span className="fa fa-coins px-2" style={{ color: "black" , fontSize: "1.6em" }}></span>
               *{' '}Đ
             </Nav.Link> */}
@@ -218,7 +238,7 @@ function Header() {
 
                   id="outlined-adornment-password"
                   type={showPassword ? 'text' : 'password'}
-                  defaultValue={UserDataService.getUserData()?.coin}
+                  defaultValue= { user?.coin }
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton
@@ -276,7 +296,7 @@ function Header() {
 
 
 
-            {/* <Nav.Link href="#link" 
+            {/* <Nav.Link onClick={() => router.push("#link")}
             
             onClick={() => setShowNotificationModal(true)}
             // onMouseEnter={handleNotificationMouseEnter}
@@ -298,7 +318,7 @@ function Header() {
 
             {/* fa fa-user */}
 
-            {isLogin ? (
+            {user ? (
               <div className='d-flex'>
 
                 <div className="ps-3 d-flex align-items-center ml-3">
@@ -307,21 +327,20 @@ function Header() {
                 </div>
                 {/* <div> */}
                 {/* </div> */}
-                <NavDropdown title={UserDataService.getUserData()?.user_name || "Name user"} id="basic-nav-dropdown" className="d-flex align-items-center"
-
+                <NavDropdown title={user?.user_name || "user_name" } id="basic-nav-dropdown" className="d-flex align-items-center"
                   align={{ lg: 'end' }}
                 >
 
-                  <NavDropdown.Item href="/my-account/home">My account</NavDropdown.Item>
-                  <NavDropdown.Item href="/my-account/saved-items">Saved items</NavDropdown.Item>
-                  <NavDropdown.Item href="/my-account/settings">Settings</NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => router.push("/my-account/home")}>My account</NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => router.push("/my-account/saved-items")}>Saved items</NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => router.push("/my-account/settings")}>Settings</NavDropdown.Item>
                   <NavDropdown.Divider />
-                  <NavDropdown.Item href="/seller">Selling center</NavDropdown.Item>
+                  <NavDropdown.Item onClick={() => router.push("/seller")}>Selling center</NavDropdown.Item>
 
                   <NavDropdown.Divider />
                   {/* payment-options */}
 
-                  <NavDropdown.Item href="/my-account/payment-options">Payment options</NavDropdown.Item>
+                  <NavDropdown.Item  onClick={() => router.push('/my-account/payment-options')}>Payment options</NavDropdown.Item>
                   <NavDropdown.Divider />
                   <NavDropdown.Item  onClick={() => setShowModal(true)}>Log out</NavDropdown.Item>
                   {/* <div className="d-flex align-items-center"> */}
