@@ -192,11 +192,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li> */}
                           <li>
                             <Link
-                              href="/ordermanager"
+                              href="/analytics"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/" && "text-white"
                                 }`}
                             >
-                              Order Management
+                              Analytics
                             </Link>
                           </li>
                           {/* <li>
@@ -210,11 +210,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li> */}
                           <li>
                             <Link
-                              href="/analytics"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/analytics" && "text-white"
+                              href="/ordermanager"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/ordermanager" && "text-white"
                                 }`}
                             >
-                              Analytics
+                              Order Management
                             </Link>
                           </li>
                         </ul>
@@ -579,17 +579,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                 }`}
                             >
                               View Product
-                            </Link>
-                          </li>
-                          <li>
-                            <Link
-                              href="/view-item/view-auction"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white 
-                              ${pathname === "/view-auction" &&
-                                "text-white"
-                                } `}
-                            >
-                              View Auction
                             </Link>
                           </li>
                           <li>
