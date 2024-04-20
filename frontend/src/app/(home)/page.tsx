@@ -11,6 +11,7 @@ import { user_get_all_product, user_get_category_service, user_get_product_accep
 import ChatSupport from '@/components/chat/chat_support';
 import { Fab } from '@mui/material';
 import ChatIcon from '@mui/icons-material/Chat';
+import socketIOClient from 'socket.io-client';
 import Auction from '@/models/auction';
 import Product from '@/models/product';
 
@@ -70,8 +71,7 @@ const HomePage = () => {
       try {
         const data = await user_get_product_accept();
         if (Array.isArray(data)) {
-          setRecommendItemForYou(data.slice(0, 4) );
-          console.log(data.slice(0, 4));
+          setRecommendItemForYou(data.slice(0, 4));
         } else {
           setRecommendItemForYou([])
         }
@@ -100,7 +100,7 @@ const HomePage = () => {
         } else {
           setCuratedCollections([])
         }
-        
+
       } catch (error) {
         console.error('Error fetching upcoming online auctions:', error);
       }
@@ -149,6 +149,22 @@ const HomePage = () => {
     fetchData()
   }, [])
 
+  const ws = new WebSocket('ws://localhost:8000');
+
+  ws.addEventListener('open', () => {
+    console.log('Connected to WebSocket server');
+  });
+
+  ws.addEventListener('message', (event) => {
+    const data = JSON.parse(event.data);
+
+    console.log(data)
+
+    if (data.event === 'update_product') {
+      console.log("abc")
+    }
+  });
+
 
 
   return (
@@ -192,8 +208,8 @@ const HomePage = () => {
           <div className="row">
             {curatedCollections.map((object, i) => (
               <div className="col-sm-2" key={i}>
-                <div className='d-flex justify-content-center align-items-center' style={{height: "200px"}}>
-                  <img src={object.image_path} alt={object.title} className="img-fluid" style={{width: "100%", height: "100%", objectFit:"cover"}} ></img>
+                <div className='d-flex justify-content-center align-items-center' style={{ height: "200px" }}>
+                  <img src={object.image_path} alt={object.title} className="img-fluid" style={{ width: "100%", height: "100%", objectFit: "cover" }} ></img>
                 </div>
 
 
