@@ -65,7 +65,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
+      <div className="flex items-center justify-center gap-2 px-6 py-5.5 lg:py-6.5">
         <Link href="/">
           <Image
             width={176}
@@ -226,82 +226,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
               {/* <!-- Menu Item Dashboard --> */}
 
-              {/* <!-- Menu Item Profile --> */}
-              <SidebarLinkGroup
-                activeCondition={pathname === "/profile" || pathname.includes("profile")}
-              >
-                {(handleClick, open) => {
-                  return (
-                    <React.Fragment>
-                      <Link
-                        href="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === "/profile" || pathname.includes("profile")) &&
-                          "bg-graydark dark:bg-meta-4"
-                          }`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          sidebarExpanded ? handleClick() : setSidebarExpanded(true);
-                        }}
-                      >
-                        <svg
-                          className="fill-current"
-                          width="18"
-                          height="18"
-                          viewBox="0 0 18 18"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M9.0002 7.79065C11.0814 7.79065 12.7689 6.1594 12.7689 4.1344C12.7689 2.1094 11.0814 0.478149 9.0002 0.478149C6.91895 0.478149 5.23145 2.1094 5.23145 4.1344C5.23145 6.1594 6.91895 7.79065 9.0002 7.79065ZM9.0002 1.7719C10.3783 1.7719 11.5033 2.84065 11.5033 4.16252C11.5033 5.4844 10.3783 6.55315 9.0002 6.55315C7.62207 6.55315 6.49707 5.4844 6.49707 4.16252C6.49707 2.84065 7.62207 1.7719 9.0002 1.7719Z"
-                            fill=""
-                          />
-                          <path
-                            d="M10.8283 9.05627H7.17207C4.16269 9.05627 1.71582 11.5313 1.71582 14.5406V16.875C1.71582 17.2125 1.99707 17.5219 2.3627 17.5219C2.72832 17.5219 3.00957 17.2407 3.00957 16.875V14.5406C3.00957 12.2344 4.89394 10.3219 7.22832 10.3219H10.8564C13.1627 10.3219 15.0752 12.2063 15.0752 14.5406V16.875C15.0752 17.2125 15.3564 17.5219 15.7221 17.5219C16.0877 17.5219 16.3689 17.2407 16.3689 16.875V14.5406C16.2846 11.5313 13.8377 9.05627 10.8283 9.05627Z"
-                            fill=""
-                          />
-                        </svg>
-                        Profile
-                        <svg
-                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"
-                            }`}
-                          width="20"
-                          height="20"
-                          viewBox="0 0 20 20"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
-                            fill=""
-                          />
-                        </svg>
-                      </Link>
-                      {/* <!-- Dropdown Menu Start --> */}
-                      <div
-                        className={`translate transform overflow-hidden ${!open && "hidden"
-                          }`}
-                      >
-                        <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
-                          {/* Add the following list item for Edit Profile */}
-                          <li>
-                            <Link
-                              href="/edit-profile"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/edit-profile" && "text-white"
-                                }`}
-                            >
-                              Edit Profile
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                      {/* <!-- Dropdown Menu End --> */}
-                    </React.Fragment>
-                  );
-                }}
-              </SidebarLinkGroup>
-              {/* <!-- Menu Item Profile --> */}
+
               {/* 
               <SidebarLinkGroup
                 activeCondition={
@@ -406,6 +331,99 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
              */}
 
+              {/* <!-- Menu Verification --> */}
+              <SidebarLinkGroup
+                activeCondition={
+                  pathname === "/verification" || pathname.includes("verification")
+                }
+              >
+                {(handleClick, open) => {
+                  return (
+                    <React.Fragment>
+                      <Link
+                        href="#"
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === "/verification" ||
+                          pathname.includes("verification")) &&
+                          "bg-graydark dark:bg-meta-4"
+                          }`}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          sidebarExpanded
+                            ? handleClick()
+                            : setSidebarExpanded(true);
+                        }}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-check-circle">
+                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+
+                        Verification
+                        <svg
+                          className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"
+                            }`}
+                          width="20"
+                          height="20"
+                          viewBox="0 0 20 20"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            clipRule="evenodd"
+                            d="M4.41107 6.9107C4.73651 6.58527 5.26414 6.58527 5.58958 6.9107L10.0003 11.3214L14.4111 6.91071C14.7365 6.58527 15.2641 6.58527 15.5896 6.91071C15.915 7.23614 15.915 7.76378 15.5896 8.08922L10.5896 13.0892C10.2641 13.4147 9.73651 13.4147 9.41107 13.0892L4.41107 8.08922C4.08563 7.76378 4.08563 7.23614 4.41107 6.9107Z"
+                            fill=""
+                          />
+                        </svg>
+                      </Link>
+                      {/* <!-- Dropdown Menu Start --> */}
+                      <div
+                        className={`translate transform overflow-hidden ${!open && "hidden"
+                          }`}
+                      >
+                        <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
+                          <li>
+                            <Link
+                              href="/verification/verification-seller"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/verification/verification-seller" &&
+                                "text-white"
+                                }`}
+                            >
+                              Seller Verification
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
+                              href="/verification/verification-product"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/verification/verification-product" &&
+                                "text-white"
+                                } `}
+                            >
+                              Product Verification
+                            </Link>
+                          </li>
+                          {/* <li>
+                            <Link
+                              href="/verification/verification-auction"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/verification/verification-auction" &&
+                                "text-white"
+                                } `}
+                            >
+                              Auction Verification
+                            </Link>
+                          </li> */}
+                        </ul>
+                      </div>
+                      {/* <!-- Dropdown Menu End --> */}
+                    </React.Fragment>
+                  );
+                }}
+              </SidebarLinkGroup>
+              {/* <!-- Menu Verification --> */}
+
+
+
+
               {/* <!-- Menu UsersManegement --> */}
               <SidebarLinkGroup
                 activeCondition={
@@ -428,11 +446,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-check-circle">
+                        {/* <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-check-circle">
                           <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                           <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                        </svg>
+                        </svg> */}
 
+                        <img
+                          style={{ filter: 'invert(1)' }}
+                          width={18}
+                          height={18}
+                          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAADmElEQVR4nO2aaahNURTHf8/8zIQ3KD1DMmQmJUkSkUgS+aBk9sFc8uGlzF+EL0QhvpAoyZBQJCUpU0mmh8w8lHim0K7/rd3p3HPOvfte+yj/WvW6b691/v9zzt5rr7UP/Md//DMYBKwBLgD3gc+yJ8BhYBJQQorRCzgD/E5gx4DmpBCjdNcNyVpgOzAe6AI0BUqBbsBi4K3GfQEOAGWkBH0tEfuANjHjhwI3gJ/yeQCUkwJcEqE9Ob77nYGr8j2OZwwWkbd5vvPmSXxUjCF4xFqR2OYQY4tibMUjToqEWVJdFgoT4woecUckejvE6KQYr/CIZyLR1SFGY+CXrBRPeCohJhm6ILN8t8YTbovAQIcYjayM3wBPOCoCUxxilCuGeSresE4kzDLsumpdwyNmFCAzVyvGTjxivki8cIhxWTH24hG3RGKmQ4xh2kB+BerhCa8lpKNjnFrfy+8FEZjmEKNSMT74rByXi8QjYEUe/hOtOXIIj2gGXBcRUyzlioPyfQd0xzPaAj9kLXLwMxP7pYT0JyW4KEJzc/AZ7/Aki54YHwJNEoxvaL2SC0gR6gM3ReyIiEZhh8beTTD2r6OP5okh2CpmrKnT32fZNfcJ6YMNKBLnSIJJhNRYIioD+WNqiJBZ1v9L5JMKIT2tnpjpwJy1dgfVIUJMw8+gA3BKPsa36ELOJ6jjMyIyZM02ZZNVddr2BtiszWnmt6KJMXf0u3Wh72r1tMwy1haRr73JMXfFosTqGtr2TbvbsPGnCyBkV6EE9ACq9Pd0dULsC82L8C2zds/52JMsTzunnDEZOCfid6yAG6wLmVwRh/0OQjblK8CQXQU8Dgl6Qnunejr7uKTuSBjGAsuA3cCnkFh1wFI1JSo0ti7L/DDl8RJgTFIRc+QYdYfMqoImX+bMY2HIHIm700sjyoUoi0Sp1fKJs1/ac2UwWpk+mJXj4pSH8KhwEdJI+SCX99acQo3U+v5OR3FBxMWoKLSQ9Q4TMWMT8hCyPMRnZb5CKgPJLR/7kGXCtwNGqJX0PMSvTmIqZCvUYQmOe6rFZ2zU0d3qAjwNc9BZzOV3c4L4Bcm6s2Ou0U+Z3+WJV8UJeVQAIcMTVogudjmugx+WgHK1qN1vmWoS12vUpOGcviogxiRcs8W5l2Vibwwk5Zokr9bfQic1LMw3Ku3126IQIabYQh8j7NKG0XxVkSoE64lxIUJM+Rvlk0qYMjgoxDQkIvEHzzBVgMFaqUsAAAAASUVORK5CYII="
+                        ></img>
                         Manager
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"
@@ -623,34 +647,43 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </SidebarLinkGroup>
               {/* <!-- Menu ViewItem --> */}
 
-              {/* <!-- Menu Verification --> */}
+
+
+              {/* <!-- Menu Item Profile --> */}
               <SidebarLinkGroup
-                activeCondition={
-                  pathname === "/verification" || pathname.includes("verification")
-                }
+                activeCondition={pathname === "/profile" || pathname.includes("profile")}
               >
                 {(handleClick, open) => {
                   return (
                     <React.Fragment>
                       <Link
                         href="#"
-                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === "/verification" ||
-                          pathname.includes("verification")) &&
+                        className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${(pathname === "/profile" || pathname.includes("profile")) &&
                           "bg-graydark dark:bg-meta-4"
                           }`}
                         onClick={(e) => {
                           e.preventDefault();
-                          sidebarExpanded
-                            ? handleClick()
-                            : setSidebarExpanded(true);
+                          sidebarExpanded ? handleClick() : setSidebarExpanded(true);
                         }}
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="feather feather-check-circle">
-                          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                          <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        <svg
+                          className="fill-current"
+                          width="18"
+                          height="18"
+                          viewBox="0 0 18 18"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M9.0002 7.79065C11.0814 7.79065 12.7689 6.1594 12.7689 4.1344C12.7689 2.1094 11.0814 0.478149 9.0002 0.478149C6.91895 0.478149 5.23145 2.1094 5.23145 4.1344C5.23145 6.1594 6.91895 7.79065 9.0002 7.79065ZM9.0002 1.7719C10.3783 1.7719 11.5033 2.84065 11.5033 4.16252C11.5033 5.4844 10.3783 6.55315 9.0002 6.55315C7.62207 6.55315 6.49707 5.4844 6.49707 4.16252C6.49707 2.84065 7.62207 1.7719 9.0002 1.7719Z"
+                            fill=""
+                          />
+                          <path
+                            d="M10.8283 9.05627H7.17207C4.16269 9.05627 1.71582 11.5313 1.71582 14.5406V16.875C1.71582 17.2125 1.99707 17.5219 2.3627 17.5219C2.72832 17.5219 3.00957 17.2407 3.00957 16.875V14.5406C3.00957 12.2344 4.89394 10.3219 7.22832 10.3219H10.8564C13.1627 10.3219 15.0752 12.2063 15.0752 14.5406V16.875C15.0752 17.2125 15.3564 17.5219 15.7221 17.5219C16.0877 17.5219 16.3689 17.2407 16.3689 16.875V14.5406C16.2846 11.5313 13.8377 9.05627 10.8283 9.05627Z"
+                            fill=""
+                          />
                         </svg>
-
-                        Verification
+                        Profile
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${open && "rotate-180"
                             }`}
@@ -674,36 +707,16 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           }`}
                       >
                         <ul className="mb-5.5 mt-4 flex flex-col gap-2.5 pl-6">
+                          {/* Add the following list item for Edit Profile */}
                           <li>
                             <Link
-                              href="/verification/verification-seller"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/verification/verification-seller" &&
-                                "text-white"
+                              href="/edit-profile"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/edit-profile" && "text-white"
                                 }`}
                             >
-                              Seller Verification
+                              Edit Profile
                             </Link>
                           </li>
-                          <li>
-                            <Link
-                              href="/verification/verification-product"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/verification/verification-product" &&
-                                "text-white"
-                                } `}
-                            >
-                              Product Verification
-                            </Link>
-                          </li>
-                          {/* <li>
-                            <Link
-                              href="/verification/verification-auction"
-                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ${pathname === "/verification/verification-auction" &&
-                                "text-white"
-                                } `}
-                            >
-                              Auction Verification
-                            </Link>
-                          </li> */}
                         </ul>
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
@@ -711,8 +724,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   );
                 }}
               </SidebarLinkGroup>
-              {/* <!-- Menu Verification --> */}
-
+              {/* <!-- Menu Item Profile --> */}
 
               {/* <li>
                 <Link
@@ -750,7 +762,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               </li> */}
 
 
-{/* 
+              {/* 
               <li>
                 <Link
                   href="/settings"

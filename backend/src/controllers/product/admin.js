@@ -236,9 +236,7 @@ class ProductController extends ProductService {
         try {
             let where_case = {
                 ...this.where_case,
-                inspect_id: {
-                    [Op.not]: null
-                }
+                inspect_id: null 
             };
     
             const products = await this.get_product(where_case)

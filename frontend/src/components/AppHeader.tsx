@@ -27,6 +27,7 @@ import { UserContext } from '@/services/context/UserContext';
 import { SellerContext } from '@/services/context/SellerContext';
 import { loginFromToken } from '@/services/auth/login';
 import { get_seller_by_user } from '@/services/account/seller';
+import Product from '@/models/product';
 
 
 
@@ -99,39 +100,44 @@ function Header() {
     setSearchText(e.target.value);
   };
 
+  
+  
   const handleKeyPress = (e: { key?: any; preventDefault: any; }) => {
+    
     if (e.key === 'Enter') {
       e.preventDefault();
-      handleSubmit(e);
+      // handleSubmit(e);
+      // link to /search page and pass searchText as query
+      router.push(`/search?searchText=${searchText}`);
     }
   };
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
+  // const handleSubmit = (e: { preventDefault: () => void; }) => {
+  //   e.preventDefault();
 
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/yourEndpoint', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ searchText })
-        });
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await fetch('/api/yourEndpoint', {
+  //         method: 'POST',
+  //         headers: {
+  //           'Content-Type': 'application/json'
+  //         },
+  //         body: JSON.stringify({ searchText })
+  //       });
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+  //       if (!response.ok) {
+  //         throw new Error('Network response was not ok');
+  //       }
 
-        const data = await response.json();
-        console.log(data); // Handle response data as needed
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    };
+  //       const data = await response.json();
+  //       console.log(data); // Handle response data as needed
+  //     } catch (error) {
+  //       console.error('Error:', error);
+  //     }
+  //   };
 
-    fetchData();
-  };
+  //   fetchData();
+  // };
 
   const [showNotificationModal, setShowNotificationModal] = useState(false);
 

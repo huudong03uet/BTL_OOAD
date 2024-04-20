@@ -257,7 +257,7 @@ const SignIn: React.FC = () => {
                     value={password}
                       type="password"
                       placeholder="6+ Characters, 1 Capital letter"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 text-white outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10  outline-none focus:border-primary focus-visible:shadow-none dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
 
                     <span className="absolute right-4 top-4">
@@ -291,7 +291,7 @@ const SignIn: React.FC = () => {
                   >Sign In</button>
                 </div>
 
-                <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                {/* <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
                   <span>
                     <svg
                       width="20"
@@ -326,16 +326,16 @@ const SignIn: React.FC = () => {
                     </svg>
                   </span>
                   Sign in with Google
-                </button>
+                </button> */}
 
-                <div className="mt-6 text-center">
+                {/* <div className="mt-6 text-center">
                   <p>
                     Don’t have any account?{" "}
                     <Link href="/auth/signup" className="text-primary">
                       Sign Up
                     </Link>
                   </p>
-                </div>
+                </div> */}
               </form>
             </div>
           </div>
