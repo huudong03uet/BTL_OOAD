@@ -16,6 +16,7 @@ const Admin = require('../../models/admin');
 const Review = require('../../models/review');
 
 const Image = require('../../models/image');
+const websocket = require('../../../conf/web_socket');
 
 
 const AUCTION_INCLUDE = [
@@ -48,6 +49,7 @@ const AUCTION_INCLUDE = [
 
 class AuctionService {
     constructor () {
+        this.websocket = websocket
         this.where_case = {}
         this.include = [
             {

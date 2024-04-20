@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
+const WebSocket = require('ws');
 
 const logger = require('../../../conf/logger');
 const sequelize = require('../../../conf/sequelize');
@@ -330,6 +331,14 @@ const AuctionService = require('./conponent');
 
 
 class AuctionController extends AuctionService {
+    socket_auction = async(req, res) => {
+        this.websocket.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ event: 'update_auction' }));
+            }
+        })
+    }
+
     create_auction = async (req, res) => {
         const t = await sequelize.transaction();
         try {
@@ -375,6 +384,8 @@ class AuctionController extends AuctionService {
             await Promise.all(promises);
     
             await t.commit();
+
+            this.socket_auction()
     
             logger.info(`${statusCode.HTTP_200_OK} [auction:${newAuction.id}]`)
             return res.status(statusCode.HTTP_200_OK).json(newAuction)
@@ -426,6 +437,8 @@ class AuctionController extends AuctionService {
             }
     
             await t.commit();
+
+            this.update_auction()
     
             logger.info(`${statusCode.HTTP_200_OK} [auction:${auction.id}]`)
             return res.status(statusCode.HTTP_200_OK).json(auction)
