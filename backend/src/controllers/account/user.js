@@ -4,7 +4,7 @@ const { role_edit_profile, role_change_password, role_forgot_password } = requir
 const ProfileService = require('./role');
 const { check_required_field } = require('../util');
 
-
+const stripe = require('stripe')('sk_test_51P7bjf05CJZ8qs7kDcGSebDhXZPJ7VpPLceToyYQ7PQzfzYrwZqI8wuvfqBNDZeZ8wwlW07NFRO1CGza2softbc500Fz4T8jv6');
 // const edit_profile = async (req, res) => {
 //     return await role_edit_profile(req, res, User)
 // }
@@ -91,6 +91,37 @@ class ProfileController extends ProfileService {
             return res.status(500).json({ message: 'Internal server error' });
         }
     };
+
+
+    cardPayment = async (req, res) => {
+        const product = await stripe.products.create({
+            name: 'give me money',
+          });
+          
+        const price = await stripe.prices.create({
+            currency: 'vnd',
+            custom_unit_amount: {
+              enabled: true,
+            },
+            product: product.id,
+          });
+        const session = await stripe.checkout.sessions.create({
+            submit_type: 'donate', // Set submit type to 'donate' for custom amounts
+            payment_method_types: ['card'],
+            // business: {name: 'Auction'},
+            line_items: [
+                {
+                  price: price.id,
+                  quantity: 1,
+                },
+              ],            
+            mode: 'payment', 
+            success_url: `http://localhost:3000`,
+            cancel_url: `http://localhost:3000`,
+        })
+        console.log(session)
+        res.send({url: session.url});
+    }
 }
 
 module.exports = new ProfileController()
