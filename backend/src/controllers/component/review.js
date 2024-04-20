@@ -1,5 +1,6 @@
 const { Op } = require('sequelize');
 
+const sequelize = require('../../../conf/sequelize')
 const statusCode = require('../../../constants/status')
 const logger = require("../../../conf/logger")
 
@@ -60,6 +61,50 @@ let get_review = async (req, res) => {
 }
 
 
+let set_review = async (req, res) => {
+    const t = await sequelize.transaction();
+    try {
+        if (!check_required_field(req.body, ["seller_id", "user_evaluate", "star", "comment"])) {
+            logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+            return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+        }
+
+        console.log(req.body)
+
+
+        let [review, created] = await Review.findOrCreate({
+            where: {
+                seller_id: req.body.seller_id,
+                user_evaluate: req.body.user_evaluate,
+            },
+            defaults: {
+                star: req.body.star,
+                comment: req.body.comment
+            },
+            transaction: t
+        });
+
+        if (!created) {
+            await review.update({
+                star: req.body.star,
+                comment: req.body.comment
+            }, { transaction: t });
+        }
+
+        await t.commit();
+
+
+        logger.info(`${statusCode.HTTP_200_OK} [review: ${review.id}]`)
+        return res.status(statusCode.HTTP_200_OK).json(review.id);
+    } catch (error) {
+        await t.rollback();
+        logger.error(`Get Location: ${error}`)
+        return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    }
+}
+
+
 module.exports = {
-    get_review
+    get_review,
+    set_review
 };
