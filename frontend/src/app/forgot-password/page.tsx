@@ -21,8 +21,8 @@ export default function Item() {
             <div className="d-flex justify-content-center">
                 <div className='m-5'>
                     <div className='d-flex justify-content-center'>
-                        <img src="/img/logo.svg" style={{cursor: "pointer"}}
-                            alt="test" width={"200px"}></img>
+                        <img src="/logo.png" style={{cursor: "pointer"}}
+                            alt="logo" width={"200px"}></img>
                     </div>
                     <div className="my-4" style={{ fontWeight: "300", fontSize: "24px" }}>
                         Password Assistance

@@ -5,7 +5,8 @@ const send_email = require('../../../conf/email');
 
 const User = require('../../models/user');
 
-const { hash_password, compare_password, random_password, find_or_create_location, check_required_field, upload_image, delete_image } = require('../util')
+const { hash_password, compare_password, random_password, find_or_create_location, check_required_field, upload_image, delete_image } = require('../util');
+const websocket = require('../../../conf/web_socket');
 
 
 // const role_edit_profile = async (req, res, Model) => {
@@ -174,6 +175,7 @@ class ProfileService {
     constructor(model) {
         this.model = model
         this.imageToDelete = null;
+        this.websocket = websocket;
     }
 
     get_role_data(dict) {

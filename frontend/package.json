@@ -52,11 +52,13 @@
     "react-spring": "^9.7.3",
     "react-timer-hook": "^3.0.7",
     "react-toastify": "^10.0.5",
+    "socket.io-client": "^4.7.5",
     "style-loader": "^3.3.4",
     "styled-components": "^6.1.8",
     "swr": "^2.2.5",
     "tailwindcss": "^3.4.1",
     "uuid": "^9.0.1",
+    "ws": "^8.16.0",
     "zod": "^3.22.4"
   },
   "devDependencies": {

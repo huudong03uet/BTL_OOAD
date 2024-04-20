@@ -242,6 +242,8 @@ class ProductController extends ProductService {
             set_value_redis(notifyKey, notifyValue);
     
             await t.commit();
+
+            this.socket_product()
     
             logger.info(`${statusCode.HTTP_201_CREATED} [product:${product.id}]`)
             res.status(statusCode.HTTP_201_CREATED).json(product);
@@ -302,6 +304,8 @@ class ProductController extends ProductService {
     
             await product.save({ transaction: t });
             await t.commit();
+
+            this.socket_product()
     
             await delete_key_redis(`${product.id}`)
     

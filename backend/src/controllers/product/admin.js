@@ -321,6 +321,8 @@ class ProductController extends ProductService {
             await delete_key_redis(`notify:product:${product_id}`)
     
             await t.commit();
+
+            this.socket_product()
     
             logger.info(`${statusCode.HTTP_201_CREATED} product inspect done`)
             return res.status(statusCode.HTTP_201_CREATED).json("Done");
@@ -368,6 +370,8 @@ class ProductController extends ProductService {
             });
     
             await t.commit();
+
+            this.socket_product()
     
             logger.info(`${statusCode.HTTP_201_CREATED} create category done`)
             res.status(statusCode.HTTP_201_CREATED).json("done")
