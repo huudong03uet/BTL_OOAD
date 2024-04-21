@@ -10,7 +10,10 @@ const Category = require('../../models/category')
 const Inspection = require('../../models/inspection');
 const ProductService = require('./conponent');
 const { check_required_field } = require('../util')
-const { update_value_redis, get_value_redis, set_value_redis } = require('../util/redis')
+const { update_value_redis, get_value_redis, set_value_redis } = require('../util/redis');
+const Product = require('../../models/product');
+const LoveProduct = require('../../models/product_love');
+const Image = require('../../models/image');
 
 
 class ProductController extends ProductService {
@@ -119,6 +122,61 @@ class ProductController extends ProductService {
     
             logger.info(`${statusCode.HTTP_200_OK} product accept: ${products.length}`)
             return res.status(statusCode.HTTP_200_OK).json(products);
+        } catch (error) {
+            logger.error(`Get products error: ${error}`);
+            return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+        }
+    }
+
+    service_product_save = async (req, res) => {
+        try {
+            if (!check_required_field(req.params, ["user_id"])) {
+                logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+                return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+            }
+
+            let pass_products = await Product.findAll({
+                where: {
+                    status: AuctionProductStatus.SOLD
+                },
+                include: [
+                    {
+                        model: LoveProduct,
+                        where: {
+                            user_id: req.params.user_id
+                        }
+                    },
+                    {
+                        model: Image,
+                    }
+                ]
+            })
+
+            let current_products = await Product.findAll({
+                where: {
+                    status: {
+                        [Op.ne]: AuctionProductStatus.SOLD
+                    }
+                },
+                include: [
+                    {
+                        model: LoveProduct,
+                        where: {
+                            user_id: req.params.user_id
+                        }
+                    },
+                    {
+                        model: Image,
+                    }
+                ]
+            })
+
+            logger.info(`${statusCode.HTTP_200_OK} pass_products length: ${pass_products.length}`)
+            logger.info(`${statusCode.HTTP_200_OK} current_products length: ${current_products.length}`)
+            return res.status(statusCode.HTTP_200_OK).json({
+                "pass_products": pass_products,
+                "current_products": current_products,
+            });
         } catch (error) {
             logger.error(`Get products error: ${error}`);
             return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");

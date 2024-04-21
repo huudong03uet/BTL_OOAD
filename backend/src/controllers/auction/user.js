@@ -536,6 +536,58 @@ class AuctionController extends AuctionService {
             return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
         }
     }
+
+    service_get_auction_by_pk = async (req, res) => {
+        try {
+            if (!check_required_field(req.params, ["auction_id", "user_id"])) {
+                logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+                return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+            }
+    
+            let whereCondition = {
+                [Op.or]: [
+                    { status: AuctionStatus.PUBLIC },
+                    { '$users.id$': req.params.user_id, status: AuctionStatus.PRIVATE }
+                ]
+            }
+    
+            let auctionIncludes = this.include.map(include => {
+                if (include.model === Product) {
+                    return {
+                        model: Product,
+                        include: [
+                            {
+                                model: Image,
+                                attributes: ['id', 'url'],
+                                limit: 1
+                            },
+                            {
+                                model: LoveProduct,
+                                attributes: ['id'],
+                            }
+                        ],
+                    };
+                } else if (include.model == User) {
+                    return {
+                        ...include,
+                        through: { attributes: [] },
+                        attributes: ['id'],
+                        required: false,
+                        where: { id: req.params.user_id }
+                    }
+                }
+                return include;
+            })
+    
+            let auction = await this.get_auction_by_pk(req.params.auction_id, whereCondition, auctionIncludes)
+
+            logger.info(`${statusCode.HTTP_200_OK} [auction: ${auction.id}]`)
+            return res.status(statusCode.HTTP_200_OK).json(auction);
+        } catch (error) {
+            logger.error(`Auction add product: ${error}`)
+            return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+        }
+    }
 }
 
 

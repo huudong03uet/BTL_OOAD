@@ -29,4 +29,9 @@ router.get("/all-product", (req, res) => {
     productController.service_products(req, res);
 });
 
+
+router.get("/save-product/user_id=:user_id", (req, res) => {
+    productController.service_product_save(req, res);
+});
+
 module.exports = router;
