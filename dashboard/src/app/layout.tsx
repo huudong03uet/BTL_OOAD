@@ -17,9 +17,9 @@ export default function RootLayout({
 
   // const pathname = usePathname();
 
-  useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => setLoading(false), 1000);
+  // }, []);
 
   return (
     // <>
@@ -34,8 +34,8 @@ export default function RootLayout({
       <AdminProvider>
         <body suppressHydrationWarning={true}>
           <div className="dark:bg-boxdark-2 dark:text-bodydark">
-              {loading ? <Loader /> : children}
-              {/* {children} */}
+              {/* {loading ? <Loader /> : children} */}
+              {children}
           </div>
         </body>
       </AdminProvider>

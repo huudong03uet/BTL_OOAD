@@ -6,6 +6,11 @@ interface Review {
     user_evaluate: number;
 }
 
+interface Location {
+    id: number;
+    city: string;
+    country: string
+}
 
 export default interface Seller {
     id: number;
@@ -13,7 +18,7 @@ export default interface Seller {
     name: string;
     description: string;
     phone: string,
-    location_id: number,
+    location: Location,
     user_id: number,
     status: string,
     reviews: Review[],

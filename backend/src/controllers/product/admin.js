@@ -237,7 +237,7 @@ class ProductController extends ProductService {
             let where_case = {
                 ...this.where_case,
                 inspect_id: {
-                    [Op.not]: null
+                    [Op.is]: null
                 }
             };
     

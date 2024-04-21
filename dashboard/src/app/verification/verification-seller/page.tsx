@@ -21,7 +21,7 @@ const VerificationSellerPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${HOST}/account/seller/all`);
+        const response = await axios.get(`${HOST}/account/seller/seller_not_inspect`);
         const data = response.data;
         if (!Array.isArray(data)) {
           throw new Error("Invalid data format");

@@ -4,11 +4,41 @@ import DropdownMessage from "./DropdownMessage";
 import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
+import { AdminContext } from "@/context/AdminContext";
+import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { loginFromToken } from "@/service/auth";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+
+  const { admin, setAdmin } = useContext(AdminContext);
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const handleLogin = async () => {
+      try {
+        const response = await loginFromToken(); 
+        
+        if (response?.ok) {
+          setAdmin(response.data);
+        } else {
+          console.error("Login failed:", response?.error);
+          router.push(`/auth/signin`);
+        }
+      } catch (error) {
+        console.error("Error during login:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    handleLogin();
+  }, [setAdmin, router]);
+
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 py-4 shadow-2 md:px-6 2xl:px-11">

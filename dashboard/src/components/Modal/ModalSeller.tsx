@@ -11,6 +11,8 @@ interface IProps {
   showModalCreate: boolean;
   setShowModalCreate: (value: boolean) => void;
   sellerInformation: Seller;
+  onAcceptReject: (status: string , packageItem: Seller) => void;
+
 }
 
 function CreateModal(props: IProps) {
@@ -34,6 +36,7 @@ function CreateModal(props: IProps) {
       if (!response.data) {
         throw new Error('Failed to update seller status');
       }
+      props.onAcceptReject(newStatus, sellerInformation);
 
       // Nếu thành công, cập nhật lại dữ liệu bằng cách sử dụng mutate từ SWR
       handleCloseModal(); 
@@ -90,10 +93,10 @@ function CreateModal(props: IProps) {
             </div> */}
           </ModalBody>
           <ModalFooter style={{ justifyContent: 'space-between' }}>
-            <Button color="danger" onPress={() => handleSubmit('reject')}>
+            <Button color="danger" onPress={() => handleSubmit('denied')}>
               Reject
             </Button>
-            <Button color="primary" onPress={() => handleSubmit('accept')}>
+            <Button color="primary" onPress={() => handleSubmit('accepted')}>
               Accept
             </Button>
           </ModalFooter>

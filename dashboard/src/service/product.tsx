@@ -23,6 +23,7 @@ let product_inspect = async (description: string, product_id: number, status: st
             "admin_id": admin_id,
             "status": status
         }
+        console.log(body)
         const response = await axios.post(url, body);
         return;
     } catch (error: any) {
@@ -35,6 +36,7 @@ let product_all = async () => {
     try {
         let url = `${HOST}/product/admin/all`;
         const response = await axios.get(url);
+        console.log(response.data);
         return response.data;
     } catch (error: any) {
         console.error('Error fetching data:', error);
