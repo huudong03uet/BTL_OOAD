@@ -18,7 +18,6 @@ export default function ChatSupport(
     userNewContact: number;
   }
 ) {
-
   console.log("props.userNewContact", props.userNewContact)
 
   const [chatInfo, setChatInfo] = useState({
