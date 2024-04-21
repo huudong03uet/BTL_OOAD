@@ -1,11 +1,11 @@
-import React from "react";
-import Link from "next/link";
-import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
 
-import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import SelectGroupTwo from "@/components/SelectGroup/SelectGroupTwo";
+import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Next.js Edit Profile Page | TailAdmin - Next.js Dashboard Template",
@@ -25,22 +25,22 @@ const EditProfile: React.FC = () => {
               <Link className="mb-5.5 inline-block" href="/">
                 <Image
                   className="hidden dark:block"
-                  src={"/images/logo/logo.svg"}
+                  src={"/images/logo.png"}
                   alt="Logo"
                   width={176}
                   height={32}
                 />
                 <Image
                   className="dark:hidden"
-                  src={"/images/logo/logo-dark.svg"}
+                  src={"/images/logo.png"}
                   alt="Logo"
                   width={176}
                   height={32}
                 />
               </Link>
               <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
+                {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                suspendisse. */}
               </p>
 
               <span className="mt-15 inline-block">

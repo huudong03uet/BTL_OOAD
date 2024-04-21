@@ -1,11 +1,8 @@
-import { useState } from 'react';
-import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
-import Seller from '@/types/seller';
-import { useSWRConfig } from "swr"
-import { mutate } from "swr"
-import axios from 'axios';
 import { HOST } from '@/service/host';
-import { ToastContainer, toast } from 'react-toastify';
+import { Seller } from '@/types/seller';
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -95,30 +92,30 @@ function CreateModal(props: IProps) {
             <div className="mb-1 ml-3">
               <p><strong>Description:</strong> {sellerInformation.description}</p>
             </div>
-            {/* <div className="mb-0 ml-3">
-              <p><strong>Card Number:</strong> {sellerInformation.card_number}</p>
+            <div className="mb-0 ml-3">
+              <p><strong>Card Number:</strong> {}</p>
             </div>
             <div className="mb-0 flex-row" style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <p className='ml-3'><strong>Expiry:</strong> {expiry}</p>
-              <p className='mr-40'><strong>CVN:</strong> {cvn}</p>
+              <p className='ml-3'><strong>Expiry:</strong> {}</p>
+              <p className='mr-40'><strong>CVN:</strong> {}</p>
             </div>
             <div className="mb-1 ml-3">
-              <p><strong>Name on Card:</strong> {nameOnCard}</p>
-            </div> */}
+              <p><strong>Name on Card:</strong> {}</p>
+            </div>
 
-            {/* <div className="mb-0">
+            <div className="mb-0">
               <strong>Address Information:</strong>
             </div>
             <div className="mb-0 ml-2">
-              <p><strong>Country:</strong> {sellerInformation.location_id}</p>
-            </div>
+              <p><strong>Country:</strong> {}</p>
+            </div>  
             <div className="mb-0 ml-3">
-              <p><strong>Address:</strong> {address}</p>
+              <p><strong>Address:</strong> {}</p>
             </div>
             <div className="mb-0 flex-row" style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <p className='ml-3'><strong>City:</strong> {city}</p>
-              <p className='mr-40'><strong>State:</strong> {state}</p>
-            </div> */}
+              <p className='ml-3'><strong>City:</strong> {}</p>
+              <p className='mr-40'><strong>State:</strong> {}</p>
+            </div>
           </ModalBody>
           <ModalFooter style={{ justifyContent: 'space-between' }}>
             <Button color="danger" onPress={() => handleSubmit('denied')}>

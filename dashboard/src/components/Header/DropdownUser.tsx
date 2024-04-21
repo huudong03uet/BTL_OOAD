@@ -1,8 +1,8 @@
-import { useContext, useEffect, useRef, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
 import { AdminContext } from "@/context/AdminContext";
 import { logout } from "@/service/auth";
+import Image from "next/image";
+import Link from "next/link";
+import { useContext, useEffect, useRef, useState } from "react";
 
 
 const DropdownUser = () => {
@@ -63,7 +63,7 @@ const DropdownUser = () => {
             <Image
               width={112}
               height={112}
-              src={"/images/user/user-01.png"}
+              src={"/images/user/avatar.jpg"}
               style={{
                 width: "auto",
                 height: "auto",

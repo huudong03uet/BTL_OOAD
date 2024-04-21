@@ -12,7 +12,7 @@ interface Location {
     country: string
 }
 
-export default interface Seller {
+export  type Seller = {
     id: number;
     email: string;
     name: string;
