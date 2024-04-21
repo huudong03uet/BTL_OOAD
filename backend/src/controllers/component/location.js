@@ -19,7 +19,7 @@ let get_location = async (req, res) => {
 
         const location = await Location.findByPk(location_id);
 
-        logger.info(`${statusCode.HTTP_202_ACCEPTED} [location:${location_id}]`)
+        logger.info(`${statusCode.HTTP_200_OK} [location:${location_id}]`)
         return res.status(statusCode.HTTP_200_OK).json(location)
     } catch (error) {
         logger.error(`Get Location: ${error}`)
