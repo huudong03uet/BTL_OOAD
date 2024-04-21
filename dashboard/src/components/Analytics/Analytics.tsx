@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ChartOne from "../Charts/ChartOne";
 import ChartThree from "../Charts/ChartThree";
 import ChartTwo from "../Charts/ChartTwo";
@@ -7,6 +7,7 @@ import ChatCard from "../Chat/ChatCard";
 import TableOne from "../Tables/TableOne";
 import CardDataStats from "../CardDataStats";
 import MapOne from "../Maps/MapOne";
+import { get_total_analyst } from "@/service/component";
 
 interface AnalyticTotalProps {
     totalProduct: number;
@@ -17,12 +18,22 @@ interface AnalyticTotalProps {
 
 const AnalyticChart = () => {
 
-    const analyticsTotalData: AnalyticTotalProps = {
-        totalProduct: 2450,
-        totalAuction: 4502,
-        totalUsers: 3456,
-        totalSeller: 3456,
-    };
+    // const analyticsTotalData: AnalyticTotalProps = {
+    //     totalProduct: 2450,
+    //     totalAuction: 4502,
+    //     totalUsers: 3456,
+    //     totalSeller: 3456,
+    // };
+
+    const [analyticsTotalData, setanalyticsTotalData] = useState<AnalyticTotalProps>({} as AnalyticTotalProps)
+    useEffect(() => {
+      const feet = async () => {
+        const data = await get_total_analyst();
+        setanalyticsTotalData(data)
+      }
+
+      feet();
+    }, [])
 
   return (
     <>
@@ -114,13 +125,7 @@ const AnalyticChart = () => {
       </div>
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
-        <ChartOne />
-        <ChartThree />
-        <MapOne />
-        <div className="col-span-12 xl:col-span-8">
-          <TableOne />
-        </div>
-        <ChatCard />
+        <ChartOne />   
       </div>
     </>
   );

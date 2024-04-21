@@ -45,7 +45,7 @@ const SignIn: React.FC = () => {
       setError(err);
     } else {
       setError(null);
-      window.location.href = '/'
+      window.location.href = '/';
     }
   };
 
