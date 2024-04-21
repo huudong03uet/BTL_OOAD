@@ -29,7 +29,7 @@ function SideBarUser() {
       setUser(null);
       setSeller(null);
       logout()
-      window.location.href = '/';
+    //   window.location.href = '/';
 
     };
   

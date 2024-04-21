@@ -5,5 +5,4 @@ export default interface BidHistory {
     product_id: number;
     user_id: number;
     createdAt: string;
-    winner_id: number;
 }

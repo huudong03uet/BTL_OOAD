@@ -37,6 +37,7 @@ let seller_info = async (seller_id: number) => {
 
 let  get_seller_by_user = async (id: any) =>  {
     try {
+        console.log(id);
         let url = `${HOST}/account/seller/user_id=${id}`;
         const response = await axios.get(url);
         return response.data;

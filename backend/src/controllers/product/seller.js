@@ -15,6 +15,9 @@ const { upload_image, delete_image, check_required_field } = require('../util');
 const { delete_key_redis, set_value_redis, get_notifies } = require('../util/redis');
 const { PRODUCT_INCLUDE, get_product } = require('./conponent');
 const ProductService = require('./conponent');
+const Inspection = require('../../models/inspection');
+const Auction = require('../../models/auction');
+const BidHistory = require('../../models/history_bid');
 
 
 // let add_product = async (req, res) => {
@@ -280,7 +283,7 @@ class ProductController extends ProductService {
             if (!product) {
                 logger.error(`${statusCode.HTTP_403_FORBIDDEN} Product not appect.`);
                 return res.status(statusCode.HTTP_403_FORBIDDEN).json("Product not appect.");
-            } else if (!product.inspect_id) {
+            } else if (product.inspect_id) {
                 logger.error(`${statusCode.HTTP_406_NOT_ACCEPTABLE} Product edit not accept.`);
                 return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json("Product edit not accept.");
             }
@@ -354,7 +357,16 @@ class ProductController extends ProductService {
                 seller_id: req.params.seller_id,
             };
     
-            const products = await this.get_product(where_case)
+            const products = await this.get_product(where_case,                 
+                [
+                { model: Image, as: 'images' },
+                { model: Category, as: 'categories' },
+                { model: Seller, as: 'seller' },
+                { model: Inspection, as: 'inspection' },
+                { model: Auction, as: 'auction' },
+                { model: BidHistory, as: 'bid_histories' },
+                ]
+            )
     
             logger.info(`${statusCode.HTTP_200_OK} products length ${products.length}`)
             return res.status(statusCode.HTTP_200_OK).json(products);
@@ -412,6 +424,34 @@ class ProductController extends ProductService {
             return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
         }
     }
+
+    // service_products = async (req, res) => {
+    //     try {
+    //         if (!check_required_field(req.params, ["seller_id"])) {
+    //             logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+    //             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+    //         }
+
+    //         const products = await Product.findAll({
+    //             where: { seller_id: req.params.seller_id },
+    //             include: [
+    //                 { model: Image, as: 'images' },
+    //                 { model: Category, as: 'categories' },
+    //                 { model: Seller, as: 'seller' },
+    //                 { model: Inspection, as: 'inspection' },
+    //                 { model: Auction, as: 'auction' },
+    //                 { model: BidHistory, as: 'bid_histories' },
+    //             ]
+    //         });
+
+    //         logger.info(`${statusCode.HTTP_200_OK} products length ${products.length}`);
+    //         return res.status(statusCode.HTTP_200_OK).json(products);
+    //     } catch (error) {
+    //         logger.error(`Get product: ${error}`);
+    //         return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
+    //     }
+    // }
+
 }
 
 module.exports = new ProductController()

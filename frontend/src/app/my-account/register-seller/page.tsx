@@ -7,8 +7,10 @@ import { seller_register } from '@/services/account/seller';
 import { boolean } from 'zod';
 import { UserContext } from '@/services/context/UserContext';
 import { SellerContext } from '@/services/context/SellerContext';
+import { useRouter } from 'next/navigation';
 
 export default function PaymentOptions() {
+    const router = useRouter();
     const {user} = useContext(UserContext)
     const {seller} = useContext(SellerContext);
     const [showModal, setShowModal] = useState(false);
@@ -53,16 +55,18 @@ export default function PaymentOptions() {
         }
 
         const response = await seller_register(user?.id, seller_info, card_info, location_info)
+        setShowModal(false);
+        alert("Submit success!")
         console.log(response)
         
     };
 
 
     useEffect(()=>{
-        if (seller?.id && seller?.status == "accept") {
-            window.location.href = '/seller';
+        if (seller?.id && seller?.status == "accepted") {
+            router.push('/seller');
         }
-        if (seller?.id && ! (seller?.status == "accept")) {
+        if (seller?.id && ! (seller?.status == "accepted")) {
             setIsRequested(true);
         }
     

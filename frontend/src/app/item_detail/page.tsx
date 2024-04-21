@@ -19,8 +19,9 @@ import { Link } from "@mui/material";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { UserContext } from "@/services/context/UserContext";
+import { useRouter } from "next/navigation";
 function MyTimer({ expiryTimestamp }: { expiryTimestamp: number }) {
-
+  const router = useRouter();
 
   const {
     totalSeconds,
@@ -319,7 +320,7 @@ export default function Item() {
                     <div className={styles.button} style={{display: 'flex', justifyContent: 'space-around'}}>
                       <button type="button" className={`btn btn-primary btn-lg btn-block ${styles['btn-follow']} ${styles['button-style']}`}
                         onClick={() => {
-                          window.location.href = `/auction-house/${sellerData?.id}`;
+                          router.push(`/auction-house/${sellerData?.id}`);
                         }
                         }
                       >View Seller Profile</button>

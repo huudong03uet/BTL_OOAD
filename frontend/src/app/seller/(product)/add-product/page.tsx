@@ -77,7 +77,7 @@ export default function AddProduct() {
         }
 
         fetchData();
-    }, []);
+    }, [seller]);
 
 
     const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -109,7 +109,6 @@ export default function AddProduct() {
         formData.append("startBid", startBid);
         formData.append("provenance", provenance);
         formData.append("categories", JSON.stringify(selectedCategories));
-
 
         if (productImages.length > 0 && seller_id !== null) {
             formData.append("seller_id", seller_id);

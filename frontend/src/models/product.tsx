@@ -1,14 +1,15 @@
 
 //  chọn cái anyf
 import BidHistory from './bid_history';
-import Winner from './winner';
+
+
 
 interface Image {
     id: number,
     url: string,
 }
 
-interface Inspect {
+interface Inspection {
     id: number;
     admin_id: number;
     description: string;
@@ -47,7 +48,7 @@ export default interface Product {
     love?: number;
     condition_report?: string;
     provenance?: string;
-    inspection: Inspect | null;
+    inspection: Inspection | null;
     visibility: string;
     categories: Category[];
     seller: Seller;

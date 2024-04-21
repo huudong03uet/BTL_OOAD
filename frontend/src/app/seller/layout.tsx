@@ -20,6 +20,25 @@ export default function SellerLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const {user, setUser} = useContext(UserContext);
+  const {seller, setSeller} = useContext(SellerContext);
+
+  useEffect(() => {
+      const fetchData = async () => {
+        if(user?.id) {
+          console.log(user?.id, "1111111111111")
+          try {
+              let data = await get_seller_by_user(user?.id);
+              if(data) {
+                setSeller(data);
+              }
+            } catch (err) {
+              console.log(err)
+            }
+        }
+      };
+      fetchData(); 
+    }, [setSeller, user?.id]); 
   return (
     <section className={inter.className}>
       <AppHeader />

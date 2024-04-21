@@ -7,6 +7,7 @@ import { user_get_detail_product } from "@/services/product/user";
 import { seller_update_product } from "@/services/product/seller";
 import { UserContext } from "@/services/context/UserContext";
 import { SellerContext } from "@/services/context/SellerContext";
+import { useRouter } from "next/navigation";
 
 
 export default function EditProduct() {
@@ -14,7 +15,7 @@ export default function EditProduct() {
     const {seller, setSeller} = useContext(SellerContext);;
     const [productCategory, setProductCategory] = useState<string>('');
     const [product, setProduct] = useState({} as Product)
-
+    const router = useRouter();
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -46,7 +47,9 @@ export default function EditProduct() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await seller_update_product(product, productCategory, seller.id);
+            await seller_update_product(product, productCategory, seller?.id);
+            alert("Update success!!");
+            router.push("/seller/my-products")
         } catch (error) {
             console.error('Failed to update product:', error);
         }
@@ -138,7 +141,7 @@ export default function EditProduct() {
                     </div>
                     <div>
                         <button type="submit" className="btn btn-dark mb-4 col-2" >Change Product</button>
-                        <button type="submit" className="btn btn-light ms-3 mb-4 col-2" onClick={() => { window.location.href = '/seller/my-products' }}>Cancel Change</button>
+                        <button type="submit" className="btn btn-light ms-3 mb-4 col-2" onClick={() => { router.push('/seller/my-products') }}>Cancel Change</button>
                     </div>
                 </div>
             </form>

@@ -44,18 +44,20 @@ function Header() {
       const userData = await loginFromToken();
       console.log(setUser);
       setUser(userData);
-      try {
-        let data = await get_seller_by_user(user?.id);
-        if(data) {
-          setSeller(data);
-        }
-      } catch (err) {
-        console.log(err)
+      if(user?.id) {
+        try {
+          let data = await get_seller_by_user(user?.id);
+          if(data) {
+            setSeller(data);
+          }
+        } catch (err) {
+          console.log(err)
+        }  
       }
 
     };
     fetchData(); 
-  }, [setUser, setSeller]); 
+  }, [setUser, setSeller, user?.id]); 
 
   const router = useRouter(); // Get router instance
 

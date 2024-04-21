@@ -16,6 +16,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Product from '@/models/product';
 import { user_get_detail_product } from "@/services/product/user";
 import { UserContext } from '@/services/context/UserContext';
+import { useRouter } from 'next/navigation';
 
 export enum TableActivity {
     VIEW_MY_PRODUCT = 0,
@@ -36,6 +37,7 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
     auctionStates = [],
     setAuctionStates = () => { },
 }) => {
+    const router = useRouter();
     const {user, setUser} = useContext(UserContext);
     const [open, setOpen] = useState<number | null>(null);
     const [selectedRow, setSelectedRow] = useState<number | null>(null);
@@ -56,7 +58,7 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
     };
     const handleAction = (index: number) => {
         if (activity === TableActivity.VIEW_MY_PRODUCT) {
-            window.location.href = `/seller/edit-product?id=${data[index].id}`;
+            router.push(`/seller/edit-product?id=${data[index].id}`);
         } else if (activity === TableActivity.ADD_TO_AUCTION || activity === TableActivity.VIEW_IN_AUCTION) {
             const newAuctionStates = [...auctionStates];
             newAuctionStates[index] = !newAuctionStates[index];
@@ -90,8 +92,8 @@ const MyProductTable: React.FC<MyProductTableProps> = ({
                                     <TableCell>{row.title}</TableCell>
                                     <TableCell align="center">{row.min_estimate}</TableCell>
                                     <TableCell align="center">{row.max_estimate}</TableCell>
-                                    <TableCell align="center">{row.max_bid}</TableCell>
-                                    <TableCell align="center">{row.status}</TableCell>
+                                    <TableCell align="center">{row.max_bid ? row.max_bid : "not_yet_sold" }</TableCell>
+                                    <TableCell align="center">{row.inspection ? row.status : 'not_yet_inspect' }</TableCell>
                                     {(activity === TableActivity.VIEW_MY_PRODUCT || activity === TableActivity.ADD_TO_AUCTION || activity === TableActivity.VIEW_IN_AUCTION) && (
                                         <TableCell align="center">
                                             <button className="btn btn-primary w-100" onClick={() => handleAction(index)}>

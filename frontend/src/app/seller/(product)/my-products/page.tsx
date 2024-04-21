@@ -17,8 +17,11 @@ export default function MyProduct() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await seller_get_all_products(seller?.id);
-                setData(data);
+                if(seller?.id) {
+                    const data = await seller_get_all_products(seller?.id);
+                    setData(data);
+                    console.log(data)    
+                }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
@@ -28,7 +31,7 @@ export default function MyProduct() {
         //  <Link href={`/seller/edit-product?id=${row.id}`}>
 
         //  get id of product from router
-    }, [])
+    }, [seller?.id])
 
 
     return (
