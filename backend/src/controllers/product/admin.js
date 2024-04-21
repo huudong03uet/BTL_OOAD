@@ -236,9 +236,13 @@ class ProductController extends ProductService {
         try {
             let where_case = {
                 ...this.where_case,
+<<<<<<< HEAD
                 inspect_id: {
                     [Op.is]: null
                 }
+=======
+                inspect_id: null 
+>>>>>>> 4b808ad02d66fab3e35069bda50f48eae18924d5
             };
     
             const products = await this.get_product(where_case)

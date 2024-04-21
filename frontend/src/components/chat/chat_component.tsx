@@ -1,11 +1,16 @@
 import { MDBCard, MDBCardBody, MDBCardHeader, MDBCol, MDBContainer, MDBIcon, MDBRow, MDBTextArea } from 'mdb-react-ui-kit';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ChatSupport from './chat_support';
 import { ChatIcon } from '@livekit/components-react';
 import { Button, Fab } from '@mui/material';
 import CancelPresentationIcon from '@mui/icons-material/CancelPresentation';
+import { ChatContext } from '@/services/context/ChatContext';
+import { user } from '@nextui-org/react';
 export default function ChatComponent() {
-    const [openChat, setOpenChat] = useState(false);
+    const context = useContext(ChatContext);
+    const { openChat, setOpenChat,
+        userContactId, setUserContactId
+    } = context;
 
     const handleClickOpen = () => {
         setOpenChat(true);
@@ -16,17 +21,7 @@ export default function ChatComponent() {
     };
     // Đây là phần logic của chat support, bạn có thể thay đổi theo ý muốn
     return (
-        // <div >
-        //     <div style={{ position: 'fixed', zIndex: '9999', bottom: '100px', right: '40px', height: "500px", width: '700px' }}>
-        //         {openChat && <ChatSupport />}
 
-        //     </div>
-
-        //     <Fab color="primary" aria-label="add" onClick={handleClickOpen}
-        //         style={{ position: 'fixed', zIndex: '9999', bottom: '40px', right: '40px' }}>
-        //         <ChatIcon />
-        //     </Fab>
-        // </div>
         <div >
             {/* <div  style={{ position: 'fixed', zIndex: '9999', bottom: '60px', right: '30px', height: "500px", width: '700px' }}>
                     <div hidden={!openChat}>
@@ -64,7 +59,9 @@ export default function ChatComponent() {
                         <Button  onClick={handleClose}><CancelPresentationIcon color='error' /></Button>
                         {/* <Button onClick={handleClose} style={{ float: 'right' }}><CancelPresentationIcon /></Button> */}
                     </div>
-                    <ChatSupport />
+                    <ChatSupport
+                        userNewContact={userContactId ? userContactId : 0}
+                    />
                 </div>
             </div>
 

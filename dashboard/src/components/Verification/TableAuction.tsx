@@ -1,24 +1,23 @@
 'use client'
 import { Package } from "@/types/package";
-import { FormRegisterAuction } from "@/types/auction";
+import  Auction  from "@/types/auction";
 import CreateModal from "../Modal/ModalAuction";
 import { useState } from "react";
-
 interface IProps {
     showModalCreate: boolean;
     setShowModalCreate: (value: boolean) => void;
-    auctionInformation: FormRegisterAuction;
+    auctionInformation: Auction;
 }
 
 interface TableauctionProps {
-    packageData: FormRegisterAuction[];
+    packageData: Auction[];
 }
 
 const TableUser: React.FC<TableauctionProps> = ({ packageData }) => {
     const [showModalCreate, setShowModalCreate] = useState<boolean>(false);
-    const [selectedPackage, setSelectedPackage] = useState<FormRegisterAuction | null>(null);
+    const [selectedPackage, setSelectedPackage] = useState<Auction | null>(null);
 
-    const handleViewAuction = (packageItem: FormRegisterAuction) => {
+    const handleViewAuction = (packageItem: Auction) => {
         setSelectedPackage(packageItem);
         setShowModalCreate(true);
     }
@@ -50,18 +49,20 @@ const TableUser: React.FC<TableauctionProps> = ({ packageData }) => {
                             <tr key={key}>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <h5 className="font-medium text-black dark:text-white">
-                                        {packageItem.auction_room_id}
+                                        {packageItem.id}
                                     </h5>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 pl-9 dark:border-strokedark xl:pl-11">
                                     <h5 className="font-medium text-black dark:text-white">
-                                        {packageItem.auction_room_name}
+                                        {packageItem.name}
                                     </h5>
 
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <p className="text-black dark:text-white">
-                                        {packageItem.time_create_request}
+                                        {packageItem.time_register}
+                                        {/* " mmm dd, yyyy - hh:MM TT" */}
+                                        {/* {dateFormat(packageItem.time_register, "mmm dd, yyyy - hh:MM TT")} */}
                                     </p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">

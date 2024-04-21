@@ -65,4 +65,21 @@ const user_forgot_password_service = async (email: string) => {
     }
 };
 
-export { user_change_password_service, user_edit_account_service, user_forgot_password_service };
+
+const user_get_user_by_pk = async (user_id: number) => {
+    try {
+        let url = `${HOST}/account/user/user_id=${user_id}`;
+        let response = await axios.get(url);
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+};
+
+export { 
+    user_change_password_service, 
+    user_edit_account_service, 
+    user_forgot_password_service,
+    user_get_user_by_pk
+};

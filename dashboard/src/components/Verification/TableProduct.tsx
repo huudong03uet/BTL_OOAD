@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 // import ReactPaginate from "react-paginate";
 import { Pagination } from "@nextui-org/react";
 import Product from "@/types/product";
+import dateFormat from "dateformat";
 interface IProps {
     showModalCreate: boolean;
     setShowModalCreate: (value: boolean) => void;
@@ -122,7 +123,13 @@ const TableUser: React.FC<TableProductProps> = ({ packageData }) => {
                                     </td>
                                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                         <p className="text-black dark:text-white">
-                                            {packageItem.createdAt}
+                                            {/* {packageItem.createdAt} */}
+                                            {/* \nhh:MM TT */}
+                                            {dateFormat(packageItem.createdAt, "mmm dd, yyyy")}
+                                            
+                                        </p>
+                                        <p className="text-black dark:text-white">
+                                            {dateFormat(packageItem.createdAt, "hh:MM TT")}
                                         </p>
                                     </td>
                                     <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">

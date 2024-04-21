@@ -37,7 +37,7 @@ function ResSearchItem({ searchResults }: { searchResults: Product[] }) {
                             <h2>{item.title}</h2>
                             <p>Artist: {item.artist}</p>
                             <p>Status: {item.status}</p>
-                            <p>Time: {item.auction.time_auction.toString()}</p>
+                            <p>Time: {item.auction?.time_auction?.toString()}</p>
                             <p>Cost: {item.max_bid}</p>
                         </div>
                     )}

@@ -31,9 +31,19 @@ import Product from '@/models/product';
 import Auction from '@/models/auction';
 import Location from '@/models/location';
 import { UserContext } from '@/services/context/UserContext';
+import { ChatContext } from '@/services/context/ChatContext';
 // import ItemSummary from '@/models/product_summary';
-
 const AuctionHouse = ({ params }: { params: { id: string } }) => {
+    const { setOpenChat, setUserContactId} = useContext(ChatContext);
+
+    
+    const handleClick = () => {
+        setOpenChat(true);
+        // setUserContactId(Number(params.id));
+        // console.log("userContactId", Number(params.id))
+    };
+    
+    
     const seller_id = Number(params.id);
     const {user, setUser} = useContext(UserContext)
     const [activeTab, setActiveTab] = useState<'upcoming' | 'review' | 'sold' | 'past_ac'>('upcoming');
@@ -64,6 +74,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                 const data = await seller_info(seller_id);
                 if (data) {
                     setAuctionHouse(data);
+                    setUserContactId(data.user_id);
                 }
 
             } catch (error) {
@@ -223,7 +234,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                         location: item.location
                     }));
 
-                    setPastAuctions(transformedData);
+                    // setPastAuctions(transformedData);
                 } else {
                     setPastAuctions([])
                 }
@@ -277,8 +288,11 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                     {/* <Map location={auctionHouse && {auctionHouse.location}}></Map> */}
                                 </div>
                                 <div className={styles.button}>
-                                    <button type="button" className={`btn btn-primary btn-lg btn-block ${styles['btn-follow']} ${styles['button-style']}`}>+ Follow This Seller</button>
-                                    <button type="button" className={`btn btn-primary btn-lg btn-block ${styles['btn-contact']} ${styles['button-style']}`}>Contact</button>
+                                    <button type="button" className={`btn btn-primary btn-lg btn-block ${styles['btn-follow']} ${styles['button-style']}`}
+                                    
+                                    onClick={handleClick}
+                                    >Contact with seller</button>
+                                    {/* <button type="button" className={`btn btn-primary btn-lg btn-block ${styles['btn-contact']} ${styles['button-style']}`}>Contact</button> */}
                                 </div>
                             </div>
                         </div>
@@ -371,7 +385,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                         {review && review.length > 0 && review.map((obj, index) => {
                                             return (
                                                 <div className="row" key={index}>
-                                                    <Comment user={obj.user} vote={obj.vote} comment={obj.comment} dateString={obj.time_create}></Comment>
+                                                    {/* <Comment user={obj.user} vote={obj.vote} comment={obj.comment} dateString={obj.time_create}></Comment> */}
                                                 </div>
                                             );
                                         })}

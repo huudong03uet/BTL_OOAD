@@ -1,12 +1,46 @@
 'use client'
 import useSWR from 'swr';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Container } from 'react-bootstrap';
 import { global } from 'styled-jsx/css';
 import styles from '@/styles/customer/filter.module.css';
 import SearchItem from '../shared/searchItem'
 import ViewItem from '../shared/viewItem';
-export default function Filters() {
+import { user_get_all_product } from '@/services/product/user';
+import Product from '@/models/product';
+import { UserContext } from '@/services/context/UserContext';
+
+function levenshteinDistance(a: string, b: string): number {
+  const dp: number[][] = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+
+  for (let i = 0; i <= a.length; i++) {
+      dp[i][0] = i;
+  }
+
+  for (let j = 0; j <= b.length; j++) {
+      dp[0][j] = j;
+  }
+
+  for (let i = 1; i <= a.length; i++) {
+      for (let j = 1; j <= b.length; j++) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          dp[i][j] = Math.min(
+              dp[i - 1][j] + 1,
+              dp[i][j - 1] + 1,
+              dp[i - 1][j - 1] + cost
+          );
+      }
+  }
+
+  return dp[a.length][b.length];
+}
+
+
+export default function Filters(
+  props: {
+    searchText: string;
+  }
+) {
 
 
   interface Category {
@@ -71,6 +105,8 @@ export default function Filters() {
     { name: 'sellers location 2' },
     { name: 'sellers location 3' },
   ];
+
+
 
   const error = false;
   const res: any[] = [
@@ -203,6 +239,50 @@ export default function Filters() {
   const handleApplyPriceRange = () => {
     console.log('Applied price range:', minPrice, maxPrice);
   };
+
+
+  const [products, setProducts] = useState<Product[]>([]);
+  const [productsSearch, setProductsSearch] = useState<Product[]>([]);
+  // const {user, setUser} = useContext(UserContext)
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const res = await user_get_all_product();
+      // const data = await res.json();
+      // console.log("data", searchText.searchText)
+      const matchedProducts = res.map((product: Product) => {
+        const distance = levenshteinDistance(product.title.toLowerCase(), props.searchText.toLowerCase());
+        return { ...product, distance };
+      });
+      const sortedProducts = matchedProducts.sort((a: any, b: any) => a.distance - b.distance).slice(0, 5);
+      setProductsSearch(sortedProducts);
+      // console.log("products", sortedProducts);
+      // setProducts(res);
+      // setProductsSearch(data);
+    };
+    fetchProducts();
+  } , []);
+
+//   const handleKeyPress = (event: any) => {
+//     if (event.key === 'Enter') {
+//         event.preventDefault();
+
+//         if (search == '') {
+//             setSearchUsers(users)
+//             return;
+//         }
+
+//         const searchLower = search.toLowerCase();
+
+//         const matchedUsers = users.map((user: User) => {
+//             const distance = levenshteinDistance(user.user_name.toLowerCase(), searchLower);
+//             return { ...user, distance };
+//         });
+
+//         const sortedUsers = matchedUsers.sort((a, b) => a.distance - b.distance).slice(0, 5);
+
+//         setSearchUsers(sortedUsers);
+//     }
+// };
 
   return (
     <main>
@@ -538,9 +618,11 @@ export default function Filters() {
                   style={{ display: "block" }}
                 >
                   <Container>
+                    <div>
+                    </div>
                     <div className="row">
                       {
-                        res ? (<SearchItem searchResults={res} />
+                        productsSearch ? (<SearchItem searchResults={productsSearch} />
                         ) : (
                           <span className="sr-only">Loading...</span>
                         )
