@@ -2,7 +2,6 @@
 import axios from 'axios';
 
 import { HOST } from './host';
-import AdminDataService from './admin_service';
 
 let product_not_inspect = async () => {
     try {
@@ -15,13 +14,13 @@ let product_not_inspect = async () => {
     }
 }
 
-let product_inspect = async (description: string, product_id: number, status: string) => {
+let product_inspect = async (description: string, product_id: number, status: string, admin_id: any) => {
     try {
         let url = `${HOST}/product/admin/inspect`;
         let body = {
             "description": description,
             "product_id": product_id,
-            "admin_id": AdminDataService.getAdminData()?.id,
+            "admin_id": admin_id,
             "status": status
         }
         const response = await axios.post(url, body);

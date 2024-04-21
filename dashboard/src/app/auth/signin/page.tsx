@@ -1,22 +1,21 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import { login_service } from "@/service/auth";
-// export const metadata: Metadata = {
-//   title: "Next.js SignIn Page | TailAdmin - Next.js Dashboard Template",
-//   description: "This is Next.js Signin Page TailAdmin Dashboard Template",
-// };
+import { AdminContext } from "@/context/AdminContext";
+import { useRouter } from "next/navigation";
 
 const SignIn: React.FC = () => {
+  const router = useRouter();
+  const { admin, setAdmin } = useContext(AdminContext);
   
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,17 +37,22 @@ const SignIn: React.FC = () => {
       return;
     }
 
-    let err = await login_service(password, email)
-
-
-    if (typeof err === 'string') {
-      setError(err);
-    } else {
-      setError(null);
-      window.location.href = '/';
+    try {
+      console.log(email, password);
+      const response = await login_service(email, password); // Chuyển vị trí email và password
+      if (response.ok) {
+        setAdmin(response.data);
+        console.log(admin);
+        alert("Login successfully!!");
+        router.push('/');
+      } else {
+        setError('Invalid email or password.');
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      setError('An error occurred during login. Please try again later.');
     }
   };
-
 
   return (
 
@@ -211,7 +215,7 @@ const SignIn: React.FC = () => {
                 Sign In to Auction
               </h2>
 
-              <form>
+              <div>
                 <div className="mb-4">
                   <label className="mb-2.5 block font-medium text-black dark:text-white">
                     Email
@@ -336,7 +340,7 @@ const SignIn: React.FC = () => {
                     </Link>
                   </p>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { UserContext } from '@/services/context/UserContext';
 import { SellerContext } from '@/services/context/SellerContext';
-
+import { logout } from '@/services/auth/login';
 function SideBarUser() {
     // const router = useRouter();
     const {user, setUser} = useContext(UserContext);
@@ -28,7 +28,7 @@ function SideBarUser() {
       setShowModal(false);
       setUser(null);
       setSeller(null);
-      
+      logout()
       window.location.href = '/';
 
     };

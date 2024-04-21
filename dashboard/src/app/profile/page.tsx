@@ -4,9 +4,9 @@ import Image from "next/image";
 import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Admin from "@/types/admin";
-import AdminDataService from "@/service/admin_service";
+import { AdminContext } from "@/context/AdminContext";
 
 // export const metadata: Metadata = {
 //   title: "Next.js Profile | TailAdmin - Next.js Dashboard Template",
@@ -15,9 +15,9 @@ import AdminDataService from "@/service/admin_service";
 // };
 
 const Profile = () => {
-  const admin = AdminDataService.getAdminData() || {} as Admin
+  const {admin, setAdmin} = useContext(AdminContext);
 
-  console.log(admin.admin_name)
+  console.log(admin?.admin_name)
 
   return (
     <DefaultLayout>
@@ -124,13 +124,13 @@ const Profile = () => {
             </div>
             <div className="mt-4">
               <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
-              {admin.admin_name}
+              {admin?.admin_name}
               </h3>
               <h3 className="mb-1.5 text-2xl font-semibold text-black dark:text-white">
-              {admin.email}
+              {admin?.email}
               </h3>
-              <p className="font-medium">{admin.phone}</p>
-              <p className="font-medium">{admin.first_name + " " + admin.last_name}</p>
+              <p className="font-medium">{admin?.phone}</p>
+              <p className="font-medium">{admin?.first_name + " " + admin?.last_name}</p>
               {/* <div className="mx-auto mb-5.5 mt-4.5 grid max-w-94 grid-cols-3 rounded-md border border-stroke py-2.5 shadow-1 dark:border-strokedark dark:bg-[#37404F]">
                 <div className="flex flex-col items-center justify-center gap-1 border-r border-stroke px-4 dark:border-strokedark xsm:flex-row">
                   <span className="font-semibold text-black dark:text-white">

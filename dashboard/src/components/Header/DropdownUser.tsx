@@ -1,11 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import AdminDataService from "@/service/admin_service";
+import { AdminContext } from "@/context/AdminContext";
+import { logout } from "@/service/auth";
 
 
 const DropdownUser = () => {
-
+  const {admin, setAdmin} = useContext(AdminContext);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -39,7 +40,8 @@ const DropdownUser = () => {
   });
 
   const handleLogout = () => {
-    AdminDataService.removeAdminData();
+    setAdmin(null);
+    logout();
   }
   return (
     <div className="relative">
@@ -51,13 +53,13 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {AdminDataService?.getAdminData()?.admin_name}
+            {admin?.admin_name}
           </span>
           <span className="block text-xs">Admin</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
-          {AdminDataService != null && (
+          {admin != null && (
             <Image
               width={112}
               height={112}
