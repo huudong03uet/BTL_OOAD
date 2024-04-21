@@ -77,11 +77,25 @@ let user_add_bid = async (product_id: number, amount: number, user_id: any): Pro
 }
 
 
+let user_get_auction_info_pk = async (user_id: number, auction_id: number) => {
+    try {
+        let url = `${HOST}/auction/user/info-pk/user_id=${user_id}/auction_id=${auction_id}`;
+        console.log(url)
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
+
+
 export {
     user_get_auction_upcoming,
     user_get_auction_promote,
     user_get_auction_info,
     user_get_product_id_of_auction,
     user_get_bid_history,
-    user_add_bid
+    user_add_bid,
+    user_get_auction_info_pk
 };

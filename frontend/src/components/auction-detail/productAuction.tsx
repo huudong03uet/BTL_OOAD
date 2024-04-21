@@ -1,18 +1,20 @@
 'use client'
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import dateFormat, { masks } from "dateformat";
 import { check_user_love_product, user_delete_love_product, user_love_product } from '@/services/component/love_product';
 import Product from '@/models/product';
+import { UserContext } from '@/services/context/UserContext';
 
 
 function ProductAuction({ obj }: { obj: Product }) {
     const [status, setStatus] = useState<boolean>(false);
+    const { user } = useContext(UserContext);
 
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const data = await check_user_love_product(obj.id);
+            const data = await check_user_love_product(obj.id, user?.id);
             if (data) {
                 setStatus(true);
             } else {
@@ -29,10 +31,10 @@ function ProductAuction({ obj }: { obj: Product }) {
     let onClickHeart = async () => {
         if (status) {
             setStatus(false);
-            await user_delete_love_product(obj.id)
+            await user_delete_love_product(obj.id, user?.id)
         } else {
             setStatus(true);
-            await user_love_product(obj.id)
+            await user_love_product(obj.id, user?.id)
         }
     }
     return (

@@ -2,6 +2,7 @@ import Auction from '@/models/auction';
 import React from 'react'
 import dateFormat, { masks } from "dateformat";
 import styled from 'styled-components';
+import { useRouter } from 'next/navigation';
 const StyledLink = styled.a`
   text-decoration: none;
   color: black;
@@ -10,6 +11,8 @@ const StyledLink = styled.a`
   }
 `;
 function PromotedAuctions({ obj }: { obj: Auction }) {
+
+    const router = useRouter()
     return (
         <div style={{ border: "1px solid #bac4c9" }}>
             <div className="container">
@@ -46,15 +49,7 @@ function PromotedAuctions({ obj }: { obj: Auction }) {
                             {dateFormat(obj.time_auction, " mmm dd, yyyy - hh:MM TT")}
                         </div>
                         <button type="button" className="btn btn-danger w-100"
-                            onClick={() => {
-                                let width = window.screen.width;
-                                let height = window.screen.height;
-                                let left = 0;
-                                let top = 0;
-
-                                let windowFeatures = `width=${width},height=${height},left=${left},top=${top}`;
-                                window.open('/lived-auction', '_blank', windowFeatures);
-                            }}
+                            onClick={() => router.push(`/auction-detail/${obj.id}`)}
 
 
 

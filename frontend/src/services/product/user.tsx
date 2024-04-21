@@ -28,13 +28,22 @@ let user_get_detail_product = async (product_id: number, id: any) => {
 }
 
 
-
+let user_get_save_product = async (user_id: number) => {
+    try {
+        let url = `${HOST}/product/user/save-product/user_id=${user_id}`;
+        console.log(url)
+        const response = await axios.get(url);
+        return response.data;
+    } catch (error: any) {
+        console.error('Error fetching data:', error);
+        return error.response.data;
+    }
+}
 
 
 let user_get_recently_product = async (id: any) => {
     try {
         let url = `${HOST}/product/user/recently/user_id=${id}`;
-        console.log(url);
         const response = await axios.get(url);
         return response.data;
     } catch (error: any) {
@@ -70,6 +79,6 @@ let user_get_product_accept = async () => {
 
 export { user_get_category_service, user_get_detail_product, user_get_recently_product, user_get_all_product 
 
-, user_get_product_accept
+, user_get_product_accept, user_get_save_product
 
 } ;

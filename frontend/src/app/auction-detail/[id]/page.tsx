@@ -3,325 +3,347 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '@smastrom/react-rating/style.css'
 import { Container, } from "react-bootstrap";
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 import styles from '@/styles/auction_detail/index.module.css';
 import AppHeader from '@/components/AppHeader';
 import AppNav from '@/components/AppNav'
 import AppFooter from '@/components/AppFooter';
 import ProductAuction from '@/components/auction-detail/productAuction';
 import { useRouter } from 'next/navigation';
+import { user_get_auction_info_pk } from '@/services/auction/user';
+import { UserContext } from '@/services/context/UserContext';
+import Auction from '@/models/auction';
 
 
 const AuctionDetail = ({ params }: { params: { id: string } }) => {
     const auction_id = Number(params.id);
+
+    const {user} = useContext(UserContext)
     const [statusAuction, setStatusAuction] = useState<'upcoming_ac' | 'ongoing_ac' | 'pass_ac'>('upcoming_ac');
     const router = useRouter();
-    const auctionDetailFake = {
-        id: 1,
-        name: "Asian Art including Two Distinguished Collections",
-        status: "Active",
-        time_auction: new Date('2022-12-31T00:00:00Z'),
-        condition_coin: 100,
-        description: "This is a test auction",
-        time_register: "2022-01-01T00:00:00Z",
-        location: {
+    // const auctionDetailFake = {
+    //     id: 1,
+    //     name: "Asian Art including Two Distinguished Collections",
+    //     status: "Active",
+    //     time_auction: new Date('2022-12-31T00:00:00Z'),
+    //     condition_coin: 100,
+    //     description: "This is a test auction",
+    //     time_register: "2022-01-01T00:00:00Z",
+    //     location: {
 
-            city: "City",
-            state: "State",
-            country: "Country",
-            zip: "12345"
-        },
-        seller: {
+    //         city: "City",
+    //         state: "State",
+    //         country: "Country",
+    //         zip: "12345"
+    //     },
+    //     seller: {
 
-            id: 1,
-            name: "Seller 1",
-            rating: 4.5
-        },
-        products: [
-            {
-                id: 1,
-                images: [
-                    {
-                        id: 1,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                    {
-                        id: 2,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                ],
-                title: "Biblia germanica: ",
-                status: "Active",
-                numerical_order: 1,
-                max_bid: 100,
-                min_estimate: 50,
-                max_estimate: 150,
-                description: "This is a test product",
-                dimensions: "10x10x10",
-                artist: "Artist 1",
-                love: 10,
-                condition_report: "Good",
-                provenance: "Unknown",
-                inspection: null,
-                visibility: "Public",
-                categories: [
-                    {
-                        id: 1,
-                        title: "Category 1",
-                    },
-                ],
-                seller: {
-                    id: 1,
-                    name: "Seller 1",
-                },
-                createdAt: "2022-01-01T00:00:00Z",
-                auction: {
-                    id: 1,
-                    name: "Auction 1",
-                    time_auction: new Date('2022-12-31T00:00:00Z'),
-                },
-            },
-            {
-                id: 1,
-                images: [
-                    {
-                        id: 1,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                    {
-                        id: 2,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                ],
-                title: "Product 1",
-                status: "Active",
-                numerical_order: 1,
-                max_bid: 100,
-                min_estimate: 50,
-                max_estimate: 150,
-                description: "This is a test product",
-                dimensions: "10x10x10",
-                artist: "Artist 1",
-                love: 10,
-                condition_report: "Good",
-                provenance: "Unknown",
-                inspection: null,
-                visibility: "Public",
-                categories: [
-                    {
-                        id: 1,
-                        title: "Category 1",
-                    },
-                ],
-                seller: {
-                    id: 1,
-                    name: "Seller 1",
-                },
-                createdAt: "2022-01-01T00:00:00Z",
-                auction: {
-                    id: 1,
-                    name: "Auction 1",
-                    time_auction: new Date('2022-12-31T00:00:00Z'),
-                },
-            },
-            {
-                id: 1,
-                images: [
-                    {
-                        id: 1,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                    {
-                        id: 2,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                ],
-                title: "Product 1",
-                status: "Active",
-                numerical_order: 1,
-                max_bid: 100,
-                min_estimate: 50,
-                max_estimate: 150,
-                description: "This is a test product",
-                dimensions: "10x10x10",
-                artist: "Artist 1",
-                love: 10,
-                condition_report: "Good",
-                provenance: "Unknown",
-                inspection: null,
-                visibility: "Public",
-                categories: [
-                    {
-                        id: 1,
-                        title: "Category 1",
-                    },
-                ],
-                seller: {
-                    id: 1,
-                    name: "Seller 1",
-                },
-                createdAt: "2022-01-01T00:00:00Z",
-                auction: {
-                    id: 1,
-                    name: "Auction 1",
-                    time_auction: new Date('2022-12-31T00:00:00Z'),
-                },
-            },
-            {
-                id: 1,
-                images: [
-                    {
-                        id: 1,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                    {
-                        id: 2,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                ],
-                title: "Product 1",
-                status: "Active",
-                numerical_order: 1,
-                max_bid: 100,
-                min_estimate: 50,
-                max_estimate: 150,
-                description: "This is a test product",
-                dimensions: "10x10x10",
-                artist: "Artist 1",
-                love: 10,
-                condition_report: "Good",
-                provenance: "Unknown",
-                inspection: null,
-                visibility: "Public",
-                categories: [
-                    {
-                        id: 1,
-                        title: "Category 1",
-                    },
-                ],
-                seller: {
-                    id: 1,
-                    name: "Seller 1",
-                },
-                createdAt: "2022-01-01T00:00:00Z",
-                auction: {
-                    id: 1,
-                    name: "Auction 1",
-                    time_auction: new Date('2022-12-31T00:00:00Z'),
-                },
-            },
-            {
-                id: 1,
-                images: [
-                    {
-                        id: 1,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                    {
-                        id: 2,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                ],
-                title: "Product 1",
-                status: "Active",
-                numerical_order: 1,
-                max_bid: 100,
-                min_estimate: 50,
-                max_estimate: 150,
-                description: "This is a test product",
-                dimensions: "10x10x10",
-                artist: "Artist 1",
-                love: 10,
-                condition_report: "Good",
-                provenance: "Unknown",
-                inspection: null,
-                visibility: "Public",
-                categories: [
-                    {
-                        id: 1,
-                        title: "Category 1",
-                    },
-                ],
-                seller: {
-                    id: 1,
-                    name: "Seller 1",
-                },
-                createdAt: "2022-01-01T00:00:00Z",
-                auction: {
-                    id: 1,
-                    name: "Auction 1",
-                    time_auction: new Date('2022-12-31T00:00:00Z'),
-                },
-            },
-            {
-                id: 1,
-                images: [
-                    {
-                        id: 1,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                    {
-                        id: 2,
-                        url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
-                    },
-                ],
-                title: "Product 1",
-                status: "Active",
-                numerical_order: 1,
-                max_bid: 100,
-                min_estimate: 50,
-                max_estimate: 150,
-                description: "This is a test product",
-                dimensions: "10x10x10",
-                artist: "Artist 1",
-                love: 10,
-                condition_report: "Good",
-                provenance: "Unknown",
-                inspection: null,
-                visibility: "Public",
-                categories: [
-                    {
-                        id: 1,
-                        title: "Category 1",
-                    },
-                ],
-                seller: {
-                    id: 1,
-                    name: "Seller 1",
-                },
-                createdAt: "2022-01-01T00:00:00Z",
-                auction: {
-                    id: 1,
-                    name: "Auction 1",
-                    time_auction: new Date('2022-12-31T00:00:00Z'),
-                },
-            }
-        ]
-    };
+    //         id: 1,
+    //         name: "Seller 1",
+    //         rating: 4.5
+    //     },
+    //     products: [
+    //         {
+    //             id: 1,
+    //             images: [
+    //                 {
+    //                     id: 1,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //                 {
+    //                     id: 2,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //             ],
+    //             title: "Biblia germanica: ",
+    //             status: "Active",
+    //             numerical_order: 1,
+    //             max_bid: 100,
+    //             min_estimate: 50,
+    //             max_estimate: 150,
+    //             description: "This is a test product",
+    //             dimensions: "10x10x10",
+    //             artist: "Artist 1",
+    //             love: 10,
+    //             condition_report: "Good",
+    //             provenance: "Unknown",
+    //             inspection: null,
+    //             visibility: "Public",
+    //             categories: [
+    //                 {
+    //                     id: 1,
+    //                     title: "Category 1",
+    //                 },
+    //             ],
+    //             seller: {
+    //                 id: 1,
+    //                 name: "Seller 1",
+    //             },
+    //             createdAt: "2022-01-01T00:00:00Z",
+    //             auction: {
+    //                 id: 1,
+    //                 name: "Auction 1",
+    //                 time_auction: new Date('2022-12-31T00:00:00Z'),
+    //             },
+    //         },
+    //         {
+    //             id: 1,
+    //             images: [
+    //                 {
+    //                     id: 1,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //                 {
+    //                     id: 2,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //             ],
+    //             title: "Product 1",
+    //             status: "Active",
+    //             numerical_order: 1,
+    //             max_bid: 100,
+    //             min_estimate: 50,
+    //             max_estimate: 150,
+    //             description: "This is a test product",
+    //             dimensions: "10x10x10",
+    //             artist: "Artist 1",
+    //             love: 10,
+    //             condition_report: "Good",
+    //             provenance: "Unknown",
+    //             inspection: null,
+    //             visibility: "Public",
+    //             categories: [
+    //                 {
+    //                     id: 1,
+    //                     title: "Category 1",
+    //                 },
+    //             ],
+    //             seller: {
+    //                 id: 1,
+    //                 name: "Seller 1",
+    //             },
+    //             createdAt: "2022-01-01T00:00:00Z",
+    //             auction: {
+    //                 id: 1,
+    //                 name: "Auction 1",
+    //                 time_auction: new Date('2022-12-31T00:00:00Z'),
+    //             },
+    //         },
+    //         {
+    //             id: 1,
+    //             images: [
+    //                 {
+    //                     id: 1,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //                 {
+    //                     id: 2,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //             ],
+    //             title: "Product 1",
+    //             status: "Active",
+    //             numerical_order: 1,
+    //             max_bid: 100,
+    //             min_estimate: 50,
+    //             max_estimate: 150,
+    //             description: "This is a test product",
+    //             dimensions: "10x10x10",
+    //             artist: "Artist 1",
+    //             love: 10,
+    //             condition_report: "Good",
+    //             provenance: "Unknown",
+    //             inspection: null,
+    //             visibility: "Public",
+    //             categories: [
+    //                 {
+    //                     id: 1,
+    //                     title: "Category 1",
+    //                 },
+    //             ],
+    //             seller: {
+    //                 id: 1,
+    //                 name: "Seller 1",
+    //             },
+    //             createdAt: "2022-01-01T00:00:00Z",
+    //             auction: {
+    //                 id: 1,
+    //                 name: "Auction 1",
+    //                 time_auction: new Date('2022-12-31T00:00:00Z'),
+    //             },
+    //         },
+    //         {
+    //             id: 1,
+    //             images: [
+    //                 {
+    //                     id: 1,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //                 {
+    //                     id: 2,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //             ],
+    //             title: "Product 1",
+    //             status: "Active",
+    //             numerical_order: 1,
+    //             max_bid: 100,
+    //             min_estimate: 50,
+    //             max_estimate: 150,
+    //             description: "This is a test product",
+    //             dimensions: "10x10x10",
+    //             artist: "Artist 1",
+    //             love: 10,
+    //             condition_report: "Good",
+    //             provenance: "Unknown",
+    //             inspection: null,
+    //             visibility: "Public",
+    //             categories: [
+    //                 {
+    //                     id: 1,
+    //                     title: "Category 1",
+    //                 },
+    //             ],
+    //             seller: {
+    //                 id: 1,
+    //                 name: "Seller 1",
+    //             },
+    //             createdAt: "2022-01-01T00:00:00Z",
+    //             auction: {
+    //                 id: 1,
+    //                 name: "Auction 1",
+    //                 time_auction: new Date('2022-12-31T00:00:00Z'),
+    //             },
+    //         },
+    //         {
+    //             id: 1,
+    //             images: [
+    //                 {
+    //                     id: 1,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //                 {
+    //                     id: 2,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //             ],
+    //             title: "Product 1",
+    //             status: "Active",
+    //             numerical_order: 1,
+    //             max_bid: 100,
+    //             min_estimate: 50,
+    //             max_estimate: 150,
+    //             description: "This is a test product",
+    //             dimensions: "10x10x10",
+    //             artist: "Artist 1",
+    //             love: 10,
+    //             condition_report: "Good",
+    //             provenance: "Unknown",
+    //             inspection: null,
+    //             visibility: "Public",
+    //             categories: [
+    //                 {
+    //                     id: 1,
+    //                     title: "Category 1",
+    //                 },
+    //             ],
+    //             seller: {
+    //                 id: 1,
+    //                 name: "Seller 1",
+    //             },
+    //             createdAt: "2022-01-01T00:00:00Z",
+    //             auction: {
+    //                 id: 1,
+    //                 name: "Auction 1",
+    //                 time_auction: new Date('2022-12-31T00:00:00Z'),
+    //             },
+    //         },
+    //         {
+    //             id: 1,
+    //             images: [
+    //                 {
+    //                     id: 1,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //                 {
+    //                     id: 2,
+    //                     url: "https://image.invaluable.com/housePhotos/aaac/07/766707/H2791-L365489205.jpg",
+    //                 },
+    //             ],
+    //             title: "Product 1",
+    //             status: "Active",
+    //             numerical_order: 1,
+    //             max_bid: 100,
+    //             min_estimate: 50,
+    //             max_estimate: 150,
+    //             description: "This is a test product",
+    //             dimensions: "10x10x10",
+    //             artist: "Artist 1",
+    //             love: 10,
+    //             condition_report: "Good",
+    //             provenance: "Unknown",
+    //             inspection: null,
+    //             visibility: "Public",
+    //             categories: [
+    //                 {
+    //                     id: 1,
+    //                     title: "Category 1",
+    //                 },
+    //             ],
+    //             seller: {
+    //                 id: 1,
+    //                 name: "Seller 1",
+    //             },
+    //             createdAt: "2022-01-01T00:00:00Z",
+    //             auction: {
+    //                 id: 1,
+    //                 name: "Auction 1",
+    //                 time_auction: new Date('2022-12-31T00:00:00Z'),
+    //             },
+    //         }
+    //     ]
+    // };
 
 
     // Gán dữ liệu giả cho auctionDetail
-    const auctionDetail = auctionDetailFake
+    // const auctionDetail = auctionDetailFake
+    const [auctionDetail, setAuctionDetail] = useState({} as Auction)
 
     useEffect(() => {
-        const currentTime = new Date();
-        const auctionTimeStart = new Date(auctionDetail.time_auction);
-        const auctionTimeEnd = new Date(auctionTimeStart);
-        auctionTimeEnd.setMinutes(auctionTimeEnd.getMinutes() + auctionDetail.products.length * 10);
-    
-    
-        if (currentTime < auctionTimeStart) {
-            setStatusAuction('upcoming_ac');
-        } else if (currentTime >= auctionTimeStart && currentTime <= auctionTimeEnd) {
-            setStatusAuction('ongoing_ac');
-        } else {
-            setStatusAuction('pass_ac');
+        const fetch = async () => {
+            if (user?.id) {
+                let data = await user_get_auction_info_pk(user?.id, auction_id)
+                setAuctionDetail(data)
+            }
         }
-    
-        //fake
-        setStatusAuction('ongoing_ac');    
 
-    }, [auctionDetail])
+        fetch()
+    }, [auction_id, user?.id])
+
+    // useEffect(() => {
+    //     const currentTime = new Date();
+    //     const auctionTimeStart = new Date(auctionDetail.time_auction);
+    //     const auctionTimeEnd = new Date(auctionTimeStart);
+    //     auctionTimeEnd.setMinutes(auctionTimeEnd.getMinutes() + auctionDetail.products.length * 10);
+    
+    
+    //     if (currentTime < auctionTimeStart) {
+    //         setStatusAuction('upcoming_ac');
+    //     } else if (currentTime >= auctionTimeStart && currentTime <= auctionTimeEnd) {
+    //         setStatusAuction('ongoing_ac');
+    //     } else {
+    //         setStatusAuction('pass_ac');
+    //     }
+    
+    //     //fake
+    //     setStatusAuction('ongoing_ac');    
+
+    // }, [auctionDetail])
+
+
+    if (Object.keys(auctionDetail).length === 0) {
+        return <></>
+    }
 
 
     return (
