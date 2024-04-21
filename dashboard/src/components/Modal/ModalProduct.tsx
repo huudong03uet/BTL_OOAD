@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
 import { useSWRConfig } from "swr"
 import { mutate } from "swr"
@@ -7,6 +7,7 @@ import { mutate } from "swr"
 import Product from '@/types/product';
 import { product_inspect } from '@/service/product';
 import { StatusProductVerification } from '../Verification/TableProduct';
+import { AdminContext } from '@/context/AdminContext';
 //     const handleAcceptReject = (statusProductVerification: StatusProductVerification, packageItem: FormRegisterProduct) => {
 //   if (statusProductVerification === StatusProductVerification.accepted) {
 //     console.log("Accept");
@@ -23,6 +24,7 @@ interface IProps {
 }
 
 function CreateModal(props: IProps) {
+  const {admin, setAdmin} = useContext(AdminContext);
   const { showModalCreate, setShowModalCreate, productInformation } = props;
   const [textAreaValue, setTextAreaValue] = useState("");
   const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -34,7 +36,7 @@ function CreateModal(props: IProps) {
 // };
 
   const handleButton = async (action: 'Reject' | 'Accept') => {
-    await product_inspect(textAreaValue, productInformation.id, action)
+    await product_inspect(textAreaValue, productInformation.id, action, admin?.id)
 
     props.onAcceptReject(action === 'Accept' ? StatusProductVerification.accepted : StatusProductVerification.rejected, productInformation);
 

@@ -130,7 +130,7 @@ class ProfileController extends ProfileService {
                 },
               ],            
             mode: 'payment', 
-            success_url: `http://localhost:3000/my-account/payment-options/success?session_id={CHECKOUT_SESSION_ID}`,
+            success_url: `http://localhost:3000/my-account/payment-options?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `http://localhost:3000`,
         })
         res.send({url: session.url});

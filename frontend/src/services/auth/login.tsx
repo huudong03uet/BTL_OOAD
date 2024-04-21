@@ -105,5 +105,9 @@ const loginFromToken = async (): Promise<User | null> => {
     }
 };
 
+const logout = () => {
+    localStorage.removeItem(TOKEN_KEY);
+};
 
-export { user_login_service, admin_login_service, loginFromToken};
+
+export { user_login_service, admin_login_service, loginFromToken, logout};

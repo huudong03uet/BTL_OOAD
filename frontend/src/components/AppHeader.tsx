@@ -20,7 +20,7 @@ import ModalConfirm from './ModalConfirm';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation'; // Import useRouter
 
-
+import { logout } from '@/services/auth/login';
 
 import { ToastContainer, toast } from 'react-toastify';
 import { UserContext } from '@/services/context/UserContext';
@@ -181,7 +181,7 @@ function Header() {
     setShowModal(false);
     setSeller(null);
     setUser(null);
-
+    logout()
     
     
     // alert('Đăng xuất thành công!');
