@@ -2,10 +2,9 @@
 
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import TableUser from "@/components/UsersManagement/TableUser";
+import TableUser from "@/components/UsersManagement/TableSeller";
 import { seller_manager } from "@/service/account";
-import { User } from "@/types/user";
-import { Metadata } from "next";
+import { Seller } from "@/types/seller";
 import { useEffect, useState } from "react";
 
 
@@ -16,12 +15,12 @@ import { useEffect, useState } from "react";
 // };
 
 interface TableUserProps {
-  packageData: User[];
+  packageData: Seller[];
 }
 
 const UserManager = () => { 
   
-  const [packageDatafake, setPackageDatafake] = useState<User[]>([])
+  const [packageDatafake, setPackageDatafake] = useState<Seller[]>([])
 
   useEffect(() => {
     const fetchData = async () => {

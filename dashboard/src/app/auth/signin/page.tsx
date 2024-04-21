@@ -1,14 +1,11 @@
 'use client'
 
-import React, { useContext, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { Metadata } from "next";
-import DefaultLayout from "@/components/Layouts/DefaultLayout";
-import { login_service } from "@/service/auth";
 import { AdminContext } from "@/context/AdminContext";
+import { login_service } from "@/service/auth";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import React, { useContext, useState } from "react";
 
 const SignIn: React.FC = () => {
   const router = useRouter();
@@ -79,8 +76,8 @@ const SignIn: React.FC = () => {
               </Link>
 
               <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
+                {/* Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                suspendisse. */}
               </p>
 
               <span className="mt-15 inline-block">
