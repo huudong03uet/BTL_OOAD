@@ -19,7 +19,7 @@ export default function Home() {
           setAdmin(response.data);
         } else {
           console.error("Login failed:", response?.error);
-          // router.push(`/auth/signin`)
+          router.push(`/auth/signin`)
         }
       } catch (error) {
         console.error("Error during login:", error);
