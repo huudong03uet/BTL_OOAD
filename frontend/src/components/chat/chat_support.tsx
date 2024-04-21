@@ -20,8 +20,6 @@ export default function ChatSupport(
   }
 ) {
 
-  // console.log("props.userNewContact", props.userNewContact)
-
   const [chatInfo, setChatInfo] = useState({
     "id": 1,
     "name": "Kursat",

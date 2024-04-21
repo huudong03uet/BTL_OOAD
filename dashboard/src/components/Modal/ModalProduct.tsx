@@ -8,6 +8,10 @@ import Product from '@/types/product';
 import { product_inspect } from '@/service/product';
 import { StatusProductVerification } from '../Verification/TableProduct';
 import { AdminContext } from '@/context/AdminContext';
+import { toast } from 'react-toastify';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 //     const handleAcceptReject = (statusProductVerification: StatusProductVerification, packageItem: FormRegisterProduct) => {
 //   if (statusProductVerification === StatusProductVerification.accepted) {
 //     console.log("Accept");
@@ -24,27 +28,74 @@ interface IProps {
 }
 
 function CreateModal(props: IProps) {
-  const {admin, setAdmin} = useContext(AdminContext);
+  const { admin, setAdmin } = useContext(AdminContext);
   const { showModalCreate, setShowModalCreate, productInformation } = props;
   const [textAreaValue, setTextAreaValue] = useState("");
   const handleTextAreaChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setTextAreaValue(event.target.value);
   };
-//   const handleButton = () => {
-//     console.log("Additional Text:", textAreaValue);
-//     // handleCloseModal();
-// };
+  //   const handleButton = () => {
+  //     console.log("Additional Text:", textAreaValue);
+  //     // handleCloseModal();
+  // };
 
   const handleButton = async (action: 'Reject' | 'Accept') => {
-    await product_inspect(textAreaValue, productInformation.id, action, admin?.id)
 
-    props.onAcceptReject(action === 'Accept' ? StatusProductVerification.accepted : StatusProductVerification.rejected, productInformation);
+    if (textAreaValue === "") {
+      toast.error('Please enter additional comment!', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    } else {
+      await product_inspect(textAreaValue, productInformation.id, action, admin?.id)
 
-    handleCloseModal();
+      props.onAcceptReject(action === 'Accept' ? StatusProductVerification.accepted : StatusProductVerification.rejected, productInformation);
+
+      if (action === 'Accept') {
+        toast.success('Accept successfully!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      } else {
+        toast.error('Reject successfully!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      handleCloseModal();
+    }
   };
 
   const handleCloseModal = () => setShowModalCreate(false);
   const handleShowModal = () => setShowModalCreate(true);
+
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1
+  };
+
   // let { product_id, seller, title, images, estimate_min, estimate_max, description, dimensions, artist, category, condition_report, provenance, time_create, status } = productInformation;
 
   // const handleSubmit = () => {
@@ -69,8 +120,8 @@ function CreateModal(props: IProps) {
     <Modal
       isOpen={showModalCreate}
       onClose={handleCloseModal}
-      size='4xl'
-      style={{ top: '250px', left: '35%', transform: 'translate(-50%, -50%)' }} // Đặt vị trí modal
+      size='5xl'
+      style={{ top: '220px', left: '35%', transform: 'translate(-50%, -50%)' }} // Đặt vị trí modal
     >
       <ModalContent>
         <>
@@ -79,9 +130,11 @@ function CreateModal(props: IProps) {
             <div className="mb-0 ml-3">
               <p><strong>Product Title:</strong> {productInformation.title}</p>
             </div>
-            <div className="mb-0 flex-row" style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <p className="ml-3"><strong>Seller:</strong> {productInformation.seller && productInformation.seller.name}</p>
-              <p className="mr-20"><strong>Artist:</strong> {productInformation.artist}</p>
+            <div className="mb-0 ml-3">
+              <p><strong>Seller:</strong>{productInformation.seller && productInformation.seller.name}</p>
+            </div>
+            <div className="mb-0 ml-3">
+              <p><strong>Artist:</strong>{productInformation.artist}</p>
             </div>
             <div className="mb-0 ml-3">
               <p><strong>Description:</strong> {productInformation.description}</p>
@@ -110,21 +163,44 @@ function CreateModal(props: IProps) {
             </div>
             <div className="mb-0 ml-3">
               <p><strong>Image:</strong></p>
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              {/* <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 {productInformation.images && productInformation.images.map((image, index) => (
                   <div key={index}>
-                    <img src={image.url} alt="" style={{ width: '30px', height: 'auto' }} />
+                    <img src={image.url} alt="" style={{ width: '100px', height: 'auto' }} />
                   </div>
                 ))}
+              </div> */}
+              <div>
+                {productInformation.images && (
+                  <Slider {...settings}>
+                    {productInformation.images.map((image, index) => (
+                      <div key={index}>
+                        <img src={image.url} alt="" style={{ width: '200px', height: 'auto' }} />
+                      </div>
+                    ))}
+                  </Slider>
+                )}
               </div>
             </div>
             <div className="mb-3 ml-3">
               <textarea
                 value={textAreaValue}
                 onChange={handleTextAreaChange}
-                placeholder="Enter additional text here..."
+                placeholder="Enter additional comment here..."
                 className="form-control"
-                style={{ width: '100%', minHeight: '100px' }}
+                style={{
+                  marginTop: '0.7rem',
+                  width: '100%',
+                  minHeight: '100px',
+                  border: '1px solid #ced4da',
+                  borderRadius: '0.25rem',
+                  padding: '0.375rem 0.75rem',
+                  fontSize: '1rem',
+                  lineHeight: '1.5',
+                  color: '#495057',
+                  backgroundColor: '#fff',
+                  transition: 'border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out'
+                }}
               />
             </div>
           </ModalBody>
@@ -132,7 +208,7 @@ function CreateModal(props: IProps) {
             <Button color="danger" onPress={() => handleButton('Reject')}>
               Reject
             </Button>
-            <Button color="primary"  onPress={() => handleButton('Accept')}>
+            <Button color="primary" onPress={() => handleButton('Accept')}>
               Accept
             </Button>
           </ModalFooter>

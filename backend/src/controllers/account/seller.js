@@ -491,7 +491,7 @@ class ProfileController extends ProfileService {
                 return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
             }
 
-            if (status !== 'processing' && status !== 'accept' && status !== 'rejected') {
+            if (status !== 'processing' && status !== 'accepted' && status !== 'denied') {
                 logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Invalid status.`);
                 return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Invalid status.");
             }
@@ -511,6 +511,51 @@ class ProfileController extends ProfileService {
             logger.error(`Error handling seller verification: ${error}`);
             return res.status(statusCode.HTTP_500_INTERNAL_SERVER_ERROR).json("Internal server error");
         }
+    }
+
+    seller_not_inspect = async (req, res) => {
+        try {
+            const pendingSellers = await Seller.findAll({
+                where: {
+                    status: 'PROCESSING' // Lấy các seller có trạng thái là 'PROCESSING'
+                },
+                include: [
+                    { model: Location },
+                    { model: Review }
+                ]
+            });
+    
+            if (pendingSellers.length === 0) {
+                return res.status(statusCode.HTTP_200_OK).json("Không tìm thấy seller chưa được kiểm duyệt");
+            }
+    
+            const formattedSellers = pendingSellers.map(seller => ({
+                id: seller.id,
+                name: seller.name,
+                email: seller.email,
+                description: seller.desciption,
+                phone: seller.phone,
+                status: seller.status,
+                createdAt: seller.createdAt,
+                user_id: seller.user_id,
+                location: {
+                    id: seller.location.id,
+                    city: seller.location.city,
+                    country: seller.location.country
+                },
+                reviews: seller.reviews.map(review => ({
+                    id: review.id,
+                    content: review.content,
+                    rating: review.rating
+                }))
+            }));
+    
+            res.status(statusCode.HTTP_200_OK).json(formattedSellers);
+        } catch (error) {
+            console.error('Error fetching pending sellers:', error);
+            res.status(statusCode.HTTP_500_INTERNAL_SERVER_ERROR).json({ error: 'Internal server error' });
+        }
+    
     }
 }
 

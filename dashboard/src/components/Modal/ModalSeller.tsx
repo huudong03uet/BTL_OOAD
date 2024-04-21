@@ -1,16 +1,20 @@
 import { useState } from 'react';
 import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from '@nextui-org/react';
-import  Seller from '@/types/seller';
+import Seller from '@/types/seller';
 import { useSWRConfig } from "swr"
 import { mutate } from "swr"
 import axios from 'axios';
 import { HOST } from '@/service/host';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 interface IProps {
   showModalCreate: boolean;
   setShowModalCreate: (value: boolean) => void;
   sellerInformation: Seller;
+  onAcceptReject: (status: string, packageItem: Seller) => void;
+
 }
 
 function CreateModal(props: IProps) {
@@ -34,9 +38,36 @@ function CreateModal(props: IProps) {
       if (!response.data) {
         throw new Error('Failed to update seller status');
       }
+      props.onAcceptReject(newStatus, sellerInformation);
 
-      // Nếu thành công, cập nhật lại dữ liệu bằng cách sử dụng mutate từ SWR
-      handleCloseModal(); 
+      if (newStatus === 'denied') {
+        toast.error('Declined successfully!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      else {
+        toast.success('Accept successfully!', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+
+      console.log('Seller status updated successfully');
+
+      handleCloseModal();
     } catch (error) {
       console.error('Error updating seller status:', error);
     }
@@ -90,10 +121,10 @@ function CreateModal(props: IProps) {
             </div> */}
           </ModalBody>
           <ModalFooter style={{ justifyContent: 'space-between' }}>
-            <Button color="danger" onPress={() => handleSubmit('reject')}>
+            <Button color="danger" onPress={() => handleSubmit('denied')}>
               Reject
             </Button>
-            <Button color="primary" onPress={() => handleSubmit('accept')}>
+            <Button color="primary" onPress={() => handleSubmit('accepted')}>
               Accept
             </Button>
           </ModalFooter>
