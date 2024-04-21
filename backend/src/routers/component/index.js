@@ -16,5 +16,6 @@ router.use('/artist', artistRouter);
 router.use('/review', reviewRouter);
 router.use('/message', messageRouter);
 router.use('/analyst', analystRouter);
+router.use('/love-product', loveProductRouter);
 
 module.exports = router;

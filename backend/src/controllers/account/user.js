@@ -2,9 +2,12 @@ const { DOUBLE } = require('sequelize');
 const User = require('../../models/user');
 const { role_edit_profile, role_change_password, role_forgot_password } = require('./role');
 const ProfileService = require('./role');
-import CoinHistory from '../../models/history_coin';
+const CoinHistory = require('../../models/history_coin');
+// import CoinHistory from '../../models/history_coin';
 const { check_required_field } = require('../util');
 const CoinHistoryType = require("../../../constants/coin_history")
+const statusCode = require('../../../constants/status')
+const logger = require("../../../conf/logger")
 
 
 const stripe = require('stripe')('sk_test_51P7bjf05CJZ8qs7kDcGSebDhXZPJ7VpPLceToyYQ7PQzfzYrwZqI8wuvfqBNDZeZ8wwlW07NFRO1CGza2softbc500Fz4T8jv6');
@@ -102,6 +105,23 @@ class ProfileController extends ProfileService {
             return res.status(500).json({ message: 'Internal server error' });
         }
     };
+
+
+    get_user_by_user_id = async (req, res) => {
+        try {
+            if (!check_required_field(req.params, ["user_id"])) {
+                logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
+                return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
+            }
+
+            let user = await User.findByPk(req.params.user_id)
+            logger.info(`${statusCode.HTTP_200_OK} [user: ${user.id}]`)
+            return res.status(statusCode.HTTP_200_OK).json(user)
+        }  catch (error) {
+            logger.error('Error while processing payment:', error);
+            return res.status(500).json({ message: 'Internal server error' });
+        }
+    }
     
 
 
