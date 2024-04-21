@@ -10,6 +10,7 @@ import { message } from 'antd';
 import { date } from 'zod';
 import { get_user_message_service } from '@/services/component/message';
 import { UserContext } from '@/services/context/UserContext';
+import { user_get_user_by_pk } from '@/services/account/user';
 
 
 
@@ -18,7 +19,6 @@ export default function ChatSupport(
     userNewContact: number;
   }
 ) {
-  console.log("props.userNewContact", props.userNewContact)
 
   const [chatInfo, setChatInfo] = useState({
     "id": 1,
@@ -31,25 +31,51 @@ export default function ChatSupport(
 
   const [, updateState] = React.useState();
 
-  const {user, setUser} = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext)
   const [dataSourceUser, setDataSourceUser] = useState<any[]>([])
 
   useEffect(() => {
     const fetchData = async () => {
-        try {
-            const data = await get_user_message_service(user?.id);
-            if (Array.isArray(data)) {
-              setDataSourceUser(data);
-            } else {
-              setDataSourceUser([])
-            }
-        } catch (error) {
-            console.error('Error fetching upcoming online auctions:', error);
+      if (props.userNewContact == 0) {
+        return;
+      }
+      try {
+        const data = await user_get_user_by_pk(props.userNewContact);
+        setChatInfo({
+          "id": data.id,
+          "name": data.user_name,
+          "avatar": data.avatar_path || "https://avatars.githubusercontent.com/u/80540635?v=4",
+          "subtitle": ""
+        });
+        console.log(data)
+      } catch (error) {
+        console.error('Error fetching upcoming online auctions:', error);
+      }
+    }
+
+    if (props.userNewContact !== 0) {
+      fetchData()
+    }
+
+    // console.log("abc", props.userNewContact)
+  }, [props.userNewContact])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const data = await get_user_message_service(user?.id);
+        if (Array.isArray(data)) {
+          setDataSourceUser(data);
+        } else {
+          setDataSourceUser([])
         }
+      } catch (error) {
+        console.error('Error fetching upcoming online auctions:', error);
+      }
     }
 
     fetchData()
-  }, [])
+  }, [user?.id])
 
   // const dataSourceUser: any[] =  [
 

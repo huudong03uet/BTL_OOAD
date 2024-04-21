@@ -10,4 +10,5 @@ router.post("/forgot-password", accountController.forgot_password);
 router.post("/qr_payment", accountController.qr_payment);
 router.post("/cardPayment", accountController.cardPayment);
 router.post("/handleCardPayment", accountController.handleCardPayment);  
+router.get("/user_id=:user_id", accountController.get_user_by_user_id)
 module.exports = router;

@@ -17,11 +17,25 @@ interface TableUserProps {
 const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
     const [showModalCreate, setShowModalCreate] = useState<boolean>(false);
     const [selectedPackage, setSelectedPackage] = useState<Seller | null>(null);
+    const [packageDataState, setPackageDataState] = useState(packageData);
 
     const handleViewSeller = (packageItem: Seller) => {
         setSelectedPackage(packageItem);
         setShowModalCreate(true);
     }
+
+    const handleAcceptReject = (status: string, packageItem: Seller) => {
+        const newPackageData = [...packageData];
+        // Tìm index của packageItem trong mảng
+        const index = newPackageData.findIndex((item) => item.id === packageItem.id);
+        // Thay đổi status của packageItem
+        newPackageData[index].status = status;
+        // Cập nhật lại packageDataState
+        setPackageDataState(newPackageData);
+        // Ẩn modal
+        setShowModalCreate(false);
+    };
+
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
             <div className="max-w-full overflow-x-auto">
@@ -66,9 +80,9 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <p
-                                        className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${packageItem.status === "accept"
+                                        className={`inline-flex rounded-full bg-opacity-10 px-3 py-1 text-sm font-medium ${packageItem.status === "accepted"
                                             ? "bg-success text-success"
-                                            : packageItem.status === "reject"
+                                            : packageItem.status === "denied"
                                                 ? "bg-danger text-danger"
                                                 : "bg-warning text-warning"
                                             }`}
@@ -110,6 +124,7 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                     showModalCreate={showModalCreate}
                     setShowModalCreate={setShowModalCreate}
                     sellerInformation={selectedPackage}
+                    onAcceptReject={handleAcceptReject}
                 />
             )}
         </div>

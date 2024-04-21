@@ -39,8 +39,8 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
     
     const handleClick = () => {
         setOpenChat(true);
-        setUserContactId(Number(params.id));
-        console.log("userContactId", Number(params.id))
+        // setUserContactId(Number(params.id));
+        // console.log("userContactId", Number(params.id))
     };
     
     
@@ -74,6 +74,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                 const data = await seller_info(seller_id);
                 if (data) {
                     setAuctionHouse(data);
+                    setUserContactId(data.user_id);
                 }
 
             } catch (error) {
