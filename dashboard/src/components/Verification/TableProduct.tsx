@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { Pagination } from "@nextui-org/react";
 import Product from "@/types/product";
 import dateFormat from "dateformat";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 interface IProps {
     showModalCreate: boolean;
     setShowModalCreate: (value: boolean) => void;
@@ -231,6 +234,8 @@ const TableUser: React.FC<TableProductProps> = ({ packageData }) => {
                     productInformation={selectedPackage}
                 />
             )}
+
+            <ToastContainer />
         </div>
     );
 };

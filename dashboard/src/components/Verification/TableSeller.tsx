@@ -3,6 +3,9 @@ import { Package } from "@/types/package";
 import CreateModal from "../Modal/ModalSeller";
 import { useState } from "react";
 import Seller from "@/types/seller";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import dateFormat from "dateformat";
 
 interface IProps {
     showModalCreate: boolean;
@@ -35,6 +38,8 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
         // Ẩn modal
         setShowModalCreate(false);
     };
+
+    // Now use formattedDate in your render method
 
     return (
         <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -75,7 +80,13 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <p className="text-black dark:text-white">
-                                    {packageItem.createdAt ? packageItem.createdAt.toString() : ''}
+                                        {/* {packageItem.createdAt} */}
+                                        {/* \nhh:MM TT */}
+                                        {dateFormat(packageItem.createdAt, "mmm dd, yyyy")}
+
+                                    </p>
+                                    <p className="text-black dark:text-white">
+                                        {dateFormat(packageItem.createdAt, "hh:MM TT")}
                                     </p>
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
@@ -127,6 +138,7 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                     onAcceptReject={handleAcceptReject}
                 />
             )}
+            <ToastContainer />
         </div>
     );
 };
