@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import style from '../style.module.css';
 import { PaymentElement } from '@stripe/react-stripe-js';
@@ -9,8 +9,10 @@ import CheckoutForm from './checkoutFrom';
 import QRModal from './qrModal';
 import axios from 'axios';
 import { HOST } from '@/services/host';
+import { UserContext } from '@/services/context/UserContext';
 
 export default function PaymentOptions() {
+    const {user, setUser} = useContext(UserContext);
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
@@ -49,6 +51,33 @@ export default function PaymentOptions() {
             console.log(err);
         })
     }
+
+    useEffect(() => {
+        const sessionId = new URLSearchParams(window.location.search).get('session_id'); // Lấy 'session_id' từ query parameter
+    
+        const handlePayment = async () => {
+          console.log(123, user)
+            if (sessionId) {
+                const url = `${HOST}/account/user/handleCardPayment`;
+                try {
+                    const response = await axios.post(url, { user_id: user?.id, sessionId }); // Gửi yêu cầu đến máy chủ để xử lý thanh toán
+                    if (response.status === 200) {
+                      console.log(response.data)
+                      if(!response.data.previous) {
+                        const newUser = response.data.user; // Không cần tạo đối tượng mới nếu dữ liệu trả về đã là user object hoàn chỉnh
+                        setUser(newUser); // Cập nhật thông tin user mới
+                        alert("nạp tiền thành công");
+                      }
+                    }
+                } catch (error) {
+                    console.error('Error handling payment:', error);
+                }
+            }
+        };
+
+        handlePayment();
+    }, [user, setUser]); // useEffect sẽ chạy lại khi user thay đổi
+
     return (
 
 
