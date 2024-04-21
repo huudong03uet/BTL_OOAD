@@ -13,10 +13,11 @@ import { CircularProgress } from "@mui/material";
 import UserProvider from "@/services/context/UserProvider";
 import SellerProvider from "@/services/context/SellerProvider";
 const inter = Inter({ subsets: ["latin"] });
-// function openNewPage() {
-//   const windowFeatures = 'width=600,height=400,left=100,top=100';
-//   window.open('/new-page', '_blank', windowFeatures);
-// }
+
+import { Dispatch, SetStateAction } from 'react';
+import React from "react";
+import ChatProvider from "@/services/context/ChatProvider";
+
 
 export default function RootLayout({
   children,
@@ -29,10 +30,13 @@ export default function RootLayout({
     setTimeout(() => setLoading(false), 500);
   }, []);
 
+
   return (
     <html lang="en" suppressHydrationWarning>
       <title>AUCTION</title>
       <body className={inter.className} style={{ overflowX: "clip" }}>
+
+      <ChatProvider>
         <UserProvider>
           <SellerProvider>
             {/* {children} */}
@@ -52,8 +56,10 @@ export default function RootLayout({
             )}
             <ToastContainer />
             <ChatComponent />
+
           </SellerProvider>
         </UserProvider>
+        </ChatProvider>
       </body>
     </html>
   );

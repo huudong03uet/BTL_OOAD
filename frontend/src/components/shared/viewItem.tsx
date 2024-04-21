@@ -7,37 +7,37 @@ import { check_user_love_product, user_delete_love_product, user_love_product } 
 import Product from '@/models/product';
 import styled from 'styled-components';
 import { UserContext } from '@/services/context/UserContext';
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 
-// const StylStyledLinkedLink = styled.a`
-//   text-decoration: none;
-//   color: black;
-//   &:hover {
-//     text-decoration: underline;
-//   }
-// `;
+const StyleStyledLinkedLink = styled.a`
+  text-decoration: none;
+  color: black;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
 
 
 function ViewItem({ obj }: { obj: Product }) {
     const [status, setStatus] = useState<boolean>(false);
-    const {user, setUser} = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
     const router = useRouter();
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            const data = await check_user_love_product(obj.id, user?.id);
-            if (data) {
-                setStatus(true);
-            } else {
-                setStatus(false); 
+            try {
+                const data = await check_user_love_product(obj.id, user?.id);
+                if (data) {
+                    setStatus(true);
+                } else {
+                    setStatus(false);
+                }
+            } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
             }
-          } catch (error) {
-            console.error('Error fetching upcoming online auctions:', error);
-          }
         };
-    
+
         fetchData()
-      }, [])
+    }, [])
 
     let onClickHeart = async () => {
         if (status) {
@@ -54,12 +54,12 @@ function ViewItem({ obj }: { obj: Product }) {
                 {/* <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i> */}
                 {status ? (
                     <button onClick={onClickHeart}
-                    className='position-absolute rounded-circle p-2 d-flex justify-content-center align-items-center' 
-                    style={{ border: "1px solid red", backgroundColor: "white", width: "35px", height: "35px", left: "80%", top: "-0%" }}>
+                        className='position-absolute rounded-circle p-2 d-flex justify-content-center align-items-center'
+                        style={{ border: "1px solid red", backgroundColor: "white", width: "35px", height: "35px", left: "80%", top: "-0%" }}>
 
-                    <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
-                </button>
-                    
+                        <i className="fa-solid fa-heart" style={{ color: "red" }}></i>
+                    </button>
+
 
                 ) : (
                     <button
@@ -71,7 +71,7 @@ function ViewItem({ obj }: { obj: Product }) {
                     </button>
 
                 )}
-                <img src={obj.images?.[0]?.url ?? 'defaultImageUrl'}  alt={obj.title} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
+                <img src={obj.images?.[0]?.url ?? 'defaultImageUrl'} alt={obj.title} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "100%" }} className="img-thumbnail border-0"></img>
 
             </div>
             {/* <div
@@ -89,10 +89,14 @@ function ViewItem({ obj }: { obj: Product }) {
                     className='my-1 fw-bold'>
                     {obj.title}
                 </div>
-                <div
-                    onClick= {() => {router.push(`/auction-house/${obj.seller?.id}`)}}
-                    >
-                    by {obj.seller?.name}
+                {/* add StylStyledLinkedLink */}
+                <div onClick={(e) => {
+                    e.preventDefault();
+                    router.push(`/auction-house/${obj.seller?.id}`);
+                }}>
+                    <StyleStyledLinkedLink>
+                        by {obj.seller?.name}
+                    </StyleStyledLinkedLink>
                 </div>
                 <div className="fw-bold">
                     {/* ${obj.max_bid} */}

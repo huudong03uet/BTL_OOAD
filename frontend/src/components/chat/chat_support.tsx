@@ -13,17 +13,13 @@ import { UserContext } from '@/services/context/UserContext';
 
 
 
-export default function ChatSupport() {
+export default function ChatSupport(
+  props: {
+    userNewContact: number;
+  }
+) {
 
-  // const [unreadKursat, setUnreadKursat] = useState(0)
-  // const [unreadEmre, setUnreadEmre] = useState(1)
-  // const [unreadEsra, setUnreadEsra] = useState(1)
-  // const [unreadBensu, setUnreadBensu] = useState(1)
-  // const [unreadBurhan, setUnreadBurhan] = useState(1)
-  // const [unreadAbdurrahman, setUnreadAbdurrahman] = useState(1)
-  // const [unreadAbdurrahim, setUnreadAbdurrahim] = useState(1)
-  // const [unreadAhmet, setUnreadAhmet] = useState(1)
-
+  console.log("props.userNewContact", props.userNewContact)
 
   const [chatInfo, setChatInfo] = useState({
     "id": 1,
@@ -32,16 +28,7 @@ export default function ChatSupport() {
     "subtitle": "Why don't we go to the mall this weekend ?"
   })
 
-  // const [chatType, setChatType] = useState(() => {
-  //   if (chatInfo.name === "Kursat") return "text"
-  //   else if (chatInfo.name === "Emre") return "photo"
-  //   else if (chatInfo.name === "Esra") return "voice"
-  //   else if (chatInfo.name === "Bensu") return "location"
-  //   else if (chatInfo.name === "Burhan") return "spotify"
-  //   else if (chatInfo.name === "Abdurrahman") return "file"
-  //   else if (chatInfo.name === "Abdurrahim") return "video"
-  //   else if (chatInfo.name === "Ahmet") return "meeting"
-  // })
+
 
   const [, updateState] = React.useState();
 

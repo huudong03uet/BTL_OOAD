@@ -111,7 +111,7 @@ class ProductController extends ProductService {
                 ...this.include,
                 {
                     model: Inspection,
-                    // required: true
+                    required: true
                 }
             ];
     
