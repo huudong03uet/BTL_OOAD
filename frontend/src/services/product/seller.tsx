@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { HOST } from '@/services/host';
 import Product from '@/models/product';
+import Category from '@/models/category';
 
 
 let seller_add_product = async (formData: FormData) => {
@@ -31,14 +32,14 @@ let seller_product_sold_service = async (seller_id: number) => {
     }
 }
 
-let seller_update_product = async (product: Product, category: string, id: any) => {
+let seller_update_product = async (product: Product, category: Category[], id: any) => {
     try {
         let url = `${HOST}/product/seller/update`;
         const body: any = {};
         for (const [key, value] of Object.entries(product)) {
             body[key] = value;
         }
-        body["category_name"] = category
+        body["categories"] = category
 
         if (id !== null) {
             body["seller_id"] = id;

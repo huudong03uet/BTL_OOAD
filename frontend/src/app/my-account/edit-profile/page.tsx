@@ -43,7 +43,7 @@ export default function EditProfile() {
         };
 
         fetchData();
-    }, []);
+    }, [user]);
 
     const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -99,7 +99,7 @@ export default function EditProfile() {
     const handleClick = async () => {
         // console.log(user)
         try {
-            const data = await user_edit_account_service(user, location, null);
+            const data = await user_edit_account_service(user, location, image);
             setUser(data);
             setUpdateEmail(false)
         } catch(error) {

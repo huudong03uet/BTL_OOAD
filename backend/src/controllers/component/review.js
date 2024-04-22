@@ -38,16 +38,7 @@ let get_review = async (req, res) => {
             out["vote"] = review.star,
             out["comment"] = review.comment,
             out["time_create"] = review.createdAt,
-            out["user"] = {
-                "user_id": review.user.id,
-                "email": review.user.email,
-                "first_name": review.user.first_name,
-                "last_name": review.user.last_name,
-                "user_name": review.user.user_name,
-                "coin": review.user.coin,
-                "phone": review.user.phone,
-                "location_id": review.user.location_id,
-            }
+            out["user"] = review.user,
             reesult.push(out)
         }
 

@@ -32,6 +32,7 @@ import Auction from '@/models/auction';
 import Location from '@/models/location';
 import { UserContext } from '@/services/context/UserContext';
 import { ChatContext } from '@/services/context/ChatContext';
+import User from '@/models/user';
 // import ItemSummary from '@/models/product_summary';
 const AuctionHouse = ({ params }: { params: { id: string } }) => {
     const { setOpenChat, setUserContactId} = useContext(ChatContext);
@@ -88,16 +89,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
 
     const [review, setReview] = useState<{
         id: number,
-        user: {
-            id: number,
-            email: string,
-            first_name: string,
-            last_name: string,
-            user_name: string,
-            coin: number,
-            phone: string,
-            location_id: number,
-        },
+        user: User,
         vote: number,
         comment: string,
         time_create: string,
@@ -107,7 +99,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         const fetchData = async () => {
             try {
                 const data = await get_review_service(seller_id);
-
+                console.log("tesge",data)
                 if (Array.isArray(data)) {
                     setReview(data);
                 } else {
@@ -250,8 +242,6 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
     // const YOUR_API_KEY = 'AIzaSyCcTwD5Ct7hXkxHRrs8kcyaw1lvAedFEGs';
 
     const handleSubmit = async () => {
-        console.log(`Comment: ${comment}`);
-        console.log(`Rating: ${value}`);
 
         await set_review_service(seller_id, user?.id, value, comment)
     };
@@ -385,7 +375,7 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
                                         {review && review.length > 0 && review.map((obj, index) => {
                                             return (
                                                 <div className="row" key={index}>
-                                                    {/* <Comment user={obj.user} vote={obj.vote} comment={obj.comment} dateString={obj.time_create}></Comment> */}
+                                                    <Comment user={obj.user} vote={obj.vote} comment={obj.comment} dateString={obj.time_create}></Comment>
                                                 </div>
                                             );
                                         })}

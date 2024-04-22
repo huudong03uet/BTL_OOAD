@@ -5,6 +5,7 @@ const sequelize = require('../../../conf/sequelize')
 const logger = require('../../../conf/logger')
 const statusCode = require('../../../constants/status')
 const AuctionProductStatus = require('../../../constants/auction_product_status')
+const InspectionType = require("../../../constants/inspection")
 
 const Product = require('../../models/product');
 const Image = require('../../models/image')
@@ -267,42 +268,62 @@ class ProductController extends ProductService {
     update_product = async (req, res) => {
         const t = await sequelize.transaction();
         try {
-            if (!check_required_field(req.body, ["seller_id", "id", "title", "description", "artist", "category_name"])) {
+            if (!check_required_field(req.body, ["seller_id", "id", "title", "description", "artist", "categories"])) {
                 logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
                 return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
             }
     
-            const { id, title, description, artist, category_name, dimension, min_estimate, max_estimate, provenance } = req.body;
+            const { id, title, description, artist, categories, dimension, min_estimate, max_estimate, provenance } = req.body;
     
-            const product = await Product.findByPk(id, {
+            let product = await Product.findByPk(id, {
                 where: {
-                    seller_id: req.body.seller_id
-                }
+                    seller_id: req.body.seller_id,
+                    [Op.or]: [
+                        { inspect_id: null },
+                        { '$inspection.status$': InspectionType.DENIED }
+                    ]
+                },
+                include: [{
+                    model: Inspection,
+                    as: 'inspection',
+                    attributes: [],
+                    required: false
+                }]
             });
     
             if (!product) {
                 logger.error(`${statusCode.HTTP_403_FORBIDDEN} Product not appect.`);
                 return res.status(statusCode.HTTP_403_FORBIDDEN).json("Product not appect.");
-            } else if (product.inspect_id) {
-                logger.error(`${statusCode.HTTP_406_NOT_ACCEPTABLE} Product edit not accept.`);
-                return res.status(statusCode.HTTP_406_NOT_ACCEPTABLE).json("Product edit not accept.");
             }
     
             product.title = title;
             product.description = description;
             product.artist = artist;
+            product.inspect_id = null;
     
             if (dimension !== undefined) product.dimension = dimension;
             if (min_estimate !== undefined) product.min_estimate = min_estimate;
             if (max_estimate !== undefined) product.max_estimate = max_estimate;
             if (provenance !== undefined) product.provenance = provenance;
     
-            if (category_name !== undefined) {
-                const [category, created] = await Category.findOrCreate({
-                    where: { title: category_name },
-                    transaction: t
-                });
-                await product.setCategories([category], { transaction: t });
+            // if (category_name !== undefined) {
+            //     const [category, created] = await Category.findOrCreate({
+            //         where: { title: category_name },
+            //         transaction: t
+            //     });
+            //     await product.setCategories([category], { transaction: t });
+            // }
+
+            // const arr_categories = JSON.parse(categories);
+            for (const category of categories) {
+                const category_id = category.id;
+                const categoryInstance = await Category.findByPk(category_id);
+                if (!categoryInstance) {
+                    logger.error(`${statusCode.HTTP_404_NOT_FOUND} Category with ID ${category_id} not found`);
+                    await t.rollback();
+                    return res.status(statusCode.HTTP_404_NOT_FOUND).json(`Category with ID ${category_id} not found`);
+                }
+                await product.addCategory(categoryInstance, { transaction: t });
             }
     
             await product.save({ transaction: t });
@@ -355,6 +376,10 @@ class ProductController extends ProductService {
             let where_case = {
                 ...this.where_case,
                 seller_id: req.params.seller_id,
+                [Op.or]: [
+                    { inspect_id: null },
+                    { '$inspection.status$': InspectionType.DENIED }
+                ]
             };
     
             const products = await this.get_product(where_case,                 
@@ -362,7 +387,12 @@ class ProductController extends ProductService {
                 { model: Image, as: 'images' },
                 { model: Category, as: 'categories' },
                 { model: Seller, as: 'seller' },
-                { model: Inspection, as: 'inspection' },
+                {
+                    model: Inspection,
+                    as: 'inspection',
+                    attributes: [],
+                    required: false
+                },
                 { model: Auction, as: 'auction' },
                 { model: BidHistory, as: 'bid_histories' },
                 ]

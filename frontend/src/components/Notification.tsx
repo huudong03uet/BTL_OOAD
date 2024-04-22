@@ -1,6 +1,7 @@
+import { SellerContext } from '@/services/context/SellerContext';
 import get_notification from '@/services/notification';
 import { seller_notify } from '@/services/product/seller';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Modal from 'react-bootstrap/Modal';
 
 interface NotificationElementInterface {
@@ -43,19 +44,16 @@ const NotificationElement = ({ notificationElement }: { notificationElement: Not
                 <div className='col-8' style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                     <div>
                         <div className='fw-bold'>{notificationElement.header}</div>
-                        <div style={{
+                        <div>{notificationElement.message}</div>
+                        {/* <div style={{
                             display: '-webkit-box',
                             WebkitBoxOrient: 'vertical',
                             WebkitLineClamp: 2,
                             overflow: 'hidden',
                             textOverflow: 'ellipsis',
                         }}>
-                            <small>
-                                {notificationElement.message}
-
-
-                            </small>
-                        </div>
+                            
+                        </div> */}
                     </div>
 
                     <div>
@@ -114,14 +112,14 @@ const Notifications: React.FC<NotificationProps> = ({ onMarkAllAsRead, onDeleteA
     // },
 
 
-
+    const {seller} = useContext(SellerContext)
 
     const [showSettingsButtons, setShowSettingsButtons] = useState(false);
 
     useEffect(() => {
         const fetchNotifications = async () => {
             try {
-                const res = await seller_notify();
+                const res = await seller_notify(seller?.id);
                 setNotifications(res);
             } catch (error) {
                 console.error('Error fetching notifications:', error);
@@ -129,7 +127,7 @@ const Notifications: React.FC<NotificationProps> = ({ onMarkAllAsRead, onDeleteA
         };
 
         fetchNotifications();
-    }, [notifications]);
+    }, [seller?.id]);
 
 
     const toggleSettingsButtons = () => {

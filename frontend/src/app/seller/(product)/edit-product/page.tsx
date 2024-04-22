@@ -1,19 +1,23 @@
 'use client'
-import { Form, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
 import React, { useState, useEffect, ChangeEvent, FormEvent, useContext } from 'react';
+import { Dropdown, DropdownButton, Form, InputGroup, } from "react-bootstrap";
 import Product from "@/models/product";
-import { user_get_detail_product } from "@/services/product/user";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { user_get_category_service, user_get_detail_product } from "@/services/product/user";
 import { seller_update_product } from "@/services/product/seller";
 import { UserContext } from "@/services/context/UserContext";
 import { SellerContext } from "@/services/context/SellerContext";
 import { useRouter } from "next/navigation";
+import Category from "@/models/category";
 
 
 export default function EditProduct() {
     const {user, setUser} = useContext(UserContext);
     const {seller, setSeller} = useContext(SellerContext);;
-    const [productCategory, setProductCategory] = useState<string>('');
+    // const [productCategory, setProductCategory] = useState<string>('');
+    const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
+    const [categories, setCategories] = useState<Category[]>([]);
     const [product, setProduct] = useState({} as Product)
     const router = useRouter();
     useEffect(() => {
@@ -21,12 +25,12 @@ export default function EditProduct() {
             try {
                 let url = new URL(window.location.href)
                 const idParam = url.searchParams.get("id");
-                if (idParam !== null) {
+                if (idParam !== null) { 
                     const id = parseInt(idParam, 10);
                     const data = await user_get_detail_product(id, user?.id);
                     setProduct(data);
                     if (data.categories != null) {
-                        setProductCategory(data.categories[0].title);
+                        setSelectedCategories(data.categories)
                     }
                 } else {
                     console.error('ID not found in URL');
@@ -39,6 +43,50 @@ export default function EditProduct() {
         fetchData()
     }, [])
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const data = await user_get_category_service();
+                const simplifiedCategories: Category[] = data.map((category: any) => ({
+                    id: category.id,
+                    title: category.title,
+                    image_path: category.image_path
+                }));
+
+                setCategories(simplifiedCategories);
+
+            } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
+            }
+        };
+
+        fetchData()
+    }, [])
+
+    const sortCategoriesByTitle = (categories: Category[]) => {
+        return [...categories].sort((a, b) => a.title.localeCompare(b.title));
+    };
+
+
+    function addProductCategory(category: Category) {
+        const index = selectedCategories.findIndex((cat) => cat.id === category.id);
+        if (index === -1) {
+            setSelectedCategories([...selectedCategories, category]);
+            const updatedCategories = categories.filter((cat) => cat.id !== category.id);
+            setCategories(updatedCategories);
+        }
+    }
+
+    function removeProductCategory(category: Category) {
+        const index = categories.findIndex((cat) => cat.id === category.id);
+        if (index === -1) {
+            let newCategories = [...categories, category];
+            setCategories(sortCategoriesByTitle(newCategories));
+            const updatedSelectedCategories = selectedCategories.filter((cat) => cat.id !== category.id);
+            setSelectedCategories(updatedSelectedCategories);
+        }
+    }
+
     const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setProduct({ ...product, [name]: value });
@@ -47,7 +95,7 @@ export default function EditProduct() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await seller_update_product(product, productCategory, seller?.id);
+            await seller_update_product(product, selectedCategories, seller?.id);
             alert("Update success!!");
             router.push("/seller/my-products")
         } catch (error) {
@@ -87,17 +135,75 @@ export default function EditProduct() {
                         </div>
                     </div>
 
-                    <div className="row">
+                    <div className='row'>
                         <div className="col-12">
-                            <Form.Label>Category</Form.Label>
-                            <Form.Control
+                            <Form.Label>Category<span style={{ color: 'red' }}>*</span></Form.Label>
+                            {/* <Form.Control
                                 type="text"
-                                name="category_name"
                                 placeholder="Category"
                                 className={style.custom_form_control}
                                 value={productCategory}
                                 onChange={(e) => setProductCategory(e.target.value)}
-                            />
+                            /> */}
+                            <InputGroup className="mb-3">
+                                <DropdownButton
+                                    variant="outline-dark"
+                                    title="Add product categories"
+                                    id="in-group-dropdown-2"
+                                    align="end"
+                                >
+                                    {categories.map((category) => (
+                                        <Dropdown.Item
+                                            key={category.id}
+                                            onClick={() => addProductCategory(category)}
+                                        >
+                                            {category.title}
+                                        </Dropdown.Item>
+                                    ))}
+                                </DropdownButton>
+                                {/* <div className="selected-categories">
+                                    {selectedCategories.map((selectedCategory) => (
+                                        <span key={selectedCategory.id} className="selected-category">
+                                            {selectedCategory.title}
+                                            <button type="button" onClick={() => removeProductCategory(selectedCategory)}>Xóa</button>
+                                        </span>
+                                    ))}
+                                </div> */}
+                                <div className="selected-categories">
+                                    {selectedCategories.map((selectedCategory) => (
+                                        <span
+                                            key={selectedCategory.id}
+                                            className="selected-category"
+                                            style={{
+                                                display: 'inline-block',
+                                                padding: '5px 10px',
+                                                margin: '5px',
+                                                borderRadius: '15px',
+                                                backgroundColor: '#f8f9fa',
+                                                color: '#333',
+                                            }}
+                                        >
+                                            {selectedCategory.title}
+                                            <button
+                                                type="button"
+                                                onClick={() => removeProductCategory(selectedCategory)}
+                                                style={{
+                                                    marginLeft: '5px',
+                                                    color: 'black',
+                                                    border: 'none',
+                                                    backgroundColor: 'transparent',
+                                                    borderRadius: '50%',
+                                                    padding: '2px 5px',
+                                                    cursor: 'pointer',
+                                                }}
+                                            >
+                                                {/* Xóa */}
+                                                <HighlightOffIcon />
+                                            </button>
+                                        </span>
+                                    ))}
+                                </div>
+                            </InputGroup>
                         </div>
                     </div>
 

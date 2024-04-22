@@ -32,6 +32,8 @@ const Comment: React.FC<CommentProps> = ({ user, vote, comment, dateString }) =>
   const year = date.getFullYear();
   const time = `${day}/${month}/${year}`;
 
+  console.log("abcdef adsda", user)
+
   return (
     <>
       <Container>
@@ -39,7 +41,7 @@ const Comment: React.FC<CommentProps> = ({ user, vote, comment, dateString }) =>
           <div className={styles2.header}>
             <div className={styles2.user}>
               <div className={styles2.avatar}>
-                <img src="/avatar.jpg" alt="Avatar image" />
+                <img src={user.avatar_path} alt="Avatar image" />
               </div>
               <div className={styles2.title}>
                 <div className={styles2.name}>{user.first_name} {user.last_name}</div>
