@@ -8,7 +8,7 @@ import Location from "@/models/location";
 import get_location_service from "@/services/component/location";
 import { user_change_password_service, user_edit_account_service } from "@/services/account/user";
 import { UserContext } from "@/services/context/UserContext";
-import { error } from "console";
+
 
 
 export default function EditProfile() {
@@ -102,7 +102,7 @@ export default function EditProfile() {
             const data = await user_edit_account_service(user, location, null);
             setUser(data);
             setUpdateEmail(false)
-        } catch {
+        } catch(error) {
             console.log(error);
         }
     }
@@ -120,7 +120,7 @@ export default function EditProfile() {
             setConfirmPassword('');
             setChangePassword(false)
         } catch (error) {
-            console.error(error);
+            console.log(error);
         }
     };
 

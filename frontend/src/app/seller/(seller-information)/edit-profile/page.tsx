@@ -10,7 +10,7 @@ import { user_edit_account_service } from "@/services/account/user";
 import { seller_edit_profile } from "@/services/account/seller";
 import { UserContext } from "@/services/context/UserContext";
 import { SellerContext } from "@/services/context/SellerContext";
-import { error } from "console";
+
 
 
 export default function EditProfileSeller() {
@@ -85,7 +85,7 @@ export default function EditProfileSeller() {
         try {
             const newSeller = await seller_edit_profile(seller, location);
             setSeller(newSeller);
-        } catch {
+        } catch(error) {
             console.log(error);
         }
     }
