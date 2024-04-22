@@ -9,7 +9,7 @@ import { seller_update_product } from "@/services/product/seller";
 import { UserContext } from "@/services/context/UserContext";
 import { SellerContext } from "@/services/context/SellerContext";
 import { useRouter } from "next/navigation";
-import Category from "@/models/category";
+import Category from '@/models/category';
 
 
 export default function EditProduct() {
@@ -95,7 +95,7 @@ export default function EditProduct() {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try {
-            await seller_update_product(product, selectedCategories, seller?.id);
+            await seller_update_product(product, productCategory, seller?.id);
             alert("Update success!!");
             router.push("/seller/my-products")
         } catch (error) {
@@ -107,6 +107,7 @@ export default function EditProduct() {
 
     return (
         <div className="row mx-5">
+            <ToastContainer></ToastContainer>
             <div className={style.div_title}>Edit product</div>
             <form onSubmit={handleSubmit}>
                 <div className={style.div_section}>

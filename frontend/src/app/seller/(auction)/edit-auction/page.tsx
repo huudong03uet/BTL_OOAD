@@ -21,6 +21,8 @@ import get_location_service from "@/services/component/location";
 import Product from "@/models/product";
 import { SellerContext } from "@/services/context/SellerContext";
 import { UserContext } from "@/services/context/UserContext";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 enum AuctionVisibility {
     PUBLIC = 0,
@@ -165,7 +167,16 @@ export default function AddAuction() {
 
         try {
             const data = await seller_update_auction(auction_data); 
-            alert("Update auction success!!");
+            toast.success('Update auction success!!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
         } catch(err) {
             console.log(err);
         }
@@ -331,7 +342,7 @@ export default function AddAuction() {
                     <MyProductTable activity={TableActivity.ADD_TO_AUCTION} data={data} auctionStates={auctionStates} setAuctionStates={setAuctionStates}></MyProductTable>
                 </Modal.Body>
             </Modal>
-
+            <ToastContainer></ToastContainer>
         </div >
     );
 }
