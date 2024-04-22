@@ -2,7 +2,7 @@
 import { Package } from "@/types/package";
 import CreateModal from "../Modal/ModalSeller";
 import { useState } from "react";
-import Seller from "@/types/seller";
+import {Seller} from "@/types/seller";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import dateFormat from "dateformat";
