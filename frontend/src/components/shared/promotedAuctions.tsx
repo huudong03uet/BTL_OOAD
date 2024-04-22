@@ -18,7 +18,7 @@ function PromotedAuctions({ obj }: { obj: Auction }) {
             <div className="container">
                 <div className="row">
                     <div className="col-6 p-0 d-flex justify-content-center">
-                        <img src={obj.products?.[0].images?.[0].url} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "200px" }} />
+                        <img src={obj.products?.length > 0 && obj.products[0].images?.length > 0 ? obj.products[0].images[0].url : 'fallbackImageURL'} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "200px" }} />
                     </div>
                     <div className="col-6 ps-0">
 
@@ -43,7 +43,7 @@ function PromotedAuctions({ obj }: { obj: Auction }) {
                             onClick={(e) => e.stopPropagation()}
                         >by {obj.seller?.name}</StyledLink>
 
-                        
+
                         <div className="my-3">
                             {/* {obj.time} */}
                             {dateFormat(obj.time_auction, " mmm dd, yyyy - hh:MM TT")}
