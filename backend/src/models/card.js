@@ -30,13 +30,13 @@ const Card = sequelize.define('card', {
 );
 
 
-Card.belongsTo(User, {foreignKey: "user_id"})
-User.hasMany(Card, {foreignKey: "user_id"})
+Card.hasOne(User, {foreignKey: "card_id"})
+User.hasOne(Card, {foreignKey: "user_id"})
 
-Card.belongsTo(Admin, {foreignKey: "admin_id"})
-Admin.hasMany(Card, {foreignKey: "admin_id"})
+Card.hasOne(Admin, {foreignKey: "card_id"})
+Admin.hasOne(Card, {foreignKey: "admin_id"})
 
-Card.belongsTo(Seller, {foreignKey: "seller_id"})
-Seller.hasMany(Card, {foreignKey: "seller_id"})
+Card.hasOne(Seller, {foreignKey: "card_id"})
+Seller.hasOne(Card, {foreignKey: "seller_id"})
 
 module.exports = Card;
