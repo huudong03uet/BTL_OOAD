@@ -26,5 +26,5 @@ export  type Seller = {
     status: string,
     reviews: Review[],
     card?: CardProps
-    createdAt: Date;
+    createdAt: String;
 }

@@ -2,10 +2,10 @@
 import { Package } from "@/types/package";
 import CreateModal from "../Modal/ModalSeller";
 import { useState } from "react";
-import {Seller} from "@/types/seller";
-import { ToastContainer, toast } from 'react-toastify';
+import { Seller } from "@/types/seller";
+// import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import dateFormat from "dateformat";
+// import dateFormat from "dateformat";
 
 interface IProps {
     showModalCreate: boolean;
@@ -82,12 +82,13 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                                     <p className="text-black dark:text-white">
                                         {/* {packageItem.createdAt} */}
                                         {/* \nhh:MM TT */}
-                                        {dateFormat(packageItem.createdAt, "mmm dd, yyyy")}
+                                        {packageItem.createdAt}
+                                        {/* {dateFormat(packageItem.createdAt, "mmm dd, yyyy")} */}
 
                                     </p>
-                                    <p className="text-black dark:text-white">
+                                    {/* <p className="text-black dark:text-white">
                                         {dateFormat(packageItem.createdAt, "hh:MM TT")}
-                                    </p>
+                                    </p> */}
                                 </td>
                                 <td className="border-b border-[#eee] px-4 py-5 dark:border-strokedark">
                                     <p
@@ -138,7 +139,7 @@ const TableUser: React.FC<TableUserProps> = ({ packageData }) => {
                     onAcceptReject={handleAcceptReject}
                 />
             )}
-            <ToastContainer />
+            {/* <ToastContainer /> */}
         </div>
     );
 };
