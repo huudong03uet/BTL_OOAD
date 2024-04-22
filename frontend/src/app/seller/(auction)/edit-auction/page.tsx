@@ -50,7 +50,8 @@ export default function AddAuction() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                let url = new URL(window.location.href)
+                if(seller) {
+                    let url = new URL(window.location.href)
                 const idParam = url.searchParams.get("id");
                 if (idParam !== null) {
                     const id = parseInt(idParam, 10);
@@ -65,7 +66,7 @@ export default function AddAuction() {
                     setName(dataaa.name)
                     setDescription(dataaa.description)
                     setConditionCoin(dataaa.condition_coin)
-
+                    
                     dataaa = await get_location_service(dataaa.location_id)
                     
                     setLocation({
@@ -94,13 +95,16 @@ export default function AddAuction() {
                 } else {
                     console.error('ID not found in URL');
                 }
+
+                }
+                
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
         };
 
         fetchData()
-    }, [])
+    }, [seller])
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -159,7 +163,13 @@ export default function AddAuction() {
             "products": products
         }
 
-        await seller_update_auction(auction_data)
+        try {
+            const data = await seller_update_auction(auction_data); 
+            alert("Update auction success!!");
+        } catch(err) {
+            console.log(err);
+        }
+
     };
     
 

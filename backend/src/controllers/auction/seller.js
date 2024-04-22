@@ -399,6 +399,7 @@ class AuctionController extends AuctionService {
     update_auction = async (req, res) => {
         const t = await sequelize.transaction();
         try {
+            console.log(req.body)
             if (!check_required_field(req.body, ["seller_id", "id", "name", "condition_coin", "status", "time_auction"])) {
                 logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
                 return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
@@ -438,13 +439,13 @@ class AuctionController extends AuctionService {
     
             await t.commit();
 
-            this.update_auction()
+            // this.update_auction()
     
             logger.info(`${statusCode.HTTP_200_OK} [auction:${auction.id}]`)
             return res.status(statusCode.HTTP_200_OK).json(auction)
         } catch (error) {
             await t.rollback();
-            logger.error(`Auction create: ${error}`)
+            logger.error(`Auction update: ${error}`)
             return res.status(statusCode.HTTP_408_REQUEST_TIMEOUT).json("TIME OUT");
         }
     }

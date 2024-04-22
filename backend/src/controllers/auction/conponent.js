@@ -6,7 +6,7 @@ const sequelize = require('../../../conf/sequelize');
 const AuctionProductStatus = require('../../../constants/auction_product_status')
 const AuctionProductVisibilityStatus = require('../../../constants/product_visibility')
 const statusCode = require('../../../constants/status');
-
+const Category = require('../../models/category')
 const Auction = require('../../models/auction');
 const Product = require('../../models/product');
 const User = require('../../models/user');
@@ -112,6 +112,37 @@ class AuctionService {
             throw new Error('Request timeout');
         }
     }
+    async get_product(where_cause = this.where_case, include = [
+        {
+            model: Image,
+            attributes: ["id", "url"],
+        },
+        {
+            model: Category,
+            attributes: ["id", 'title']
+        },
+        {
+            model: Seller,
+        },
+        {
+            model: Auction,
+        },
+    ], kwargs = this.kwargs) {
+        try {
+            let products = await Product.findAll({
+                where: where_cause,
+                include: include,
+                ...kwargs
+            });
+
+            logger.info(`Product length: ${products.length}`);
+            return products;
+        } catch (error) {
+            logger.error(`Get product: ${error}`);
+            throw new Error('Request timeout');
+        }
+    }
+
 }
 
 
