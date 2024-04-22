@@ -16,7 +16,7 @@ route(app);
 
 
 app.get('/hello', (req, res) => {
-    console.log(req.body)
+    // console.log(req.body)
     res.send("ok")
 });
 

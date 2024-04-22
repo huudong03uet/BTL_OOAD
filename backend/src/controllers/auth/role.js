@@ -109,7 +109,6 @@ class Authentification {
 
     login = async (req, res) => {
         try {
-            console.log(this);
             if (!check_required_field(req.body, [`${this.model.name.toLowerCase()}_name`, "password"])) {
                 logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
                 return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");

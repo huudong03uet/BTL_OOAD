@@ -50,7 +50,9 @@ const AUCTION_INCLUDE = [
 class AuctionService {
     constructor () {
         this.websocket = websocket
-        this.where_case = {}
+        this.where_case = {
+            is_delete: false,
+        }
         this.include = [
             {
                 model: Seller,

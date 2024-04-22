@@ -399,7 +399,6 @@ class AuctionController extends AuctionService {
     update_auction = async (req, res) => {
         const t = await sequelize.transaction();
         try {
-            console.log(req.body)
             if (!check_required_field(req.body, ["seller_id", "id", "name", "condition_coin", "status", "time_auction"])) {
                 logger.error(`${statusCode.HTTP_400_BAD_REQUEST} Missing required fields.`);
                 return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
