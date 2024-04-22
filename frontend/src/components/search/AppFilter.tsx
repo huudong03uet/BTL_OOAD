@@ -14,22 +14,22 @@ function levenshteinDistance(a: string, b: string): number {
   const dp: number[][] = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
 
   for (let i = 0; i <= a.length; i++) {
-      dp[i][0] = i;
+    dp[i][0] = i;
   }
 
   for (let j = 0; j <= b.length; j++) {
-      dp[0][j] = j;
+    dp[0][j] = j;
   }
 
   for (let i = 1; i <= a.length; i++) {
-      for (let j = 1; j <= b.length; j++) {
-          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-          dp[i][j] = Math.min(
-              dp[i - 1][j] + 1,
-              dp[i][j - 1] + 1,
-              dp[i - 1][j - 1] + cost
-          );
-      }
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(
+        dp[i - 1][j] + 1,
+        dp[i][j - 1] + 1,
+        dp[i - 1][j - 1] + cost
+      );
+    }
   }
 
   return dp[a.length][b.length];
@@ -41,7 +41,6 @@ export default function Filters(
     searchText: string;
   }
 ) {
-
 
   interface Category {
     name: string;
@@ -260,35 +259,35 @@ export default function Filters(
       // setProductsSearch(data);
     };
     fetchProducts();
-  } , []);
+  }, []);
 
-//   const handleKeyPress = (event: any) => {
-//     if (event.key === 'Enter') {
-//         event.preventDefault();
+  //   const handleKeyPress = (event: any) => {
+  //     if (event.key === 'Enter') {
+  //         event.preventDefault();
 
-//         if (search == '') {
-//             setSearchUsers(users)
-//             return;
-//         }
+  //         if (search == '') {
+  //             setSearchUsers(users)
+  //             return;
+  //         }
 
-//         const searchLower = search.toLowerCase();
+  //         const searchLower = search.toLowerCase();
 
-//         const matchedUsers = users.map((user: User) => {
-//             const distance = levenshteinDistance(user.user_name.toLowerCase(), searchLower);
-//             return { ...user, distance };
-//         });
+  //         const matchedUsers = users.map((user: User) => {
+  //             const distance = levenshteinDistance(user.user_name.toLowerCase(), searchLower);
+  //             return { ...user, distance };
+  //         });
 
-//         const sortedUsers = matchedUsers.sort((a, b) => a.distance - b.distance).slice(0, 5);
+  //         const sortedUsers = matchedUsers.sort((a, b) => a.distance - b.distance).slice(0, 5);
 
-//         setSearchUsers(sortedUsers);
-//     }
-// };
+  //         setSearchUsers(sortedUsers);
+  //     }
+  // };
 
   return (
     <main>
-      <div className="container mt-5">
+      <div className="container ml-0">
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-4" style={{marginTop: '20px'}}>
             {/* <!-- Section: Sidebar --> */}
             <section>
               {/* <!-- Section: Filters --> */}
@@ -562,7 +561,7 @@ export default function Filters(
 
                   {/* Apply Price Range button */}
                   <div className={`${styles.formGroup} form-group`}>
-                    <button className={`${styles.btn} btn ${styles.buttonPrimary} btn-primary`} onClick={handleApplyPriceRange}>
+                    <button className={`${styles.btn} btn ${styles.buttonPrimary} btn-primary`} style={{background: 'black', color: 'white', border: 'black'}} onClick={handleApplyPriceRange}>
                       Apply Price Range
                     </button>
                   </div>
@@ -608,11 +607,10 @@ export default function Filters(
 
               </div>
             </div>
-            <div className="row mb-4" id="content"></div>
-            <div className="row">
-              <div className="col-md-12 mt-3 text-center">
+            <div className="row " id="content" >
+              <div className="col text-center">
                 <div
-                  className=" text-primary mx-auto my-5"
+                  className=" text-primary mx-auto "
                   id="spinner"
                   role="status"
                   style={{ display: "block" }}
@@ -620,7 +618,7 @@ export default function Filters(
                   <Container>
                     <div>
                     </div>
-                    <div className="row">
+                    <div>
                       {
                         productsSearch ? (<SearchItem searchResults={productsSearch} />
                         ) : (
