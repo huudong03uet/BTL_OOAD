@@ -6,6 +6,8 @@ import Modal from 'react-bootstrap/Modal';
 import { ToastContainer, toast } from 'react-toastify';
 import { get_seller_by_user } from '@/services/account/seller';
 import { SellerContext } from '@/services/context/SellerContext';
+
+
 function ModalLogin(props: any) {
   const {user, setUser} = useContext(UserContext);
   const {seller, setSeller} = useContext(SellerContext);
@@ -107,6 +109,7 @@ function ModalLogin(props: any) {
               <label className="form-check-label" htmlFor="keepLoggedIn">Keep me logged in</label>
             </div>
             <a href="/forgot-password">Forgot Password?</a>
+
           </div>
           <div className='d-flex justify-content-center mb-4'>
             <button type="submit" className="btn px-4  w-100" style={{ backgroundColor: '#222', color: '#FFFFFF' }}>Login</button>
