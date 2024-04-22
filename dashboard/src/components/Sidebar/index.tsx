@@ -607,6 +607,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           </li>
                           <li>
                             <Link
+                              href="/view-item/view-auction"
+                              className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white 
+                              ${pathname === "/view-auction" &&
+                                "text-white"
+                                }`}
+                            >
+                              View Auction
+                            </Link>
+                          </li>
+                          <li>
+                            <Link
                               href="/view-item/view-category"
                               className={`group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white 
                               ${pathname === "/view-category" &&
