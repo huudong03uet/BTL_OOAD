@@ -3,7 +3,6 @@ import { Modal, ModalContent, ModalFooter, ModalHeader, Button, ModalBody } from
 import { useSWRConfig } from "swr"
 import { mutate } from "swr"
 import { User } from '@/types/user';
-import Seller from '@/types/seller';
 interface IProps {
   showModalCreate: boolean;
   setShowModalCreate: (value: boolean) => void;
@@ -59,43 +58,40 @@ return (
             <p className="ml-3"><strong>Email:</strong> {userInformation.email}</p>
             <p className="mr-20"><strong>Phone Number:</strong> {userInformation.phone}</p>
           </div>
-          <div className="mb-1 ml-3">
-            <p><strong>Description:</strong> {}</p>
-          </div>
           <div className="mb-0">
             <strong>Card Information:</strong>
           </div>
           <div className="mb-0 ml-3">
-            <p><strong>Card Number:</strong> {}</p>
+            <p><strong>Card Number:</strong> {userInformation.card?.id}</p>
           </div>
           <div className="mb-0 flex-row" style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <p className='ml-3'><strong>Expiry:</strong> {}</p>
-            <p className='mr-40'><strong>CVN:</strong> {}</p>
+            <p className='ml-3'><strong>Expiry:</strong> {userInformation.card?.expiry}</p>
+            <p className='mr-40'><strong>CVN:</strong> {userInformation.card?.cvn}</p>
           </div>
           <div className="mb-1 ml-3">
-            <p><strong>Name on Card:</strong> {}</p>
+            <p><strong>Name on Card:</strong> {userInformation.card?.name}</p>
           </div>
 
           <div className="mb-0">
             <strong>Address Information:</strong>
           </div>
           <div className="mb-0 ml-2">
-            <p><strong>Country:</strong> {}</p>
+            <p><strong>Country:</strong> {userInformation.location?.country}</p>
           </div>
           <div className="mb-0 ml-3">
-            <p><strong>Address:</strong> {}</p>
+            <p><strong>Address:</strong> {userInformation.location?.address}</p>
           </div>
           <div className="mb-0 flex-row" style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <p className='ml-3'><strong>City:</strong> {}</p>
-            <p className='mr-40'><strong>State:</strong> {}</p>
+            <p className='ml-3'><strong>City:</strong> {userInformation.location?.city}</p>
+            <p className='mr-40'><strong>State:</strong> {userInformation.location?.state}</p>
           </div>
           <div className="mb-0 ml-3">
-            <p><strong>Postal Code:</strong> {}</p>
+            <p><strong>Postal Code:</strong> {userInformation.location?.postal_code}</p>
           </div>
         </ModalBody>
         <ModalFooter style={{ justifyContent: 'space-end' }}>
           <Button color="primary" onPress={handleCloseModal}>
-            Lock/Unlock
+            Close
           </Button>
         </ModalFooter>
       </>

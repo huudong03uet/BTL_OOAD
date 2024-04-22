@@ -1,3 +1,4 @@
+import Location from "./location";
 interface Review {
     id: number;
     rating: number;
@@ -5,12 +6,14 @@ interface Review {
     createdAt: Date;
     user_evaluate: number;
 }
-
-interface Location {
+interface CardProps {
     id: number;
-    city: string;
-    country: string
+    name: string;
+    expiry: string;
+    cvn: string;
+
 }
+
 
 export  type Seller = {
     id: number;
@@ -18,9 +21,10 @@ export  type Seller = {
     name: string;
     description: string;
     phone: string,
-    location: Location,
+    location?: Location,
     user_id: number,
     status: string,
     reviews: Review[],
+    card?: CardProps
     createdAt: Date;
 }

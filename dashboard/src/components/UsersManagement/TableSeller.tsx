@@ -1,7 +1,7 @@
 'use client'
 import { Seller } from "@/types/seller";
 import { useState } from "react";
-import CreateModal from "../Modal/ModalSeller";
+import CreateModal from "../Modal/ModalManagerSeller";
 
 interface IProps {
     showModalCreate: boolean;

@@ -93,28 +93,28 @@ function CreateModal(props: IProps) {
               <p><strong>Description:</strong> {sellerInformation.description}</p>
             </div>
             <div className="mb-0 ml-3">
-              <p><strong>Card Number:</strong> {}</p>
+              <p><strong>Card Number:</strong> {sellerInformation.card?.id}</p>
             </div>
             <div className="mb-0 flex-row" style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <p className='ml-3'><strong>Expiry:</strong> {}</p>
-              <p className='mr-40'><strong>CVN:</strong> {}</p>
+              <p className='ml-3'><strong>Expiry:</strong> {sellerInformation.card?.expiry}</p>
+              <p className='mr-40'><strong>CVN:</strong> {sellerInformation.card?.cvn}</p>
             </div>
             <div className="mb-1 ml-3">
-              <p><strong>Name on Card:</strong> {}</p>
+              <p><strong>Name on Card:</strong> {sellerInformation.card?.name}</p>
             </div>
 
             <div className="mb-0">
               <strong>Address Information:</strong>
             </div>
             <div className="mb-0 ml-2">
-              <p><strong>Country:</strong> {}</p>
+              <p><strong>Country:</strong> {sellerInformation.location?.country}</p>
             </div>  
             <div className="mb-0 ml-3">
-              <p><strong>Address:</strong> {}</p>
+              <p><strong>Address:</strong> {sellerInformation.location?.address}</p>
             </div>
             <div className="mb-0 flex-row" style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <p className='ml-3'><strong>City:</strong> {}</p>
-              <p className='mr-40'><strong>State:</strong> {}</p>
+              <p className='ml-3'><strong>City:</strong> {sellerInformation.location?.city}</p>
+              <p className='mr-40'><strong>State:</strong> {sellerInformation.location?.state}</p>
             </div>
           </ModalBody>
           <ModalFooter style={{ justifyContent: 'space-between' }}>
