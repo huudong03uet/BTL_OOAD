@@ -7,9 +7,11 @@ import { user_get_category_service } from '@/services/product/user';
 import Category from "@/models/category";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { SellerContext } from "@/services/context/SellerContext";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddProduct() {
-    const {seller} = useContext(SellerContext);
+    const { seller } = useContext(SellerContext);
     const [productTitle, setProductTitle] = useState<string>('');
     const [productDescription, setProductDescription] = useState<string>('');
     const [productArtist, setProductArtist] = useState<string>('');
@@ -118,7 +120,16 @@ export default function AddProduct() {
 
             const data = await seller_add_product(formData);
             if (data) {
-                alert("Upload data success!");
+                toast.success('Upload data success!', {
+                    position: "top-center",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
             }
         } else {
             console.error('Hình ảnh không được để trống');
@@ -130,6 +141,7 @@ export default function AddProduct() {
 
     return (
         <div className='row mx-5'>
+            <ToastContainer></ToastContainer>
 
             <div className={style.div_title}>
                 Add product

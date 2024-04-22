@@ -8,11 +8,13 @@ import { boolean } from 'zod';
 import { UserContext } from '@/services/context/UserContext';
 import { SellerContext } from '@/services/context/SellerContext';
 import { useRouter } from 'next/navigation';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function PaymentOptions() {
     const router = useRouter();
-    const {user} = useContext(UserContext)
-    const {seller} = useContext(SellerContext);
+    const { user } = useContext(UserContext)
+    const { seller } = useContext(SellerContext);
     const [showModal, setShowModal] = useState(false);
     const handleCloseModal = () => setShowModal(false);
     const handleShowModal = () => setShowModal(true);
@@ -47,31 +49,40 @@ export default function PaymentOptions() {
         }
 
         const location_info = {
-            country: country, 
-            address: address, 
-            city: city, 
-            state: state, 
+            country: country,
+            address: address,
+            city: city,
+            state: state,
             postal: postalCode
         }
 
         const response = await seller_register(user?.id, seller_info, card_info, location_info)
         setShowModal(false);
-        alert("Submit success!")
+        toast.success('Submit success!', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+        });
         console.log(response)
-        
+
     };
 
 
-    useEffect(()=>{
+    useEffect(() => {
         if (seller?.id && seller?.status == "accepted") {
             router.push('/seller');
         }
-        if (seller?.id && ! (seller?.status == "accepted")) {
+        if (seller?.id && !(seller?.status == "accepted")) {
             setIsRequested(true);
         }
-    
-    },[seller]);
-      
+
+    }, [seller]);
+
 
     return (
         <div className='row mx-0'>
@@ -89,15 +100,6 @@ export default function PaymentOptions() {
                     <button type="button" className="btn btn-dark px-5" onClick={handleShowModal}>Register as Seller</button>
                 )}
             </div>
-
-
-
-
-
-
-
-
-
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 <Modal.Header closeButton>
                     <Modal.Title>
@@ -165,10 +167,12 @@ export default function PaymentOptions() {
                 </Modal.Body>
                 <Modal.Footer className="justify-content-start">
                     <button type="button" className="btn btn-dark" onClick={handleSaveRequest}>Save Request</button>
-                    <p style={{ cursor: "pointer" }} className="mx-3" onClick={handleCloseModal}>Cancel</p>                
+                    <p style={{ cursor: "pointer" }} className="mx-3" onClick={handleCloseModal}>Cancel</p>
                 </Modal.Footer>
 
-            </Modal> 
+            </Modal>
+            
+            <ToastContainer></ToastContainer>
 
 
         </div >

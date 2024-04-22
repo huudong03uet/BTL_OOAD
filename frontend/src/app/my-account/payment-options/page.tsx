@@ -10,6 +10,8 @@ import QRModal from './qrModal';
 import axios from 'axios';
 import { HOST } from '@/services/host';
 import { UserContext } from '@/services/context/UserContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function PaymentOptions() {
     const {user, setUser} = useContext(UserContext);
@@ -66,7 +68,16 @@ export default function PaymentOptions() {
                       if(!response.data.previous) {
                         const newUser = response.data.user; // Không cần tạo đối tượng mới nếu dữ liệu trả về đã là user object hoàn chỉnh
                         setUser(newUser); // Cập nhật thông tin user mới
-                        alert("nạp tiền thành công");
+                        toast.success('Deposit successfully!', {
+                            position: "top-center",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "light",
+                          });
                       }
                     }
                 } catch (error) {
@@ -147,6 +158,8 @@ export default function PaymentOptions() {
             <div>
                 <QRModal showModalQRScan={showModalQRScan} handleCloseModalQRScan={handleCloseModalQRScan} />
             </div>
+
+            <ToastContainer></ToastContainer>
 
 
         </div>

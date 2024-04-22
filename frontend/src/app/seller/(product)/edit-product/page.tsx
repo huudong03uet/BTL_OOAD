@@ -8,6 +8,8 @@ import { seller_update_product } from "@/services/product/seller";
 import { UserContext } from "@/services/context/UserContext";
 import { SellerContext } from "@/services/context/SellerContext";
 import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 export default function EditProduct() {
@@ -48,7 +50,16 @@ export default function EditProduct() {
         e.preventDefault();
         try {
             await seller_update_product(product, productCategory, seller?.id);
-            alert("Update success!!");
+            toast.success('Update success!!', {
+                position: "top-center",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+              });
             router.push("/seller/my-products")
         } catch (error) {
             console.error('Failed to update product:', error);
@@ -59,6 +70,7 @@ export default function EditProduct() {
 
     return (
         <div className="row mx-5">
+            <ToastContainer></ToastContainer>
             <div className={style.div_title}>Edit product</div>
             <form onSubmit={handleSubmit}>
                 <div className={style.div_section}>
