@@ -3,7 +3,6 @@ let convert_result_item_summary = (products) => {
         let result = []
         for(let product of products) {
             let out = {}
-            console.log(product)
             out["id"] = product.id
             out["status"] = product.status
             out["title"] = product.title

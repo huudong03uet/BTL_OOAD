@@ -69,8 +69,6 @@ let set_review = async (req, res) => {
             return res.status(statusCode.HTTP_400_BAD_REQUEST).json("Missing required fields.");
         }
 
-        console.log(req.body)
-
 
         let [review, created] = await Review.findOrCreate({
             where: {

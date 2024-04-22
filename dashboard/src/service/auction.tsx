@@ -36,7 +36,6 @@ let auction_all = async () => {
     try {
         let url = `${HOST}/auction/admin/all`;
         const response = await axios.get(url);
-        console.log(response.data);
         return response.data;
     } catch (error: any) {
         console.error('Error fetching data:', error);

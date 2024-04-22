@@ -271,7 +271,7 @@ class Analystic {
             let auction_count = await Auction.count({
                 where: where_case
             });
-            console.log("Số lượng auction:", auction_count);
+            // console.log("Số lượng auction:", auction_count);
             return auction_count;
         } catch (error) {
             console.error("Lỗi khi đếm auction:", error);
@@ -284,7 +284,7 @@ class Analystic {
             let product_count = await Product.count({
                 where: where_case
             });
-            console.log("Số lượng product:", product_count);
+            // console.log("Số lượng product:", product_count);
             return product_count;
         } catch (error) {
             console.error("Lỗi khi đếm product:", error);
@@ -297,7 +297,7 @@ class Analystic {
             let user_count = await User.count({
                 where: where_case
             });
-            console.log("Số lượng user:", user_count);
+            // console.log("Số lượng user:", user_count);
             return user_count;
         } catch (error) {
             console.error("Lỗi khi đếm user:", error);
@@ -310,7 +310,7 @@ class Analystic {
             let seller_count = await Seller.count({
                 where: where_case
             });
-            console.log("Số lượng seller:", seller_count);
+            // console.log("Số lượng seller:", seller_count);
             return seller_count;
         } catch (error) {
             console.error("Lỗi khi đếm seller:", error);

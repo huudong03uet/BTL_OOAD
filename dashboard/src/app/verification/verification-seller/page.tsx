@@ -6,7 +6,7 @@ import TableUser from "@/components/Verification/TableSeller";
 import DefaultLayout from "@/components/Layouts/DefaultLayout";
 import axios from 'axios';
 import { HOST } from "@/service/host";
-import Seller from "@/types/seller";
+import {Seller} from "@/types/seller";
 
 
 
