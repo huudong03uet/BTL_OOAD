@@ -13,7 +13,6 @@ import { CircularProgress } from "@mui/material";
 import UserProvider from "@/services/context/UserProvider";
 import SellerProvider from "@/services/context/SellerProvider";
 const inter = Inter({ subsets: ["latin"] });
-
 import { Dispatch, SetStateAction } from 'react';
 import React from "react";
 import ChatProvider from "@/services/context/ChatProvider";
@@ -33,7 +32,9 @@ export default function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <title>AUCTION</title>
+      <head>
+            <title>AUCTION</title>
+        </head>
       <body className={inter.className} style={{ overflowX: "clip" }}>
 
       <ChatProvider>
