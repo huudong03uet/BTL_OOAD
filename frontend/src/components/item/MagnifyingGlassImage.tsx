@@ -1,6 +1,6 @@
 import React, { MouseEvent, useState } from 'react';
 import styles from '@/styles/customer/effectImage.module.css';
-import Image from 'next/image';
+// import Image from 'next/image';
 
 interface ImageEffectProps {
     imageUrl: string;
@@ -52,15 +52,15 @@ const ImageEffect: React.FC<ImageEffectProps> = ({ imageUrl }) => {
                 onMouseMove={handleMouseMove}
                 className='w-80 h-96 relative overflow-hidden'
             >
-                <Image
+                <img
                     className='object-cover border z-10'
-                    // style={{width: '100%', height: '100%', maxHeight: "400px"}}
+                    style={{width: '100%', height: '100%', maxHeight: "400px"}}
                     alt=""
                     src={imageUrl}
-                    width={imageSize.width}
-                    height={imageSize.height}
-                    unoptimized={true}
-                    layout="responsive"
+                    // width={imageSize.width}
+                    // height={imageSize.height}
+                    // unoptimized={true}
+                    // layout="responsive"
                 />
                 <div
                     style={{

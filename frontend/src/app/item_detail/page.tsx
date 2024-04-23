@@ -21,7 +21,6 @@ import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import { UserContext } from "@/services/context/UserContext";
 import { useRouter } from "next/navigation";
 function MyTimer({ expiryTimestamp }: { expiryTimestamp: number }) {
-  const router = useRouter();
 
   const {
     totalSeconds,
@@ -61,6 +60,7 @@ const myStyles = {
 
 // export default function Item(props: ProductDetail) {
 export default function Item() {
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => setShowModal(false);
   const handleShowModal = () => setShowModal(true);

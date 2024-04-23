@@ -2,7 +2,7 @@ import Auction from '@/models/auction';
 import React from 'react'
 import dateFormat, { masks } from "dateformat";
 import styled from 'styled-components';
-import Image from 'next/image'; // Import Image từ next/image
+// import Image from 'next/image'; // Import Image từ next/image
 import { useRouter } from 'next/navigation';
 const StyledLink = styled.a`
   text-decoration: none;
@@ -19,7 +19,7 @@ function PromotedAuctions({ obj }: { obj: Auction }) {
             <div className="container">
                 <div className="row">
                     <div className="col-6 p-0 d-flex justify-content-center">
-                        <Image src={obj.products[0]?.images[0]?.url} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "200px" }} alt={''} />
+                        <img src={obj.products[0]?.images[0]?.url} style={{ width: "auto", height: "auto", maxWidth: "100%", maxHeight: "200px" }} alt={''} />
                     </div>
                     <div className="col-6 ps-0">
 

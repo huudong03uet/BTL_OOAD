@@ -194,13 +194,13 @@ export default function LivedAuction() {
                                     {' '}({infoAuction.seller?.reviews?.length || 0} reviews)
                                 </div>
 
-                                <div className='d-flex align-items-center'>
+                                {/* <div className='d-flex align-items-center'>
                                     <LinearProgress color="warning" variant="determinate" value={23} style={{ height: "2px", width: '100%' }} className="me-3" />
                                     <div>
                                         12/23
                                     </div>
 
-                                </div>
+                                </div> */}
 
                             </div>
                             <div>
@@ -239,7 +239,7 @@ export default function LivedAuction() {
                                         <WatchChannel slug={getSlugChannel()} />
                                     </div>
                                 </div>
-                                <SessionAuction  key={selectedLotId} id={selectedLotId} lastBid={lastBid} setLastBid={setLastBid} ref={childRef}/>
+                                <SessionAuction  key={selectedLotId} id={selectedLotId} lastBid={lastBid} setLastBid={setLastBid}/>
                             </div>
                         </div>
                         <div style={{ height: "170px", backgroundColor: "#F4F5F6" }}>

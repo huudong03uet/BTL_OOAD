@@ -2,7 +2,7 @@ import { Modal } from 'react-bootstrap';
 import style from '../style.module.css';
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import Image from 'next/image';
+// import Image from 'next/image';
 import User from '@/models/user';
 import router from 'next/router';
 import { UserContext } from '@/services/context/UserContext';
@@ -100,7 +100,7 @@ const QRModal: React.FC<Props> = ({ showModalQRScan, handleCloseModalQRScan }) =
         </Modal.Header>
         <Modal.Body>
           <div className='d-flex justify-content-center'>
-            <Image src="/qr.jpg" alt="Descriptive alt text for the QR Code" width={300} height={300} />
+            <img src="/qr.jpg" alt="Descriptive alt text for the QR Code" width={300} height={300} />
 
           </div>
 
