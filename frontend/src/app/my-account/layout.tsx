@@ -35,7 +35,7 @@ export default function MyAccountLayout({
         <div className="col-2">
           <SideBarUser />
         </div>
-        <div className="col-10">{children}</div>
+        <div className="col-10" style={{minHeight: "400px"}}>{children}</div>
       </div>
       <AppFooter />
     </section>

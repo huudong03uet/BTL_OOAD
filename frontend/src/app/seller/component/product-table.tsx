@@ -31,6 +31,8 @@ interface MyProductTableProps {
     setAuctionStates?: (newStates: boolean[]) => void;
 }
 
+
+
 const MyProductTable: React.FC<MyProductTableProps> = ({
     activity,
     data,
