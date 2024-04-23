@@ -1,6 +1,6 @@
 'use client'
 import { info } from 'console';
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SessionAuctionCost from '@/models/session_auction_cost';
 import WatchChannel from '@/components/live-stream/watch-channel';
 import { user_get_bid_history } from '@/services/auction/user';
@@ -34,46 +34,14 @@ import { user_get_bid_history } from '@/services/auction/user';
     
 //         fetchData()
 //       }, [lastBid])
-    //   interface SessionAuctionProps {
-    //     key: number;
-    //     id: number;
-    //     setLastBid: (bid: number) => void; // Add this line
-    //     lastBid: number;
-    //     onEvent: () => void;
-    // }
-    
-    const SessionAuction = forwardRef(({ id, lastBid, setLastBid } : {
+      interface SessionAuctionProps {
+        key: number;
         id: number;
+        setLastBid: (bid: number) => void; // Add this line
         lastBid: number;
-        setLastBid: (bid: number) => void;
+    }
     
-    }, ref) => {
-
-        const someFunction = () => {
-            const fetchData = async () => {
-                try {
-                  const data = await user_get_bid_history(id);
-                  setMessage(data)
-                  const newBid = data.cost_auction?.[data.cost_auction.length - 1] || 0;
-                  setLastBid(newBid);
-                  console.log('data', newBid)
-  
-                  if (divRef && divRef.current) {
-                      (divRef.current as HTMLDivElement).scrollTop = (divRef.current as HTMLDivElement).scrollHeight;
-                  }
-                } catch (error) {
-                  console.error('Error fetching upcoming online auctions:', error);
-                }
-              };
-          
-            fetchData()
-        };
-    
-        useImperativeHandle(ref, () => ({
-            someFunction,
-        }));
-
-
+    const SessionAuction: React.FC<SessionAuctionProps> = ({ id, lastBid, setLastBid }) => {
         const [message, setMessage] = useState({} as SessionAuctionCost)
         const divRef = useRef(null); // Create a ref
         useEffect(() => {
@@ -84,6 +52,7 @@ import { user_get_bid_history } from '@/services/auction/user';
                 setMessage(data)
                 const newBid = data.cost_auction?.[data.cost_auction.length - 1] || 0;
                 setLastBid(newBid);
+                console.log('data', newBid)
 
                 if (divRef && divRef.current) {
                     (divRef.current as HTMLDivElement).scrollTop = (divRef.current as HTMLDivElement).scrollHeight;
@@ -94,7 +63,7 @@ import { user_get_bid_history } from '@/services/auction/user';
             };
         
             fetchData()
-        }, [])
+        }, [lastBid, setLastBid])
     
 
     return (
@@ -187,6 +156,7 @@ import { user_get_bid_history } from '@/services/auction/user';
         </>
 
     );
-});
+}
+
 
 export default SessionAuction;

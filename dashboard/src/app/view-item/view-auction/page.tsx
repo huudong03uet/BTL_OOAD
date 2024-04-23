@@ -17,19 +17,21 @@ const ViewAuctionPage = () => {
  
   const [packageDatafake, setPackageDatafake] = useState<Auction[]>([])
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await auction_all();
-        if (Array.isArray(data)) {
-          setPackageDatafake(data);
-        } else {
-          setPackageDatafake([])
-        }
-      } catch (error) {
-        console.error('Error fetching upcoming online auctions:', error);
+  const fetchData = async () => {
+    try {
+      const data = await auction_all();
+      if (Array.isArray(data)) {
+        setPackageDatafake(data);
+      } else {
+        setPackageDatafake([])
       }
-    };
+    } catch (error) {
+      console.error('Error fetching upcoming online auctions:', error);
+    }
+  };
+  
+  useEffect(() => {
+
 
     fetchData()
   }, [])
@@ -40,7 +42,7 @@ const ViewAuctionPage = () => {
      <DefaultLayout>
 
        <Breadcrumb pageName="View Auction"></Breadcrumb>
-        <TableAuction packageData={packageDatafake}></TableAuction> 
+        <TableAuction packageData={packageDatafake} onUpdateAuction={fetchData}></TableAuction> 
      </DefaultLayout>
  
   );

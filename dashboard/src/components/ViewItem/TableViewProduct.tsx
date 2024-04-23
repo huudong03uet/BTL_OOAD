@@ -12,9 +12,10 @@ interface IProps {
 
 interface TableProductProps {
     packageData: Product[];
+    onChangeData: () => void;
 }
 
-const TableProduct: React.FC<TableProductProps> = ({ packageData }) => {
+const TableProduct: React.FC<TableProductProps> = ({ packageData, onChangeData }) => {
     const [showModalCreate, setShowModalCreate] = useState<boolean>(false);
     const [selectedPackage, setSelectedPackage] = useState<Product | null>(null);
 
@@ -245,6 +246,7 @@ const TableProduct: React.FC<TableProductProps> = ({ packageData }) => {
                 ProductToDelete={ProductToDelete}
                 Products={Products}
                 setProducts={setProducts}
+                onChangeData={onChangeData}
             />
             {/* {showModalCreate && selectedPackage && (
                 <CreateModal

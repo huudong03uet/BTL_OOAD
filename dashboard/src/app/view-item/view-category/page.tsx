@@ -15,19 +15,20 @@ const ViewCategoryPage = () => {
 
   const [packageDatafake, setPackageDatafake] = useState<Category[]>([])
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await category_all();
-        if (Array.isArray(data)) {
-          setPackageDatafake(data);
-        } else {
-          setPackageDatafake([])
-        }
-      } catch (error) {
-        console.error('Error fetching upcoming online auctions:', error);
+  const fetchData = async () => {
+    try {
+      const data = await category_all();
+      if (Array.isArray(data)) {
+        setPackageDatafake(data);
+      } else {
+        setPackageDatafake([])
       }
-    };
+    } catch (error) {
+      console.error('Error fetching upcoming online auctions:', error);
+    }
+  };
+
+  useEffect(() => {
 
     fetchData()
   }, [])
@@ -49,7 +50,7 @@ const ViewCategoryPage = () => {
   return (
     <DefaultLayout>
       <Breadcrumb pageName="View Category"></Breadcrumb>
-      <TableCategory packageData={packageDatafake}></TableCategory>
+      <TableCategory packageData={packageDatafake}  onUpdateCategories={fetchData} ></TableCategory>
     </DefaultLayout>
   );
 };

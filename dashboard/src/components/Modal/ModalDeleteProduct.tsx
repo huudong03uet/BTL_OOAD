@@ -13,10 +13,11 @@ interface IProps {
     ProductToDelete: Product | null;
     Products: Product[];
     setProducts: (Products: Product[]) => void;
+    onChangeData: () => void;
 }
 
 function DeleteModal(props: IProps) {
-    const { showModalDelete, setShowModalDelete, ProductToDelete, Products, setProducts } = props;
+    const { showModalDelete, setShowModalDelete, ProductToDelete, Products, setProducts, onChangeData } = props;
 
   const handleCloseModal = () => setShowModalDelete(false);
 
@@ -24,8 +25,8 @@ function DeleteModal(props: IProps) {
   const handleConfirmDelete = async () => {
     if (ProductToDelete) {
        console.log(ProductToDelete);
-        await product_delete(ProductToDelete.id)
-
+        await product_delete(ProductToDelete.id);
+        onChangeData();
     }
     handleCloseModal();
   };

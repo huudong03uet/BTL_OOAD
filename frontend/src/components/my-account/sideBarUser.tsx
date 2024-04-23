@@ -1,13 +1,13 @@
 import style from './style.module.css';
-import Link from 'next/link';
 import ModalConfirm from "@/components/ModalConfirm";
 import { useContext, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { UserContext } from '@/services/context/UserContext';
 import { SellerContext } from '@/services/context/SellerContext';
 import { logout } from '@/services/auth/login';
+import { useRouter } from 'next/navigation';
 function SideBarUser() {
+    const router = useRouter();
     // const router = useRouter();
     const {user, setUser} = useContext(UserContext);
     const {seller, setSeller} = useContext(SellerContext);
@@ -41,17 +41,17 @@ function SideBarUser() {
         // <div className='ps-5 ms-3'>
         <div className='ps-4 ms-3 pe-4'>
             <div className={style.div_module}>
-                <Link className={style.div_text} href="/my-account/home" >
+                <div className={style.div_text} onClick={() => {router.push("/my-account/home")}} >
                     My Auction
-                </Link>
-                <Link className={style.div_text} href="/my-account/edit-profile">
+                </div>
+                <div className={style.div_text} onClick={() => {router.push("/my-account/edit-profile")}}>
                     Edit Profile
-                </Link>
-                <Link className={style.div_text} style={{alignItems: 'center'}} href="/my-account/saved-items">
+                </div>
+                <div className={style.div_text} style={{alignItems: 'center'}} onClick={() => { router.push("/my-account/saved-items")}}>
                     <i className="fa fa-heart space-right-sm"></i>
                     {" "}
                     Saved Items
-                </Link>
+                </div>
             </div>
             <div className={style.div_module}>
                 {/* <div className={style.div_text}>
@@ -60,13 +60,13 @@ function SideBarUser() {
                 <div className={style.div_text}>
                     Auctions
                 </div> */}
-                <Link className={style.div_text} href="my-account/purchases">
+                <div className={style.div_text} onClick={() => { router.push("/my-account/purchases")}}>
                     Purchases
-                </Link>
-                <Link className={style.div_text} href="/my-account/payment-options">
+                </div>
+                <div className={style.div_text} onClick={() => { router.push("/my-account/payment-options")}}>
                     Payment Options
 
-                </Link>
+                </div>
             </div>
           
 
@@ -86,9 +86,9 @@ function SideBarUser() {
                 {
                     !acceptRegister ? (
                         // <div className={style.div_module}>
-                            <Link className={style.div_text} href="/my-account/register-seller">
+                            <div className={style.div_text} onClick={() => { router.push("/my-account/register-seller")}}>
                                 Register seller
-                            </Link>
+                            </div>
                         // </div>
                     ) : (
                         // <div className='ps-4'>
@@ -117,9 +117,9 @@ function SideBarUser() {
 
 
 
-                            <Link className={style.div_text} href="/seller">
+                            <div className={style.div_text} onClick={() => { router.push("/seller" )}}>
                                 Seller center
-                            </Link>
+                            </div>
                         // </div>
                     )
                 }
