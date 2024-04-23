@@ -43,7 +43,7 @@ export default function LivedAuction() {
         };
 
         fetchItemData();
-    }, []);
+    }, [user]);
 
     
 
@@ -60,6 +60,8 @@ export default function LivedAuction() {
         fetchItemData();
     }, []);
 
+
+
     const [size, setSize] = useState<String>('button_1');
 
     const router = useRouter();
@@ -70,11 +72,6 @@ export default function LivedAuction() {
 
     const containerRef = React.useRef(null);
 
-    // const handleViewLotDetailsClick = () => {
-    //     if (containerRef.current) {
-    //       (containerRef.current as HTMLElement).scrollTop = (containerRef.current as HTMLElement).scrollHeight;
-    //     }
-    // };
 
     const handleViewLotDetailsClick = () => {
         if (containerRef.current) {
@@ -105,6 +102,8 @@ export default function LivedAuction() {
     const ws = useRef<WebSocket | null>(null);
     const lastData = useRef("0");
     
+
+
     useEffect(() => {
         ws.current = new WebSocket('ws://localhost:8000');
     
@@ -117,11 +116,15 @@ export default function LivedAuction() {
             const data = JSON.parse(event.data);
     
             console.log(data)
-    
-            if (data.event === 'update_bid' && JSON.stringify(data) !== lastData.current) {
-                console.log("abc");
-                handleLotClick(selectedLotId)
-                lastData.current = JSON.stringify(data);
+            // console.log("123231421", JSON.stringify(data));
+            if (data.event === 'update_bid') {
+                callChildFunction();
+
+                // console.log("abc");
+                // handleLotClick(selectedLotId)
+                // lastData.current = JSON.stringify(data);
+                // reload 
+
             }
         });
     
@@ -138,7 +141,13 @@ export default function LivedAuction() {
         console.log(selectedLotId)
         await user_add_bid(selectedLotId, lastBid + 1, 1)
         setLastBid(lastBid + 1);
+        
     }
+    const childRef = useRef<any>();
+
+    const callChildFunction = () => {
+        childRef.current?.someFunction();
+    };
 
     return (
         <>
@@ -230,7 +239,7 @@ export default function LivedAuction() {
                                         <WatchChannel slug={getSlugChannel()} />
                                     </div>
                                 </div>
-                                <SessionAuction key={selectedLotId} id={selectedLotId} lastBid={lastBid} setLastBid={setLastBid} />
+                                <SessionAuction  key={selectedLotId} id={selectedLotId} lastBid={lastBid} setLastBid={setLastBid} ref={childRef}/>
                             </div>
                         </div>
                         <div style={{ height: "170px", backgroundColor: "#F4F5F6" }}>

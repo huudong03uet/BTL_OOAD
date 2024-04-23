@@ -75,7 +75,7 @@ export default function HostControls({ slug }: Props) {
   }, [audioTrack, isPublishing, localParticipant, videoTrack]);
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" style={{backgroundColor: "#F2F3F5", height: "100vh", overflow: "clip"}}>
       <div className="flex items-center justify-between">
         <div className="flex gap-[5px] text-lg font-bold">
           {isPublishing && !isUnpublishing ? (
@@ -84,20 +84,19 @@ export default function HostControls({ slug }: Props) {
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex h-3 w-3 rounded-full bg-red-500"></span>
               </span>
-              LIVE
             </div>
           ) : (
-            "Ready to stream"
-          )}{" "}
-          as{" "}
-          <div className="italic text-purple-500 dark:text-purple-300">
+            <>
+            </>
+          )}
+          {/* <div className="italic text-purple-500 dark:text-purple-300">
             {slug}
-          </div>
+          </div> */}
         </div>
-        <div className="flex gap-2">
+        <div className="d-flex justify-content-center align-items-center ">
           {isPublishing ? (
             <Button
-              size="sm"
+              size="lg"
               className="bg-red-600 hover:bg-red-700"
               onClick={() => void togglePublishing()}
               disabled={isUnpublishing}
@@ -106,7 +105,7 @@ export default function HostControls({ slug }: Props) {
             </Button>
           ) : (
             <Button
-              size="sm"
+              size="lg"
               onClick={() => void togglePublishing()}
               className="animate-pulse"
             >
@@ -115,19 +114,10 @@ export default function HostControls({ slug }: Props) {
           )}
         </div>
       </div>
-      <div className="aspect-video rounded-sm border bg-neutral-800">
-        <video ref={previewVideoEl} width="100%" height="100%" />
+      <div className="aspect-video rounded-sm border bg-neutral-800" >
+        <video ref={previewVideoEl} width="100%" height="90%" />
       </div>
-      <div>
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center rounded-md bg-violet-200 dark:bg-neutral-900 px-2 py-1 text-xs font-bold uppercase">
-            Note
-          </span>
-          <p className="text-xs text-violet-900 dark:text-foreground">
-            Do not stream to RTMP/WHIP endpoint at the same time.
-          </p>
-        </div>
-      </div>
+  
     </div>
   );
 }
