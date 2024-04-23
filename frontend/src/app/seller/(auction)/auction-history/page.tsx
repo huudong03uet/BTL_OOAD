@@ -1,7 +1,7 @@
 'use client'
 import { Form, } from "react-bootstrap";
 import style from '../../../my-account/style.module.css'
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import React, { useState, useEffect, ChangeEvent, FormEvent, useContext } from 'react';
 
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -19,25 +19,29 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import MyAuctionTable, { TableActivity } from "../../component/auction-table";
 import Auction from "@/models/auction";
 import { seller_auction_history_service } from "@/services/auction/seller";
+import { SellerContext } from "@/services/context/SellerContext";
 
 //  cứ lấy hết thông tin có của auction -> không cần lọc, dư sẽ để vào phần detail hoặc bỏ
 
 
 export default function AuctionHistory() {
     const [data, setData] = useState<Auction[]>([])
+    const {seller, setSeller} = useContext(SellerContext);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const data = await seller_auction_history_service();
-                setData(data);
+                if(seller){
+                    const data = await seller_auction_history_service(seller?.id);
+                    setData(data);
+                }
             } catch (error) {
                 console.error('Error fetching upcoming online auctions:', error);
             }
         };
 
         fetchData()
-    }, [])
+    }, [seller])
 
 
     return (

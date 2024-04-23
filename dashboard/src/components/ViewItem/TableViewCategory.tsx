@@ -12,10 +12,11 @@ interface IProps {
 }
 
 interface TableCategoryProps {
-    packageData: Category[];
+    packageData: Category[],
+    onUpdateCategories: () => void; // Định nghĩa kiểu cho prop onUpdateCategories
 }
 
-const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
+const TableCategory: React.FC<TableCategoryProps> = ({ packageData, onUpdateCategories }) => {
     
 
     const [selectedPackage, setSelectedPackage] = useState<Category | null>(null);
@@ -31,6 +32,10 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
         setCategories(packageData);
     }, [packageData]);
 
+    const handleUpdateCategories = () => {
+        onUpdateCategories(); 
+    };
+    
     const [showModal, setShowModal] = useState(false);
 
 
@@ -62,6 +67,7 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
     let handleDeleteCategory = (category: Category) => {
         setCategoryToDelete(category);
         setShowModalDelete(true);
+        handleUpdateCategories();
     }
 
 
@@ -225,7 +231,8 @@ const TableCategory: React.FC<TableCategoryProps> = ({ packageData }) => {
             />
             <ModalAddCategory
                 showModal={showModal}
-                setShowModal={setShowModal}></ModalAddCategory>
+                setShowModal={setShowModal}
+                onUpdateCategories={handleUpdateCategories}></ModalAddCategory>
         </div>
     );
 };

@@ -14,6 +14,7 @@ function CreateModal(props: IProps) {
 
   const handleCloseModal = () => setShowModalCreate(false);
   const handleShowModal = () => setShowModalCreate(true);
+  console.log(userInformation);
 
 
   const handleSubmit = () => {

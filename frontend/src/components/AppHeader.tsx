@@ -39,6 +39,12 @@ function Header() {
   const {user, setUser} = useContext(UserContext);
   const {seller, setSeller} = useContext(SellerContext);
 
+  const [coinValue, setCoinValue] = useState(Math.round(user?.coin ? user?.coin : 0));
+
+  useEffect(() => {
+    setCoinValue(Math.round(user?.coin ? user?.coin : 0));
+  }, [user?.coin]);
+
   useEffect(() => {
     const fetchData = async () => {
       const userData = await loginFromToken();
@@ -246,7 +252,7 @@ function Header() {
 
                   id="outlined-adornment-password"
                   type={showPassword ? 'text' : 'password'}
-                  defaultValue= { user?.coin }
+                  value={coinValue}
                   endAdornment={
                     <InputAdornment position="end">
                       <IconButton

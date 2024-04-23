@@ -15,27 +15,26 @@ interface TableCategoryProps {
 const ViewCategoryPage = () => {
 
   const [packageDatafake, setPackageDatafake] = useState<Category[]>([])
+  const fetchData = async () => {
+    try {
+      const data = await category_all();
+      if (Array.isArray(data)) {
+        setPackageDatafake(data);
+      } else {
+        setPackageDatafake([])
+      }
+    } catch (error) {
+      console.error('Error fetching upcoming online auctions:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await category_all();
-        if (Array.isArray(data)) {
-          setPackageDatafake(data);
-        } else {
-          setPackageDatafake([])
-        }
-      } catch (error) {
-        console.error('Error fetching upcoming online auctions:', error);
-      }
-    };
-
     fetchData()
   }, [])
   return (
     <DefaultLayout>
       <Breadcrumb pageName="Manager Category"></Breadcrumb>
-      <TableCategory packageData={packageDatafake}></TableCategory>
+      <TableCategory packageData={packageDatafake} onUpdateCategories={fetchData} ></TableCategory>
     </DefaultLayout>
   );
 };
