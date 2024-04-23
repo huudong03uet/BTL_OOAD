@@ -97,7 +97,7 @@ export default function EmailPreferences() {
 
             <div className="col-10 px-5">
                 {objectPreferences.map((objects, i) => (
-                    <div className={style.div_section}>
+                    <div key={i} className={style.div_section}>
                         <div className='row border-bottom'>
                             <div className={`${style.div_header_section} col-8`}>
                                 {objects.name}
@@ -107,7 +107,7 @@ export default function EmailPreferences() {
                             </div>
                         </div>
                         {objects.child.map((object, j) => (
-                            <div className='row my-4'>
+                            <div key={j}className='row my-4'>
                                 <div className={`col-8`}>
                                     <div className={style.div_header}>
                                         {object.name}
