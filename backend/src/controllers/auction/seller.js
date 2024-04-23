@@ -13,13 +13,6 @@ const Product = require('../../models/product');
 const User = require('../../models/user');
 
 const { check_required_field, find_or_create_location } = require('../util');
-const Seller = require('../../models/seller');
-const Location = require('../../models/location');
-const { convert_result_item_summary } = require('../util/convert');
-const { set_value_redis } = require('../util/redis');
-const Admin = require('../../models/admin');
-const { get_auction, AUCTION_INCLUDE, get_auction_by_pk } = require('./conponent');
-const { get_product_by_pk, get_product } = require('../product/conponent');
 const AuctionService = require('./conponent');
 
 
@@ -385,7 +378,7 @@ class AuctionController extends AuctionService {
     
             await t.commit();
 
-            this.socket_auction()
+            // this.socket_auction()
     
             logger.info(`${statusCode.HTTP_200_OK} [auction:${newAuction.id}]`)
             return res.status(statusCode.HTTP_200_OK).json(newAuction)

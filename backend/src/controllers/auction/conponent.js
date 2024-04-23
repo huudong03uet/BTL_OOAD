@@ -51,9 +51,7 @@ const AUCTION_INCLUDE = [
 class AuctionService {
     constructor () {
         this.websocket = websocket
-        this.where_case = {
-            is_delete: false,
-        }
+        this.where_case = {}
         this.include = [
             {
                 model: Seller,
@@ -94,6 +92,10 @@ class AuctionService {
 
     get_auction = async (where_cause = this.where_case, include = this.include, kwargs = this.kwargs) => {
         try {
+            where_cause = {
+                is_delete: false,
+                ...where_cause
+            }
             let auctions = await Auction.findAll({
                 where: where_cause,
                 include: include,

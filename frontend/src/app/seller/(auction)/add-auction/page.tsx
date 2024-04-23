@@ -96,7 +96,7 @@ export default function AddAuction() {
         };
 
         fetchData()
-    }, [])
+    }, [seller?.id])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -110,7 +110,7 @@ export default function AddAuction() {
         };
 
         fetchData()
-    }, [])
+    }, [seller?.id])
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
