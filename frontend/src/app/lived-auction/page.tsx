@@ -15,7 +15,7 @@ import WatchChannel from '@/components/live-stream/watch-channel';
 import { UserContext } from '@/services/context/UserContext';
 
 export default function LivedAuction() {
-    const {user, setUser} = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
 
     const [infoAuction, setInfoAuction] = useState({} as Auction);
     const [lotsAuction, setLotsAuction] = useState<Product[]>([]);
@@ -127,9 +127,30 @@ export default function LivedAuction() {
         }
     };
 
+    const ws = new WebSocket('ws://localhost:8000');
+
+    ws.addEventListener('open', () => {
+        console.log('Connected to WebSocket server');
+    });
+
+    ws.addEventListener('message', (event) => {
+        const data = JSON.parse(event.data);
+
+        console.log(data)
+
+        if (data.event === 'update_bid') {
+            console.log("abc");
+            handleLotClick(selectedLotId)
+        }
+    });
+
+    ws.addEventListener('error', (error) => {
+        console.error('WebSocket Error:', error);
+    });
+
     const Register2Bid = async () => {
-        // console.log(user)
-        await user_add_bid(selectedLotId, lastBid + 1, user?.id)
+        console.log(selectedLotId)
+        await user_add_bid(selectedLotId, lastBid + 1, 1)
     }
 
     return (
@@ -210,7 +231,7 @@ export default function LivedAuction() {
                                         <WatchChannel slug={getSlugChannel()} />
                                     </div>
                                 </div>
-                                <SessionAuction key={selectedLotId} id={selectedLotId} setLastBid={setLastBid}/>
+                                <SessionAuction key={selectedLotId} id={selectedLotId} setLastBid={setLastBid} />
                             </div>
                         </div>
                         <div style={{ height: "170px", backgroundColor: "#F4F5F6" }}>

@@ -1,5 +1,6 @@
 const Sequelize = require('sequelize');
 const { Op } = require('sequelize');
+const WebSocket = require('ws');
 
 const logger = require('../../../conf/logger');
 const sequelize = require('../../../conf/sequelize');
@@ -81,6 +82,14 @@ class AuctionService {
             }
         ];
         this.kwargs = {}
+    }
+
+    socket_bid_update = async (req, res) => {
+        this.websocket.clients.forEach((client) => {
+            if (client.readyState === WebSocket.OPEN) {
+                client.send(JSON.stringify({ event: 'update_bid' }));
+            }
+        });
     }
 
     get_auction = async (where_cause = this.where_case, include = this.include, kwargs = this.kwargs) => {

@@ -528,6 +528,8 @@ class AuctionController extends AuctionService {
             }
     
             await BidHistory.create(req.body)
+
+            this.socket_bid_update()
     
             logger.info(`${statusCode.HTTP_200_OK} done.`)
             return res.status(statusCode.HTTP_200_OK).json("done");

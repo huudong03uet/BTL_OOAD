@@ -18,6 +18,10 @@ const BidHistory = sequelize.define('bid_history', {
         type: DataTypes.DOUBLE,
         defaultValue: 0.0,
     },
+    winner_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
 },
     {
         tableName: 'bid_history',
