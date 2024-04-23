@@ -44,7 +44,7 @@ function PromotedAuctions({ obj }: { obj: Auction }) {
                             onClick={(e) => e.stopPropagation()}
                         >by {obj.seller?.name}</StyledLink>
 
-                        
+
                         <div className="my-3">
                             {/* {obj.time} */}
                             {dateFormat(obj.time_auction, " mmm dd, yyyy - hh:MM TT")}
