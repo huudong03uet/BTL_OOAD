@@ -69,21 +69,22 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
 
     const [auctionHouse, setAuctionHouse] = useState<Seller | undefined>(undefined);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await seller_info(seller_id);
-                if (data) {
-                    setAuctionHouse(data);
-                    setUserContactId(data.user_id);
-                }
-
-            } catch (error) {
-                console.error('Error fetching upcoming online auctions:', error);
+    const fetchDataSeller = async () => {
+        try {
+            const data = await seller_info(seller_id);
+            if (data) {
+                setAuctionHouse(data);
+                setUserContactId(data.user_id);
             }
-        };
 
-        fetchData()
+        } catch (error) {
+            console.error('Error fetching upcoming online auctions:', error);
+        }
+    };
+
+    useEffect(() => {
+
+        fetchDataSeller()
     }, [])
 
 
@@ -95,22 +96,23 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
         time_create: string,
     }[] | undefined>([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const data = await get_review_service(seller_id);
-                console.log("tesge", data)
-                if (Array.isArray(data)) {
-                    setReview(data);
-                } else {
-                    setReview([])
-                }
-            } catch (error) {
-                console.error('Error fetching upcoming online auctions:', error);
+    const fetchDataReview = async () => {
+        try {
+            const data = await get_review_service(seller_id);
+            console.log("tesge", data)
+            if (Array.isArray(data)) {
+                setReview(data);
+            } else {
+                setReview([])
             }
-        };
+        } catch (error) {
+            console.error('Error fetching upcoming online auctions:', error);
+        }
+    };
 
-        fetchData()
+    useEffect(() => {
+
+        fetchDataReview()
     }, [])
 
     const [upcomingAuctions, setUpcomingAuctions] = useState<Auction[]>([]);
@@ -243,7 +245,11 @@ const AuctionHouse = ({ params }: { params: { id: string } }) => {
 
     const handleSubmit = async () => {
 
-        await set_review_service(seller_id, user?.id, value, comment)
+        await set_review_service(seller_id, user?.id, value, comment);
+        fetchDataSeller();
+        fetchDataReview();
+        setComment('');
+
     };
 
 
