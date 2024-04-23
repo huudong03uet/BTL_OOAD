@@ -1,72 +1,76 @@
 'use client'
 import { info } from 'console';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SessionAuctionCost from '@/models/session_auction_cost';
 import WatchChannel from '@/components/live-stream/watch-channel';
 import { user_get_bid_history } from '@/services/auction/user';
 
-interface SessionAuctionProps {
-    key: number;
-    id: number;
-    setLastBid: (bid: number) => void;
-}
+// interface SessionAuctionProps {
+//     key: number;
+//     id: number;
+//     // setLastBid: (bid: number) => void;
+//     lastBid: number;
+// }
 
-// type SizeType = ConfigProviderProps['componentSize'];
-const SessionAuction: React.FC<SessionAuctionProps> = ({ id, setLastBid }) => {
-    // const message: SessionAuctionCost[] = [
-    //     {
-    //         "id": 1,
-    //         "cost_auction": [
-    //             600, 600, 700, 700, 800, 900, 900, 1200, 1300, 1400
-    //         ],
-    //         "status": 1,
-    //     },
-    //     {
-    //         "id": 2,
-    //         "cost_auction": [
-    //             600, 600, 700, 700, 800, 900, 900, 1200, 1300, 1400
-    //         ],
-    //         "status": 1,
-    //     }
-    //     ,
-    //     {
-    //         "id": 3,
-    //         "cost_auction": [
-    //             600, 600, 700, 700, 800, 900, 900, 1200, 1300, 1400
-    //         ],
-    //         "status": 1,
-    //     },
-    //     {
-    //         "id": 4,
-    //         "cost_auction": [
-    //             600, 600, 700, 700, 800, 900, 900, 1200, 1300, 1400
-    //         ],
-    //         "status": 0,
-    //     }
-    // ]
+// // type SizeType = ConfigProviderProps['componentSize'];
+// const SessionAuction: React.FC<SessionAuctionProps> = ({ id, lastBid }) => {
 
 
-    const [message, setMessage] = useState({} as SessionAuctionCost)
-    useEffect(() => {
-        const fetchData = async () => {
-          try {
-            const data = await user_get_bid_history(id);
-            setMessage(data)
-            setLastBid(data.cost_auction?.[data.cost_auction.length - 1] || 0)
-          } catch (error) {
-            console.error('Error fetching upcoming online auctions:', error);
-          }
-        };
+//     const [message, setMessage] = useState({} as SessionAuctionCost)
+//     useEffect(() => {
+//         const fetchData = async () => {
+//           try {
+//             const data = await user_get_bid_history(id);
+//             setMessage(data)
+//             // setLastBid(data.cost_auction?.[data.cost_auction.length - 1] || 0)
+//             //  add last bid to the list
+//             console.log('data', data.cost_auction?.[data.cost_auction.length - 1] || 0)
+
+
+//           } catch (error) {
+//             console.error('Error fetching upcoming online auctions:', error);
+//           }
+//         };
     
-        fetchData()
-      }, [])
+//         fetchData()
+//       }, [lastBid])
+      interface SessionAuctionProps {
+        key: number;
+        id: number;
+        setLastBid: (bid: number) => void; // Add this line
+        lastBid: number;
+    }
+    
+    const SessionAuction: React.FC<SessionAuctionProps> = ({ id, lastBid, setLastBid }) => {
+        const [message, setMessage] = useState({} as SessionAuctionCost)
+        const divRef = useRef(null); // Create a ref
+        useEffect(() => {
+            console.log("điiđiid", lastBid);
+            const fetchData = async () => {
+              try {
+                const data = await user_get_bid_history(id);
+                setMessage(data)
+                const newBid = data.cost_auction?.[data.cost_auction.length - 1] || 0;
+                setLastBid(newBid);
+                console.log('data', newBid)
 
+                if (divRef && divRef.current) {
+                    (divRef.current as HTMLDivElement).scrollTop = (divRef.current as HTMLDivElement).scrollHeight;
+                }
+              } catch (error) {
+                console.error('Error fetching upcoming online auctions:', error);
+              }
+            };
+        
+            fetchData()
+        }, [lastBid, setLastBid])
+    
 
     return (
         <>
             <div>
-                <div>
-                    <div style={{ height: "265px", overflow: "auto" }} className='me-3'>
+                <div className='p-4'>
+                    <div style={{ height: "310px", overflow: "auto" }} className='me-3' ref={divRef}>
 
                         {message && message.cost_auction && message.cost_auction.map((cost, index) => (
 

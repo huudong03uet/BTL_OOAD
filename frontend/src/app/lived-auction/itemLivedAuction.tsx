@@ -12,7 +12,7 @@ interface ItemLivedAuctionProps {
 
 const ItemLivedAuction: React.FC<ItemLivedAuctionProps> = ({ obj, onClick }) => {
     return (
-        <div className='row' onClick={onClick}>
+        <div className='row' onClick={onClick} style={{cursor: "pointer"}}>
             <div className='col-5 px-2'>
                 <div style={{ backgroundColor: "#dde0e4", position: "absolute", color: "#28292a", fontSize: "14px" }}>
                     {obj.status == StatusItemAuction.SOLD ? (
@@ -44,7 +44,7 @@ const ItemLivedAuction: React.FC<ItemLivedAuctionProps> = ({ obj, onClick }) => 
                 <div style={{ fontWeight: 500, fontSize: "14px" }}>
                     {obj.status == StatusItemAuction.SOLD ? (
                         <div>
-                            Sold: ${obj.max_bid}
+                            {/* Sold: ${obj.max_bid || 0} */}
                         </div>
                     ) : obj.status == StatusItemAuction.CURRENT ? (
                         <div>
@@ -52,7 +52,7 @@ const ItemLivedAuction: React.FC<ItemLivedAuctionProps> = ({ obj, onClick }) => 
                         </div>
                     ) : (
                         <div>
-                            Current: ${obj.max_bid}
+                            {/* Current: ${obj.max_bid || 0} */}
                         </div>
                     )}
                 </div>
