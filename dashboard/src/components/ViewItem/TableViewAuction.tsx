@@ -12,9 +12,10 @@ interface IProps {
 
 interface TableAuctionProps {
     packageData: Auction[];
+    onUpdateAuction: () => void;
 }
 
-const TableAuction: React.FC<TableAuctionProps> = ({ packageData }) => {
+const TableAuction: React.FC<TableAuctionProps> = ({ packageData, onUpdateAuction }) => {
     const [showModalCreate, setShowModalCreate] = useState<boolean>(false);
     const [selectedPackage, setSelectedPackage] = useState<Auction | null>(null);
 
@@ -208,6 +209,7 @@ const TableAuction: React.FC<TableAuctionProps> = ({ packageData }) => {
                 auctionToDelete={AuctionToDelete}
                 auctions={Auctions}
                 setAuctions={setAuctions}
+                onDeleteData={onUpdateAuction}
             />
         </div>
     );

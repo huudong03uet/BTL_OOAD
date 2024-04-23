@@ -13,10 +13,11 @@ interface IProps {
     auctionToDelete: Auction | null;
     auctions: Auction[];
     setAuctions: (auctions: Auction[]) => void;
+    onDeleteData: () => void;
 }
 
 function DeleteModal(props: IProps) {
-    const { showModalDelete, setShowModalDelete, auctionToDelete, auctions, setAuctions } = props;
+    const { showModalDelete, setShowModalDelete, auctionToDelete, auctions, setAuctions, onDeleteData } = props;
 
   const handleCloseModal = () => setShowModalDelete(false);
 
@@ -25,7 +26,7 @@ function DeleteModal(props: IProps) {
     if (auctionToDelete) {
        console.log(auctionToDelete);
         await auction_delete(auctionToDelete.id)
-
+        onDeleteData();
     }
     handleCloseModal();
   };

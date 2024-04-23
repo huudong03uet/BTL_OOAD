@@ -122,20 +122,21 @@ const ViewProductPage = () => {
   //   }
   // ];
   const [packageDatafake, setPackageDatafake] = useState<Product[]>([])
+  const fetchData = async () => {
+    try {
+      const data = await product_all();
+      if (Array.isArray(data)) {
+        setPackageDatafake(data);
+      } else {
+        setPackageDatafake([])
+      }
+    } catch (error) {
+      console.error('Error fetching upcoming online auctions:', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await product_all();
-        if (Array.isArray(data)) {
-          setPackageDatafake(data);
-        } else {
-          setPackageDatafake([])
-        }
-      } catch (error) {
-        console.error('Error fetching upcoming online auctions:', error);
-      }
-    };
+    
 
     fetchData()
   }, [])
@@ -146,7 +147,7 @@ const ViewProductPage = () => {
      <DefaultLayout>
 
        <Breadcrumb pageName="View Product"></Breadcrumb>
-        <TableProduct packageData={packageDatafake}></TableProduct> 
+        <TableProduct packageData={packageDatafake} onChangeData={fetchData}></TableProduct> 
      </DefaultLayout>
  
   );
