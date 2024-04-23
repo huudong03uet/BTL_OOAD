@@ -6,9 +6,8 @@
 - Nguyễn Văn Khang: 21020768
 - Nguyễn Ngọc Linh: 21020774
 - Nguyễn Thị Hiền: 21020316
-
-  ## Môn học:
-  - ooad
-  - Giảng viên: Trương Ninh Thuận
+## Môn học:
+- ooad
+- Giảng viên: Trương Ninh Thuận
 
   
