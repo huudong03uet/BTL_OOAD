@@ -34,6 +34,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
             <title>AUCTION</title>
+
         </head>
       <body className={inter.className} style={{ overflowX: "clip" }}>
 
