@@ -51,11 +51,10 @@ export default function HostChannel({ slug }: { slug: string }) {
         <div className="flex-1 flex-col p-8">
           <HostControls slug={slug} />
         </div>
-        <div className="sticky hidden w-80 border-l md:block">
+        {/* <div className="sticky hidden w-80 border-l md:block">
           <div className="absolute top-0 bottom-0 right-0 flex h-full w-full flex-col gap-2 p-2">
-            {/* <Chat participantName={slug} /> */}
           </div>
-        </div>
+        </div> */}
       </div>
     </LiveKitRoom>
   );
